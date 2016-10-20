@@ -208,6 +208,12 @@
 <p>select * from table_name where id in ()的时候，MySQL会自动按主键自增排序，要是按IN中给定的顺序来取，如何实现呢？</p>
 </blockquote>
 <p>比如下面这个查询结果，mysql会默认使用主键id的ASC自增排序结果集：<br><img src="http://img.blog.csdn.net/20160429152929904" alt=""></p>
+        <!-- 
+select * from table_name where id in ()的时候，MySQL会自动按主键自增排序，要是按IN中给定的顺序来取，如何实现呢？
+
+比如下面这个查询结果，mysql会默认使用主键id的ASC自增排序结果集：
+
+那么，如果我们想维持查询语句中IN(26613,26612,26611,26610,26609,26608,26607)的顺序可以么？当然可以，像下面这......  -->
         
           <p class="article-more-link">
             <a href="../../2016/04/29/【MySQL】查询保持IN中的顺序/#more">Read More</a>
@@ -261,6 +267,11 @@
 </blockquote>
 <h2 id="一、分析"><a href="#一、分析" class="headerlink" title="一、分析"></a><strong>一、分析</strong></h2><p>这是不同系统编码格式引起的：在windows系统中编辑的.sh文件可能有不可见字符，所以在Linux系统下执行会报以上异常信息。 </p>
 <h2 id="二、解决"><a href="#二、解决" class="headerlink" title="二、解决"></a><strong>二、解决</strong></h2><p>1）在windows下转换：<br>利用一些编辑器如UltraEdit或EditPlus等工具先将脚本编码转换，再放到Linux中执行。转换方式如下（UltraEdit）：File–&gt;Conversions–&gt;DOS-&gt;UNIX即可。 </p>
+        <!-- 
+在Linux中执行.sh脚本，异常/bin/bash^M: bad interpreter: No such file or directory.
+
+一、分析这是不同系统编码格式引起的：在windows系统中编辑的.sh文件可能有不可见字符，所以在Linux系统下执行会报以上异常信息。 
+二、解决1）在windows下转换：利用一些编辑器如UltraEdit或EditPlus等工具先将脚本......  -->
         
           <p class="article-more-link">
             <a href="../../2016/04/29/【Linux】执行shell脚本出现异常：bad interpreter- No such file or directory如何解决/#more">Read More</a>
@@ -313,6 +324,12 @@
 <p>算法的时间复杂度无非就是for、while等包含起来的基本运算单元的循环次数</p>
 </blockquote>
 <h2 id="1、二分查找"><a href="#1、二分查找" class="headerlink" title="1、二分查找"></a><strong>1、二分查找</strong></h2><p>二分查找（binary search），也称作折半查找（half-interval search），每次划分一半进行下一步搜索，所以时间复杂度无非就是while循环的次数！</p>
+        <!-- 
+算法的时间复杂度无非就是for、while等包含起来的基本运算单元的循环次数
+
+1、二分查找二分查找（binary search），也称作折半查找（half-interval search），每次划分一半进行下一步搜索，所以时间复杂度无非就是while循环的次数！
+
+123456789101112131415161718//二分查找 Java 实现public static int bin......  -->
         
           <p class="article-more-link">
             <a href="../../2016/04/06/”二分查找“算法的时间复杂度/#more">Read More</a>
@@ -362,6 +379,13 @@
         <p>先给大家看一下这个主题的颜值：</p>
 <p><img src="http://img.blog.csdn.net/20160330165335855" alt=""></p>
 <p><img src="http://img.blog.csdn.net/20160330164049417" alt=""></p>
+        <!-- 先给大家看一下这个主题的颜值：
+
+
+
+
+快看安装方法：1、下载：https://github.com/kenwheeler/brogrammer-theme/archive/master.zip
+2、解压后将文件夹改名成Theme - Brogrammer，然后打开sublime text3，找到里面的 Preferences -&gt; Browse Packages，将改名后的文件夹co......  -->
         
           <p class="article-more-link">
             <a href="../../2016/03/30/给大家推荐一款Sublime Text的主题”brogrammer-theme“/#more">Read More</a>
@@ -414,6 +438,10 @@
 <h2 id="Picasso缓存策略"><a href="#Picasso缓存策略" class="headerlink" title="- Picasso缓存策略"></a>- <strong>Picasso缓存策略</strong></h2><p>我们都知道图片缓存使用的是Map键值对存储的，这里的Key就是加载的图片的Url，所以如果我们使用相同的ImageUrl去加载图片的话，如果使用了缓存，Picasso会直接读取缓存的内容，而不是从SD卡、或者网络Http中重新加载。</p>
 <h2 id="Picasso如何清理缓存"><a href="#Picasso如何清理缓存" class="headerlink" title="- Picasso如何清理缓存"></a>- <strong>Picasso如何清理缓存</strong></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Picasso.with(getContext()).load(data.get(pos).getFeed_thumb_image()).memoryPolicy(MemoryPolicy.NO_CACHE).into(image);</div></pre></td></tr></table></figure>
 <p>注意其中的<em>.memoryPolicy(MemoryPolicy.NO_CACHE)</em>即是关键代码。</p>
+        <!-- 
+使用Picasso加载SD卡图片的时候，Picasso也会对该图片进行缓存。所以如果该图片即使已经变了，Picasso在加载时会仍然使用缓存，而不更新图片。
+
+- Picasso缓存策略我们都知道图片缓存使用的是Map键值对存储的，这里的Key就是加载的图片的Url，所以如果我们使用相同的ImageUrl去加载图片的话，如果使用了缓存，Picasso会直接读取缓存的内容，而不是从SD卡、或......  -->
         
           <p class="article-more-link">
             <a href="../../2016/03/08/【Android】Picasso加载本地图片如何清理缓存cache？/#more">Read More</a>
@@ -469,6 +497,16 @@
 <p>(2) 从上面的集合中随机抽取一个数放入int数组中.</p>
 <p>(3) 把取出的这个数从上面的集合中删除.</p>
 <p>(4) 循环 (2),(3) 步骤,直到int数组取满为止.</p>
+        <!-- 
+这是个经典的面试题目：生成长度为100的数组，插入1-100以内的但均不重复的随机数
+
+一、简单实现思路:(1) 把N个数放入Hashtable 或者arrayList 中.
+(2) 从上面的集合中随机抽取一个数放入int数组中.
+(3) 把取出的这个数从上面的集合中删除.
+(4) 循环 (2),(3) 步骤,直到int数组取满为止.
+
+这是一种比较简单的实现思路，实现代码如下：
+1234......  -->
         
           <p class="article-more-link">
             <a href="../../2016/01/22/如何生成100个1-100以内的不重复的随机数/#more">Read More</a>
@@ -524,6 +562,10 @@
 <p><strong>一、查看task栈情况</strong></p>
 <p>在cmd命令行里或者Android Studio中的Terminal里敲入如下命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell dumpsys activity</div></pre></td></tr></table></figure></p>
 <p>然后会出现很长一段详细信息，滚到中间的地方，会看到Task栈的状态如下：<br><img src="http://img.blog.csdn.net/20160119120838863" alt=""></p>
+        <!-- 
+我们都知道，每个Activity都有taskAffinity属性，这个属性指出了它希望进入的Task。
+
+如果一个Activity没有显式的指明该 Activity的taskAffinity，那么它的这个属性就等于Application指明的taskAffinity，如果 Application也没有指明，那么该taskAffinity的值就等于包名。而Task也有自己的affinity属......  -->
         
           <p class="article-more-link">
             <a href="../../2016/01/19/【Android】如何查看Activity Task栈的情况/#more">Read More</a>
@@ -577,6 +619,11 @@
 </blockquote>
 <h2 id="一、封装："><a href="#一、封装：" class="headerlink" title="一、封装："></a><strong>一、封装：</strong></h2><p>　　封装是实现面向对象程序设计的第一步，封装就是将数据或函数等集合在一个个的单元中（我们称之为类）。被封装的对象通常被称为抽象数据类型。 </p>
 <p> 封装的意义：<br>　　封装的意义在于保护或者防止代码（数据）被我们无意中破坏。在面向对象程序设计中数据被看作是一个中心的元素并且和使用它的函数结合的很密切，从而保护它不被其它的函数意外的修改。封装提供了一个有效的途径来保护数据不被意外的破坏。相比我们将数据（用域来实现）在程序中定义为公用的（public）我们将它们(fields)定义为私有的（privat）在很多方面会更好。</p>
+        <!-- 
+这次我们来了解一下面向对象的三大基石封装，继承、多态，然后大致对比一下继承和多态的区别。
+
+一、封装：　　封装是实现面向对象程序设计的第一步，封装就是将数据或函数等集合在一个个的单元中（我们称之为类）。被封装的对象通常被称为抽象数据类型。 
+ 封装的意义：　　封装的意义在于保护或者防止代码（数据）被我们无意中破坏。在面向对象程序设计中数据被看作是一个中心的元素并且和使用它的函数结合的很密切......  -->
         
           <p class="article-more-link">
             <a href="../../2016/01/15/Java中的封装、继承与多态/#more">Read More</a>
@@ -632,6 +679,10 @@
 <li><strong>protect:</strong> 介于public 和 private 之间的一种访问修饰符，一般称之为“保护形”。被其修饰的类、属性以及方法只能被类本身的方法及子类访问，即使子类在不同的包中也可以访问。</li>
 <li><strong>public：</strong> Java语言中访问限制最宽的修饰符，一般称之为“公共的”。被其修饰的类、属性以及方法不仅可以跨类访问，而且允许跨包（package）访问。</li>
 </ol>
+        <!-- 　　Java有四种访问权限，其中三种有访问权限修饰符，分别为private，public和protected，还有一种不带任何修饰符：
+
+private: Java语言中对访问权限限制的最窄的修饰符，一般称之为“私有的”。被其修饰的类、属性以及方法只能被该类的对象访问，其子类不能访问，更不能允许跨包访问。
+default：即不加任何访问修饰符，通常称为“默认访问模式“。该模式下，只允许在同一......  -->
         
           <p class="article-more-link">
             <a href="../../2016/01/15/Java访问权限修饰符的区别/#more">Read More</a>
@@ -685,6 +736,10 @@
 </blockquote>
 <h3 id="一、-题目分析"><a href="#一、-题目分析" class="headerlink" title="一、 题目分析"></a><strong>一、 题目分析</strong></h3><p>这个问题本质上是斐波那契数列，假设只有一个台阶，那么只有一种跳法，那就是一次跳一级，f(1)=1；如果有两个台阶，那么有两种跳法，第一种跳法是一次跳一级，第二种跳法是一次跳两级,f(2)=2。如果有大于2级的n级台阶，那么假如第一次跳一级台阶，剩下还有n-1级台阶，有f(n-1)种跳法，假如第一次条2级台阶，剩下n-2级台阶，有f(n-2)种跳法。这就表示<strong>f(n)=f(n-1)+f(n-2)</strong>。将上面的斐波那契数列代码稍微改一下就是本题的答案。我们来看一下代码的实现。</p>
 <h3 id="二、斐波那契数列法"><a href="#二、斐波那契数列法" class="headerlink" title="二、斐波那契数列法"></a><strong>二、斐波那契数列法</strong></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> s = <span class="number">100</span>; <span class="comment">//自定义的台阶数</span></div><div class="line">   </div><div class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">compute</span><span class="params">(<span class="keyword">int</span> stair)</span></span>&#123;</div><div class="line">    	<span class="keyword">if</span> ( stair &lt;= <span class="number">0</span>)&#123;</div><div class="line">    		<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">    	&#125;</div><div class="line">    	<span class="keyword">if</span> (stair == <span class="number">1</span>)&#123;</div><div class="line">    		<span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">    	&#125;</div><div class="line">    	<span class="keyword">if</span> (stair == <span class="number">2</span>)&#123;</div><div class="line">    		<span class="keyword">return</span> <span class="number">2</span>;</div><div class="line">    	&#125;</div><div class="line">    	<span class="keyword">return</span> compute(stair-<span class="number">1</span>) + compute(stair-<span class="number">2</span>);</div><div class="line">    &#125;</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"共有"</span> + compute(s) + <span class="string">"种走法"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+        <!-- 
+走台阶算法（本质上是斐波那契数列）在面试中常会遇到，描述就如题目那样：总共100级台阶（任意级都行），小明每次可选择走1步、2步或者3步，问走完这100级台阶总共有多少种走法？
+
+一、 题目分析这个问题本质上是斐波那契数列，假设只有一个台阶，那么只有一种跳法，那就是一次跳一级，f(1)=1；如果有两个台阶，那么有两种跳法，第一种跳法是一次跳一级，第二种跳法是一次跳两级,f(2)=2。如果有......  -->
         
           <p class="article-more-link">
             <a href="../../2016/01/05/【面试题】N级台阶（比如100级），每次可走1步或者2步，求总共有多少种走法？/#more">Read More</a>
