@@ -990,23 +990,6 @@ li
 .archives-wrap {
   margin: 50px 0;
 }
-.archives-wrap blockquote {
-  padding: 1em;
-  margin: 4em 0 0 0;
-  font-size: 1.2em;
-  font-weight: bold;
-  color: #414141;
-  text-align: center;
-  border-left: 0px solid #414141;
-  background: rgba(208,211,248,0.15);
-}
-.archives-wrap blockquote a {
-  color: #606060;
-  margin: 0.2em;
-}
-.archives-wrap blockquote a:hover {
-  color: #414141;
-}
 .archives {
   margin-left: 2em;
 }
@@ -1034,6 +1017,26 @@ li
   font-family: "FontAwesome";
   content: "\f273";
   margin-right: 0.2em;
+}
+.archives-tags-wrap {
+  margin: 50px 0;
+}
+.archives-tags-wrap blockquote {
+  padding: 1em;
+  margin: 4em 0 0 0;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #414141;
+  text-align: center;
+  border-left: 0px solid #414141;
+  background: rgba(208,211,248,0.15);
+}
+.archives-tags-wrap blockquote a {
+  color: #606060;
+  margin: 0.2em;
+}
+.archives-tags-wrap blockquote a:hover {
+  color: #414141;
 }
 .archive-tag {
   text-transform: none;
@@ -1066,6 +1069,11 @@ li
 }
 .archives-category-wrap blockquote a:hover {
   color: #414141;
+}
+.archives-category-wrap blockquote a:before {
+  font-family: "FontAwesome";
+  content: "\f0da";
+  margin-right: 0.5em;
 }
 .archive-category {
   text-transform: none;
