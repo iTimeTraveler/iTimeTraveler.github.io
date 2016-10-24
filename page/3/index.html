@@ -196,6 +196,63 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Java】按位存储：使用int存储boolean数组"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2016/06/02/【Java】按位存储：使用int存储boolean数组/">【Java】按位存储：使用int存储boolean数组</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2016/06/02/【Java】按位存储：使用int存储boolean数组/" class="article-date">
+	  <time datetime="2016-06-02T03:55:00.000Z" itemprop="datePublished">2016-06-02</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Java/">Java</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>有一种场景，比如App设置页中会有一组开关选项，这个时候保存这些开关的状态，如果每个按钮都对应一个boolean值的话，太大材小用显得鸡肋，频繁读取SharedPreferences 存取效率自然快不过一次读取。</p>
+</blockquote>
+<p>首先，敲定每个boolean值存储的位置<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> mBroadcastCustomValue = <span class="number">0</span>;   <span class="comment">//用来存储的int值</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BROADCAST_TYPE_CUSTOM_BASE = <span class="number">1</span>;				<span class="comment">//基础类播报</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BROADCAST_TYPE_CUSTOM_TRAFFIC = <span class="number">1</span> &lt;&lt; <span class="number">1</span>;		<span class="comment">//实时路况</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BROADCAST_TYPE_CUSTOM_CAMERA = <span class="number">1</span> &lt;&lt; <span class="number">2</span>;		<span class="comment">//摄像头限速播报</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BROADCAST_TYPE_CUSTOM_SAFE = <span class="number">1</span> &lt;&lt; <span class="number">3</span>;		<span class="comment">//安全提醒类</span></div></pre></td></tr></table></figure></p>
+<h2 id="一、添加Add"><a href="#一、添加Add" class="headerlink" title="一、添加Add"></a><strong>一、添加Add</strong></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addLevel</span><span class="params">(<span class="keyword">int</span> level)</span></span>&#123;</div><div class="line">	mBroadcastCustomValue |= level;    <span class="comment">//add</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//调用方式如下</span></div><div class="line">addLevel(BROADCAST_TYPE_CUSTOM_BASE);</div></pre></td></tr></table></figure>
+        <!-- 
+有一种场景，比如App设置页中会有一组开关选项，这个时候保存这些开关的状态，如果每个按钮都对应一个boolean值的话，太大材小用显得鸡肋，频繁读取SharedPreferences 存取效率自然快不过一次读取。
+
+首先，敲定每个boolean值存储的位置12345private int mBroadcastCustomValue = 0;   //用来存储的int值public stat......  -->
+        
+          <p class="article-more-link">
+            <a href="../../2016/06/02/【Java】按位存储：使用int存储boolean数组/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【MySQL】查询保持IN中的顺序"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -704,63 +761,6 @@ default：即不加任何访问修饰符，通常称为“默认访问模式“�
         
           <p class="article-more-link">
             <a href="../../2016/01/15/Java访问权限修饰符的区别/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【面试题】N级台阶（比如100级），每次可走1步或者2步，求总共有多少种走法？"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/01/05/【面试题】N级台阶（比如100级），每次可走1步或者2步，求总共有多少种走法？/">【面试题】N级台阶（比如100级），每次可走1步或者2步，求总共有多少种走法？</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2016/01/05/【面试题】N级台阶（比如100级），每次可走1步或者2步，求总共有多少种走法？/" class="article-date">
-	  <time datetime="2016-01-05T07:31:00.000Z" itemprop="datePublished">2016-01-05</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Java/">Java</a>
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>走台阶算法（本质上是斐波那契数列）在面试中常会遇到，描述就如题目那样：总共100级台阶（任意级都行），小明每次可选择走1步、2步或者3步，问走完这100级台阶总共有多少种走法？</p>
-</blockquote>
-<h3 id="一、-题目分析"><a href="#一、-题目分析" class="headerlink" title="一、 题目分析"></a><strong>一、 题目分析</strong></h3><p>这个问题本质上是斐波那契数列，假设只有一个台阶，那么只有一种跳法，那就是一次跳一级，f(1)=1；如果有两个台阶，那么有两种跳法，第一种跳法是一次跳一级，第二种跳法是一次跳两级,f(2)=2。如果有大于2级的n级台阶，那么假如第一次跳一级台阶，剩下还有n-1级台阶，有f(n-1)种跳法，假如第一次条2级台阶，剩下n-2级台阶，有f(n-2)种跳法。这就表示<strong>f(n)=f(n-1)+f(n-2)</strong>。将上面的斐波那契数列代码稍微改一下就是本题的答案。我们来看一下代码的实现。</p>
-<h3 id="二、斐波那契数列法"><a href="#二、斐波那契数列法" class="headerlink" title="二、斐波那契数列法"></a><strong>二、斐波那契数列法</strong></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> s = <span class="number">100</span>; <span class="comment">//自定义的台阶数</span></div><div class="line">   </div><div class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">compute</span><span class="params">(<span class="keyword">int</span> stair)</span></span>&#123;</div><div class="line">    	<span class="keyword">if</span> ( stair &lt;= <span class="number">0</span>)&#123;</div><div class="line">    		<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">    	&#125;</div><div class="line">    	<span class="keyword">if</span> (stair == <span class="number">1</span>)&#123;</div><div class="line">    		<span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">    	&#125;</div><div class="line">    	<span class="keyword">if</span> (stair == <span class="number">2</span>)&#123;</div><div class="line">    		<span class="keyword">return</span> <span class="number">2</span>;</div><div class="line">    	&#125;</div><div class="line">    	<span class="keyword">return</span> compute(stair-<span class="number">1</span>) + compute(stair-<span class="number">2</span>);</div><div class="line">    &#125;</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"共有"</span> + compute(s) + <span class="string">"种走法"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-        <!-- 
-走台阶算法（本质上是斐波那契数列）在面试中常会遇到，描述就如题目那样：总共100级台阶（任意级都行），小明每次可选择走1步、2步或者3步，问走完这100级台阶总共有多少种走法？
-
-一、 题目分析这个问题本质上是斐波那契数列，假设只有一个台阶，那么只有一种跳法，那就是一次跳一级，f(1)=1；如果有两个台阶，那么有两种跳法，第一种跳法是一次跳一级，第二种跳法是一次跳两级,f(2)=2。如果有......  -->
-        
-          <p class="article-more-link">
-            <a href="../../2016/01/05/【面试题】N级台阶（比如100级），每次可走1步或者2步，求总共有多少种走法？/#more">Read More</a>
           </p>
         
       

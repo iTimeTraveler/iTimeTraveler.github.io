@@ -196,6 +196,68 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Go】为什么 Go 语言把类型声明放在后面？"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2016/08/18/【Go】为什么 Go 语言把类型声明放在后面？/">【Go】为什么 Go 语言把类型声明放在后面？</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2016/08/18/【Go】为什么 Go 语言把类型声明放在后面？/" class="article-date">
+	  <time datetime="2016-08-18T08:36:00.000Z" itemprop="datePublished">2016-08-18</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Go语言/">Go语言</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>关于类型，官网上有一段仔细地介绍了一下函数指针的部分，现在的设计比起 C 的语法，清晰很多。</p>
+</blockquote>
+<p>也就是说，类型放在后面是为了更加清晰易懂。Rob Pike 曾经在 Go 官方博客解释过这个问题（查看原文：<a href="http://blog.golang.org/gos-declaration-syntax"><strong>Go’s Declaration Syntax</strong></a>），简略翻译如下（水平有限翻译的不对的地方见谅）：</p>
+<h4 id="引言"><a href="#引言" class="headerlink" title="引言"></a><strong>引言</strong></h4><p>Go语言新人常常会很疑惑为什么这门语言的声明语法（declaration syntax）会和传统的C家族语言不同。在这篇博文里，我们会进行一个比较，并做出解答。</p>
+<h4 id="C-的语法"><a href="#C-的语法" class="headerlink" title="C 的语法"></a><strong>C 的语法</strong></h4><p>首先，先看看 C 的语法。C 采用了一种聪明而不同寻常的声明语法。声明变量时，只需写出一个带有目标变量名的表达式，然后在表达式里指明该表达式本身的类型即可。比如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> x;</div></pre></td></tr></table></figure>
+<p>上面的代码声明了 <code>x</code> 变量，并且其类型为 <code>int</code>——即，表达式 <code>x</code> 为 <code>int</code> 类型。一般而言，为了指明新变量的类型，我们得写出一个表达式，其中含有我们要声明的变量，这个表达式运算的结果值属于某种基本类型，我们把这种基本类型写到表达式的左边。所以，下述声明：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> *p;</div><div class="line"><span class="keyword">int</span> a[<span class="number">3</span>];</div></pre></td></tr></table></figure>
+        <!-- 
+关于类型，官网上有一段仔细地介绍了一下函数指针的部分，现在的设计比起 C 的语法，清晰很多。
+
+也就是说，类型放在后面是为了更加清晰易懂。Rob Pike 曾经在 Go 官方博客解释过这个问题（查看原文：Go’s Declaration Syntax），简略翻译如下（水平有限翻译的不对的地方见谅）：
+引言Go语言新人常常会很疑惑为什么这门语言的声明语法（declaration syntax......  -->
+        
+          <p class="article-more-link">
+            <a href="../../2016/08/18/【Go】为什么 Go 语言把类型声明放在后面？/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Go语言/">Go语言</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【Machine Learning】机器学习：简明入门指南"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -697,63 +759,6 @@ PPI = Pixels pe......  -->
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/SVN/">SVN</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【Java】按位存储：使用int存储boolean数组"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/06/02/【Java】按位存储：使用int存储boolean数组/">【Java】按位存储：使用int存储boolean数组</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2016/06/02/【Java】按位存储：使用int存储boolean数组/" class="article-date">
-	  <time datetime="2016-06-02T03:55:00.000Z" itemprop="datePublished">2016-06-02</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Java/">Java</a>
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>有一种场景，比如App设置页中会有一组开关选项，这个时候保存这些开关的状态，如果每个按钮都对应一个boolean值的话，太大材小用显得鸡肋，频繁读取SharedPreferences 存取效率自然快不过一次读取。</p>
-</blockquote>
-<p>首先，敲定每个boolean值存储的位置<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> mBroadcastCustomValue = <span class="number">0</span>;   <span class="comment">//用来存储的int值</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BROADCAST_TYPE_CUSTOM_BASE = <span class="number">1</span>;				<span class="comment">//基础类播报</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BROADCAST_TYPE_CUSTOM_TRAFFIC = <span class="number">1</span> &lt;&lt; <span class="number">1</span>;		<span class="comment">//实时路况</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BROADCAST_TYPE_CUSTOM_CAMERA = <span class="number">1</span> &lt;&lt; <span class="number">2</span>;		<span class="comment">//摄像头限速播报</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BROADCAST_TYPE_CUSTOM_SAFE = <span class="number">1</span> &lt;&lt; <span class="number">3</span>;		<span class="comment">//安全提醒类</span></div></pre></td></tr></table></figure></p>
-<h2 id="一、添加Add"><a href="#一、添加Add" class="headerlink" title="一、添加Add"></a><strong>一、添加Add</strong></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addLevel</span><span class="params">(<span class="keyword">int</span> level)</span></span>&#123;</div><div class="line">	mBroadcastCustomValue |= level;    <span class="comment">//add</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//调用方式如下</span></div><div class="line">addLevel(BROADCAST_TYPE_CUSTOM_BASE);</div></pre></td></tr></table></figure>
-        <!-- 
-有一种场景，比如App设置页中会有一组开关选项，这个时候保存这些开关的状态，如果每个按钮都对应一个boolean值的话，太大材小用显得鸡肋，频繁读取SharedPreferences 存取效率自然快不过一次读取。
-
-首先，敲定每个boolean值存储的位置12345private int mBroadcastCustomValue = 0;   //用来存储的int值public stat......  -->
-        
-          <p class="article-more-link">
-            <a href="../../2016/06/02/【Java】按位存储：使用int存储boolean数组/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
 
     </footer>
   </div>
