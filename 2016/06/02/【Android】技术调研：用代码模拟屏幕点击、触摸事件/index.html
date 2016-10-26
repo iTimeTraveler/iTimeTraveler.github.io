@@ -40,6 +40,8 @@
     @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
   <link rel="stylesheet" href="../../../../css/style.css">
 
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="/css/bootstrap.css" >
 
@@ -87,6 +89,43 @@
                 
                   <li> <a class="main-nav-link" href="../../../../about">About</a> </li>
                 
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '../../../../content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="../../../../js/insight.js"></script>
+
+</div></li>
             </div>
           </div>
                 
@@ -196,19 +235,19 @@
     
 <nav id="article-nav">
   
-    <a href="../../12/【SVN】使用patch命令保存更改/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="../【Java】按位存储：使用int存储boolean数组/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          【SVN】使用patch命令保存更改
+          【Java】按位存储：使用int存储boolean数组
         
       </div>
     </a>
   
   
-    <a href="../【Java】按位存储：使用int存储boolean数组/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="../../../04/29/【MySQL】查询保持IN中的顺序/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">【Java】按位存储：使用int存储boolean数组</div>
+      <div class="article-nav-title">【MySQL】查询保持IN中的顺序</div>
     </a>
   
 </nav>
@@ -243,6 +282,17 @@
 	</div>
   </div>
 </footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
     </div>
     <!-- <nav id="mobile-nav">
   
@@ -258,8 +308,6 @@
   
 </nav> -->
     
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
 <!-- mathjax config similar to math.stackexchange -->
 
@@ -291,7 +339,6 @@
 
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
-
 
 
   <link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.css">

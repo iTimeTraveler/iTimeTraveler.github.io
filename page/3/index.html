@@ -35,6 +35,8 @@
     @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
   <link rel="stylesheet" href="../../css/style.css">
 
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="/css/bootstrap.css" >
 
@@ -200,7 +202,7 @@
         
           <section id="main" style="float:none;">
   
-    <article id="post-【Java】按位存储：使用int存储boolean数组"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-【Android】技术调研：用代码模拟屏幕点击、触摸事件"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
     
@@ -208,7 +210,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/06/02/【Java】按位存储：使用int存储boolean数组/">【Java】按位存储：使用int存储boolean数组</a>
+      <a class="article-title" href="../../2016/06/02/【Android】技术调研：用代码模拟屏幕点击、触摸事件/">【Android】技术调研：用代码模拟屏幕点击、触摸事件</a>
     </h1>
   
 
@@ -216,36 +218,36 @@
     
     <div class="article-meta">
       
-	<a href="../../2016/06/02/【Java】按位存储：使用int存储boolean数组/" class="article-date">
+	<a href="../../2016/06/02/【Android】技术调研：用代码模拟屏幕点击、触摸事件/" class="article-date">
 	  <time datetime="2016-06-02T03:55:00.000Z" itemprop="datePublished">2016-06-02</time>
 	</a>
 
       
-    <a class="article-category-link" href="../../categories/Java/">Java</a>
+    <a class="article-category-link" href="../../categories/Android/">Android</a>
 
     </div>
     <div class="article-entry" itemprop="articleBody">
       
         <blockquote>
-<p>有一种场景，比如App设置页中会有一组开关选项，这个时候保存这些开关的状态，如果每个按钮都对应一个boolean值的话，太大材小用显得鸡肋，频繁读取SharedPreferences 存取效率自然快不过一次读取。</p>
+<p>在Android中，有些场景需要使用代码来模拟人的操作，比如微信自动抢红包、UI测试等都需要模拟实现点击事件（Click）、触摸事件（Touch）、键盘事件（KeyBoard）等。那么，有没有现成的方案可以实现呢？答案当然是肯定的啦，往下看。</p>
 </blockquote>
-<p>首先，敲定每个boolean值存储的位置<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> mBroadcastCustomValue = <span class="number">0</span>;   <span class="comment">//用来存储的int值</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BROADCAST_TYPE_CUSTOM_BASE = <span class="number">1</span>;				<span class="comment">//基础类播报</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BROADCAST_TYPE_CUSTOM_TRAFFIC = <span class="number">1</span> &lt;&lt; <span class="number">1</span>;		<span class="comment">//实时路况</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BROADCAST_TYPE_CUSTOM_CAMERA = <span class="number">1</span> &lt;&lt; <span class="number">2</span>;		<span class="comment">//摄像头限速播报</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BROADCAST_TYPE_CUSTOM_SAFE = <span class="number">1</span> &lt;&lt; <span class="number">3</span>;		<span class="comment">//安全提醒类</span></div></pre></td></tr></table></figure></p>
-<h2 id="一、添加Add"><a href="#一、添加Add" class="headerlink" title="一、添加Add"></a><strong>一、添加Add</strong></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addLevel</span><span class="params">(<span class="keyword">int</span> level)</span></span>&#123;</div><div class="line">	mBroadcastCustomValue |= level;    <span class="comment">//add</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//调用方式如下</span></div><div class="line">addLevel(BROADCAST_TYPE_CUSTOM_BASE);</div></pre></td></tr></table></figure>
+<p>经过调研发现，给系统模拟注入输入事件有如下几种方式：</p>
+<h2 id="一、使用shell命令"><a href="#一、使用shell命令" class="headerlink" title="一、使用shell命令"></a><strong>一、使用shell命令</strong></h2><p>使用android自带的adb shell，里面自带一个input工具，使用方法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">adb shell <span class="comment">#进入系统</span></div><div class="line">input keyevent KEYCODE_BACK  <span class="comment">#模拟按返回键</span></div><div class="line">input keyevent KEYCODE_HOME  <span class="comment">#模拟按Home键</span></div></pre></td></tr></table></figure>
         <!-- 
-有一种场景，比如App设置页中会有一组开关选项，这个时候保存这些开关的状态，如果每个按钮都对应一个boolean值的话，太大材小用显得鸡肋，频繁读取SharedPreferences 存取效率自然快不过一次读取。
+在Android中，有些场景需要使用代码来模拟人的操作，比如微信自动抢红包、UI测试等都需要模拟实现点击事件（Click）、触摸事件（Touch）、键盘事件（KeyBoard）等。那么，有没有现成的方案可以实现呢？答案当然是肯定的啦，往下看。
 
-首先，敲定每个boolean值存储的位置12345private int mBroadcastCustomValue = 0;   //用来存储的int值public stat......  -->
-        
-          <p class="article-more-link">
-            <a href="../../2016/06/02/【Java】按位存储：使用int存储boolean数组/#more">Read More</a>
-          </p>
-        
+经过调研发现，给系统模拟注入输入事件有如下几种方式：
+一、使用shell命令使用android自带的adb shell，里面自带一个input工具......  -->
+        <p class="article-more-link">
+          <a href="../../2016/06/02/【Android】技术调研：用代码模拟屏幕点击、触摸事件/#more">Read More</a>
+        </p>
       
     </div>
     <footer class="article-footer">
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
 
     </footer>
   </div>
@@ -293,11 +295,9 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
 比如下面这个查询结果，mysql会默认使用主键id的ASC自增排序结果集：
 
 那么，如果我们想维持查询语句中IN(26613,26612,26611,26610,26609,26608,26607)的顺序可以么？当然可以，像下面这......  -->
-        
-          <p class="article-more-link">
-            <a href="../../2016/04/29/【MySQL】查询保持IN中的顺序/#more">Read More</a>
-          </p>
-        
+        <p class="article-more-link">
+          <a href="../../2016/04/29/【MySQL】查询保持IN中的顺序/#more">Read More</a>
+        </p>
       
     </div>
     <footer class="article-footer">
@@ -351,11 +351,9 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
 
 一、分析这是不同系统编码格式引起的：在windows系统中编辑的.sh文件可能有不可见字符，所以在Linux系统下执行会报以上异常信息。 
 二、解决1）在windows下转换：利用一些编辑器如UltraEdit或EditPlus等工具先将脚本......  -->
-        
-          <p class="article-more-link">
-            <a href="../../2016/04/29/【Linux】执行shell脚本出现异常：bad interpreter- No such file or directory如何解决/#more">Read More</a>
-          </p>
-        
+        <p class="article-more-link">
+          <a href="../../2016/04/29/【Linux】执行shell脚本出现异常：bad interpreter- No such file or directory如何解决/#more">Read More</a>
+        </p>
       
     </div>
     <footer class="article-footer">
@@ -409,11 +407,9 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
 1、二分查找二分查找（binary search），也称作折半查找（half-interval search），每次划分一半进行下一步搜索，所以时间复杂度无非就是while循环的次数！
 
 123456789101112131415161718//二分查找 Java 实现public static int bin......  -->
-        
-          <p class="article-more-link">
-            <a href="../../2016/04/06/”二分查找“算法的时间复杂度/#more">Read More</a>
-          </p>
-        
+        <p class="article-more-link">
+          <a href="../../2016/04/06/”二分查找“算法的时间复杂度/#more">Read More</a>
+        </p>
       
     </div>
     <footer class="article-footer">
@@ -465,11 +461,9 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
 
 快看安装方法：1、下载：https://github.com/kenwheeler/brogrammer-theme/archive/master.zip
 2、解压后将文件夹改名成Theme - Brogrammer，然后打开sublime text3，找到里面的 Preferences -&gt; Browse Packages，将改名后的文件夹co......  -->
-        
-          <p class="article-more-link">
-            <a href="../../2016/03/30/给大家推荐一款Sublime Text的主题”brogrammer-theme“/#more">Read More</a>
-          </p>
-        
+        <p class="article-more-link">
+          <a href="../../2016/03/30/给大家推荐一款Sublime Text的主题”brogrammer-theme“/#more">Read More</a>
+        </p>
       
     </div>
     <footer class="article-footer">
@@ -521,11 +515,9 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
 使用Picasso加载SD卡图片的时候，Picasso也会对该图片进行缓存。所以如果该图片即使已经变了，Picasso在加载时会仍然使用缓存，而不更新图片。
 
 - Picasso缓存策略我们都知道图片缓存使用的是Map键值对存储的，这里的Key就是加载的图片的Url，所以如果我们使用相同的ImageUrl去加载图片的话，如果使用了缓存，Picasso会直接读取缓存的内容，而不是从SD卡、或......  -->
-        
-          <p class="article-more-link">
-            <a href="../../2016/03/08/【Android】Picasso加载本地图片如何清理缓存cache？/#more">Read More</a>
-          </p>
-        
+        <p class="article-more-link">
+          <a href="../../2016/03/08/【Android】Picasso加载本地图片如何清理缓存cache？/#more">Read More</a>
+        </p>
       
     </div>
     <footer class="article-footer">
@@ -586,11 +578,9 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
 
 这是一种比较简单的实现思路，实现代码如下：
 1234......  -->
-        
-          <p class="article-more-link">
-            <a href="../../2016/01/22/如何生成100个1-100以内的不重复的随机数/#more">Read More</a>
-          </p>
-        
+        <p class="article-more-link">
+          <a href="../../2016/01/22/如何生成100个1-100以内的不重复的随机数/#more">Read More</a>
+        </p>
       
     </div>
     <footer class="article-footer">
@@ -645,11 +635,9 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
 我们都知道，每个Activity都有taskAffinity属性，这个属性指出了它希望进入的Task。
 
 如果一个Activity没有显式的指明该 Activity的taskAffinity，那么它的这个属性就等于Application指明的taskAffinity，如果 Application也没有指明，那么该taskAffinity的值就等于包名。而Task也有自己的affinity属......  -->
-        
-          <p class="article-more-link">
-            <a href="../../2016/01/19/【Android】如何查看Activity Task栈的情况/#more">Read More</a>
-          </p>
-        
+        <p class="article-more-link">
+          <a href="../../2016/01/19/【Android】如何查看Activity Task栈的情况/#more">Read More</a>
+        </p>
       
     </div>
     <footer class="article-footer">
@@ -703,11 +691,9 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
 
 一、封装：　　封装是实现面向对象程序设计的第一步，封装就是将数据或函数等集合在一个个的单元中（我们称之为类）。被封装的对象通常被称为抽象数据类型。 
  封装的意义：　　封装的意义在于保护或者防止代码（数据）被我们无意中破坏。在面向对象程序设计中数据被看作是一个中心的元素并且和使用它的函数结合的很密切......  -->
-        
-          <p class="article-more-link">
-            <a href="../../2016/01/15/Java中的封装、继承与多态/#more">Read More</a>
-          </p>
-        
+        <p class="article-more-link">
+          <a href="../../2016/01/15/Java中的封装、继承与多态/#more">Read More</a>
+        </p>
       
     </div>
     <footer class="article-footer">
@@ -762,11 +748,9 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
 
 private: Java语言中对访问权限限制的最窄的修饰符，一般称之为“私有的”。被其修饰的类、属性以及方法只能被该类的对象访问，其子类不能访问，更不能允许跨包访问。
 default：即不加任何访问修饰符，通常称为“默认访问模式“。该模式下，只允许在同一......  -->
-        
-          <p class="article-more-link">
-            <a href="../../2016/01/15/Java访问权限修饰符的区别/#more">Read More</a>
-          </p>
-        
+        <p class="article-more-link">
+          <a href="../../2016/01/15/Java访问权限修饰符的区别/#more">Read More</a>
+        </p>
       
     </div>
     <footer class="article-footer">
@@ -808,6 +792,17 @@ default：即不加任何访问修饰符，通常称为“默认访问模式“�
 	</div>
   </div>
 </footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
     </div>
     <!-- <nav id="mobile-nav">
   
@@ -823,8 +818,6 @@ default：即不加任何访问修饰符，通常称为“默认访问模式“�
   
 </nav> -->
     
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
 <!-- mathjax config similar to math.stackexchange -->
 
@@ -856,7 +849,6 @@ default：即不加任何访问修饰符，通常称为“默认访问模式“�
 
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
-
 
 
   <link rel="stylesheet" href="../../fancybox/jquery.fancybox.css">
