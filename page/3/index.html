@@ -202,7 +202,7 @@
         
           <section id="main" style="float:none;">
   
-    <article id="post-【Android】技术调研：用代码模拟屏幕点击、触摸事件"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-【Java】按位存储：使用int存储boolean数组"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
     
@@ -210,7 +210,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/06/02/【Android】技术调研：用代码模拟屏幕点击、触摸事件/">【Android】技术调研：用代码模拟屏幕点击、触摸事件</a>
+      <a class="article-title" href="../../2016/06/02/【Java】按位存储：使用int存储boolean数组/">【Java】按位存储：使用int存储boolean数组</a>
     </h1>
   
 
@@ -218,36 +218,34 @@
     
     <div class="article-meta">
       
-	<a href="../../2016/06/02/【Android】技术调研：用代码模拟屏幕点击、触摸事件/" class="article-date">
+	<a href="../../2016/06/02/【Java】按位存储：使用int存储boolean数组/" class="article-date">
 	  <time datetime="2016-06-02T03:55:00.000Z" itemprop="datePublished">2016-06-02</time>
 	</a>
 
       
-    <a class="article-category-link" href="../../categories/Android/">Android</a>
+    <a class="article-category-link" href="../../categories/Java/">Java</a>
 
     </div>
     <div class="article-entry" itemprop="articleBody">
       
         <blockquote>
-<p>在Android中，有些场景需要使用代码来模拟人的操作，比如微信自动抢红包、UI测试等都需要模拟实现点击事件（Click）、触摸事件（Touch）、键盘事件（KeyBoard）等。那么，有没有现成的方案可以实现呢？答案当然是肯定的啦，往下看。</p>
+<p>有一种场景，比如App设置页中会有一组开关选项，这个时候保存这些开关的状态，如果每个按钮都对应一个boolean值的话，太大材小用显得鸡肋，频繁读取SharedPreferences 存取效率自然快不过一次读取。</p>
 </blockquote>
-<p>经过调研发现，给系统模拟注入输入事件有如下几种方式：</p>
-<h2 id="一、使用shell命令"><a href="#一、使用shell命令" class="headerlink" title="一、使用shell命令"></a><strong>一、使用shell命令</strong></h2><p>使用android自带的adb shell，里面自带一个input工具，使用方法如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">adb shell <span class="comment">#进入系统</span></div><div class="line">input keyevent KEYCODE_BACK  <span class="comment">#模拟按返回键</span></div><div class="line">input keyevent KEYCODE_HOME  <span class="comment">#模拟按Home键</span></div></pre></td></tr></table></figure>
+<p>首先，敲定每个boolean值存储的位置<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> mBroadcastCustomValue = <span class="number">0</span>;   <span class="comment">//用来存储的int值</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BROADCAST_TYPE_CUSTOM_BASE = <span class="number">1</span>;				<span class="comment">//基础类播报</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BROADCAST_TYPE_CUSTOM_TRAFFIC = <span class="number">1</span> &lt;&lt; <span class="number">1</span>;		<span class="comment">//实时路况</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BROADCAST_TYPE_CUSTOM_CAMERA = <span class="number">1</span> &lt;&lt; <span class="number">2</span>;		<span class="comment">//摄像头限速播报</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BROADCAST_TYPE_CUSTOM_SAFE = <span class="number">1</span> &lt;&lt; <span class="number">3</span>;		<span class="comment">//安全提醒类</span></div></pre></td></tr></table></figure></p>
+<h2 id="一、添加Add"><a href="#一、添加Add" class="headerlink" title="一、添加Add"></a><strong>一、添加Add</strong></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addLevel</span><span class="params">(<span class="keyword">int</span> level)</span></span>&#123;</div><div class="line">	mBroadcastCustomValue |= level;    <span class="comment">//add</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//调用方式如下</span></div><div class="line">addLevel(BROADCAST_TYPE_CUSTOM_BASE);</div></pre></td></tr></table></figure>
         <!-- 
-在Android中，有些场景需要使用代码来模拟人的操作，比如微信自动抢红包、UI测试等都需要模拟实现点击事件（Click）、触摸事件（Touch）、键盘事件（KeyBoard）等。那么，有没有现成的方案可以实现呢？答案当然是肯定的啦，往下看。
+有一种场景，比如App设置页中会有一组开关选项，这个时候保存这些开关的状态，如果每个按钮都对应一个boolean值的话，太大材小用显得鸡肋，频繁读取SharedPreferences 存取效率自然快不过一次读取。
 
-经过调研发现，给系统模拟注入输入事件有如下几种方式：
-一、使用shell命令使用android自带的adb shell，里面自带一个input工具......  -->
+首先，敲定每个boolean值存储的位置12345private int mBroadcastCustomValue = 0;   //用来存储的int值public stat......  -->
         <p class="article-more-link">
-          <a href="../../2016/06/02/【Android】技术调研：用代码模拟屏幕点击、触摸事件/#more">Read More</a>
+          <a href="../../2016/06/02/【Java】按位存储：使用int存储boolean数组/#more">Read More</a>
         </p>
       
     </div>
     <footer class="article-footer">
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
 
     </footer>
   </div>
@@ -508,16 +506,19 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
         <blockquote>
 <p>使用Picasso加载SD卡图片的时候，Picasso也会对该图片进行缓存。所以如果该图片即使已经变了，Picasso在加载时会仍然使用缓存，而不更新图片。</p>
 </blockquote>
-<h2 id="Picasso缓存策略"><a href="#Picasso缓存策略" class="headerlink" title="- Picasso缓存策略"></a>- <strong>Picasso缓存策略</strong></h2><p>我们都知道图片缓存使用的是Map键值对存储的，这里的Key就是加载的图片的Url，所以如果我们使用相同的ImageUrl去加载图片的话，如果使用了缓存，Picasso会直接读取缓存的内容，而不是从SD卡、或者网络Http中重新加载。</p>
-<h2 id="Picasso如何清理缓存"><a href="#Picasso如何清理缓存" class="headerlink" title="- Picasso如何清理缓存"></a>- <strong>Picasso如何清理缓存</strong></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Picasso.with(getContext()).load(data.get(pos).getFeed_thumb_image()).memoryPolicy(MemoryPolicy.NO_CACHE).into(image);</div></pre></td></tr></table></figure>
-<p>注意其中的<em>.memoryPolicy(MemoryPolicy.NO_CACHE)</em>即是关键代码。</p>
-        <!-- 
-使用Picasso加载SD卡图片的时候，Picasso也会对该图片进行缓存。所以如果该图片即使已经变了，Picasso在加载时会仍然使用缓存，而不更新图片。
+<h3 id="1、Picasso缓存策略"><a href="#1、Picasso缓存策略" class="headerlink" title="1、Picasso缓存策略"></a>1、<strong>Picasso缓存策略</strong></h3><p>我们都知道图片缓存使用的是Map键值对存储的，这里的Key就是加载的图片的Url，所以如果我们使用相同的ImageUrl去加载图片的话，如果使用了缓存，Picasso会直接读取缓存的内容，而不是从SD卡、或者网络Http中重新加载。</p>
+<h3 id="2、Picasso如何跳过缓存"><a href="#2、Picasso如何跳过缓存" class="headerlink" title="2、Picasso如何跳过缓存"></a>2、<strong>Picasso如何跳过缓存</strong></h3><p>试了很多网上推荐的方法均不见起效，最后使用了下面这种策略，也就是<strong><code>加载图片时直接跳过缓存</code></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Picasso.with(getContext()).load(imageUrl).memoryPolicy(MemoryPolicy.NO_CACHE).into(image);</div></pre></td></tr></table></figure>
+<p>注意其中的<em>.memoryPolicy(MemoryPolicy.NO_CACHE)</em>即是关键代码，其中</p>
+<ul>
+<li>MemoryPolicy.NO_CACHE：是指图片加载时放弃在内存缓存中查找。</li>
+<li>MemoryPolicy.NO_STORE：是指图片加载完不缓存在内存中。</li>
+</ul>
+<p>ps：<strong>此处的方法并不是真正的清理缓存，而是跳过缓存直接从源头获取</strong>。</p>
+<p>网上有几种错误的方法如下，经验证均不起效：</p>
+<p>1、<code>Picasso.with(getActivity()).invalidate(file);</code><br>2、<code>Picasso.with(getActivity()).load(url).skipMemoryCache().into(image);</code></p>
+<p>最后还是在StackOverFlow的<a href="http://stackoverflow.com/questions/27502659/clear-cache-memory-of-picasso" target="_blank" rel="external">Clear Cache memory of Picasso</a>查到了如上的解决办法。</p>
 
-- Picasso缓存策略我们都知道图片缓存使用的是Map键值对存储的，这里的Key就是加载的图片的Url，所以如果我们使用相同的ImageUrl去加载图片的话，如果使用了缓存，Picasso会直接读取缓存的内容，而不是从SD卡、或......  -->
-        <p class="article-more-link">
-          <a href="../../2016/03/08/【Android】Picasso加载本地图片如何清理缓存cache？/#more">Read More</a>
-        </p>
       
     </div>
     <footer class="article-footer">

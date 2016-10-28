@@ -17,7 +17,7 @@
 <meta property="og:url" content="http://github.com/2016/03/08/【Android】Picasso加载本地图片如何清理缓存cache？/index.html">
 <meta property="og:site_name" content="iTimeTraveler">
 <meta property="og:description" content="使用Picasso加载SD卡图片的时候，Picasso也会对该图片进行缓存。所以如果该图片即使已经变了，Picasso在加载时会仍然使用缓存，而不更新图片。">
-<meta property="og:updated_time" content="2016-10-18T04:55:21.729Z">
+<meta property="og:updated_time" content="2016-10-28T02:23:43.007Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【Android】Picasso加载本地图片如何清理缓存cache？">
 <meta name="twitter:description" content="使用Picasso加载SD卡图片的时候，Picasso也会对该图片进行缓存。所以如果该图片即使已经变了，Picasso在加载时会仍然使用缓存，而不更新图片。">
@@ -167,10 +167,15 @@
         <blockquote>
 <p>使用Picasso加载SD卡图片的时候，Picasso也会对该图片进行缓存。所以如果该图片即使已经变了，Picasso在加载时会仍然使用缓存，而不更新图片。</p>
 </blockquote>
-<h2 id="Picasso缓存策略"><a href="#Picasso缓存策略" class="headerlink" title="- Picasso缓存策略"></a>- <strong>Picasso缓存策略</strong></h2><p>我们都知道图片缓存使用的是Map键值对存储的，这里的Key就是加载的图片的Url，所以如果我们使用相同的ImageUrl去加载图片的话，如果使用了缓存，Picasso会直接读取缓存的内容，而不是从SD卡、或者网络Http中重新加载。</p>
-<h2 id="Picasso如何清理缓存"><a href="#Picasso如何清理缓存" class="headerlink" title="- Picasso如何清理缓存"></a>- <strong>Picasso如何清理缓存</strong></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Picasso.with(getContext()).load(data.get(pos).getFeed_thumb_image()).memoryPolicy(MemoryPolicy.NO_CACHE).into(image);</div></pre></td></tr></table></figure>
-<p>注意其中的<em>.memoryPolicy(MemoryPolicy.NO_CACHE)</em>即是关键代码。</p>
-<a id="more"></a>
+<h3 id="1、Picasso缓存策略"><a href="#1、Picasso缓存策略" class="headerlink" title="1、Picasso缓存策略"></a>1、<strong>Picasso缓存策略</strong></h3><p>我们都知道图片缓存使用的是Map键值对存储的，这里的Key就是加载的图片的Url，所以如果我们使用相同的ImageUrl去加载图片的话，如果使用了缓存，Picasso会直接读取缓存的内容，而不是从SD卡、或者网络Http中重新加载。</p>
+<h3 id="2、Picasso如何跳过缓存"><a href="#2、Picasso如何跳过缓存" class="headerlink" title="2、Picasso如何跳过缓存"></a>2、<strong>Picasso如何跳过缓存</strong></h3><p>试了很多网上推荐的方法均不见起效，最后使用了下面这种策略，也就是<strong><code>加载图片时直接跳过缓存</code></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Picasso.with(getContext()).load(imageUrl).memoryPolicy(MemoryPolicy.NO_CACHE).into(image);</div></pre></td></tr></table></figure>
+<p>注意其中的<em>.memoryPolicy(MemoryPolicy.NO_CACHE)</em>即是关键代码，其中</p>
+<ul>
+<li>MemoryPolicy.NO_CACHE：是指图片加载时放弃在内存缓存中查找。</li>
+<li>MemoryPolicy.NO_STORE：是指图片加载完不缓存在内存中。</li>
+</ul>
+<p>ps：<strong>此处的方法并不是真正的清理缓存，而是跳过缓存直接从源头获取</strong>。</p>
 <p>网上有几种错误的方法如下，经验证均不起效：</p>
 <p>1、<code>Picasso.with(getActivity()).invalidate(file);</code><br>2、<code>Picasso.with(getActivity()).load(url).skipMemoryCache().into(image);</code></p>
 <p>最后还是在StackOverFlow的<a href="http://stackoverflow.com/questions/27502659/clear-cache-memory-of-picasso" target="_blank" rel="external">Clear Cache memory of Picasso</a>查到了如上的解决办法。</p>
@@ -240,7 +245,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
     
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Picasso缓存策略"><span class="toc-number">1.</span> <span class="toc-text">- Picasso缓存策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Picasso如何清理缓存"><span class="toc-number">2.</span> <span class="toc-text">- Picasso如何清理缓存</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、Picasso缓存策略"><span class="toc-number">1.</span> <span class="toc-text">1、Picasso缓存策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、Picasso如何跳过缓存"><span class="toc-number">2.</span> <span class="toc-text">2、Picasso如何跳过缓存</span></a></li></ol>
     
     </div>
   </aside>
