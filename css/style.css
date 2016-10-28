@@ -1126,13 +1126,13 @@ li
   margin: 4em 0 0 0;
   font-size: 1.2em;
   font-weight: bold;
-  color: #00aced;
+  color: #33363b;
   text-align: center;
   border-left: 0px solid #00aced;
   background: rgba(208,211,248,0.15);
 }
 .archives-tags-wrap blockquote a {
-  color: #606060;
+  color: #33363b;
   margin: 0.2em;
 }
 .archives-tags-wrap blockquote a:hover {
@@ -1147,7 +1147,7 @@ li
 }
 .archive-tag:before {
   font-family: "FontAwesome";
-  content: "\f02b";
+  content: "\f02c";
   margin-right: 0.2em;
 }
 .archives-category-wrap {
@@ -1164,7 +1164,7 @@ li
   background: rgba(208,211,248,0.15);
 }
 .archives-category-wrap blockquote a {
-  color: #606060;
+  color: #33363b;
   margin: 0.2em;
 }
 .archives-category-wrap blockquote a:hover {
@@ -1181,7 +1181,7 @@ li
 }
 .archive-category:before {
   font-family: "FontAwesome";
-  content: "\f02e";
+  content: "\f07c";
   margin-right: 0.3em;
 }
 .archives {
