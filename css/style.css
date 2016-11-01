@@ -430,9 +430,9 @@ body {
 }
 @media screen and (max-width: 479px) {
   .brand {
-    display: block;
-    margin-left: 0px;
-    left: 0%;
+    display: inline;
+    margin-left: -70px;
+    left: 50%;
   }
 }
 .brand p {
