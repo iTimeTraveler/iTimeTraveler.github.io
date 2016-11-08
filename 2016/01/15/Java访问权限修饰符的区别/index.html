@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>java访问权限修饰符的区别 | iTimeTraveler</title>
+  <title>java访问权限修饰符的区别 | iTime</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
     <meta name="keywords" content="Java" />
@@ -18,7 +18,7 @@ default：即不加任何访问修饰符，通常称为“默认访问模式“�
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java访问权限修饰符的区别">
 <meta property="og:url" content="http://github.com/2016/01/15/Java访问权限修饰符的区别/index.html">
-<meta property="og:site_name" content="iTimeTraveler">
+<meta property="og:site_name" content="iTime">
 <meta property="og:description" content="Java有四种访问权限，其中三种有访问权限修饰符，分别为private，public和protected，还有一种不带任何修饰符：
 
 private: Java语言中对访问权限限制的最窄的修饰符，一般称之为“私有的”。被其修饰的类、属性以及方法只能被该类的对象访问，其子类不能访问，更不能允许跨包访问。
@@ -31,7 +31,7 @@ default：即不加任何访问修饰符，通常称为“默认访问模式“�
 private: Java语言中对访问权限限制的最窄的修饰符，一般称之为“私有的”。被其修饰的类、属性以及方法只能被该类的对象访问，其子类不能访问，更不能允许跨包访问。
 default：即不加任何访问修饰符，通常称为“默认访问模式“。该模式下，只允许在同一个包中">
   
-    <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="iTime" type="application/atom+xml">
   
   <link rel="icon" href="/css/images/mylogo.jpg">
   
@@ -45,117 +45,67 @@ default：即不加任何访问修饰符，通常称为“默认访问模式“�
     @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
     @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
     @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
   <link rel="stylesheet" href="../../../../css/style.css">
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="/css/bootstrap.css" >
-
-  
-    <link rel="stylesheet" href="../../../../css/dialog.css">
-  
-
-  
-    <link rel="stylesheet" href="/css/header-post.css" >
-  
-
-  
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
 
 </head>
 
 <body>
-  
-  <div id="container">
-    <div id="wrap">
-      
-        <header>
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
 
-    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
-        <div class="navbar-inner">
-          
-          <div class="container"> 
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
+          <h1 class="site-title">
+            <a href="http://demo.athemes.com/hiero/" title="Hiero" rel="home">
+              iTime</a>
+          </h1>
+          <div class="site-description">Someone knock at the door.</div>
 
             
-              <a class="brand" style="
-                 margin-top: 0px;"  
-                href="#" data-toggle="modal" data-target="#myModal" >
-                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
-              </a>
-            
-            
-            <div class="navbar-collapse collapse">
-              <ul class="nav navbar-nav">
-                
-                  <li> <a class="main-nav-link" href="../../../../index.html">首页</a> </li>
-                
-                  <li> <a class="main-nav-link" href="../../../../archives">归档</a> </li>
-                
-                  <li> <a class="main-nav-link" href="../../../../categories">分类</a> </li>
-                
-                  <li> <a class="main-nav-link" href="../../../../tags">标签</a> </li>
-                
-                  <li> <a class="main-nav-link" href="../../../../about">关于</a> </li>
-                
-                  <li><div id="search-form-wrap">
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a href="#main-navigation" class="nav-open">Menu</a>
+            <a href="#" class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
 
-    <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="" />
-        <button type="submit" class="search-form-submit"></button>
-    </form>
-    <div class="ins-search">
-    <div class="ins-search-mask"></div>
-    <div class="ins-search-container">
-        <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
-            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
-</div>
-<script>
-(function (window) {
-    var INSIGHT_CONFIG = {
-        TRANSLATION: {
-            POSTS: '文章',
-            PAGES: '页面',
-            CATEGORIES: '分类',
-            TAGS: '标签',
-            UNTITLED: '(无标题)',
-        },
-        ROOT_URL: '/',
-        CONTENT_URL: '../../../../content.json',
-    };
-    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-})(window);
-</script>
-<script src="../../../../js/insight.js"></script>
-
-</div></li>
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="../../../../index.html">Home</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="../../../../archives">Archives</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="../../../../categories">Categories</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="../../../../tags">Tags</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="../../../../about">About</a> </li>
+                    
+              </ul>
             </div>
-          </div>
-                
-      </div>
-    </div>
+          </nav>
 
+
+      </div>
+  </div>
 </header>
 
 
 
-      
+
+  <div id="container">
+    <div id="wrap">
             
       <div id="content" class="outer">
         
-          <section id="main" style="float:none;"><article id="post-Java访问权限修饰符的区别" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
+          <section id="main" style="float:none;"><article id="post-Java访问权限修饰符的区别" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
       <header class="article-header">
@@ -170,12 +120,9 @@ default：即不加任何访问修饰符，通常称为“默认访问模式“�
     
     <div class="article-meta">
       
-	<a href="" class="article-date">
-	  <time datetime="2016-01-15T07:07:20.000Z" itemprop="datePublished">2016-01-15</time>
+	Posted on <a href="" class="article-date">
+	  <time datetime="2016-01-15T07:07:20.000Z" itemprop="datePublished">January 15, 2016</time>
 	</a>
-
-      
-    <a class="article-category-link" href="../../../../categories/Java/">Java</a>
 
     </div>
     <div class="article-entry" itemprop="articleBody">
@@ -230,7 +177,15 @@ default：即不加任何访问修饰符，通常称为“默认访问模式“�
 
       
     </div>
-    <footer class="article-footer">
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="../../../../categories/Java/">Java</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Java/">Java</a></li></ul>
+
       
         
 	<div id="comment">
@@ -256,9 +211,6 @@ default：即不加任何访问修饰符，通常称为“默认访问模式“�
 
 
       
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Java/">Java</a></li></ul>
-
     </footer>
   </div>
   
@@ -266,7 +218,7 @@ default：即不加任何访问修饰符，通常称为“默认访问模式“�
 <nav id="article-nav">
   
     <a href="../Java中的封装、继承与多态/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">上一篇</strong>
+      <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
           Java中的封装、继承与多态
@@ -276,7 +228,7 @@ default：即不加任何访问修饰符，通常称为“默认访问模式“�
   
   
     <a href="../../05/【面试题】N级台阶（比如100级），每次可走1步或者2步，求总共有多少种走法？/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">下一篇</strong>
+      <strong class="article-nav-caption">Older</strong>
       <div class="article-nav-title">【面试题】N级台阶（比如100级），每次可走1步或者2步，求总共有多少种走法？</div>
     </a>
   
@@ -289,25 +241,25 @@ default：即不加任何访问修饰符，通常称为“默认访问模式“�
 
   <aside id="sidebar">
     <div id="toc" class="toc-article">
-    <strong class="toc-title">文章目录</strong>
+    <strong class="toc-title">Contents</strong>
     
-    <ol class="toc">无</ol>
+    <ol class="toc">None</ol>
     
     </div>
   </aside>
 </section>
         
       </div>
-      
-      <footer id="footer">
+      <footer id="footer" class="site-footer">
   
 
-  <div class="container">
-      <div class="row">
-	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2013 - 2016 iTimeTraveler All Rights Reserved.</p>
-	      <p id="copyRightCn">Mr.Seven 保留所有权利</p>
-	</div>
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2016 iTime All Rights Reserved.
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
   </div>
 </footer>
 
@@ -375,12 +327,7 @@ default：即不加任何访问修饰符，通常称为“默认访问模式“�
 
 <script src="../../../../js/script.js"></script>
 <script src="../../../../js/bootstrap.js"></script>
-
-
-
-
-  <script src="../../../../js/dialog.js"></script>
-
+<script src="../../../../js/main.js"></script>
 
 
 
@@ -388,71 +335,7 @@ default：即不加任何访问修饰符，通常称为“默认访问模式“�
 
   </div>
 
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title" id="myModalLabel">设置</h2>
-      </div>
-      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
-      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
-
-
-      <div class="modal-body">
-          <div style="margin:6px;">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
-              正文字号大小
-            </a>
-          </div>
-          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-          <div class="panel-body">
-            您已调整页面字体大小
-          </div>
-        </div>
-      
-
-
-          <div style="margin:6px;">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
-              夜间护眼模式
-            </a>
-        </div>
-          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-          <div class="panel-body">
-            夜间模式已经开启，再次单击按钮即可关闭 
-          </div>
-        </div>
-
-        <div>
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-        </div>
-         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-          <div class="panel-body">
-            iTimeTraveler
-          </div>
-          <div class="panel-body">
-            Copyright © 2016 Mr.Seven All Rights Reserved.
-          </div>
-        </div>
-      </div>
-
-
-      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
-      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
-      <div class="modal-footer">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-      </div>
-    </div>
-  </div>
-</div>
   <a id="rocket" href="#top" class=""></a>
-  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
-  
-
-	<div style="display: none;">
-    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
-  </div>
-
-
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
 </body>
 </html>

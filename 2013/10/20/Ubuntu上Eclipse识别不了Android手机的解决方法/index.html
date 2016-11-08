@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>ubuntu上eclipse识别不了android手机的解决方法 | iTimeTraveler</title>
+  <title>ubuntu上eclipse识别不了android手机的解决方法 | iTime</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   <meta name="keywords" content="Android" />
@@ -17,7 +17,7 @@ google官方开发向导里对Android手机已经设置了允许安装非market�
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ubuntu上Eclipse识别不了Android手机的解决方法">
 <meta property="og:url" content="http://github.com/2013/10/20/Ubuntu上Eclipse识别不了Android手机的解决方法/index.html">
-<meta property="og:site_name" content="iTimeTraveler">
+<meta property="og:site_name" content="iTime">
 <meta property="og:description" content="转载链接：    http://www.cnblogs.com/AndroidManifest/archive/2011/12/09/2281635.html
 
 google官方开发向导里对Android手机已经设置了允许安装非market程序，并且处于usb调试模式，但是仍然在usb连接电脑后无法被识别的问题作了解释。官方网址：http://developer.android.com/guid">
@@ -28,7 +28,7 @@ google官方开发向导里对Android手机已经设置了允许安装非market�
 
 google官方开发向导里对Android手机已经设置了允许安装非market程序，并且处于usb调试模式，但是仍然在usb连接电脑后无法被识别的问题作了解释。官方网址：http://developer.android.com/guid">
   
-    <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="iTime" type="application/atom+xml">
   
   <link rel="icon" href="/css/images/mylogo.jpg">
   
@@ -42,117 +42,67 @@ google官方开发向导里对Android手机已经设置了允许安装非market�
     @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
     @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
     @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
   <link rel="stylesheet" href="../../../../css/style.css">
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="/css/bootstrap.css" >
-
-  
-    <link rel="stylesheet" href="../../../../css/dialog.css">
-  
-
-  
-    <link rel="stylesheet" href="/css/header-post.css" >
-  
-
-  
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
 
 </head>
 
 <body>
-  
-  <div id="container">
-    <div id="wrap">
-      
-        <header>
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
 
-    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
-        <div class="navbar-inner">
-          
-          <div class="container"> 
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
+          <h1 class="site-title">
+            <a href="http://demo.athemes.com/hiero/" title="Hiero" rel="home">
+              iTime</a>
+          </h1>
+          <div class="site-description">Someone knock at the door.</div>
 
             
-              <a class="brand" style="
-                 margin-top: 0px;"  
-                href="#" data-toggle="modal" data-target="#myModal" >
-                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
-              </a>
-            
-            
-            <div class="navbar-collapse collapse">
-              <ul class="nav navbar-nav">
-                
-                  <li> <a class="main-nav-link" href="../../../../index.html">首页</a> </li>
-                
-                  <li> <a class="main-nav-link" href="../../../../archives">归档</a> </li>
-                
-                  <li> <a class="main-nav-link" href="../../../../categories">分类</a> </li>
-                
-                  <li> <a class="main-nav-link" href="../../../../tags">标签</a> </li>
-                
-                  <li> <a class="main-nav-link" href="../../../../about">关于</a> </li>
-                
-                  <li><div id="search-form-wrap">
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a href="#main-navigation" class="nav-open">Menu</a>
+            <a href="#" class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
 
-    <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="" />
-        <button type="submit" class="search-form-submit"></button>
-    </form>
-    <div class="ins-search">
-    <div class="ins-search-mask"></div>
-    <div class="ins-search-container">
-        <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
-            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
-</div>
-<script>
-(function (window) {
-    var INSIGHT_CONFIG = {
-        TRANSLATION: {
-            POSTS: '文章',
-            PAGES: '页面',
-            CATEGORIES: '分类',
-            TAGS: '标签',
-            UNTITLED: '(无标题)',
-        },
-        ROOT_URL: '/',
-        CONTENT_URL: '../../../../content.json',
-    };
-    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-})(window);
-</script>
-<script src="../../../../js/insight.js"></script>
-
-</div></li>
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="../../../../index.html">Home</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="../../../../archives">Archives</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="../../../../categories">Categories</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="../../../../tags">Tags</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="../../../../about">About</a> </li>
+                    
+              </ul>
             </div>
-          </div>
-                
-      </div>
-    </div>
+          </nav>
 
+
+      </div>
+  </div>
 </header>
 
 
 
-      
+
+  <div id="container">
+    <div id="wrap">
             
       <div id="content" class="outer">
         
-          <section id="main" style="float:none;"><article id="post-Ubuntu上Eclipse识别不了Android手机的解决方法" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
+          <section id="main" style="float:none;"><article id="post-Ubuntu上Eclipse识别不了Android手机的解决方法" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
       <header class="article-header">
@@ -167,12 +117,9 @@ google官方开发向导里对Android手机已经设置了允许安装非market�
     
     <div class="article-meta">
       
-	<a href="" class="article-date">
-	  <time datetime="2013-10-20T08:46:00.000Z" itemprop="datePublished">2013-10-20</time>
+	Posted on <a href="" class="article-date">
+	  <time datetime="2013-10-20T08:46:00.000Z" itemprop="datePublished">October 20, 2013</time>
 	</a>
-
-      
-    <a class="article-category-link" href="../../../../categories/Android/">Android</a>
 
     </div>
     <div class="article-entry" itemprop="articleBody">
@@ -320,7 +267,15 @@ google官方开发向导里对Android手机已经设置了允许安装非market�
 
       
     </div>
-    <footer class="article-footer">
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="../../../../categories/Android/">Android</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Android/">Android</a></li></ul>
+
       
         
 	<div id="comment">
@@ -346,9 +301,6 @@ google官方开发向导里对Android手机已经设置了允许安装非market�
 
 
       
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Android/">Android</a></li></ul>
-
     </footer>
   </div>
   
@@ -356,7 +308,7 @@ google官方开发向导里对Android手机已经设置了允许安装非market�
 <nav id="article-nav">
   
     <a href="../../../../2014/05/15/如何删除多行首字母，Sublime Text多行编辑运用/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">上一篇</strong>
+      <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
           如何删除多行首字母，Sublime Text多行编辑运用
@@ -366,7 +318,7 @@ google官方开发向导里对Android手机已经设置了允许安装非market�
   
   
     <a href="../../../08/01/【Java】操作excel表，包括创建、读取、以及修改/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">下一篇</strong>
+      <strong class="article-nav-caption">Older</strong>
       <div class="article-nav-title">【Java】操作excel表，包括创建、读取、以及修改</div>
     </a>
   
@@ -379,7 +331,7 @@ google官方开发向导里对Android手机已经设置了允许安装非market�
 
   <aside id="sidebar">
     <div id="toc" class="toc-article">
-    <strong class="toc-title">文章目录</strong>
+    <strong class="toc-title">Contents</strong>
     
       <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#操作步骤："><span class="toc-number">1.</span> <span class="toc-text">操作步骤：</span></a></li></ol>
     
@@ -388,16 +340,16 @@ google官方开发向导里对Android手机已经设置了允许安装非market�
 </section>
         
       </div>
-      
-      <footer id="footer">
+      <footer id="footer" class="site-footer">
   
 
-  <div class="container">
-      <div class="row">
-	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2013 - 2016 iTimeTraveler All Rights Reserved.</p>
-	      <p id="copyRightCn">Mr.Seven 保留所有权利</p>
-	</div>
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2016 iTime All Rights Reserved.
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
   </div>
 </footer>
 
@@ -465,12 +417,7 @@ google官方开发向导里对Android手机已经设置了允许安装非market�
 
 <script src="../../../../js/script.js"></script>
 <script src="../../../../js/bootstrap.js"></script>
-
-
-
-
-  <script src="../../../../js/dialog.js"></script>
-
+<script src="../../../../js/main.js"></script>
 
 
 
@@ -478,71 +425,7 @@ google官方开发向导里对Android手机已经设置了允许安装非market�
 
   </div>
 
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title" id="myModalLabel">设置</h2>
-      </div>
-      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
-      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
-
-
-      <div class="modal-body">
-          <div style="margin:6px;">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
-              正文字号大小
-            </a>
-          </div>
-          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-          <div class="panel-body">
-            您已调整页面字体大小
-          </div>
-        </div>
-      
-
-
-          <div style="margin:6px;">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
-              夜间护眼模式
-            </a>
-        </div>
-          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-          <div class="panel-body">
-            夜间模式已经开启，再次单击按钮即可关闭 
-          </div>
-        </div>
-
-        <div>
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-        </div>
-         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-          <div class="panel-body">
-            iTimeTraveler
-          </div>
-          <div class="panel-body">
-            Copyright © 2016 Mr.Seven All Rights Reserved.
-          </div>
-        </div>
-      </div>
-
-
-      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
-      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
-      <div class="modal-footer">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-      </div>
-    </div>
-  </div>
-</div>
   <a id="rocket" href="#top" class=""></a>
-  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
-  
-
-	<div style="display: none;">
-    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
-  </div>
-
-
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
 </body>
 </html>
