@@ -1,0 +1,34 @@
+---
+title: D3.js加载本地json文件的问题
+layout: post
+date: 2016-11-09 21:13:20
+comments: true
+tags: [D3]
+categories: [D3]
+keywords: D3
+description: 
+---
+
+## 问题
+
+打开本地html文件时，报错如下
+
+```console
+XMLHttpRequest cannot load file:/cities.csv. Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, https, chrome-extension-resource.
+
+Uncaught NetworkError: Failed to execute 'send' on 'XMLHttpRequest': Failed to load 
+```
+
+## 分析
+
+原因是因为浏览器为了安全性考虑，默认对跨域访问禁止，不允许直接读取本地文件。
+
+
+## 解决
+
+给浏览器传入启动参数（allow-file-access-from-files），允许跨域访问。
+Windows下，运行（CMD+R）或`右键桌面快捷方式->属性->目标`：
+
+```shell
+"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --allow-file-access-from-files
+```
