@@ -1,0 +1,35 @@
+# Header
+menu:
+	Home: /
+  Archives: /archives/
+  # Categories: /categories/
+  Tags: /tags/
+  About: /about/
+
+# Profile
+profile:
+	location: Beijing, China
+	github: iTimeTraveler
+	#stackoverflow: 
+		#title: yumemor
+		#href: http://stackoverflow.com/users/5662132/yumemor
+	#organization: 组织/公司
+
+#Widget
+sidebar: true
+navfixed: false
+
+#WidgetText
+excerpt_link: Read More
+
+#Github(请务必配置github帐号)
+github:
+  popular_repos: ['Dreambox','floodlight_cuc']
+  #contribute_repos: ['yumemor/1','yumemor/2']
+
+#Comments
+comments:
+	duoshuo_username: iTimeTraveler
+
+#Source Code
+source_code: https://github.com/iTimeTraveler/iTimeTraveler.github.io

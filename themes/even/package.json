@@ -1,0 +1,33 @@
+{
+  "name": "Even",
+  "version": "1.0.0",
+  "description": "A simple theme for Hexo blog framework",
+  "main": "gulpfile.js",
+  "scripts": {
+    "build": "gulp build"
+  },
+  "keywords": [
+    "Hexo",
+    "Even",
+    "Jade",
+    "Sass"
+  ],
+  "author": "ahonn",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-clean-css": "^2.0.9",
+    "gulp-cli": "^1.2.1",
+    "gulp-sass": "^2.3.1",
+    "rimraf": "^2.4.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahonn/hexo-theme-even.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ahonn/hexo-theme-even/issues"
+  },
+  "homepage": "https://github.com/ahonn/hexo-theme-even#readme"
+}

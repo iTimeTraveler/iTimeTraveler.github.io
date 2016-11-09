@@ -1,0 +1,40 @@
+# navbar
+menu:
+  Home: /
+  Archives: /archives/
+  # Categories: /categories/
+  Tags: /tags/
+  About: /about/
+
+# site icon
+favicon: /favicon.ico
+
+# comments
+comments:
+  post: true
+  about: true
+
+# article directory sidebar
+sidebar: true
+
+# Analytics
+## Baidu Analytics
+baidu_analytics: 
+## Google Analytics iEric
+google_analytics: UA-80763341-1
+
+# Comments
+## Duoshuo
+# duoshuo_shortname: ahonn
+## Disqus
+disqus_shortname: 
+
+# Social links
+social:
+  email: mailto:xuewenlong_2008@sina.com
+  # stack-overflow:
+  # twitter:
+  # facebook:
+  GitHub: https://github.com/iTimeTraveler
+  Twitter: https://twitter.com/TimetoSunny
+  weibo: http://weibo.com/xueyubowen

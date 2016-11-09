@@ -1,0 +1,34 @@
+# Header
+menu:
+  Home: /
+  Archives: /archives
+  Tags: /tags
+  About: /about
+rss: 
+github: https://github.com/iTimeTraveler
+
+# Content
+excerpt_link: Read More
+fancybox: true
+
+# Sidebar
+sidebar: right
+widgets:
+- category
+- archive
+- recent_posts
+- tag
+- tagcloud
+- links
+
+# Links
+links: 
+  CSDN: http://blog.csdn.net/u010983881
+
+# Miscellaneous
+google_analytics:
+favicon: /favicon.png
+twitter:
+google_plus:
+fb_admins:
+fb_app_id:

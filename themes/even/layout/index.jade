@@ -1,0 +1,13 @@
+extends partial/layout
+
+include mixins/container
+include mixins/paginator
+
+block title
+  title= config.title
+
+block container
+  +home()
+
+block pagination
+  +paginator('home')

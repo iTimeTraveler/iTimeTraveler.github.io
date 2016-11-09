@@ -1,0 +1,141 @@
+// Even theme for Hexo by Ahonn
+
+///
+// @group post
+///
+
+// Font siz of post title
+// @type Number
+$post-title-font-size: 26px !default;
+
+// Border bottom of post title link
+// @type List
+$post-title-link-border: 2px solid $global-theme-color !default;
+
+// Border bottom of '<a>'
+// @type List
+$content-link-border: 1px solid $global-theme-color !default;
+
+// Border Left of '<blockquote>'
+// @type List
+$content-blockquote-border: 4px solid $global-theme-color !default;
+
+// List style of '<ul>'
+// @type List
+$content-list-style: inside;
+
+@mixin even-post {
+  .post {
+    padding-top: 1em;
+    padding-bottom: 2em;
+    // position: relative;
+
+    .post-title {
+      margin: 0px;
+      font-weight: 400;
+      font-size: $post-title-font-size;
+      font-family: $body-serif-font-family;
+
+      .post-link {
+        &:hover {
+          border-bottom: $post-title-link-border;
+          transition: 0.1s;
+        }
+      }
+    }
+
+    .post-time {
+      margin-top: 5px;
+      display: inline-block;
+      color: $dark-gray;
+    }
+
+    .post-sidebar {
+      width: 190px;
+      position: absolute;
+      margin-left: 780px;
+      font-size: 15px;
+      border-left: 3px solid rgba($global-theme-color, 0.75);
+      border-top-left-radius: 2px;
+      border-bottom-left-radius: 2px;
+      font-family: $body-serif-font-family;
+
+      .heading {
+        margin: 5px 10px;
+        font-size: 18px;
+        font-weight: 500;
+      }
+
+      ol {
+        list-style: square;
+
+        a.active {
+          color: $global-theme-color;
+        }
+      }
+
+      .toc {
+        margin: 7px 0;
+        padding-left: 30px;
+
+        .toc-child {
+          padding-left: 20px;
+        }
+      }
+    }
+
+    .post-content {
+      @for $i from 1 through 6 {
+        h#{$i} {
+          font-family: $body-serif-font-family;
+          font-weight: 400;
+        }
+      }
+
+      .headerlink {
+        &:hover {
+          border-bottom: 0;
+        }
+
+        &::before {
+          content: '§';
+          margin-right: 5px;
+          font-size: 1.1em;
+        }
+      }
+
+      a {
+        color: $global-theme-color;
+
+        &:hover {
+          border-bottom: $content-link-border;
+        }
+      }
+
+      blockquote {
+        margin: 2em 0;
+        padding: 0 20px;
+        position: relative;
+        color: rgba(#34495e, 0.75);
+        
+        &::before {
+          content: "“";
+          font-size: 44px;
+          color: $global-theme-color;
+          position: absolute;
+          top: -20px;
+          left: -5px;
+        }
+      }
+      
+      img {
+        display: inline-block;
+        max-width: 100%;
+      }
+
+      ul {
+        list-style: $content-list-style;
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+extends partial/layout
+include mixins/container
+include mixins/paginator
+
+block title
+  title
+    if page.archive
+        != __('Archive') + " · " + config.title
+    if page.tag
+        != page.tag + " · " + config.title
+        
+block container
+  if page.archive
+    +archive()
+  if page.tag
+    +tag()
+  if page.category
+    +category()
+
+block pagination
+  +paginator('archive')
