@@ -393,7 +393,7 @@ body {
 }
 .article {
   color: #555;
-  margin: 0 0 20px 0;
+  margin: 0 0 40px 0;
 }
 @media screen and (max-width: 479px) {
   .article {
@@ -414,7 +414,7 @@ body {
   border: 0px solid #eef1f8;
 }
 .article-meta {
-  margin: 0 0 20px;
+  margin: 7px 0 20px;
   color: #999;
   font-size: 0.9em;
 }
@@ -457,8 +457,8 @@ body {
   color: #ff2828;
 }
 .article-header h1 {
-  margin: 0 50px 3px 0;
-  font-size: 2.4em;
+  margin: 0 0 3px 0;
+  font-size: 2em;
   line-height: 1.2;
 }
 .article-header h1 a {
@@ -994,7 +994,7 @@ li
   margin-bottom: 1em;
 }
 .archive-year-wrap h1 {
-  font-size: 1.3em;
+  font-size: 1.5em;
 }
 .archive-year {
   color: #16171b;
@@ -1047,6 +1047,9 @@ li
   color: #16171b;
   margin: 0.2em;
 }
+.archives-category-wrap blockquote a:hover {
+  color: #ff2828;
+}
 .archives-category-wrap blockquote a:before {
   font-family: "FontAwesome";
   content: "\f0da";
@@ -1091,6 +1094,7 @@ li
   margin-bottom: 0px;
 }
 .archive-article-title {
+  font-size: 1.2em;
   text-decoration: none;
   color: #333;
   -webkit-transition: color 0.2s;
@@ -1151,6 +1155,7 @@ li
   color: #fff;
 }
 #page-nav .prev {
+  color: #fff;
   background: #16171b;
   float: left;
 }
@@ -1160,6 +1165,7 @@ li
   margin-right: 0.5em;
 }
 #page-nav .next {
+  color: #fff;
   background: #16171b;
   float: right;
 }
@@ -1669,7 +1675,7 @@ pre .xml .cdata {
   line-height: 1.2;
   color: #222;
   font-weight: 700;
-  font-family: "Yanone Kaffeesatz", "华文细黑", Arial, Helvetica, sans-serif;
+  font-family: "Yanone Kaffeesatz", "方正姚体", Arial, Helvetica, sans-serif;
 }
 .widget_athemes_tabs .widget ul li a:hover {
   color: #ff2828;

@@ -118,19 +118,20 @@
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2015/11/03/各种排序算法时间复杂度和空间复杂度表/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/1" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
-           各种排序算法时间复杂度和空间复杂度表:
+
+          
+            <div class="entry-summary" style="margin-left:0;">
+             各种排序算法时间复杂度和空间复杂度表:
 比较时间复杂度函数的情况如下图：
 对n较大的排序记录。一般的选择都是时间复杂度为O(nlog2n)的排序方法：
 
 接下来博主抽时间要整理一下各经典算法思想和心得，敬请期待
 
 
-一、快速排序（Quicksort）12345678910111213141516171819202122232425262728293031323334353637383940...
+一、快速排序（Quicksort）12345678910111213141516171819202122232425262728293031323334353637383940import java.util.Arrays;public class MySort &#123;	public static void main(String args[])&#123;		int[] array = &#123;5,3,9,1,6,4,10,2,8,7&#125;;		Syst...
+          
+
+        
           <p class="article-more-link">
             <a href="../../2015/11/03/各种排序算法时间复杂度和空间复杂度表/#more">Continue Reading →</a>
           </p>
@@ -179,19 +180,24 @@
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2015/11/02/【Java】函数中的参数传递是“引用传递”还是“值传递”？/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/10" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
+
           
+            <div class="entry-summary" style="margin-left:0;">
+            
 问题引入：在一个快速排序的函数 private void quickSort(List intList, int left, int right) 中，传进去的参数intList是对象传递还是引用传递呢？
 
 先抛出结论：
 
 将对象（对象的引用）作为参数传递时传递的是引用(相当于指针)。也就是说函数内对参数所做的修改会影响原来的对象。
 
-当将基本类型或基本类型的包装集作为参数传递时，传递的是...
+当将基本类型或基本类型的包装集作为参数传递时，传递的是值。也就是说函数内对参数所做的修改不会影响原来的变量。
+
+数组(数组引用)）作为参数传递时传递的是引用(相当于指针)。也就是说函数内对参数所做的修改会影响原来的数组。
+
+String类型(引用)作为参数传递时传递的是引用，只是对String做出任何修改时有一个新的String对象会产生，原来的Str...
+          
+
+        
           <p class="article-more-link">
             <a href="../../2015/11/02/【Java】函数中的参数传递是“引用传递”还是“值传递”？/#more">Continue Reading →</a>
           </p>
@@ -240,17 +246,21 @@
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2015/09/18/【Android】onActivityResult()和onResume()的调用顺序问题/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/7" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
+
           
+            <div class="entry-summary" style="margin-left:0;">
+            
 在Android生命周期中，如果使用到startActivityForResult()，则在新Activity被finish掉之后，onActivityResult()和onResume()到底是哪一个先调用的呢？
 
 我们来看官方源码：
 /**
-     * Called when an activity you launched exits, giving you the request...
+     * Called when an activity you launched exits, giving you the requestCode
+     * you started it with, the resultCode it returned, and any additional
+     * data from it.  The &lt;var&gt;resultCode&lt;/var&gt; will be
+  ...
+          
+
+        
           <p class="article-more-link">
             <a href="../../2015/09/18/【Android】onActivityResult()和onResume()的调用顺序问题/#more">Continue Reading →</a>
           </p>
@@ -299,14 +309,15 @@
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2015/09/15/【Android】如何启动调用其他app中的Activity/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/1" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
-          最近项目正在将原系统拆分为小型App，所以需要在原Project中启动另一个新的App中的Activity。这样的话启动要用到ComponentName ，它就是用来打开其他应用程序中的Activity或服务的。
+
+          
+            <div class="entry-summary" style="margin-left:0;">
+            最近项目正在将原系统拆分为小型App，所以需要在原Project中启动另一个新的App中的Activity。这样的话启动要用到ComponentName ，它就是用来打开其他应用程序中的Activity或服务的。
 用法其实很简单，像下面这样：
-123456//第一个参数是Activity所在的package包名，第二个参数是完整的Class类名（包括包路径）ComponentName com...
+123456//第一个参数是Activity所在的package包名，第二个参数是完整的Class类名（包括包路径）ComponentName componetName = new ComponentName("com.cybo3d.cybox.miya", 			  								"com.cybo3d.cybox.miya.MainActivity");Intent intent = new Intent();intent.setCompo...
+          
+
+        
           <p class="article-more-link">
             <a href="../../2015/09/15/【Android】如何启动调用其他app中的Activity/#more">Continue Reading →</a>
           </p>
@@ -355,12 +366,10 @@
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2014/09/12/【Android】保存图片到系统图库, 并立即显示在图库中/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/10" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
+
           
+            <div class="entry-summary" style="margin-left:0;">
+            
 搬运原链接：http://stormzhang.github.io/android/2014/07/24/android-save-image-to-gallery
 
 正文最近有些用户反映保存图片之后在系统图库找不到保存的图片，遂决定彻底查看并解决下。
@@ -368,7 +377,10 @@ Android中保存图片的方法可能有如下两种：
 
 第一种是自己写方法，如下代码：
 
-123456789101112131415161718...
+123456789101112131415161718public static File saveImage(Bitmap bmp) &#123;    File appDir = new File(Environment.getExternalStorageDirectory(), "Boohee");    if (!appDir.exists(...
+          
+
+        
           <p class="article-more-link">
             <a href="../../2014/09/12/【Android】保存图片到系统图库, 并立即显示在图库中/#more">Continue Reading →</a>
           </p>
@@ -417,14 +429,15 @@ Android中保存图片的方法可能有如下两种：
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2014/05/15/如何删除多行首字母，Sublime Text多行编辑运用/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/5" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
-          一、问题描述：问答区有个问题是这样问的：如何在eclipse中删除多行首字母？
+
+          
+            <div class="entry-summary" style="margin-left:0;">
+            一、问题描述：问答区有个问题是这样问的：如何在eclipse中删除多行首字母？
 题主的问题是代码中每行都有序号，这些序号一行一行地删太麻烦，如何进行批量删除？我们在进行代码重用的时候时常会出现行号同时被复制的情况，比如下面的这点代码：
-12345678910111213141516171819202122232425262728155.     @Override  156.     pub...
+12345678910111213141516171819202122232425262728155.     @Override  156.     public boolean onKeyDown(int keyCode, KeyEvent event)   157.     &#123;   158.         Log.d("onKeyDown:", " keyCode=" + keyCode + " KeyEvent=" + event);...
+          
+
+        
           <p class="article-more-link">
             <a href="../../2014/05/15/如何删除多行首字母，Sublime Text多行编辑运用/#more">Continue Reading →</a>
           </p>
@@ -467,15 +480,19 @@ Android中保存图片的方法可能有如下两种：
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2013/10/20/Ubuntu上Eclipse识别不了Android手机的解决方法/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/9" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
+
           
+            <div class="entry-summary" style="margin-left:0;">
+            
 转载链接：    http://www.cnblogs.com/AndroidManifest/archive/2011/12/09/2281635.html
 
-google官方开发向导里对Android手机已经设置了允许安装非market程序，并且处于usb调试模式，但是仍然在usb连接电脑后无法被识别的问题作了解释。官方网址：http://developer.android.com/g...
+google官方开发向导里对Android手机已经设置了允许安装非market程序，并且处于usb调试模式，但是仍然在usb连接电脑后无法被识别的问题作了解释。官方网址：http://developer.android.com/guide/developing/device.html
+操作步骤：如果是windows平台下，需要安装一个为adb准备的usb驱动。如果是Ubuntu Linux需要添加一个rules文件，里面包含了每一个想要调试的设备的usb配置信息。以HTC手机为例实现步骤如下：
+1、在终端输入 :
+1sudo...
+          
+
+        
           <p class="article-more-link">
             <a href="../../2013/10/20/Ubuntu上Eclipse识别不了Android手机的解决方法/#more">Continue Reading →</a>
           </p>
@@ -524,12 +541,10 @@ google官方开发向导里对Android手机已经设置了允许安装非market�
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2013/08/01/【Java】操作excel表，包括创建、读取、以及修改/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/7" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
-          作者的网站上对它的特征有如下描述： 
+
+          
+            <div class="entry-summary" style="margin-left:0;">
+            作者的网站上对它的特征有如下描述： 
 
 支持Excel 95-2000的所有版本 
 生成Excel 2000标准格式 
@@ -537,7 +552,14 @@ google官方开发向导里对Android手机已经设置了允许安装非market�
 能够修饰单元格属性 
 支持图像和图表 
 
-应该说以上功能已经能够大致满足我们的需要。最关键的是这套API是纯Java的，并不依赖Windows系统，即使运行在Linux下，它同样能够正确的处理Excel文件。另外需要说明的是，这套API对图形和图...
+应该说以上功能已经能够大致满足我们的需要。最关键的是这套API是纯Java的，并不依赖Windows系统，即使运行在Linux下，它同样能够正确的处理Excel文件。另外需要说明的是，这套API对图形和图表的支持很有限，而且仅仅识别PNG格式。 
+搭建环境下载jxl.jar（可以点击这里进行下载），放入classpath，安装就完成了。 
+
+基本操作一、创建文件拟生成一个名为“测试数据.xls”的Excel文件，其中第一个工作表被命名为“第一页”。代码（CreateXLS.java）： 
+12345...
+          
+
+        
           <p class="article-more-link">
             <a href="../../2013/08/01/【Java】操作excel表，包括创建、读取、以及修改/#more">Continue Reading →</a>
           </p>

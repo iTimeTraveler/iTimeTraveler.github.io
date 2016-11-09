@@ -118,16 +118,20 @@
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2016/08/18/【Go】为什么 Go 语言把类型声明放在后面？/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/9" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
+
           
+            <div class="entry-summary" style="margin-left:0;">
+            
 关于类型，官网上有一段仔细地介绍了一下函数指针的部分，现在的设计比起 C 的语法，清晰很多。
 
 也就是说，类型放在后面是为了更加清晰易懂。Rob Pike 曾经在 Go 官方博客解释过这个问题（查看原文：Go’s Declaration Syntax），简略翻译如下（水平有限翻译的不对的地方见谅）：
-引言Go语言新人常常会很疑惑为什么这门语言的声明语法（declaration syntax...
+引言Go语言新人常常会很疑惑为什么这门语言的声明语法（declaration syntax）会和传统的C家族语言不同。在这篇博文里，我们会进行一个比较，并做出解答。
+C 的语法首先，先看看 C 的语法。C 采用了一种聪明而不同寻常的声明语法。声明变量时，只需写出一个带有目标变量名的表达式，然后在表达式里指明该表达式本身的类型即可。比如：
+1int x;
+上面的代码声明了 x 变量，并且其...
+          
+
+        
           <p class="article-more-link">
             <a href="../../2016/08/18/【Go】为什么 Go 语言把类型声明放在后面？/#more">Continue Reading →</a>
           </p>
@@ -176,16 +180,20 @@
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2016/08/14/【Machine Learning】机器学习：简明入门指南/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/8" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
+
           
+            <div class="entry-summary" style="margin-left:0;">
+            
 本文是一篇转载自伯乐在线的译文，英文原文是这里：Machine Learning is Fun! — by Adam Geitgey
 
 在听到人们谈论机器学习的时候，你是不是对它的涵义只有几个模糊的认识呢？你是不是已经厌倦了在和同事交谈时只能一直点头？让我们改变一下吧！
-本指南的读者对象是所有对机器学习有求知欲但却不知道如何开头的朋友。我猜很多人已经读过了“机器学习” ——维基百科词条，倍...
+本指南的读者对象是所有对机器学习有求知欲但却不知道如何开头的朋友。我猜很多人已经读过了“机器学习” ——维基百科词条，倍感挫折，以为没人能给出一个高层次的解释。本文就是你们想要的东西。
+本文目标在于平易近人，这意味着文中有大量的概括。但是谁在乎这些呢？只要能让读者对于ML更感兴趣，任务也就完成了。
+
+何为机器学习？机器学习这个概念认为，对于待解问题，你无需编写任何专门的程序代码，遗传算法（generic algori...
+          
+
+        
           <p class="article-more-link">
             <a href="../../2016/08/14/【Machine Learning】机器学习：简明入门指南/#more">Continue Reading →</a>
           </p>
@@ -234,12 +242,10 @@
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2016/08/12/【Machine Learning】Github上关注最多的53个深度学习项目/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/8" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
-          Top Deep Learning ProjectsA list of popular github projects related to deep learning (ranked by stars).
+
+          
+            <div class="entry-summary" style="margin-left:0;">
+            Top Deep Learning ProjectsA list of popular github projects related to deep learning (ranked by stars).
 Last Update: 2016.08.09
  
 
@@ -254,7 +260,20 @@ Description
 
 TensorFlow
 29622
-Computation ...
+Computation using data flow graphs for scalable machine learning.
+
+
+Caffe
+11799
+Caffe: a fast open framework for deep learning.
+
+
+Neural Style
+10148
+Torch impleme...
+          
+
+        
           <p class="article-more-link">
             <a href="../../2016/08/12/【Machine Learning】Github上关注最多的53个深度学习项目/#more">Continue Reading →</a>
           </p>
@@ -303,17 +322,18 @@ Computation ...
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2016/08/08/【Android】使用shape的同时，动态替换shape的颜色属性/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/3" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
+
           
+            <div class="entry-summary" style="margin-left:0;">
+            
 在实现布局的时候，有些按钮形状相同，只是颜色有差异，如果使用自定义shape实现了其中一种按钮，有没有可能不需要再为其他每个颜色都写一个shape文件呢？
 
 一、问题比如以下这三个按钮：
 
-为第一个灰色按钮自定义背景如下：1234567891011121314&lt;?xml version="1.0" encoding="utf-8"?&gt;&lt;shape    xmlns:and...
+为第一个灰色按钮自定义背景如下：1234567891011121314&lt;?xml version="1.0" encoding="utf-8"?&gt;&lt;shape    xmlns:android="http://schemas.android.com/apk/res/android"    android:shape="rectangle"    android:color="@color/gray"&gt;    &lt;corners        android:radius...
+          
+
+        
           <p class="article-more-link">
             <a href="../../2016/08/08/【Android】使用shape的同时，动态替换shape的颜色属性/#more">Continue Reading →</a>
           </p>
@@ -362,18 +382,36 @@ Computation ...
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2016/08/02/BAT人才体系的职位层级、薪酬、晋升标准大全/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/4" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
+
           
+            <div class="entry-summary" style="margin-left:0;">
+            
 
 互联网圈有这么一句话：百度的技术，阿里的运营，腾讯的产品。那么代表互联网三座大山的BAT，内部人才体系有什么区别呢？可以先看看这个话题百度、腾讯和阿里内部的级别和薪资待遇是什么样的？
 
 ★ 腾讯 ★1、职级腾讯职级体系分6级，最低1级，最高6级。同时按照岗位又划分为四大通道，内部也叫“族”，比如：
 产品/项目通道，简称P族技术通道，简称T族市场通道，简称M族职能通道，简称S族
-以T族为例...
+以T族为例，分别为：
+
+T1：助理工程师 （一般为校招新人）
+
+T2：工程师
+
+T3：高级工程师 3-1相当于阿里的p6+到p7（能力强可能到p7）
+
+T4：专家工程师
+
+T5：科学家
+
+T6：首席科学家
+
+
+
+目前全腾讯貌似就一个T6。
+每一级之间又分为3个子级，3-1是任命组长/副组长的必要条件，其他线也...
+          
+
+        
           <p class="article-more-link">
             <a href="../../2016/08/02/BAT人才体系的职位层级、薪酬、晋升标准大全/#more">Continue Reading →</a>
           </p>
@@ -422,18 +460,19 @@ Computation ...
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2016/07/22/【Android】dip和px之间到底如何转换/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/6" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
+
           
+            <div class="entry-summary" style="margin-left:0;">
+            
 
 在Android xml布局文件中，我们既可以设置px，也可以设置dp（或者dip）。一般情况下，我们都会选择使用dp，这样可以保证不同屏幕分辨率的机器上布局一致。
 但是在代码中，如何处理呢？很多控件的方法中都只提供了设置px的方法，例如setPadding，并没有提供设置dp的方法。这个时候，如果需要设置dp的话，就要将dp转换成px了。
 
 一、名词介绍
-PPI = Pixels pe...
+PPI = Pixels per inch，每英寸上的像素数,即 “像素密度”&nbsp;&nbsp;&nbsp;&nbsp; ● xhdpi: 2.0&nbsp;&nbsp;&nbsp;&nbsp; ● hdpi: 1.5&nbsp;&nbsp;&nbsp;&nbsp; ● mdpi: 1.0 (baseline)&nbsp;...
+          
+
+        
           <p class="article-more-link">
             <a href="../../2016/07/22/【Android】dip和px之间到底如何转换/#more">Continue Reading →</a>
           </p>
@@ -482,13 +521,18 @@ PPI = Pixels pe...
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2016/07/19/【Android】Monkey压力测试与停止/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/4" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
+
+          
+            <div class="entry-summary" style="margin-left:0;">
+            一、Monkey 是什么？Monkey测试是Android自动化测试的一种手段。该工具用于进行压力测试，就是模拟用户的按键输入，触摸屏输入，手势输入等，看设备多长时间会出异常。 然后开发人员结合monkey 打印的日志 和系统打印的日志，结局测试中出现的问题。
+二、Monkey命令1）. 标准的monkey 命令[adb shell] monkey [options] &lt; eventcount &gt; , 例如：
+
+adb shell monkey -v 500
+
+产生500次随机事件，作用在系统中所有activity（其实也不是所有的activity，而是包含  Intent.CATEGORY_LAUNCHER 或Intent.CATEGORY_MONKEY 的activit...
+          
+
         
-          <div class="entry-summary">
-          一、Monkey 是什么？Monkey测试是Android自动化测试的一种手段。该工具用于进行压力测试，就是模拟用户的按键输入，触摸屏输入，手势输入等，看设备多长时间会出异常。 然后开发人员结合monkey 打印的日志 和系统打印的日志，结局测试中出现的问题。
-二、Monkey命令1）. 标准的monkey 命令[adb shell] monkey [options] &lt; eventc...
           <p class="article-more-link">
             <a href="../../2016/07/19/【Android】Monkey压力测试与停止/#more">Continue Reading →</a>
           </p>
@@ -537,16 +581,22 @@ PPI = Pixels pe...
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2016/07/14/【Android】App应用崩溃(Crash-Force Close)之后如何让它自动重启？/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/5" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
+
           
+            <div class="entry-summary" style="margin-left:0;">
+            
 英文原文： Auto Restart application after Crash/Force Close in Android.
 手机上的Android应用，经常会出现“Force Close”的错误，这种情况一般是因为代码中没有正确获取到Exceptions。那么如果想让App在出现这种错误崩溃Crash以后自动重启，我们该怎么办呢？
 
-这篇教程我们将学到如何自动处理Exceptio...
+这篇教程我们将学到如何自动处理Exception，并且了解在App Crash以后如何自动重启。
+其实方法很简单，这里我们需要用到 Thread.setDefaultUncaughtExceptionHandler()，当应用崩溃的时候代码就会自动调用 uncaughtException() 这个方法。
+
+操作步骤如下：
+Step 1
+像下面这...
+          
+
+        
           <p class="article-more-link">
             <a href="../../2016/07/14/【Android】App应用崩溃(Crash-Force Close)之后如何让它自动重启？/#more">Continue Reading →</a>
           </p>
@@ -595,15 +645,17 @@ PPI = Pixels pe...
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2016/06/12/【SVN】使用patch命令保存更改/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/7" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
+
           
+            <div class="entry-summary" style="margin-left:0;">
+            
 使用svn管理工程代码时，有些时候的更改尚未整理好，需要暂时搁置，转而进行下一个任务，此时就需要将当前的更改（diff）暂时保存下来，忙完其他的任务之后再继续进行。但是如果不进行commit，怎么保存当前的更改呢？答案是使用 patch 命令！
 
-一、生成patch文件12svn diff &gt; patchFile 			// 整个工程的变动生成patchsvn diff FILE_N...
+一、生成patch文件12svn diff &gt; patchFile 			// 整个工程的变动生成patchsvn diff FILE_NAME &gt; patchFile 	// 某个文件单独变动的patch
+二、svn回滚123svn revert FILE 				// 单个文件回滚svn revert DIR --depth=infinity // 整个目录进行递归回滚svn revert . --depth=infinit...
+          
+
+        
           <p class="article-more-link">
             <a href="../../2016/06/12/【SVN】使用patch命令保存更改/#more">Continue Reading →</a>
           </p>
@@ -628,7 +680,7 @@ PPI = Pixels pe...
 <!-- Table of Contents -->
 
   
-    <article id="post-【Java】按位存储：使用int存储boolean数组"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-【Android】技术调研：用代码模拟屏幕点击、触摸事件"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -636,7 +688,7 @@ PPI = Pixels pe...
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/06/02/【Java】按位存储：使用int存储boolean数组/">【Java】按位存储：使用int存储boolean数组</a>
+      <a class="article-title" href="../../2016/06/02/【Android】技术调研：用代码模拟屏幕点击、触摸事件/">【Android】技术调研：用代码模拟屏幕点击、触摸事件</a>
     </h1>
   
 
@@ -644,7 +696,7 @@ PPI = Pixels pe...
     
     <div class="article-meta">
       
-	Posted on <a href="../../2016/06/02/【Java】按位存储：使用int存储boolean数组/" class="article-date">
+	Posted on <a href="../../2016/06/02/【Android】技术调研：用代码模拟屏幕点击、触摸事件/" class="article-date">
 	  <time datetime="2016-06-02T03:55:00.000Z" itemprop="datePublished">June 2, 2016</time>
 	</a>
 
@@ -652,17 +704,23 @@ PPI = Pixels pe...
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2016/06/02/【Java】按位存储：使用int存储boolean数组/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/3" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
-          
-有一种场景，比如App设置页中会有一组开关选项，这个时候保存这些开关的状态，如果每个按钮都对应一个boolean值的话，太大材小用显得鸡肋，频繁读取SharedPreferences 存取效率自然快不过一次读取。
 
-首先，敲定每个boolean值存储的位置12345private int mBroadcastCustomValue = 0;   //用来存储的int值public stat...
+          
+            <div class="entry-summary" style="margin-left:0;">
+            
+在Android中，有些场景需要使用代码来模拟人的操作，比如微信自动抢红包、UI测试等都需要模拟实现点击事件（Click）、触摸事件（Touch）、键盘事件（KeyBoard）等。那么，有没有现成的方案可以实现呢？答案当然是肯定的啦，往下看。
+
+经过调研发现，给系统模拟注入输入事件有如下几种方式：
+一、使用shell命令使用android自带的adb shell，里面自带一个input工具，使用方法如下：
+123adb shell #进入系统input keyevent KEYCODE_BACK  #模拟按返回键input keyevent KEYCODE_HOME  #模拟按Home键
+
+还可以直接输入点击屏幕的事件，模拟点击屏幕：
+1input tap 100 200  #在屏幕...
+          
+
+        
           <p class="article-more-link">
-            <a href="../../2016/06/02/【Java】按位存储：使用int存储boolean数组/#more">Continue Reading →</a>
+            <a href="../../2016/06/02/【Android】技术调研：用代码模拟屏幕点击、触摸事件/#more">Continue Reading →</a>
           </p>
         </div>
       
@@ -670,11 +728,11 @@ PPI = Pixels pe...
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="../../categories/Java/">Java</a>
+    <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
 
       
     </footer>

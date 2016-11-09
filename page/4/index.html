@@ -118,15 +118,17 @@
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2016/01/05/【面试题】N级台阶（比如100级），每次可走1步或者2步，求总共有多少种走法？/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/6" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
+
           
+            <div class="entry-summary" style="margin-left:0;">
+            
 走台阶算法（本质上是斐波那契数列）在面试中常会遇到，描述就如题目那样：总共100级台阶（任意级都行），小明每次可选择走1步、2步或者3步，问走完这100级台阶总共有多少种走法？
 
-一、 题目分析这个问题本质上是斐波那契数列，假设只有一个台阶，那么只有一种跳法，那就是一次跳一级，f(1)=1；如果有两个台阶，那么有两种跳法，第一种跳法是一次跳一级，第二种跳法是一次跳两级,f(2)=2。如果有...
+一、 题目分析这个问题本质上是斐波那契数列，假设只有一个台阶，那么只有一种跳法，那就是一次跳一级，f(1)=1；如果有两个台阶，那么有两种跳法，第一种跳法是一次跳一级，第二种跳法是一次跳两级,f(2)=2。如果有大于2级的n级台阶，那么假如第一次跳一级台阶，剩下还有n-1级台阶，有f(n-1)种跳法，假如第一次条2级台阶，剩下n-2级台阶，有f(n-2)种跳法。这就表示f(n)=f(n-1)+f(n-2)。将上面的斐波那契数列代码稍微改一下就是本题的答案。我们来看一下代码的实现。
+二、斐波那契数列法1234...
+          
+
+        
           <p class="article-more-link">
             <a href="../../2016/01/05/【面试题】N级台阶（比如100级），每次可走1步或者2步，求总共有多少种走法？/#more">Continue Reading →</a>
           </p>
@@ -175,12 +177,10 @@
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2016/01/04/新主题酝酿中/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/10" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
+
           
+            <div class="entry-summary" style="margin-left:0;">
+            
 人们对于“美”，都有着超乎自己想象的执念。
 
 图集
@@ -209,6 +209,9 @@ HERO 主题（黑白）
 漂亮的蒙层
 
 
+          
+
+        
           <p class="article-more-link">
             <a href="../../2016/01/04/新主题酝酿中/#more">Continue Reading →</a>
           </p>
@@ -257,17 +260,18 @@ HERO 主题（黑白）
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2016/01/02/【Java】内部类（Inner Class）如何创建（new）/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/4" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
+
           
+            <div class="entry-summary" style="margin-left:0;">
+            
 简单来说，内部类（inner class）指那些类定义代码被置于其它类定义中的类；而对于一般的、类定义代码不嵌套在其它类定义中的类，称为顶层（top-level）类。对于一个内部类，包含其定义代码的类称为它的外部（outer）类。 
 
 那么对于内部类，该如何去使用呢？
 下面给出静态成员类（Static Member Class）和普通成员类（Member Class）使用的方式。
-1234...
+12345678910111213141516package cuc;import cuc.TestClass.Inner1;public class Main &#123;	public static void main(String args[]) &#123;		//静态的内部类		TestClass...
+          
+
+        
           <p class="article-more-link">
             <a href="../../2016/01/02/【Java】内部类（Inner Class）如何创建（new）/#more">Continue Reading →</a>
           </p>
@@ -316,14 +320,17 @@ HERO 主题（黑白）
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2015/12/31/【Android】 加解密算法 HMAC 的使用/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/4" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
-          1、HMAC算法
+
+          
+            <div class="entry-summary" style="margin-left:0;">
+            1、HMAC算法
 &nbsp;&nbsp; HMAC是密钥相关的哈希运算消息认证码（Hash-based Message Authentication Code）,HMAC运算利用哈希算法，以一个密钥和一个消息为输入，生成一个消息摘要作为输出。
-&nbsp;&nbsp;简而言之，HMAC就是含有密钥散列函数算法，兼容了MD和SHA算法的特性，并在此基础上加上了密钥。因此MAC算法也经常被称作...
+&nbsp;&nbsp;简而言之，HMAC就是含有密钥散列函数算法，兼容了MD和SHA算法的特性，并在此基础上加上了密钥。因此MAC算法也经常被称作HMAC算法。关于hmac算法的详情可以参看RFC 2104(http://www.ietf.org/rfc/rfc2104.txt)，这里包含了HmacMD5算法的C语言实现。
+
+2、代码实现（Android）12345678910111213141516171819202122232425262...
+          
+
+        
           <p class="article-more-link">
             <a href="../../2015/12/31/【Android】 加解密算法 HMAC 的使用/#more">Continue Reading →</a>
           </p>
@@ -372,16 +379,18 @@ HERO 主题（黑白）
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2015/12/25/【Android】app打包成apk文件以后，如何查看VersionCode、VersionName等版本信息/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/10" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
+
           
+            <div class="entry-summary" style="margin-left:0;">
+            
 Android App打包成Apk后，其实是一个压缩文件，可以将后缀名apk改为zip然后用winrar打开也能看到里面的文件结构。还能看到AndroidManifest.xml。但是里面的内容经过编码显示为乱码，不方便查看。
 
 — aapt工具：
-&nbsp;&nbsp;这里我们可以使用aapt工具来查看。aapt.exe工具即Android Asset Packaging Tool，在...
+&nbsp;&nbsp;这里我们可以使用aapt工具来查看。aapt.exe工具即Android Asset Packaging Tool，在SDK的build-tools目录下。
+&nbsp;&nbsp;该工具可以查看，创建， 更新ZIP格式的文档附件(zip, jar, apk)。也可将资源文件编译成二进制文件，尽管你可能没有直接使用过aapt工具，但是build scripts和IDE插件会使用这个工具打包apk文件构成一个Andr...
+          
+
+        
           <p class="article-more-link">
             <a href="../../2015/12/25/【Android】app打包成apk文件以后，如何查看VersionCode、VersionName等版本信息/#more">Continue Reading →</a>
           </p>
@@ -475,12 +484,10 @@ Android App打包成Apk后，其实是一个压缩文件，可以将后缀名apk
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2015/11/25/【Android】Activity与Fragment的生命周期的关系/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/4" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
-          一、问题描述：
+
+          
+            <div class="entry-summary" style="margin-left:0;">
+            一、问题描述：
 
 假设有两个Activity（1和2）,每个Activity拥有一个Fragment，并分别有一个Button，点击Button1可以start Activity2，然后点击Button2可以finish掉自己（即Activity2）,然后返回到Activity1。根据这个简单模型描述一下Activity和Fragment的生命周期之间的依赖关系？
 
@@ -488,7 +495,16 @@ Android App打包成Apk后，其实是一个压缩文件，可以将后缀名apk
 
 
 二、生命周期知识
-...
+Activity和Fragment的生命周期图谱可以参考我的另外一篇博客：【Android】Fragment的生命周期详解，他们的关系大致如下图：
+
+
+三、代码验证
+  MainActivity和SecondActivity的布局是这样的，里面各添加了一个Fragment：
+    
+1234567...
+          
+
+        
           <p class="article-more-link">
             <a href="../../2015/11/25/【Android】Activity与Fragment的生命周期的关系/#more">Continue Reading →</a>
           </p>
@@ -537,18 +553,20 @@ Android App打包成Apk后，其实是一个压缩文件，可以将后缀名apk
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2015/11/25/【Android】Fragment的生命周期详解/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/4" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
+
           
+            <div class="entry-summary" style="margin-left:0;">
+            
 作为Android开发的基础知识，大家可能都了解Activity的生命周期，但是Fragment的生命周期和Activity生命周期之间的关系到底是怎么样的呢？相互调用机制又如何呢？
 
 一、我们首先观察一下Activity的生命周期：
 
 Fragment生命周期：
-Activity和Fragment生命周期的对比图：【参考资料】：1、Android Fragment源代码2、API Doc...
+Activity和Fragment生命周期的对比图：【参考资料】：1、Android Fragment源代码2、API Doc for fragments (Fragments | Android Developers)3、Fragment生命周期
+
+          
+
+        
           <p class="article-more-link">
             <a href="../../2015/11/25/【Android】Fragment的生命周期详解/#more">Continue Reading →</a>
           </p>
@@ -597,18 +615,24 @@ Activity和Fragment生命周期的对比图：【参考资料】：1、Android F
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2015/11/19/【Android】长按连续触发事件的实现方法/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/8" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
+
           
+            <div class="entry-summary" style="margin-left:0;">
+            
 项目中需要实现一个类似购物车数量的小组件，需要单击时增加数量，长按时可以连续增大，之前的代码实现效果不理想，google后得到一个解决方法,测试可以完美实现。
 
 实现效果大致如图：
 【原理说明】
 
-大致原理是,如果手指按在view上，则使用ScheduledExecutorService对象执行scheduleWithFixedDelay()方法，每隔一个间隔不停地向Handler发送Me...
+大致原理是,如果手指按在view上，则使用ScheduledExecutorService对象执行scheduleWithFixedDelay()方法，每隔一个间隔不停地向Handler发送Message，此处Message里的信息是View id，然后由Handler在handlemessage的时候处理需要触发的事件。
+
+
+【实现】
+1、首先,让对应的View设置一个OnTouchListener，在手指按下时触发不停的发送消息,手指抬起时停止发送。
+1234567891011subt...
+          
+
+        
           <p class="article-more-link">
             <a href="../../2015/11/19/【Android】长按连续触发事件的实现方法/#more">Continue Reading →</a>
           </p>
@@ -657,16 +681,18 @@ Activity和Fragment生命周期的对比图：【参考资料】：1、Android F
     <div class="article-entry" itemprop="articleBody">
       
         
-          <div class="entry-thumbnail">
-            <a href="../../2015/11/10/【Java】HashMap 和 HashTable 的区别到底是什么？/"><img width="250" height="175" src="http://lorempixel.com/500/350/city/3" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
-          </div>
-        
-          <div class="entry-summary">
+
           
+            <div class="entry-summary" style="margin-left:0;">
+            
 第一、继承不同第一个不同主要是历史原因。Hashtable是基于陈旧的Dictionary类的，HashMap是Java 1.2引进的Map接口的一个实现。
 
 
-12public class HashMap&lt;K, V&gt; extends AbstractMap&lt;K, V&gt; implements Cloneable, Serializable &#123;...&#12...
+12public class HashMap&lt;K, V&gt; extends AbstractMap&lt;K, V&gt; implements Cloneable, Serializable &#123;...&#125;public class Hashtable&lt;K, V&gt; extends Dictionary&lt;K, V&gt; implements Map&lt;K, V&gt;, Cloneable, Serializable &#123;...&#125;
+而HashMap继承的抽象类...
+          
+
+        
           <p class="article-more-link">
             <a href="../../2015/11/10/【Java】HashMap 和 HashTable 的区别到底是什么？/#more">Continue Reading →</a>
           </p>
