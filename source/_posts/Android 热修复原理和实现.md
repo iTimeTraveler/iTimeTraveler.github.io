@@ -14,7 +14,7 @@ photos:
 
 
 
-> 查看原文： **[Android 热修复，没你想的那么难](http://kymjs.com/code/2016/05/08/01)** —— by kymjs张涛
+> 查看原文： [**Android 热修复，没你想的那么难**](http://kymjs.com/code/2016/05/08/01) —— by kymjs张涛
 
 
 一种动态加载最简单的实现方式，代码实现起来非常简单，重要的是这种思路和原理 。
