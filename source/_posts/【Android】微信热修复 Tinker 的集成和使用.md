@@ -10,7 +10,7 @@ categories: [Android]
 keywords: Tinker
 description: 
 photos:
-    - gallery/tinker.jpg
+    - /gallery/tinker.jpg
 ---
 
 
