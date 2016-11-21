@@ -4,8 +4,8 @@ layout: post
 date: 2016-11-16 16:08:00
 comments: true
 tags: [D3]
-categories: [D3]
-keywords: D3
+categories: [D3.js]
+keywords: D3.js
 photos:
   - /gallery/d3_link-node-by-name.png
 ---
