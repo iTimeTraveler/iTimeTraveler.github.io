@@ -64,7 +64,7 @@ Neo4j是一个图形数据库，这也就意味着它的数据并非保存在表
 
 在上面的示例中，你看到了由Author、City、Book和Category以及它们之间的关系所组成的一个图形。如果你希望通过Cypher语句在Neo4j web控制台中列出这些数据结果，可以执行以下语句：
 
-```cypher
+```SQL
 MATCH
    (city:City)<-[:LIVES_IN]-(:Author)-[:WROTE]->
    (book:Book)-[:HAS_CATEGORY]->(category:Category)
@@ -76,7 +76,7 @@ MATCH
 当然，Neo4j的功能不仅仅在于展示漂亮的图片。如果你希望按照作者所处的地点（城市）计算书籍的分类数目，你可以通过使用相同的**MATCH**模式，返回一组不同的列，例如：
 
 
-```cypher
+```SQL
 MATCH
    (city:City)<-[:LIVES_IN]-(:Author)-[:WROTE]->
    (book:Book)-[:HAS_CATEGORY]->(category:Category)
@@ -124,14 +124,14 @@ Neo4j的原作者Neo Technology希望为GraphGist提供一个由社区创建的�
 现在你已经熟悉这个模型了，在继续深入学习之前，我想为你快速地介绍一下Cypher这门查询语言。举例来说，如果我们需要返回所有的Gist和它们的关键字，可以通过以下语句实现：
 
 
-```cypher
+```SQL
 MATCH (gist:Gist)-[:HAS_KEYWORD]->(keyword:Keyword)
 RETURN gist.title, keyword.name
 ```
 
 这段语句将返回一张表，其中的每一行是由每个Gist和Keyword的组合构成的，正如同SQL join的行为一样。现在我们更深入一步，假设我们想要找到某个人所编写的Gist对应的所有Domain，我们可以执行下面这条查询语句：
 
-```cypher
+```SQL
 MATCH (person:Person)-[:WRITER_OF]->(gist:Gist)-[:HAS_DOMAIN]->(domain:Domain)
 WHERE person.name = “John Doe”
 RETURN domain.name, COUNT(gist)
@@ -143,7 +143,7 @@ RETURN domain.name, COUNT(gist)
 
 让我们开始创建这个用于门户的API（可以在GitHub上找到）的查询吧。首先，我们需要按照Gist的title属性进行匹配，并匹配所有相关的Gist节点：
 
-```cypher
+```SQL
 // Match Gists based on title
  MATCH (gist:Gist) WHERE gist.title =~ {search_query}
  // Optionally match Gists with the same keyword
@@ -156,7 +156,7 @@ RETURN domain.name, COUNT(gist)
 
 现在让我们对之前的查询进行扩展，将**RETURN**语句替换为**WITH**语句：
 
-```cypher
+```SQL
 MATCH (gist:Gist) WHERE gist.title =~ {search_query}
  OPTIONAL MATCH (gist)-[:HAS_KEYWORD]->(keyword)<-[:HAS_KEYWORD]-(related_gist)
  WITH gist, related_gist, COUNT(DISTINCT keyword.name) AS keyword_count
@@ -173,7 +173,7 @@ related_gist.url }, weight: keyword_count }) AS related
 
 最后，我们将产生这样一条查询语句，这也是最后一次使用**WITH**语句了：
 
-```cypher
+```SQL
 MATCH (gist:Gist) WHERE gist.title =~ {search_query}
  OPTIONAL MATCH (gist)-[:HAS_KEYWORD]->(keyword)<-[:HAS_KEYWORD]-(related_gist)
  WITH gist, related_gist, COUNT(DISTINCT keyword.name) AS keyword_count
@@ -204,7 +204,7 @@ MATCH (gist:Gist) WHERE gist.title =~ {search_query}
 
 不仅如此，如果你觉得用表的形式返回数据太老土，那么Cypher也可以返回对象：
 
-```cypher
+```SQL
 RETURN
    {
 gist: gist,

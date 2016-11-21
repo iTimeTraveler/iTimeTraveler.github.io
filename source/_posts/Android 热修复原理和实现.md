@@ -8,8 +8,6 @@ tags:
 categories: [Android]
 keywords: hotfix
 description: 
-photos:
-    - http://img.blog.csdn.net/20161110131925707
 ---
 
 
