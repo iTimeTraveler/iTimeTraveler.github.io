@@ -29,13 +29,11 @@ You can reach me by
 
 ### Funny Links
 
-- [**stormzhang**](http://stormzhang.com/)
 - [**ibireme**](http://blog.ibireme.com/)
 - [**Red Blob Games**](http://theory.stanford.edu/~amitp/GameProgramming/)
 - [**Joe's Blog**](https://hijiangtao.github.io/)
 - [**EVAN YOU**](http://evanyou.me/)
 - [**Just For Fun**](http://selfboot.cn/)
-- [**pinggod**](http://pinggod.com/)
 - [**BNGH**](http://gaoryrt.com/)
 - [**fatesinger**](https://fatesinger.com/)
 - [**themeakina**](http://www.akina.pw/themeakina)
@@ -43,7 +41,7 @@ You can reach me by
 - [**tagDiv**](http://tagdiv.com/) & [NEWSMAG](http://demo.tagdiv.com/newsmag_classic_blog/)
 - [tarikfayad](http://tarikfayad.com/)
 - [**成浩的博客**](https://chenghao.site/)
-- [**宅談**](https://otakism.com/)
+- [**朱腾鹏（像素癖）**](http://div63.com/index.html)
 
 
 

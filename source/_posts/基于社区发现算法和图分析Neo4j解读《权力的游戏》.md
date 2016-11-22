@@ -96,7 +96,7 @@ MATCH (c:Character) RETURN count(c)
 ```
 
 |  count(c) |
-|: ---- :|
+|:----:|
 |   107   |
 
 
@@ -110,8 +110,8 @@ WITH c, count(*) AS num
 RETURN min(num) AS min, max(num) AS max, avg(num) AS avg_characters, stdev(num) AS stdev
 ```
 
-| min  | max  | avg_characters |	stdev                |
-|:----:|:----:|:-----------------------------------:|
+| min  | max  | avg_characters |	stdev  |
+|:----:|:----:|:---------------------------:|:----:|
 | 1    | 24   | 4.957746478873241 |	6.227672391875085 |
 
 
@@ -128,7 +128,7 @@ ORDER BY len DESC LIMIT 4
 ```
 
 | len  | path                                     |
-|: ---- :| ---------------------------------------- |
+|:----:| ---------------------------------------- |
 | 6    | [Illyrio, Belwas, Daenerys, Robert, Tywin, Oberyn, Amory] |
 | 6    | [Illyrio, Belwas, Daenerys, Robert, Sansa, Bran, Jojen] |
 | 6    | [Illyrio, Belwas, Daenerys, Robert, Stannis, Davos, Shireen] |
