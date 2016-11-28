@@ -9,7 +9,7 @@ keywords: Android
 description: 
 ---
 
-**一、问题描述：**
+## **一、问题描述：**
 > 假设有两个Activity（1和2）,每个Activity拥有一个Fragment，并分别有一个Button，点击Button1可以start Activity2，然后点击Button2可以finish掉自己（即Activity2）,然后返回到Activity1。根据这个简单模型描述一下Activity和Fragment的生命周期之间的依赖关系？
 
 ![](http://img.blog.csdn.net/20151125142250638)
@@ -20,7 +20,7 @@ description:
 <!--more-->
 
 
-**二、生命周期知识**
+## **二、生命周期知识**
 
 Activity和Fragment的生命周期图谱可以参考我的另外一篇博客：[**【Android】Fragment的生命周期详解**](http://blog.csdn.net/u010983881/article/details/50034805)，他们的关系大致如下图：
 
@@ -31,13 +31,13 @@ Activity和Fragment的生命周期图谱可以参考我的另外一篇博客：[
 
 
 
-**三、代码验证**
+## **三、代码验证**
 
   MainActivity和SecondActivity的布局是这样的，里面各添加了一个Fragment：
   
    ![](http://img.blog.csdn.net/20160122171224773) ![](http://img.blog.csdn.net/20160122171401607)
 
-```
+```xml
 /**
   * MainActivity布局xml文件
   */
@@ -66,7 +66,10 @@ Activity和Fragment的生命周期图谱可以参考我的另外一篇博客：[
 
 ```
 
-```
+---------
+
+
+```java
 /**
   * MainActivity.java代码，SecondActivity的代码与之类似，这里就不贴那么多了
   */
@@ -136,8 +139,11 @@ public class MainActivity extends Activity {
 }
 ```
 
+---------
 
-```
+
+
+```java
 /**
   * FirstFragment.java代码， SecondFragment和它差不多一样
   */
@@ -227,15 +233,16 @@ public class FirstFragment extends Fragment {
 
 }
 ```
+
 ----------
 
 
 
-**四、运行结果**
+## **四、运行结果**
 
 1、第一次打开以后：
 
-```
+```bash
 com.example.kuguan.anlearning W/MainActivity﹕ ==============onCreate()
 com.example.kuguan.anlearning W/FirstFragment﹕ onAttach...
 com.example.kuguan.anlearning W/FirstFragment﹕ onCreate...
@@ -251,7 +258,7 @@ com.example.kuguan.anlearning W/FirstFragment﹕ onResume...
 
 2、点击MainActivity中的按钮“打开第二个Activity”以后：
 
-```
+```console
 com.example.kuguan.anlearning W/MainActivity﹕ ----------------mButton onClick-----------------
 com.example.kuguan.anlearning W/FirstFragment﹕ onPause...
 com.example.kuguan.anlearning W/MainActivity﹕ ==============onPause()
@@ -269,7 +276,7 @@ com.example.kuguan.anlearning W/MainActivity﹕ ==============onStop()
 
 3、点击SecondActivity的按钮“finish”之后：
 
-```
+```bash
 com.example.kuguan.anlearning W/SecondActivity﹕ -----------------mButton onClick------------------
 com.example.kuguan.anlearning W/SecondFragment﹕ onPause...
 com.example.kuguan.anlearning W/SecondActivity﹕ ==============onPause()
@@ -287,7 +294,7 @@ com.example.kuguan.anlearning W/SecondActivity﹕ ==============onDestroy()
 ```
 4、点击back键使MainActivity退到后台：
 
-```
+```bash
 com.example.kuguan.anlearning W/FirstFragment﹕ onPause...
 com.example.kuguan.anlearning W/MainActivity﹕ ==============onPause()
 com.example.kuguan.anlearning W/FirstFragment﹕ onStop...
@@ -300,7 +307,7 @@ com.example.kuguan.anlearning W/MainActivity﹕ ==============onDestroy()
 
 5、在MianActivity显示的时候，按HOME键：
 
-```
+```shell
 com.example.kuguan.anlearning W/FirstFragment﹕ onPause...
 com.example.kuguan.anlearning W/MainActivity﹕ ==============onPause()
 com.example.kuguan.anlearning W/FirstFragment﹕ onStop...
@@ -308,7 +315,7 @@ com.example.kuguan.anlearning W/MainActivity﹕ ==============onStop()
 ```
 6、然后再点击Icon打开：
 
-```
+```shell
 com.example.kuguan.anlearning W/MainActivity﹕ ==============onRestart()
 com.example.kuguan.anlearning W/MainActivity﹕ ==============onStart()
 com.example.kuguan.anlearning W/FirstFragment﹕ onStart...
@@ -319,6 +326,6 @@ com.example.kuguan.anlearning W/FirstFragment﹕ onResume...
 
 
 
-【参考资料】：
+## 【参考资料】：
 1、[Fragment和Activity](http://www.cnblogs.com/mengdd/archive/2013/01/11/2856374.html)
 
