@@ -341,7 +341,11 @@ RETURN c1.name, c2.name, r.weight AS weight
 
 ### PageRank
 
-作者使用igraph运行的第一个算法是PageRank。PageRank算法源自Google的网页排名。它是一种特征向量中心性(eigenvector centrality)算法。
+作者使用igraph运行的第一个算法是[PageRank](https://en.wikipedia.org/wiki/PageRank)。PageRank算法源自Google的网页排名。它是一种[特征向量中心性(eigenvector centrality)](https://en.wikipedia.org/wiki/Centrality#Eigenvector_centrality)算法。
+
+
+![](/gallery/game/page-rank.png)
+
 
 在igraph实例中运行PageRank算法，然后把结果写回Neo4j，在角色节点创建一个pagerank属性存储igraph计算的值：
 
@@ -424,6 +428,8 @@ RETURN cluster, members ORDER BY cluster ASC
 
 ### 角色“大合影”
 
+![The graph of thrones](/gallery/game/graph-of-thrones.png)
+
 《权力的游戏》的权力图。节点的大小正比于介数中心性，颜色表示社区（由随机游走算法获得），边的厚度正比于两节点接触的次数。
 现在已经计算好这些图的分析数据，让我们对其进行可视化，让数据看起来更有意义。
 
@@ -452,28 +458,25 @@ viz.render();
 
 其中：
 
-- 节点带有标签Character，属性name；
-- 节点的大小正比于betweenness属性；
-- 可视化中包括INTERACTS关系；
-- 关系的厚度正比于weight属性；
-- 节点的颜色是根据网络中社区community属性决定；
-- 从本地服务器localhost拉取Neo4j的数据；
-- 在一个id为viz的DOM元素中展示可视化。
+- 节点带有标签`Character`，属性`name`；
+- 节点的大小正比于`betweenness`属性；
+- 可视化中包括`INTERACTS`关系；
+- 关系的厚度正比于`weight`属性；
+- 节点的颜色是根据网络中社区`community`属性决定；
+- 从本地服务器`localhost`拉取Neo4j的数据；
+- 在一个id为`viz`的DOM元素中展示可视化。
 
 
+## Resources
+- A. Beveridge and J. Shan, [“Network of Thrones”](http://www.maa.org/sites/default/files/pdf/Mathhorizons/NetworkofThrones.pdf) Math Horizons Magazine , Vol. 23, No. 4 (2016), pp. 18-22.
 
-
-------
-
-> 侠天，专注于大数据、机器学习和数学相关的内容，并有个人公众号：`bigdata_ny`分享相关技术文章。
-若发现以上文章有任何不妥，请联系我。
-> 
-> ![](http://mmbiz.qpic.cn/mmbiz/JYFaO3kM0gmBsjv6JrxuibQLTibrPC3hyNHBbfwJbxRjNxeOKIQWQ08KLkCyic59icaCdaPxHqiaraibeibmcRMRpCIibA/0?wx_fmt=jpeg?0.036568912301853995)
-
+- J. Kleinberg and D. Easley, [Networks, Crowds, and Markets: Reasoning About a Highly Connected World](https://www.cs.cornell.edu/home/kleinber/networks-book/). Cambridge University Press (2010)
+All code is [available on Github](https://github.com/johnymontana/graph-of-thrones).
 
 ------
 
 【参考资料】
 
+- [**Analyzing the Graph of Thrones** -- by William Lyon](http://www.lyonwj.com/2016/06/26/graph-of-thrones-neo4j-social-network-analysis/)
 - [基于社区发现算法和图分析Neo4j解读《权力的游戏》上篇](http://mp.weixin.qq.com/s?__biz=MzI0MDIxMDM0MQ==&mid=2247483702&idx=2&sn=7a1abd6d129b87150e890b7ae11791aa&3rd=MzA3MDU4NTYzMw==&scene=6#rd)
 - [基于社区发现算法和图分析Neo4j解读《权力的游戏》下篇](http://www.hizher.com/pageContent-1148688-51394.html)
