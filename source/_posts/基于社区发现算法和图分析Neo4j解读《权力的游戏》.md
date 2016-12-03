@@ -328,13 +328,16 @@ Neo4j与其它工具（比如，R和Python数据科学工具）完美结合。�
 为了在《权力的游戏》的数据的图分析中使用igraph，首先需要从Neo4j拉取数据，用Python建立igraph实例。作者使用 Neo4j 的Python驱动库py2neo。我们能直接传入Py2neo查询结果对象到igraph的TupleList构造器，创建igraph实例：
 
 ```python
-from py2neo import Graphfrom igraph import Graph as IGraph
+from py2neo import Graph
+from igraph import Graph as IGraph
 graph = Graph()
 
 query = '''
 MATCH (c1:Character)-[r:INTERACTS]->(c2:Character)
 RETURN c1.name, c2.name, r.weight AS weight
-'''ig = IGraph.TupleList(graph.run(query), weights=True)
+'''
+
+ig = IGraph.TupleList(graph.run(query), weights=True)
 ```
 
 现在有了igraph对象，可以运行igraph实现的各种图算法来。
@@ -351,7 +354,8 @@ RETURN c1.name, c2.name, r.weight AS weight
 
 ```python
 pg = ig.pagerank()
-pgvs = []for p in zip(ig.vs, pg):
+pgvs = []
+for p in zip(ig.vs, pg):
     print(p)
     pgvs.append({"name": p[0]["name"], "pg": p[1]})
 pgvs
@@ -360,7 +364,9 @@ write_clusters_query = '''
 UNWIND {nodes} AS n
 MATCH (c:Character) WHERE c.name = n.name
 SET c.pagerank = n.pg
-'''graph.run(write_clusters_query, nodes=pgvs)
+'''
+
+graph.run(write_clusters_query, nodes=pgvs)
 ```
 
 现在可以在Neo4j的图中查询最高PageRank值的节点：
@@ -395,7 +401,8 @@ RETURN n.name AS name, n.pagerank AS pagerank ORDER BY pagerank DESC LIMIT 10
 ```python
 clusters = IGraph.community_walktrap(ig, weights="weight").as_clustering()
 
-nodes = [{"name": node["name"]} for node in ig.vs]for node in nodes:
+nodes = [{"name": node["name"]} for node in ig.vs]
+for node in nodes:
     idx = ig.vs.find(name=node["name"]).index
     node["community"] = clusters.membership[idx]
 
@@ -403,7 +410,9 @@ write_clusters_query = '''
 UNWIND {nodes} AS n
 MATCH (c:Character) WHERE c.name = n.name
 SET c.community = toInt(n.community)
-'''graph.run(write_clusters_query, nodes=nodes)
+'''
+
+graph.run(write_clusters_query, nodes=nodes)
 ```
 
 我们能在Neo4j中查询有多少个社区以及每个社区的成员数：
