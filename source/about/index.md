@@ -14,7 +14,7 @@ comments: true
 
 - Bello, guys. I am ： **Wenlong Xue**
 
- I'm an Android Developer + prefer Python & Golang + interest in AI(Artificial Intelligence) + Google radicals（`Golang`+`Docker`+`Kubernetes`+`AnglarJS`)
+ I'm an Android Developer + prefer Python & Golang + interest in AI(Artificial Intelligence) + Google radicals（`Golang`+`Docker`+`Kubernetes`+`AngularJS`)
 
 <br>
 
@@ -40,6 +40,7 @@ You can reach me by
 - [**KIERAN'S BLOG**](http://go.kieran.top/about.html)
 - [**tagDiv**](http://tagdiv.com/) & [NEWSMAG](http://demo.tagdiv.com/newsmag_classic_blog/)
 - [tarikfayad](http://tarikfayad.com/)
+- [html5up](https://html5up.net/)
 - [**成浩的博客**](https://chenghao.site/)
 - [**朱腾鹏（像素癖）**](http://div63.com/index.html)
 

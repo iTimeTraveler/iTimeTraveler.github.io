@@ -110,9 +110,9 @@ WITH c, count(*) AS num
 RETURN min(num) AS min, max(num) AS max, avg(num) AS avg_characters, stdev(num) AS stdev
 ```
 
-| min  | max  | avg_characters |	stdev  |
+| min  | max  | avg_characters |  stdev  |
 |:----:|:----:|:---------------------------:|:----:|
-| 1    | 24   | 4.957746478873241 |	6.227672391875085 |
+| 1    | 24   | 4.957746478873241 | 6.227672391875085 |
 
 
 ### 图（网络）的直径
@@ -328,26 +328,34 @@ Neo4j与其它工具（比如，R和Python数据科学工具）完美结合。�
 为了在《权力的游戏》的数据的图分析中使用igraph，首先需要从Neo4j拉取数据，用Python建立igraph实例。作者使用 Neo4j 的Python驱动库py2neo。我们能直接传入Py2neo查询结果对象到igraph的TupleList构造器，创建igraph实例：
 
 ```python
-from py2neo import Graphfrom igraph import Graph as IGraph
+from py2neo import Graph
+from igraph import Graph as IGraph
 graph = Graph()
 
 query = '''
 MATCH (c1:Character)-[r:INTERACTS]->(c2:Character)
 RETURN c1.name, c2.name, r.weight AS weight
-'''ig = IGraph.TupleList(graph.run(query), weights=True)
+'''
+
+ig = IGraph.TupleList(graph.run(query), weights=True)
 ```
 
 现在有了igraph对象，可以运行igraph实现的各种图算法来。
 
 ### PageRank
 
-作者使用igraph运行的第一个算法是PageRank。PageRank算法源自Google的网页排名。它是一种特征向量中心性(eigenvector centrality)算法。
+作者使用igraph运行的第一个算法是[PageRank](https://en.wikipedia.org/wiki/PageRank)。PageRank算法源自Google的网页排名。它是一种[特征向量中心性(eigenvector centrality)](https://en.wikipedia.org/wiki/Centrality#Eigenvector_centrality)算法。
+
+
+![](/gallery/game/page-rank.png)
+
 
 在igraph实例中运行PageRank算法，然后把结果写回Neo4j，在角色节点创建一个pagerank属性存储igraph计算的值：
 
 ```python
 pg = ig.pagerank()
-pgvs = []for p in zip(ig.vs, pg):
+pgvs = []
+for p in zip(ig.vs, pg):
     print(p)
     pgvs.append({"name": p[0]["name"], "pg": p[1]})
 pgvs
@@ -356,7 +364,9 @@ write_clusters_query = '''
 UNWIND {nodes} AS n
 MATCH (c:Character) WHERE c.name = n.name
 SET c.pagerank = n.pg
-'''graph.run(write_clusters_query, nodes=pgvs)
+'''
+
+graph.run(write_clusters_query, nodes=pgvs)
 ```
 
 现在可以在Neo4j的图中查询最高PageRank值的节点：
@@ -391,7 +401,8 @@ RETURN n.name AS name, n.pagerank AS pagerank ORDER BY pagerank DESC LIMIT 10
 ```python
 clusters = IGraph.community_walktrap(ig, weights="weight").as_clustering()
 
-nodes = [{"name": node["name"]} for node in ig.vs]for node in nodes:
+nodes = [{"name": node["name"]} for node in ig.vs]
+for node in nodes:
     idx = ig.vs.find(name=node["name"]).index
     node["community"] = clusters.membership[idx]
 
@@ -399,7 +410,9 @@ write_clusters_query = '''
 UNWIND {nodes} AS n
 MATCH (c:Character) WHERE c.name = n.name
 SET c.community = toInt(n.community)
-'''graph.run(write_clusters_query, nodes=nodes)
+'''
+
+graph.run(write_clusters_query, nodes=nodes)
 ```
 
 我们能在Neo4j中查询有多少个社区以及每个社区的成员数：
@@ -423,6 +436,8 @@ RETURN cluster, members ORDER BY cluster ASC
 
 
 ### 角色“大合影”
+
+![The graph of thrones](/gallery/game/graph-of-thrones.png)
 
 《权力的游戏》的权力图。节点的大小正比于介数中心性，颜色表示社区（由随机游走算法获得），边的厚度正比于两节点接触的次数。
 现在已经计算好这些图的分析数据，让我们对其进行可视化，让数据看起来更有意义。
@@ -452,28 +467,25 @@ viz.render();
 
 其中：
 
-- 节点带有标签Character，属性name；
-- 节点的大小正比于betweenness属性；
-- 可视化中包括INTERACTS关系；
-- 关系的厚度正比于weight属性；
-- 节点的颜色是根据网络中社区community属性决定；
-- 从本地服务器localhost拉取Neo4j的数据；
-- 在一个id为viz的DOM元素中展示可视化。
+- 节点带有标签`Character`，属性`name`；
+- 节点的大小正比于`betweenness`属性；
+- 可视化中包括`INTERACTS`关系；
+- 关系的厚度正比于`weight`属性；
+- 节点的颜色是根据网络中社区`community`属性决定；
+- 从本地服务器`localhost`拉取Neo4j的数据；
+- 在一个id为`viz`的DOM元素中展示可视化。
 
 
+## Resources
+- A. Beveridge and J. Shan, [“Network of Thrones”](http://www.maa.org/sites/default/files/pdf/Mathhorizons/NetworkofThrones.pdf) Math Horizons Magazine , Vol. 23, No. 4 (2016), pp. 18-22.
 
-
-------
-
-> 侠天，专注于大数据、机器学习和数学相关的内容，并有个人公众号：`bigdata_ny`分享相关技术文章。
-若发现以上文章有任何不妥，请联系我。
-> 
-> ![](http://mmbiz.qpic.cn/mmbiz/JYFaO3kM0gmBsjv6JrxuibQLTibrPC3hyNHBbfwJbxRjNxeOKIQWQ08KLkCyic59icaCdaPxHqiaraibeibmcRMRpCIibA/0?wx_fmt=jpeg?0.036568912301853995)
-
+- J. Kleinberg and D. Easley, [Networks, Crowds, and Markets: Reasoning About a Highly Connected World](https://www.cs.cornell.edu/home/kleinber/networks-book/). Cambridge University Press (2010)
+All code is [available on Github](https://github.com/johnymontana/graph-of-thrones).
 
 ------
 
 【参考资料】
 
+- [**Analyzing the Graph of Thrones** -- by William Lyon](http://www.lyonwj.com/2016/06/26/graph-of-thrones-neo4j-social-network-analysis/)
 - [基于社区发现算法和图分析Neo4j解读《权力的游戏》上篇](http://mp.weixin.qq.com/s?__biz=MzI0MDIxMDM0MQ==&mid=2247483702&idx=2&sn=7a1abd6d129b87150e890b7ae11791aa&3rd=MzA3MDU4NTYzMw==&scene=6#rd)
 - [基于社区发现算法和图分析Neo4j解读《权力的游戏》下篇](http://www.hizher.com/pageContent-1148688-51394.html)
