@@ -119,42 +119,42 @@ public class ApplicationFromTinkerLike extends DefaultApplicationLike {
 
 ```java
 @Override
-    public void onBaseContextAttached(Context base) {
-        super.onBaseContextAttached(base);
-        
-        //you must install multiDex whatever tinker is installed!
-        MultiDex.install(base);
-        TinkerInstaller.install(this);
-    }
+public void onBaseContextAttached(Context base) {
+    super.onBaseContextAttached(base);
+    
+    //you must install multiDex whatever tinker is installed!
+    MultiDex.install(base);
+    TinkerInstaller.install(this);
+}
 ```
 
 **或者**，我们可以直接将Sample工程中的文件（特别是Utils包下的）拷贝到我们自己的工程中，就像我一样，方便后期使用。比如SampleResultService、TinkerManager这几个类
 
 ![](http://img.blog.csdn.net/20161117111013179)
 
-然后重载onBaseContextAttached方法，可以向我写成下面这样
+然后重载onBaseContextAttached方法，可以像我一样写成下面这样
 
 ```java
 @Override
-    public void onBaseContextAttached(Context base) {
-        super.onBaseContextAttached(base);
-        //you must install multiDex whatever tinker is installed!
-        MultiDex.install(base);
+public void onBaseContextAttached(Context base) {
+    super.onBaseContextAttached(base);
+    //you must install multiDex whatever tinker is installed!
+    MultiDex.install(base);
 
-        MyApplicationContext.application = (MyApplication) getApplication();
-        MyApplicationContext.context = getApplication();
-        TinkerManager.setTinkerApplicationLike(this);
-        TinkerManager.initFastCrashProtect();
-        //should set before tinker is installed
-        TinkerManager.setUpgradeRetryEnable(true);
+    MyApplicationContext.application = (MyApplication) getApplication();
+    MyApplicationContext.context = getApplication();
+    TinkerManager.setTinkerApplicationLike(this);
+    TinkerManager.initFastCrashProtect();
+    //should set before tinker is installed
+    TinkerManager.setUpgradeRetryEnable(true);
 
-        //optional set logIml, or you can use default debug log
-        TinkerInstaller.setLogIml(new MyLogImp());
+    //optional set logIml, or you can use default debug log
+    TinkerInstaller.setLogIml(new MyLogImp());
 
-        //installTinker after load multiDex
-        //or you can put com.tencent.tinker.** to main dex
-        TinkerManager.installTinker(this);
-    }
+    //installTinker after load multiDex
+    //or you can put com.tencent.tinker.** to main dex
+    TinkerManager.installTinker(this);
+}
 ```
 
 至此，自定义Application，也就是将Application中的实现移动到SampleApplicationLike中已经完成。
@@ -170,22 +170,22 @@ TinkerInstaller.onReceiveUpgradePatch(this.getApplication(), Environment.getExte
 在自己的工程中增加两个按钮，其中一个按钮用来显示EditText中的内容，另一个按钮用来加载补丁，在加载补丁按钮点击事件中执行加载patch的操作，为后期修复代码bug做准备，代码为：
 ```java
 Button toastInfo = (Button) top.findViewById(R.id.toastInfo);
-        toastInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //清除补丁
-                Toast.makeText(SysUtils.getApp(),"clean patch!",Toast.LENGTH_LONG).show();
-                Tinker.with(SysUtils.getApp()).cleanPatch();
-            }
-        });
-        Button loadPatchButton = (Button) top.findViewById(R.id.loadPatch);
-        loadPatchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //加载补丁（加载成功以后patch文件会自动删掉）
-                TinkerInstaller.onReceiveUpgradePatch(SysUtils.getApp(), Environment.getExternalStorageDirectory().getAbsolutePath() + "/patch_signed_7zip.apk");
-            }
-        });
+toastInfo.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        //清除补丁
+        Toast.makeText(SysUtils.getApp(),"clean patch!",Toast.LENGTH_LONG).show();
+        Tinker.with(SysUtils.getApp()).cleanPatch();
+    }
+});
+Button loadPatchButton = (Button) top.findViewById(R.id.loadPatch);
+loadPatchButton.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        //加载补丁（加载成功以后patch文件会自动删掉）
+        TinkerInstaller.onReceiveUpgradePatch(SysUtils.getApp(), Environment.getExternalStorageDirectory().getAbsolutePath() + "/patch_signed_7zip.apk");
+    }
+});
 ```
 
 ## **打patch包的步骤**
@@ -238,7 +238,7 @@ $ adb push ./app/build/outputs/tinkerPatch/debug/patch_signed_7zip.apk /storage/
 
 4、运行app，执行LOAD PATCH代码块, 如果看到`patch success, please restart process`的toast，即可锁屏或者KILL 应用进程
 
-5、我们可以看到，补丁包的确已经加载成功了。
+5、重新启动App，我们可以看到，补丁包的确已经加载成功了。
 
 
 ---

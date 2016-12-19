@@ -25,7 +25,6 @@ You can reach me by
 - Email: xuewenlong_2008@sina.com
 - Github: [iTimeTraveler](https://github.com/iTimeTraveler)
 - Google+: [iTimeTraveler](https://plus.google.com/116515515454998359216﻿)
-- Weibo: [iTimee](http://weibo.com/xueyubowen)
 
 ### Funny Links
 
