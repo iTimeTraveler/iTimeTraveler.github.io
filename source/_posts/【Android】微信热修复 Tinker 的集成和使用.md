@@ -190,7 +190,9 @@ loadPatchButton.setOnClickListener(new View.OnClickListener() {
 
 ## **打patch包的步骤**
 
-1、调用`assembleDebug`编译原始包，AndroidStudio 命令行下运行
+### 1、调用`assembleDebug`编译原始包
+
+AndroidStudio 命令行下运行
 
 ```shell
 $ ./gradlew assembleDebug
@@ -198,7 +200,15 @@ $ ./gradlew assembleDebug
 
 编译过的包会保存在build/bakApk中。然后我们将它安装到手机，可以看到补丁并没有加载。
 
-2、我们需要修改build.gradle中的参数，将步骤一编译保存的安装包路径拷贝到`tinkerPatch`中的`tinkerOldApkPath`参数中，根据需要也得同时修改`tinkerApplyResourcePath` ，`tinkerApplyMappingPath` 。
+
+### 2、修改代码，添加新功能或者更改功能
+
+例如在MainActivity中添加一个`I am on patch onCreate`的Toast.
+
+
+### 3、然后修改build.gradle中的参数
+
+将步骤一编译保存的安装包路径拷贝到`tinkerPatch`中的`tinkerOldApkPath`参数中，根据需要也得同时修改`tinkerApplyResourcePath` ，`tinkerApplyMappingPath` 。
 
 ```groovy
 /**
@@ -224,21 +234,39 @@ ext {
 ```
 
 
-3、调用tinkerPatchDebug, 生成补丁包。补丁包与相关日志会保存在/build/outputs/tinkerPatch/。
+### 4、调用tinkerPatchDebug, 生成补丁包
+
 
 ```shell
 $ ./gradlew tinkerPatchDebug
 ```
 
-然后我们将patch_signed_7zip.apk推送到手机的sdcard中。
+补丁包与相关日志会保存在`/build/outputs/tinkerPatch/`中，我们将其中的**patch_signed_7zip.apk**推送到手机的sdcard中。
 
 ```shell
 $ adb push ./app/build/outputs/tinkerPatch/debug/patch_signed_7zip.apk /storage/sdcard0/
 ```
 
-4、运行app，执行LOAD PATCH代码块, 如果看到`patch success, please restart process`的toast，即可锁屏或者KILL 应用进程
+### 5、运行app，执行LOAD PATCH代码块
 
-5、重新启动App，我们可以看到，补丁包的确已经加载成功了。
+如果看到`patch success, please restart process`的toast，即可锁屏或者KILL 应用进程。
+
+
+### 6、重新启动App
+
+我们可以看到，补丁包的确已经加载成功了。
+
+
+---
+
+
+## **使用Tinker的注意事项**
+
+![](/gallery/tinker_id_problem.png)
+
+
+
+
 
 
 ---

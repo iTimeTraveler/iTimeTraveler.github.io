@@ -15,7 +15,7 @@ photos:
 
 
 
-> 本文转载自 [给 Android 开发者的 RxJava 详解](http://gank.io/post/560e15be2dca930e00da1083) —— by [**扔物线**](https://github.com/rengwuxian)
+> 本文转载自 [给 Android 开发者的 RxJava 详解](http://gank.io/post/560e15be2dca930e00da1083) —— by [扔物线](https://github.com/rengwuxian)
 
 ## **前言**
 
@@ -872,7 +872,7 @@ Observable.create(onSubscribe)
 
 如上，在 `doOnSubscribe()`的后面跟一个 `subscribeOn()` ，就能指定准备工作的线程了。
 
-## RxJava 的适用场景和使用方式
+## **RxJava 的适用场景和使用方式**
 
 ### 1. 与 Retrofit 的结合
 
@@ -1138,7 +1138,7 @@ RxView.clickEvents(button)
 
 **RxBus 名字看起来像一个库，但它并不是一个库，而是一种模式**。它的思想是使用 RxJava 来实现了 `EventBus` ，而让你不再需要使用 `Otto` 或者 GreenRobot 的 `EventBus`。至于什么是 RxBus，可以看[**这篇文章**](http://blog.kaush.co/2014/12/24/implementing-an-event-bus-with-rxjava-rxbus/)。顺便说一句，Flipboard 已经用 RxBus 替换掉了 Otto ，目前为止没有不良反应。
 
-## 最后
+## **最后**
 
 对于 Android 开发者来说， RxJava 是一个很难上手的库，因为它对于 Android 开发者来说有太多陌生的概念了。可是它真的很牛逼。因此，我写了这篇《给 Android 开发者的 RxJava 详解》，希望能给始终搞不明白什么是 RxJava 的人一些入门的指引，或者能让正在使用 RxJava 但仍然心存疑惑的人看到一些更深入的解析。无论如何，只要能给各位同为 Android 工程师的你们提供一些帮助，这篇文章的目的就达到了。
 
