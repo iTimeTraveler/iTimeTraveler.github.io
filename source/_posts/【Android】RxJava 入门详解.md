@@ -10,7 +10,7 @@ categories:
 keywords: RxJava
 description: 
 photos:
-   - /gallery/rxjava-introduction.jpg
+   - /gallery/rxjava-introduction.png
 ---
 
 

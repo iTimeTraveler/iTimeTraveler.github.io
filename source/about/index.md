@@ -37,6 +37,7 @@ You can reach me by
 - [**tagDiv**](http://tagdiv.com/) & [NEWSMAG](http://demo.tagdiv.com/newsmag_classic_blog/)
 - [tarikfayad](http://tarikfayad.com/)
 - [html5up](https://html5up.net/)
+- [刘未鹏 | Mind Hacks](http://mindhacks.cn/)
 - [**成浩的博客**](https://chenghao.site/)
 - [**朱腾鹏（像素癖）**](http://div63.com/index.html)
 
