@@ -17,8 +17,6 @@ description:
 
 ![比如这个](http://img.blog.csdn.net/20161009150647271)
 
-<!--more-->
-
 
 ### **二、解决方案**
 
@@ -44,6 +42,9 @@ description:
   
   textView.setText(builder);
 ```
+
+<!--more-->
+
 
 除了上述代码中使用的 `ForegroundColorSpan` 和 `BackgroundColorSpan`之外，还有以下这些Span可以使用：
 

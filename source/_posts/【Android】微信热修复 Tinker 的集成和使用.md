@@ -262,8 +262,18 @@ $ adb push ./app/build/outputs/tinkerPatch/debug/patch_signed_7zip.apk /storage/
 
 ## **使用Tinker的注意事项**
 
+
+- 1、Tinker_id的大版本升级问题
+
 ![](/gallery/tinker_id_problem.png)
 
+- 2、如果生成patch失败，并且原因如下：
+
+```shell
+Warning: ignoreWarning is false, but we found loader classes are found in old secondary dex.
+```
+
+那么需要把**相应的报错类**声明在项目的`keep_in_main_dex.txt` 文件中，保证它编译时会被放置到主dex中。参考[Tinker Issue #96](https://github.com/Tencent/tinker/issues/96) 。
 
 
 
@@ -280,3 +290,6 @@ $ adb push ./app/build/outputs/tinkerPatch/debug/patch_signed_7zip.apk /storage/
 -  [将Tinke集成到自己的项目](http://blog.csdn.net/xiejc01/article/details/52735920)
 -  [Android 微信热修复Tinker接入过程以及使用方法](http://blog.csdn.net/a750457103/article/details/52815096)
 - [Tinker 逆向分析](https://www.zybuluo.com/dodola/note/554061)
+
+
+---

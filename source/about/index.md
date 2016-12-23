@@ -12,7 +12,7 @@ comments: true
 
 ### Profile
 
-- Bello, guys. I am ： **Wenlong Xue**
+- Bello, guys. I am ： **iTimeTraveler**
 
  I'm an Android Developer + prefer Python & Golang + interest in AI(Artificial Intelligence) + Google radicals（`Golang`+`Docker`+`Kubernetes`+`AngularJS`)
 
@@ -22,9 +22,11 @@ comments: true
 
 You can reach me by
 
-- Email: xuewenlong_2008@sina.com
+- Email: [iTime](mailto:xuewenlong_2008@sina.com)
 - Github: [iTimeTraveler](https://github.com/iTimeTraveler)
 - Google+: [iTimeTraveler](https://plus.google.com/116515515454998359216﻿)
+
+BTW, you can even [google me](https://www.google.com/search?q=itimetraveler)!
 
 ### Funny Links
 
@@ -39,6 +41,7 @@ You can reach me by
 - [html5up](https://html5up.net/)
 - [刘未鹏 | Mind Hacks](http://mindhacks.cn/)
 - [**成浩的博客**](https://chenghao.site/)
+- [设计筆記](https://biji.io/)
 - [**朱腾鹏（像素癖）**](http://div63.com/index.html)
 
 
