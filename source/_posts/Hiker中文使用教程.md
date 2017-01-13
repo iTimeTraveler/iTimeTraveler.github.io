@@ -6,6 +6,8 @@ comments: true
 tags: [Hexo]
 keywords: Hexo theme
 description: 
+photos:
+    - /gallery/bfx-dachang.jpg
 ---
 
 # Hiker

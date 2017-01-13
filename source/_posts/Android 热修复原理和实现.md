@@ -8,6 +8,8 @@ tags:
 categories: [Android]
 keywords: hotfix
 description: 
+photos:
+    - /gallery/hotfix.png
 ---
 
 
@@ -22,6 +24,9 @@ description:
 ![](http://img.blog.csdn.net/20161110131925707)
 
 这张图是我所理解的 Android 插件化技术的三个技术点以及它们的应用场景。今天以 [【Qzone 热修复方案】](https://zhuanlan.zhihu.com/p/20308548)为例，跟大家讲一讲插件化中 `热修复方案` 的实现。
+
+
+<!--more-->
 
 
 ## 原理
@@ -45,8 +50,6 @@ Android 中有三个 ClassLoader, 分别为`URLClassLoader`、`PathClassLoader`�
 	
    4、classload, 是指该装载器的父装载器,一般为当前执行类的装载器
 
-
-<!--more-->
 
 
 从[framework源码](http://androidxref.com/4.0.4/xref/libcore/dalvik/src/main/java/dalvik/system/BaseDexClassLoader.java)中的`dalvik.system`包下，找到`DexClassLoader`源码，并没有什么卵用，实际内容是在它的父类`BaseDexClassLoader`中，顺带一提，这个类最低在API14开始有用。包含了两个变量：

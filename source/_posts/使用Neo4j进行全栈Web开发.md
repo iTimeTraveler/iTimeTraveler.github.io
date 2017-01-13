@@ -10,7 +10,7 @@ categories:
 keywords: Neo4j
 description: 
 photos:
-   - http://img.blog.csdn.net/20161110104435615
+   - /gallery/Neo4j.png
 ---
 
 

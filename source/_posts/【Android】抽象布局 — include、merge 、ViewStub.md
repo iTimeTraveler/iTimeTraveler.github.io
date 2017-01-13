@@ -7,6 +7,8 @@ tags: [Android]
 categories: [Android]
 keywords: Android
 description: 
+photos:
+    - /gallery/Re-usingLayouts.jpg
 ---
 
 
