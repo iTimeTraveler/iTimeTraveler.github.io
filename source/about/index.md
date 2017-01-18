@@ -46,4 +46,4 @@ BTW, you can even [google me](https://www.google.com/search?q=itimetraveler)!
 
 
 
-![So, if you got a dream, you gotta protect it.](http://img.blog.csdn.net/20160909190409989)
+![So, if you got a dream, you gotta protect it.](/gallery/uconstruction.gif)
