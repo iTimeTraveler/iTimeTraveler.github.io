@@ -15,10 +15,10 @@ description: 有一种场景，比如App设置页中会有一组开关选项，�
 首先，敲定每个boolean值存储的位置
 ```java
 	private int mBroadcastCustomValue = 0;   //用来存储的int值
-	public static final int BROADCAST_TYPE_CUSTOM_BASE = 1;				//基础类播报
-	public static final int BROADCAST_TYPE_CUSTOM_TRAFFIC = 1 << 1;		//实时路况
-	public static final int BROADCAST_TYPE_CUSTOM_CAMERA = 1 << 2;		//摄像头限速播报
-	public static final int BROADCAST_TYPE_CUSTOM_SAFE = 1 << 3;		//安全提醒类
+	public static final int BROADCAST_TYPE_CUSTOM_BASE = 1;
+	public static final int BROADCAST_TYPE_CUSTOM_TRAFFIC = 1 << 1;
+	public static final int BROADCAST_TYPE_CUSTOM_CAMERA = 1 << 2;
+	public static final int BROADCAST_TYPE_CUSTOM_SAFE = 1 << 3;
 ```
 
 
