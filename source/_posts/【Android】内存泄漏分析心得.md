@@ -10,7 +10,7 @@ categories:
 keywords: 
 description: 
 photos:
-   - https://i.ytimg.com/vi/F2nrej6Kjww/maxresdefault.jpg
+   - /gallery/memoryleak.png
 ---
 
 
@@ -219,7 +219,7 @@ public class LeakAct extends Activity {
 解决方案：
 
 >  1、使用ApplicationContext代替ActivityContext，因为ApplicationContext会随着应用程序的存在而存在，而不依赖于activity的生命周期；
-> 
+>
 >  2、对Context的引用不要超过它本身的生命周期，慎重的对Context使用“static”关键字。Context里如果有线程，一定要在onDestroy()里及时停掉。
 
 example：
@@ -286,7 +286,7 @@ protected void doOnDestroy() {
 解决方案：
 
 > 1. 使用ApplicationContext代替ActivityContext;
-> 
+>
 > 2. 在Activity执行onDestory时，调用反注册;
 
 ```java
