@@ -14,6 +14,12 @@ comments: true
 
 - Bello, guys. I am ： **iTimeTraveler**
 
+
+
+ I live in Beijing and work as a software developer. I use this site to blog on different topics that I like and hope you find interesting.
+
+
+
  I'm an Android Developer + prefer Python & Golang + interest in AI(Artificial Intelligence) + Google radicals（`Golang`+`Docker`+`Kubernetes`+`AngularJS`)
 
 <br>
