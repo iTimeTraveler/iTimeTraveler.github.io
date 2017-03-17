@@ -39,16 +39,14 @@ BTW, you can even [google me](https://www.google.com/search?q=itimetraveler)!
 - [**ibireme**](http://blog.ibireme.com/)
 - [**Red Blob Games**](http://theory.stanford.edu/~amitp/GameProgramming/)
 - [**Joe's Blog**](https://hijiangtao.github.io/)
-- [**fatesinger**](https://fatesinger.com/)
-- [**themeakina**](http://www.akina.pw/themeakina)
-- [**KIERAN'S BLOG**](http://go.kieran.top/about.html)
-- [**tagDiv**](http://tagdiv.com/) & [NEWSMAG](http://demo.tagdiv.com/newsmag_classic_blog/)
+- [**tagDiv**](http://tagdiv.com/)
 - [tarikfayad](http://tarikfayad.com/)
-- [html5up](https://html5up.net/)
 - [刘未鹏 | Mind Hacks](http://mindhacks.cn/)
-- [**成浩的博客**](https://chenghao.site/)
 - [设计筆記](https://biji.io/)
 - [**朱腾鹏（像素癖）**](http://div63.com/index.html)
+- [IGK](http://www.igkhair.com)
+- [nerds.company](https://nerds.company/) & [404](https://nerds.company/404)
+- [Oops 404](http://oops.re/)
 
 
 
