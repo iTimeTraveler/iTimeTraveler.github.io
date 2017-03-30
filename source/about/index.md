@@ -3,9 +3,11 @@ date: 2015-08-16 14:58:08
 comments: true
 ---
 
->That maybe happiness is something that we can only pursue. And maybe we can actually never have it....no matter what.
+{% blockquote Chris Gardner https://en.wikipedia.org/wiki/The_Pursuit_of_Happyness The Pursuit of Happyness %}
+That maybe happiness is something that we can only pursue. And maybe we can actually never have it....no matter what.
 
->Be stupid is a part in my life. This part of my life is called "**`happiness`**".
+Be stupid is a part in my life.
+{% endblockquote %}
 
 <br>
 
@@ -15,10 +17,13 @@ comments: true
 - Bello, guys. I am ： **iTimeTraveler**
 
 
+{% pullquote right%}
+this part of my life... this little part, is called **`happiness`**.
+{% endpullquote %}
+
 
  I live in Beijing and work as a software developer. I use this site to blog on different topics that I like and hope you find interesting.
-
-
+ 
 
  I'm an Android Developer + prefer Python & Golang + interest in AI(Artificial Intelligence) + Google radicals（`Golang`+`Docker`+`Kubernetes`+`AngularJS`)
 
@@ -39,11 +44,12 @@ BTW, you can even [google me](https://www.google.com/search?q=itimetraveler)!
 - [**ibireme**](http://blog.ibireme.com/)
 - [**Red Blob Games**](http://theory.stanford.edu/~amitp/GameProgramming/)
 - [**Joe's Blog**](https://hijiangtao.github.io/)
-- [**tagDiv**](http://tagdiv.com/)
 - [tarikfayad](http://tarikfayad.com/)
-- [刘未鹏 | Mind Hacks](http://mindhacks.cn/)
 - [设计筆記](https://biji.io/)
 - [**朱腾鹏（像素癖）**](http://div63.com/index.html)
+- [**CaiCai**](https://www.caicai.me/)
+- [PHILANTHROPY 2016](https://www.palantir.com/philanthropy-engineering/annual-report/2016/#)
+- [**tagDiv**](http://tagdiv.com/)
 - [IGK](http://www.igkhair.com)
 - [nerds.company](https://nerds.company/) & [404](https://nerds.company/404)
 - [Oops 404](http://oops.re/)
