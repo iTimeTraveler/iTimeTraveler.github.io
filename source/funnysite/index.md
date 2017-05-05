@@ -29,6 +29,9 @@ comments: true
    - [SPOTLIGHT](http://spotlightthefilm.com/about)
    - [萨利机长](http://www.sully-movie.com)
 
+- [humaan](https://humaan.com/)
+- [Philip Walton(Engineer @ Google)](https://philipwalton.com/)
+
 
 ## 图集
 
