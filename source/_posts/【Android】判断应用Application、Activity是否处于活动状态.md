@@ -14,6 +14,7 @@ photos:
 ---
 
 
+
 通过**`ActivityManager`**我们可以获得系统里正在运行的activities，包括进程(Process)等、应用程序/包、服务(Service)、任务(Task)信息。
 
 ## **1、判断应用App是否活动**
@@ -43,8 +44,7 @@ private boolean isAppAlive(Context context, String packageName){
 }
 ```
 
-<!--more-->
-
+<!-- more -->
 
 ## **2、判断Activity是否活动**
 
@@ -59,6 +59,7 @@ private boolean isMainActivityAlive(Context context, String activityName){
    ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
    List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(100);
    for (ActivityManager.RunningTaskInfo info : list) {
+       // 注意这里的 topActivity 包含 packageName和className，可以打印出来看看
        if (info.topActivity.toString().equals(activityName) || info.baseActivity.toString().equals(activityName)) {
            Log.i(TAG,info.topActivity.getPackageName() + " info.baseActivity.getPackageName()="+info.baseActivity.getPackageName());
            return true;
@@ -87,6 +88,33 @@ private boolean isTopActivity(String activityName){
 	}
 	return cmpNameTemp.equals(activityName);
 }
+```
+
+## **4、Service是否在运行**
+
+```java
+/**  
+ * 用来判断服务是否运行.  
+ * @param context  
+ * @param className 判断的服务名字  
+ * @return true 在运行 false 不在运行  
+ */  
+public static boolean isServiceRunning(Context mContext,String className) {   
+    boolean isRunning = false;   
+    ActivityManager activityManager = (ActivityManager)   
+                                 mContext.getSystemService(Context.ACTIVITY_SERVICE);    
+    List<ActivityManager.RunningServiceInfo> serviceList = activityManager.getRunningServices(30);   
+    if (!(serviceList.size()>0)) {   
+        return false;   
+    }   
+    for (int i=0; i<serviceList.size(); i++) {   
+        if (serviceList.get(i).service.getClassName().equals(className) == true) {   
+            isRunning = true;   
+            break;   
+        }   
+    }   
+    return isRunning;   
+}   
 ```
 
 ---
