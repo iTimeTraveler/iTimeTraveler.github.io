@@ -32,6 +32,15 @@ comments: true
 - [humaan](https://humaan.com/)
 - [Philip Walton(Engineer @ Google)](https://philipwalton.com/)
 
+- [Mirana wordpress](https://www.themestats.com/mirana-wordpress-website-template-506516)
+   - [DREAMFY](http://www.dreamfy.com/)
+   - [老酒街](https://tototo.me/)
+   - [BeSteve](http://www.besteve.net/)
+   - [code123.cc](http://www.code123.cc/)
+
+![](/funnysite/images/mirana-theme.jpg)
+![](/funnysite/images/jason-theme.jpg)
+
 
 ## 图集
 

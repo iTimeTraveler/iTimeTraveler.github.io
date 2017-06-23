@@ -8,7 +8,7 @@ categories: [Android]
 keywords: Android
 description: 
 photos:
-    - /gallery/Re-usingLayouts.jpg
+    - /gallery/android_m_marshmallow.jpg
 ---
 
 
@@ -164,7 +164,7 @@ public class MainActivity extends Activity {
 按着上面的代码创建工程，运行后使用“DDMS -> Dump View Hierarchy for UI Automator”工具，截图如下:
 
 - merge 使用前：
-![merge 使用前](http://img.blog.csdn.net/20160919112652311)
+  ![merge 使用前](http://img.blog.csdn.net/20160919112652311)
 
 最下面两层`RelativeLayout`与`TextView`就是 **activity_main.xml** 布局中的内容，上面的`FrameLayout`是Activity setContentView添加的顶层视图。下面使用merge标签可以查看下区别。
 
@@ -187,19 +187,19 @@ public class MainActivity extends Activity {
 使用“DDMS -> Dump View Hierarchy for UI Automator”工具，截图如下:
 
 - merge 使用后
-![merge使用后](http://img.blog.csdn.net/20160919112911484)
+  ![merge使用后](http://img.blog.csdn.net/20160919112911484)
 
 可以看到，`FrameLayout`下面直接就是`TextView`，与之前的相比**少了一层 RelativeLayout **而实现的效果相同。
 
- - 那么，什么情况考虑使用`<merge />`标签？
- 
-  - 一种是向上面的例子一样，子视图不需要指定任何针对父视图的布局属性，例子中TextView仅仅需要直接添加到父视图上用于显示就行。
-  
-  - 另外一种是假如需要在LinearLayout里面嵌入一个布局（或者视图），而恰恰这个布局（或者视图）的根节点也是LinearLayout，这样就多了一层没有用的嵌套，无疑这样只会拖慢程序速度。而这个时候如果我们使用merge根标签就可以避免那样的问题，官方文档 [Android Layout Tricks #3: Optimize by merging](http://android-developers.blogspot.com/2009/03/android-layout-tricks-3-optimize-by.html)  中的例子演示的就是这种情况。
+- 那么，什么情况考虑使用`<merge />`标签？
 
- - `<merge />`标签有什么限制没？
-  - &lt;merge />只能作为XML布局的根标签使用。
-  - 当 Inflate 以&lt;merge />开头的布局文件时，必须指定一个父ViewGroup，并且必须设定attachToRoot为**`true`**。
+- 一种是向上面的例子一样，子视图不需要指定任何针对父视图的布局属性，例子中TextView仅仅需要直接添加到父视图上用于显示就行。
+
+   - 另外一种是假如需要在LinearLayout里面嵌入一个布局（或者视图），而恰恰这个布局（或者视图）的根节点也是LinearLayout，这样就多了一层没有用的嵌套，无疑这样只会拖慢程序速度。而这个时候如果我们使用merge根标签就可以避免那样的问题，官方文档 [Android Layout Tricks #3: Optimize by merging](http://android-developers.blogspot.com/2009/03/android-layout-tricks-3-optimize-by.html)  中的例子演示的就是这种情况。
+
+- `<merge />`标签有什么限制没？
+- &lt;merge />只能作为XML布局的根标签使用。
+   - 当 Inflate 以&lt;merge />开头的布局文件时，必须指定一个父ViewGroup，并且必须设定attachToRoot为**`true`**。
 
 
 ### **三、需要时使用&lt;ViewStub />**

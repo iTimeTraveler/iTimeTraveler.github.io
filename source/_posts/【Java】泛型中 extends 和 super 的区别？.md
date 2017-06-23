@@ -9,7 +9,7 @@ categories: [Java]
 keywords: extends,super
 description: 
 photos:
-   - /gallery/Java-Generics.jpg
+   - /gallery/learn-java.png
 ---
 
 
