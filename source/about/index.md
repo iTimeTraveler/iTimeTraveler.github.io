@@ -13,12 +13,13 @@ That maybe happiness is something that we can only pursue. And maybe we can actu
 
 ### Profile
 
-- Bello, guys. I am ： **iTimeTraveler**
-
-
 {% pullquote right%}
+![](/gallery/cuc-library.jpg)
 this part of my life... this little part, is called **`happiness`**.
 {% endpullquote %}
+
+
+- Bello, guys. I am ： **iTimeTraveler**
 
 
  I live in Beijing and work as a software developer. I use this site to blog on different topics that I like and hope you find interesting.
