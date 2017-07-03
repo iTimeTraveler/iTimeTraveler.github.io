@@ -25,7 +25,7 @@ this part of my life... this little part, is called **`happiness`**.
  I live in Beijing and work as a software developer. I use this site to blog on different topics that I like and hope you find interesting.
 
 
- I'm an Android Developer + prefer Python & Golang + interest in AI(Artificial Intelligence) + <span><font color="#4086F5">G</font></span><span><font color="#EB4132">o</font></span><span><font color="#FCBD00">o</font></span><span><font color="#4086F5">g</font></span><span><font color="#31A952">l</font></span><span><font color="#EB4132">e</font></span> radicals（`Golang`+`Docker`+`Kubernetes`+`AngularJS`)
+ I'm an Android Developer + prefer Python & Golang + interest in AI(Artificial Intelligence) + <span><font color="#4086F5">G</font></span><span><font color="#EB4132">o</font></span><span><font color="#FCBD00">o</font></span><span><font color="#4086F5">g</font></span><span><font color="#31A952">l</font></span><span><font color="#EB4132">e</font></span> radicals（`Golang`+`Docker`+`Kubernetes`+`AngularJS`).
 
 <br>
 
