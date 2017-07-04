@@ -2,11 +2,9 @@
 	clear: both
 }
 #main {
-	width:92%;
 	/*padding-left: 105px;
 	padding-top: 47px;
 	padding-bottom: 30px;*/
-	min-height: 600px;
 	clear: both;
 /*	background: url(images/paper.jpg) left top #F2EDB4;*/
 	position: relative;
@@ -60,7 +58,7 @@
 
 #book {
 /*	margin: -47px 0 -30px -105px;*/
-	min-height: 1040px;
+	display: table;
 	/*background: #F5F0B6*/
 }
 

@@ -4,8 +4,22 @@ comments: true
 ---
 
 
+{% iframe 'library.html' 100% 1900px %}
 
 
-{% iframe 'library.html' 100% auto %}
+<script>
+function setIframeHeight(iframe) {
+	if (iframe) {
+		var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+		if (iframeWin.document.body) {
+			iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
+		}
+	}
+};
 
-<hr>
+
+setIframeHeight(document.getElementsByTagName('iframe')[0]);
+window.onload = function () {
+	setIframeHeight(document.getElementsByTagName('iframe')[0]);
+};
+</script>
