@@ -69,7 +69,7 @@ adb shell ps | awk '/com\.android\.commands\.monkey/ { system("adb shell kill " 
 
 
 
-####【参考资料】
+#### 【参考资料】
 
 1、[android 压力测试命令monkey详解](http://www.jb51.net/article/48557.htm)
 2、[Monkey 的专项测试浅谈](http://www.testwo.com/article/402)
