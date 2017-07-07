@@ -59,6 +59,7 @@
 #book {
 /*	margin: -47px 0 -30px -105px;*/
 	display: table;
+	width: 100%;
 	/*background: #F5F0B6*/
 }
 
@@ -74,12 +75,14 @@
 #book ul {
 	float: left;
 	height: auto;
-	padding: 0 5%;
 	background: url(images/bookshelfmiddle.jpg) repeat-y left top;
 	margin-bottom: 0;
 	background-size: 100% 196px;
 	-webkit-margin-before: 0em;
     -webkit-margin-after: 0em;
+    -webkit-padding-start: 0em;
+    padding: 0 5%;
+    width: 90%;
 }
 
 #book ul li {
@@ -90,7 +93,7 @@
 	width: 110px;
 	float: left;
 	margin: 17px 14px 0;
-	padding-bottom: 19px
+	padding-bottom: 19px;
 }
 
 #book ul li a {

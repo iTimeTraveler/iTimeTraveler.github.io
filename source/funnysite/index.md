@@ -38,6 +38,8 @@ comments: true
    - [BeSteve](http://www.besteve.net/)
    - [code123.cc](http://www.code123.cc/)
 
+- [Hover效果](https://tympanus.net/Development/HoverEffectIdeas/index2.html)
+
 ![](/funnysite/images/mirana-theme.jpg)
 ![](/funnysite/images/jason-theme.jpg)
 
