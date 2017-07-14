@@ -28,16 +28,14 @@ comments: true
 - 漂亮的电影网站
    - [SPOTLIGHT](http://spotlightthefilm.com/about)
    - [萨利机长](http://www.sully-movie.com)
-
 - [humaan](https://humaan.com/)
 - [Philip Walton(Engineer @ Google)](https://philipwalton.com/)
-
+- [Just Good Themes](https://justgoodthemes.com/)
 - [Mirana wordpress](https://www.themestats.com/mirana-wordpress-website-template-506516)
    - [DREAMFY](http://www.dreamfy.com/)
    - [老酒街](https://tototo.me/)
    - [BeSteve](http://www.besteve.net/)
    - [code123.cc](http://www.code123.cc/)
-
 - [Hover效果](https://tympanus.net/Development/HoverEffectIdeas/index2.html)
 
 ![](/funnysite/images/mirana-theme.jpg)
