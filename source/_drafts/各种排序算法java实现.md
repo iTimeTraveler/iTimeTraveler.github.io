@@ -165,3 +165,5 @@ After:  [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 - [必须知道的八大种排序算法【java实现】](http://www.jianshu.com/p/8c915179fd02)
 - [十大经典排序算法](http://web.jobbole.com/87968/)
 - [视觉直观感受 7 种常用的排序算法](http://blog.jobbole.com/11745/)
+- [总结5种比较高效常用的排序算法](http://www.cnblogs.com/minkaihui/p/4077888.html)
+- [常见排序算法C++总结](http://www.cnblogs.com/zyb428/p/5673738.html)
