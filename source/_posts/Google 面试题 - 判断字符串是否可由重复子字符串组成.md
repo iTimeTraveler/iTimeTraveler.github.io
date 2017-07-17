@@ -9,7 +9,7 @@ categories: [Algorithm]
 keywords: Algorithm
 description: 
 photos:
-    - /gallery/Google-Interview-Qs.jpg
+    - /gallery/george-booles-200th-birthday.gif
 ---
 
 
