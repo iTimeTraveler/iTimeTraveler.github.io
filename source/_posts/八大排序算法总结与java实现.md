@@ -211,6 +211,17 @@ public static void shell_sort(int[] arr) {
 
 
 
+###  三、简单选择排序（Selection Sort）
+
+---
+
+#### 1、基本思想
+
+
+#### 2、算法描述
+
+
+#### 3、代码实现
 
 
 
@@ -245,6 +256,17 @@ public static void shell_sort(int[] arr) {
 
 
 
+###  四、堆排序（Heap Sort）
+
+---
+
+#### 1、基本思想
+
+
+#### 2、算法描述
+
+
+#### 3、代码实现
 
 
 
