@@ -1,3 +1,21 @@
+---
+title: 八大排序算法总结与java实现
+layout: post
+date: 2017-07-18 12:30:55
+comments: true
+tags: 
+    - Java
+    - Algorithm
+categories: 
+    - Algorithm
+keywords: Sort
+description: 
+photos:
+    - /gallery/sort-algorithms/big-o.png
+---
+
+
+
 ### 概述
 
 因为健忘，加上对各种排序算法理解不深刻，过段时间面对排序就蒙了。所以决定对我们常见的这几种排序算法进行统一总结，强行学习。常见的八大排序算法，他们之间关系如下：
@@ -13,6 +31,8 @@
 - 归并排序
 - 基数排序
 
+<!-- more -->
+
 ![](/gallery/sort-algorithms/2016-07-15_常用排序算法.png)
 
 
@@ -22,7 +42,7 @@
 
 将数组中的所有元素依次跟前面已经排好的元素相比较，如果选择的元素比已排序的元素小，则交换，直到全部元素都比较过为止。
 
-![](/gallery/Insertion-sort-example-300px.gif)
+![使用插入排序为一列数字进行排序的过程](/gallery/sort-algorithms/Insertion-sort-example-300px.gif)
 
 #### 2、算法描述
 
@@ -35,7 +55,7 @@
 5. 将新元素插入到该位置后
 6. 重复步骤2~5
 
-![](/gallery/insert-sort.gif)
+![直接插入排序演示](/gallery/sort-algorithms/insert-sort.gif)
 
 如果*比较操作*的代价比*交换操作*大的话，可以采用[二分查找法](https://zh.wikipedia.org/wiki/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E6%B3%95)来减少*比较操作*的数目。该算法可以认为是**插入排序**的一个变种，称为[二分查找插入排序](https://zh.wikipedia.org/w/index.php?title=%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F&action=edit&redlink=1)。
 
@@ -104,7 +124,11 @@ After:  [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 #### 1、基本思想
 
-![](/gallery/shell-sort.jpg)
+![](/gallery/sort-algorithms/shell-sort.jpg)
+
+
+
+
 
 将待排序数组按照步长gap进行分组（一般的初次取数组长度的一半为增量），然后将每组的元素利用直接插入排序的方法进行排序；每次再将gap折半减小，循环上述操作；当gap=1时，利用直接插入，完成排序。
 
