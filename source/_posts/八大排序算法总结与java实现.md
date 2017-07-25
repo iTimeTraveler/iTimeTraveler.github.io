@@ -11,16 +11,18 @@ categories:
 keywords: Sort
 description: 
 photos:
-    - /gallery/sort-algorithms/big-o.png
+    - /gallery/sort-algorithms/header.png
 ---
 
 
 
 ### 概述
 
-因为健忘，加上对各种排序算法理解不深刻，过段时间面对排序就蒙了。所以决定对我们常见的这几种排序算法进行统一总结，强行学习。常见的八大排序算法，他们之间关系如下：
+因为健忘，加上对各种排序算法理解不深刻，过段时间面对排序就蒙了。所以决定对我们常见的这几种排序算法进行统一总结，强行学习。首先罗列一下常见的十大排序算法：
 
-![](/gallery/sort-algorithms/1156494-ab4cecff133d87b3.png)
+![](/gallery/sort-algorithms/big-o.png)
+
+
 
 - 直接插入排序
 - 希尔排序
@@ -33,6 +35,9 @@ photos:
 
 <!-- more -->
 
+其中我们讨论的这八大排序算法都属于内部排序，也就是只考虑数据量较小仅需要使用内存的排序算法，他们之间关系如下：
+
+![](/gallery/sort-algorithms/1156494-ab4cecff133d87b3.png)
 
 
 ### 一、直接插入排序（Insertion Sort）
@@ -190,9 +195,9 @@ public static void shell_sort(int[] arr) {
 以下是希尔排序复杂度:
 
 
-| 平均时间复杂度 | 最好情况  | 最坏情况  | 空间复杂度 |
-| ------- | ----- | ----- | ----- |
-| O(nlog2 n)   | O(nlog2 n) | O(nlog2 n) | O(1)  |
+| 平均时间复杂度    | 最好情况       | 最坏情况       | 空间复杂度 |
+| ---------- | ---------- | ---------- | ----- |
+| O(nlog2 n) | O(nlog2 n) | O(nlog2 n) | O(1)  |
 
 
 
