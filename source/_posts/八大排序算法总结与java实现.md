@@ -340,18 +340,71 @@ $$
 
 
 
+```java
+import java.io.*;
+import java.util.Arrays;
+
+
+class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("hello http://tool.lu/");
+        int array[] = {3,44,38,5,47,15,36,26,27,2,46,4,19,50,48};
+        System.out.println(Arrays.toString(array));
+        HelloWorld.heapSort(array);
+        System.out.println(Arrays.toString(array));
+    }
+    
+    /**
+     * 堆排序
+     */
+    public static void heapSort(int[] arr){
+        for(int i=arr.length; i > 1; i--){
+            max_heapify(arr, i);
+            
+            int temp = arr[0];
+            arr[0] = arr[i-1];
+            arr[i-1] = temp;
+        }
+        max_heapify(arr, 2);
+    }
+    
+    private static void max_heapify(int[] arr, int len){
+        if(arr.length <= 0 || arr.length < len) return;
+        int parentIdx = arr.length/2;
+        
+        for(; parentIdx > 0; parentIdx--){
+            int left = arr[parentIdx * 2];
+            int right = arr[(parentIdx * 2 + 1) >= arr.length ? parentIdx * 2 : (parentIdx * 2 + 1)];
+            
+            int minChildId = left <= right ? parentIdx * 2 : (parentIdx * 2 + 1);
+            if(arr[minChildId] < arr[parentIdx]){   //交换父节点与左右子节点中的最大值
+                int temp = arr[parentIdx];
+                arr[parentIdx] = arr[minChildId];
+                arr[minChildId] = temp;
+            }
+        }
+        System.out.println("Max_Heapify: " + Arrays.toString(arr));
+    }
+}
+```
 
 
 
 
 
 
+###  五、冒泡排序（Bubble Sort）
+
+---
+
+> 我想对于它每个学过C语言的都会了解，这可能是很多人接触的第一个排序算法。
 
 
+#### 1、基本思想
 
+#### 2、算法描述
 
-
-
+#### 3、代码实现
 
 
 
