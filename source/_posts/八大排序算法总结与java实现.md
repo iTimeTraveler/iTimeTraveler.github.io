@@ -37,7 +37,50 @@ photos:
 
 其中我们讨论的这八大排序算法都属于内部排序，也就是只考虑数据量较小仅需要使用内存的排序算法，他们之间关系如下：
 
-![](/gallery/sort-algorithms/1156494-ab4cecff133d87b3.png)
+
+
+{% raw %}
+$$
+\begin{cases}
+内部排序 
+
+\begin{cases}
+插入排序
+
+\begin{cases}
+直接插入排序\\
+希尔排序
+\end{cases}
+
+\\
+选择排序
+\begin{cases}
+简单选择排序\\
+堆排序
+\end{cases}
+\\
+
+交换排序
+\begin{cases}
+冒泡排序\\
+快速排序 
+\end{cases}
+
+\\
+
+归并排序\\
+基数排序
+
+\end{cases}
+
+\\
+外部排序 
+\end{cases}
+$$
+{% endraw %}
+
+
+
 
 
 ### 一、直接插入排序（Insertion Sort）
@@ -478,6 +521,8 @@ Tips: 由于冒泡排序只在相邻元素大小不符合要求时才调换他�
 ###  六、快速排序（Quick Sort）
 
 ---
+
+快速排序（Quicksort）是对冒泡排序的一种改进。
 
 #### 1、基本思想
 
