@@ -68,7 +68,7 @@ photos:
 #### 3、代码实现
 
 ```java
-	/**
+    /**
      * 插入排序
      *
      * 1. 从第一个元素开始，该元素可以认为已经被排序
@@ -84,7 +84,7 @@ photos:
             for( int j=i+1; j>0; j-- ) {
                 if( arr[j-1] <= arr[j] )
                     break;
-                int temp = arr[j];		//交换操作
+                int temp = arr[j];      //交换操作
                 arr[j] = arr[j-1];
                 arr[j-1] = temp;
                 System.out.println("Sorting:  " + Arrays.toString(arr));
@@ -337,58 +337,66 @@ $$
 - 创建最大堆（Build_Max_Heap）：将堆所有数据重新排序
 - 堆排序（HeapSort）：移除位在第一个数据的根节点，并做最大堆调整的递归运算
 
+对于堆节点的访问：
+
+- 父节点i的左子节点在位置：`(2*i+1)`;
+- 父节点i的右子节点在位置：`(2*i+2)`;
+- 子节点i的父节点在位置：`floor((i-1)/2)`;
 
 
 
 ```java
-import java.io.*;
-import java.util.Arrays;
+/**
+ * 堆排序
+ *
+ * 1. 先将初始序列K[1..n]建成一个大顶堆, 那么此时第一个元素K1最大, 此堆为初始的无序区.
+ * 2. 再将关键字最大的记录K1 (即堆顶, 第一个元素)和无序区的最后一个记录 Kn 交换, 由此得到新的无序区K[1..n−1]和有序区K[n], 且满足K[1..n−1].keys⩽K[n].key
+ * 3. 交换K1 和 Kn 后, 堆顶可能违反堆性质, 因此需将K[1..n−1]调整为堆. 然后重复步骤②, 直到无序区只有一个元素时停止.
+ * @param arr  待排序数组
+ */
+public static void heapSort(int[] arr){
+    for(int i = arr.length; i > 0; i--){
+        max_heapify(arr, i);
 
+        int temp = arr[0];      //堆顶元素(第一个元素)与Kn交换
+        arr[0] = arr[i-1];
+        arr[i-1] = temp;
+    }
+}
 
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("hello http://tool.lu/");
-        int array[] = {3,44,38,5,47,15,36,26,27,2,46,4,19,50,48};
-        System.out.println(Arrays.toString(array));
-        HelloWorld.heapSort(array);
-        System.out.println(Arrays.toString(array));
-    }
-    
-    /**
-     * 堆排序
-     */
-    public static void heapSort(int[] arr){
-        for(int i=arr.length; i > 1; i--){
-            max_heapify(arr, i);
-            
-            int temp = arr[0];
-            arr[0] = arr[i-1];
-            arr[i-1] = temp;
+private static void max_heapify(int[] arr, int limit){
+    if(arr.length <= 0 || arr.length < limit) return;
+    int parentIdx = limit / 2;
+
+    for(; parentIdx >= 0; parentIdx--){
+        if(parentIdx * 2 >= limit){
+            continue;
         }
-        max_heapify(arr, 2);
-    }
-    
-    private static void max_heapify(int[] arr, int len){
-        if(arr.length <= 0 || arr.length < len) return;
-        int parentIdx = arr.length/2;
-        
-        for(; parentIdx > 0; parentIdx--){
-            int left = arr[parentIdx * 2];
-            int right = arr[(parentIdx * 2 + 1) >= arr.length ? parentIdx * 2 : (parentIdx * 2 + 1)];
-            
-            int minChildId = left <= right ? parentIdx * 2 : (parentIdx * 2 + 1);
-            if(arr[minChildId] < arr[parentIdx]){   //交换父节点与左右子节点中的最大值
-                int temp = arr[parentIdx];
-                arr[parentIdx] = arr[minChildId];
-                arr[minChildId] = temp;
-            }
+        int left = parentIdx * 2;       //左子节点位置
+        int right = (left + 1) >= limit ? left : (left + 1);    //右子节点位置，如果没有右节点，默认为左节点位置
+
+        int maxChildId = arr[left] >= arr[right] ? left : right;
+        if(arr[maxChildId] > arr[parentIdx]){   //交换父节点与左右子节点中的最大值
+            int temp = arr[parentIdx];
+            arr[parentIdx] = arr[maxChildId];
+            arr[maxChildId] = temp;
         }
-        System.out.println("Max_Heapify: " + Arrays.toString(arr));
     }
+    System.out.println("Max_Heapify: " + Arrays.toString(arr));
 }
 ```
 
+以上,
+①. 建立堆的过程, 从length/2 一直处理到0, 时间复杂度为O(n);
+②. 调整堆的过程是沿着堆的父子节点进行调整, 执行次数为堆的深度, 时间复杂度为O(lgn);
+③. 堆排序的过程由n次第②步完成, 时间复杂度为O(nlgn).
 
+
+| 平均时间复杂度 | 最好情况  | 最坏情况  | 空间复杂度 |
+| ------- | ----- | ----- | ----- |
+| $O(n \log_{2}n)$   | $O(n \log_{2}n)$ | $O(n \log_{2}n)$ | O(1)  |
+
+Tips: **由于堆排序中初始化堆的过程比较次数较多, 因此它不太适用于小序列.** 同时由于多次任意下标相互交换位置, 相同元素之间原本相对的顺序被破坏了, 因此, 它是不稳定的排序.
 
 
 
@@ -397,14 +405,98 @@ class HelloWorld {
 
 ---
 
+![冒泡排序的思想](/gallery/sort-algorithms/bubble-sort02.gif)
+
+
 > 我想对于它每个学过C语言的都会了解，这可能是很多人接触的第一个排序算法。
 
+
+#### 1、基本思想
+
+冒泡排序（Bubble Sort）是一种简单的排序算法。它重复地走访过要排序的数列，一次比较两个元素，如果他们的顺序错误就把他们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。这个算法的名字由来是因为越小的元素会经由交换慢慢“浮”到数列的顶端。
+
+
+![冒泡排序演示](/gallery/sort-algorithms/bubble-sort.gif)
+
+
+#### 2、算法描述
+
+冒泡排序算法的运作如下：
+
+①. 比较相邻的元素。如果第一个比第二个大，就交换他们两个。
+②. 对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对。这步做完后，最后的元素会是最大的数。
+③. 针对所有的元素重复以上的步骤，除了最后一个。
+④. 持续每次对越来越少的元素重复上面的步骤①~③，直到没有任何一对数字需要比较。
+
+#### 3、代码实现
+
+
+冒泡排序需要两个嵌套的循环. 其中, **外层循环**移动游标; **内层循环**遍历游标及之后(或之前)的元素, 通过两两交换的方式, 每次只确保该内循环结束位置排序正确, 然后内层循环周期结束, 交由外层循环往后(或前)移动游标, 随即开始下一轮内层循环, 以此类推, 直至循环结束.
+
+
+
+```java
+/**
+ * 冒泡排序
+ *
+ * ①. 比较相邻的元素。如果第一个比第二个大，就交换他们两个。
+ * ②. 对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对。这步做完后，最后的元素会是最大的数。
+ * ③. 针对所有的元素重复以上的步骤，除了最后一个。
+ * ④. 持续每次对越来越少的元素重复上面的步骤①~③，直到没有任何一对数字需要比较。
+ * @param arr  待排序数组
+ */
+public static void bubbleSort(int[] arr){
+    for (int i = arr.length; i > 0; i--) {      //外层循环移动游标
+        for(int j = 0; j < i && (j+1) < i; j++){    //内层循环遍历游标及之后(或之前)的元素
+            if(arr[j] > arr[j+1]){
+                int temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+                System.out.println("Sorting: " + Arrays.toString(arr));
+            }
+        }
+    }
+}
+```
+
+
+
+以下是冒泡排序算法复杂度:
+
+
+| 平均时间复杂度 | 最好情况  | 最坏情况  | 空间复杂度 |
+| ------- | ----- | ----- | ----- |
+|O(n²)  |  O(n)   |   O(n²)  |   O(1)  |
+
+冒泡排序是最容易实现的排序, 最坏的情况是每次都需要交换, 共需遍历并交换将近n²/2次, 时间复杂度为O(n²). 最佳的情况是内循环遍历一次后发现排序是对的, 因此退出循环, 时间复杂度为O(n). 平均来讲, 时间复杂度为O(n²). 由于冒泡排序中只有缓存的temp变量需要内存空间, 因此空间复杂度为常量O(1).
+
+Tips: 由于冒泡排序只在相邻元素大小不符合要求时才调换他们的位置, 它并不改变相同元素之间的相对顺序, 因此它是稳定的排序算法.
+
+
+
+
+###  六、快速排序（Quick Sort）
+
+---
 
 #### 1、基本思想
 
 #### 2、算法描述
 
 #### 3、代码实现
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -437,6 +529,7 @@ class HelloWorld {
 ### 参考资料
 
 - 数据结构可视化：[visualgo](https://visualgo.net/zh)
+- 排序算法测试：[Lab 1: Sorting - 哥德堡大学课件（University of Gothenburg）](http://www.cse.chalmers.se/edu/course/DIT960/lab1-sorting.html)
 - [Sorting - 卡内基梅隆大学课件](https://www.cs.cmu.edu/~adamchik/15-121/lectures/Sorting%20Algorithms/sorting.html)
 - [数据结构常见的八大排序算法（详细整理）](http://www.jianshu.com/p/7d037c332a9d)
 - [必须知道的八大种排序算法【java实现】](http://www.jianshu.com/p/8c915179fd02)
