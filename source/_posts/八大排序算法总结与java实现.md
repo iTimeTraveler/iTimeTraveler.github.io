@@ -35,7 +35,7 @@ photos:
 
 <!-- more -->
 
-其中我们讨论的这八大排序算法都属于内部排序，也就是只考虑数据量较小仅需要使用内存的排序算法，他们之间关系如下：
+其中我们讨论的这八大排序算法的实现可以参考[我的Github：**SortAlgorithms**](https://github.com/iTimeTraveler/SortAlgorithms)，它们都属于内部排序，也就是只考虑数据量较小仅需要使用内存的排序算法，他们之间关系如下：
 
 
 
