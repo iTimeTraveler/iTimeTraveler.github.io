@@ -452,6 +452,7 @@ public void handleMessage(Message msg) {
 - [[Android 进阶14：源码解读 Android 消息机制（ Message MessageQueue Handler Looper）](http://blog.csdn.net/u011240877/article/details/72892321)](http://blog.csdn.net/u011240877/article/details/72892321)
 - [Android源码：Handler, Looper和MessageQueue实现解析](http://www.jianshu.com/p/10dd4d605d40)
 - [深入探讨Android异步精髓Handler](http://www.androidchina.net/6053.html)
+- [Android消息机制](https://hzj163.gitbooks.io/android-thread/content/androidxiao_xi_ji_zhi.html)
 - [哈工大面试指导：Android中的Thread, Looper和Handler机制](https://hit-alibaba.github.io/interview/Android/basic/Android-handler-thread-looper.html)
 - [Android 线程本地变量<一> ThreadLocal源码解析](http://blog.csdn.net/fenggit/article/details/50766820)
 - [Android线程管理之ThreadLocal理解及应用场景](http://www.cnblogs.com/whoislcj/p/5811989.html)
