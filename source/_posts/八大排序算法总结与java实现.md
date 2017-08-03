@@ -924,7 +924,7 @@ Tips: 基数排序不改变相同元素之间的相对顺序，因此它是稳�
 
 ### 参考资料
 
-- 数据结构可视化：[visualgo](https://visualgo.net/zh)，[Sorting Algorithms Animations](https://www.toptal.com/developers/sorting-algorithms/)
+- 数据结构可视化：[visualgo](https://visualgo.net/zh)，[Sorting Algorithms Animations](https://www.toptal.com/developers/sorting-algorithms/)，[CodePen](https://codepen.io/iTimeTraveler/pen/dRrwZr) & [sort it out](https://codepen.io/iTimeTraveler/pen/weORyW)
 - 排序算法测试：[Lab 1: Sorting - 哥德堡大学课件（University of Gothenburg）](http://www.cse.chalmers.se/edu/course/DIT960/lab1-sorting.html)
 - [Sorting - 卡内基梅隆大学课件](https://www.cs.cmu.edu/~adamchik/15-121/lectures/Sorting%20Algorithms/sorting.html)
 - [数据结构常见的八大排序算法（详细整理）](http://www.jianshu.com/p/7d037c332a9d)

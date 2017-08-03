@@ -15,7 +15,7 @@ That maybe happiness is something that we can only pursue. And maybe we can actu
 
 {% pullquote right%}
 ![](/gallery/forbidden-city.jpg)
-this part of my life... this little part, is called **`happiness`**.
+this part of my life... this little part, is called **`happiness`** 🎁.
 {% endpullquote %}
 
 
