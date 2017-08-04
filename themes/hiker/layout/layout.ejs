@@ -1,0 +1,43 @@
+<%- partial('_partial/head') %>
+
+<% if (is_post()){ %>
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+<% } else {%>
+  <body>
+<% } %>
+
+  <% if (is_home() && theme.home_background_image.enable){ %>
+    <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
+  <% } %>
+  <div id="container">
+    <div id="wrap">
+      <% if (!is_home() || !theme.home_background_image.enable){ %>
+        <%- partial('_partial/header-post') %>
+      <% } %>
+            
+      <div id="content" class="outer">
+        <% if (theme.sidebar && theme.sidebar !== 'bottom' && (is_archive())){ %>
+          <section id="main"><%- body %></section>
+          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
+        <% } else {%>
+          <section id="main" style="float:none;"><%- body %></section>
+        <% } %>
+      </div>
+      <% if (is_home()){ %>
+        <div align="center" style="margin-top: 30px;"><hr class="hr" style="margin:0px; height:3px;"></div>
+      <% } %>
+      <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+    </div>
+    <!-- <%- partial('_partial/mobile-nav', null, {cache: !config.relative_link}) %> -->
+    <%- partial('_partial/after-footer') %>
+  </div>
+
+  <%- partial('_partial/dialog') %>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  <% if (is_post() && theme.post_catalog.enable){ %>
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  <% } %>
+</body>
+</html>

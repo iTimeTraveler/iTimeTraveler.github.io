@@ -1,0 +1,170 @@
+# ---------------------------------------------------------------
+# Site Information Settings
+# ---------------------------------------------------------------
+
+# Header Menu
+menu:
+  Home: /
+  Archives: archives
+  Categories: categories
+  Tags: tags
+  酷站: funnysite
+  收藏: collection
+  About: about
+  🎁: /mybooks
+rss: /atom.xml
+
+since: 2013
+
+# Set default keywords (Use a comma to separate)
+keywords: ""
+
+# Put your favicon.ico or avatar.jpg into `hexo-site/themes/hiker/source/` directory.
+avatar: 
+  enable: true
+  border: true
+  width: 124
+  height: 124
+  top: 0
+  url: http://tvax2.sinaimg.cn/crop.0.0.440.440.180/5c78db24ly8fga78ly31oj20c80c874e.jpg
+
+
+# Homepage
+# eg. home_background_image: [css/images/home-bg.jpg, http://t.cn/RMbvEza]
+home_background_image:
+  enable: true
+  rolling: true
+  url: [https://source.unsplash.com/collection/954550/1920x1080, 
+        https://source.unsplash.com/collection/954550/1920x1081, 
+        https://source.unsplash.com/collection/954550/1921x1080, 
+        https://source.unsplash.com/collection/954550/1921x1081, 
+        https://source.unsplash.com/collection/954550/1920x1082, 
+        https://source.unsplash.com/collection/954550/1922x1080,
+        https://source.unsplash.com/collection/954550/1922x1082
+        ]
+
+home_logo_image:
+  enable: false
+  border: false
+  url: css/images/homelogo.jpg
+
+
+# AboutPage background
+about_big_image: https://source.unsplash.com/collection/954550/1920x1080
+
+
+# Archive pagination
+archive_pagination: false
+
+
+# Post Article's Content
+post_catalog:
+  enable: true
+
+
+# Content
+fancybox: true
+
+
+# Sidebar
+sidebar: right
+widgets:
+- curtains
+- social
+- category
+- tag
+- tagcloud
+- archive
+- recent_posts
+
+
+# Social Links
+# Key is the name of FontAwsome icon.
+# Value is the target link (E.g. GitHub: https://github.com/iTimeTraveler)
+social:
+  Github: https://github.com/iTimeTraveler
+  Weibo: http://www.weibo.com/xueyubowen
+  Twitter: 
+  Facebook: 
+  Google-plus: 
+
+
+# Search
+search:
+    insight: true # you need to install `hexo-generator-json-content` before using Insight Search
+    swiftype: # enter swiftype install key here
+    baidu: false # you need to disable other search engines to use Baidu search, options: true, false
+
+
+# comment ShortName, you can choose only ONE to display.
+gentie_productKey: #your-gentie-product-key
+duoshuo_shortname: 
+disqus_shortname: 
+livere_shortname: MTAyMC8yOTQ4MS82MDQ5
+uyan_uid: 
+wumii: 
+
+
+# Code Highlight theme
+# Available value:
+#    default | gray | normal | night | night eighties | night blue | night bright
+# https://github.com/chriskempson/tomorrow-theme
+highlight_theme: gray
+
+
+# Article theme color
+# Available value:
+#    random | orange | blue | red | green | black
+theme_color: black
+
+
+# display widgets at the bottom of index pages (pagination == 2)
+index_widgets:
+# - category
+# - tagcloud
+# - archive
+
+
+# widget behavior
+archive_type: 'monthly'
+show_count: true
+
+# Google Webmaster tools verification setting
+# See: https://www.google.com/webmasters/
+google_site_verification:
+baidu_site_verification:
+qihu_site_verification:
+
+# Miscellaneous
+google_analytics:
+gauges_analytics:
+baidu_analytics:
+tencent_analytics:
+twitter:
+google_plus:
+fb_admins:
+fb_app_id:
+
+# Facebook SDK Support.
+# https://github.com/iissnan/hexo-theme-next/pull/410
+facebook_sdk:
+  enable: false
+  app_id:       #<app_id>
+  fb_admin:     #<user_id>
+  like_button:  #true
+  webmaster:    #true
+
+# CNZZ count
+cnzz_siteid: 1260716016
+
+# busuanzi count
+# http://busuanzi.ibruce.info/
+show_busuanzi_view_counts: true
+
+
+# donation button
+donate:
+    enable: true
+    message: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!'
+    wechatImage: https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png
+    alipayImage: https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg

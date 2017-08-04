@@ -1,0 +1,34 @@
+home: Startseite
+archives: Archive
+about: About
+categories: Kategorien
+search: Suche
+tags: Tags
+tagcloud: Tag Cloud
+tweets: Tweets
+prev: zurück
+next: weiter
+comment: Kommentare
+archive_a: Archiv
+archive_b: "Archive: %s"
+page: Seite %d
+recent_posts: letzter Beitrag
+newer: Neuer
+older: Älter
+share: Teilen
+powered_by: Powered by
+rss_feed: RSS Feed
+category: Kategorie
+tag: Tag
+post_total_count: Es gibt insgesamt %d Beiträge bis jetzt.
+right_reserved: "%s hält Urheberrechtsansprüche."
+read_more: weiter lesen
+contents: Inhalt
+none: Nichts
+insight:
+    hint: 'Schreib etwas...'
+    posts: 'Beiträge'
+    pages: 'Seiten'
+    categories: 'Kategorien'
+    tags: 'Tags'
+    untitled: '(Unbenannt)'
