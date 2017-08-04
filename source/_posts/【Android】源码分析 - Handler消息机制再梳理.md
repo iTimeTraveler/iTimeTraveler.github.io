@@ -74,11 +74,11 @@ new Thread(new Runnable() {
 }).start();
 ```
 
-我们可以看到，子线程拿着主线程的`mHandler`对象调用了它的`sendEmptyMessage(0)`方法发送了一个空Message。然后主线程就更新了`mTestTV`这个TextView的内容。
+我们可以看到，子线程拿着主线程的`mHandler`对象调用了它的`sendEmptyMessage(0)`方法发送了一个空Message。然后主线程就更新了`mTestTV`这个TextView的内容。下面，我们就根据这段代码逐步跟踪分析一下Handler源码，梳理一下Android的这个消息机制。
 
-### Handler源码跟踪
+## Handler源码跟踪
 
-然后，我们从Handler的`sendEmptyMessage()`方法这里开始，翻看Handler的源码：
+根据上面的Handler使用例子，我们从Handler的`sendEmptyMessage()`方法这里开始，翻看Handler的源码：
 
 ```java
     public final boolean sendEmptyMessage(int what)
@@ -119,10 +119,15 @@ public boolean sendMessageAtTime(Message msg, long uptimeMillis) {
 
 这个方法我们看到两个亮点：
 
-- 第一步，**首先拿到消息队列`mQueue`对象**。
-- 第二步，**把msg对象入队**。
+- 第一步，**首先拿到消息队列`MessageQueue`类型的`mQueue`对象**。
+- 第二步，**把消息`Message`类型的实例`msg`对象入队**。
 
-我们先来看`mQueue`这个对象哪来的呢？我们找到了赋值的地方，原来在Handler的构造函数里：
+
+接下来，我们就沿着这两个问题分别往下跟踪。
+
+## MessageQueue对象从哪里来
+
+我们先来看`mQueue`这个MessageQueue对象哪来的呢？我们找到了赋值的地方，原来在Handler的构造函数里：
 
 ```java
 public Handler(Callback callback, boolean async) {
@@ -146,9 +151,65 @@ public Handler(Callback callback, boolean async) {
 }
 ```
 
-原来`mQueue`这个对象是从`Looper`这个对象中获取的，也就是说Looper拥有一个消息队列`MessageQueue`对象。稍后我们再深入Looper查看。
+原来`mQueue`这个对象是从`Looper`这个对象中获取的，同时我们看到是通过`Looper.myLooper()`获取到Looper对象的。也就是说每个Looper拥有一个消息队列`MessageQueue`对象。我们在Looper的构造函数里看到是它new了一个MessageQueue：
 
-我们接着看前面调用的` enqueueMessage()`方法，看名字应该是把消息加入队列的意思，点进去看下：
+```java
+final MessageQueue mQueue;
+
+private Looper(boolean quitAllowed) {
+    mQueue = new MessageQueue(quitAllowed);	//初始化MessageQueue对象
+    mThread = Thread.currentThread();
+}
+```
+
+我们紧接着再进入Looper类中的`myLooper()`方法看看如何得到Looper实例对象的：
+
+```java
+/**
+ * Return the Looper object associated with the current thread.  Returns
+ * null if the calling thread is not associated with a Looper.
+ */
+public static Looper myLooper() {
+    return sThreadLocal.get();
+}
+
+// sThreadLocal.get() will return null unless you've called prepare().
+static final ThreadLocal<Looper> sThreadLocal = new ThreadLocal<Looper>();
+```
+
+原来这个looper对象是从一个`ThreadLocal`线程本地存储TLS对象中取到的，而且这个实例声明上面我们可以看到一行注释：**如果不提前调用`prepare()`方法的话`sThreadLocal.get()`可能返回null**。
+
+我们来看看这个`prepare()`方法到底干了什么：
+
+```java
+private static void prepare(boolean quitAllowed) {
+	 //每个线程只允许执行一次该方法，第二次执行时线程的TLS已有数据，则会抛出异常。
+    if (sThreadLocal.get() != null) {
+        throw new RuntimeException("Only one Looper may be created per thread");
+    }
+    //创建Looper对象，并保存到当前线程的TLS区域
+    sThreadLocal.set(new Looper(quitAllowed));	
+}
+```
+
+原来是给`ThreadLocal`线程本地存储TLS对象set了一个新的Looper对象。换句话说，就是new了一个Looper对象然后保存在了线程本地存储区里了。而这个`ThreadLocal`线程本地存储对象就是每个线程专有的变量，可以理解成线程的自有变量保存区。我们这里不作深入介绍，只用理解每个线程可以通过`Looper.prepare()`方法new一个Looper对象保存起来，然后就可以拥有一个Looper了。这也就是我们在非UI线程中使用Handler之前必须首先调用`Looper.prepare()`方法的根本原因。
+
+看到了这里有一个疑惑，那就是我们在文章开头的示例代码中新建`mHandler`的时候并没有调用`Looper.prepare()`方法，那Looper的创建以及方法调用在哪里呢？其实这些东西Android本身已经帮我们做了，在程序入口**ActivityThread**的main方法里面我们可以找到：
+
+```java
+ public static void main(String[] args) {
+    ...
+    Looper.prepareMainLooper();		//这里等同于Looper.prepare()
+    ...
+    Looper.loop();
+    ...
+}
+```
+
+
+## Message对象如何入队
+
+我们明白了MessageQueue消息队列对象是来自于ThreadLocal线程本地存储区存储的那个唯一的Looper对象。我们接着看**Handler**在发送消息的最后调用的`enqueueMessage()`方法，看名字应该是把消息加入队列的意思，点进去看下：
 
 ```java
 private boolean enqueueMessage(MessageQueue queue, Message msg, long uptimeMillis) {
@@ -160,11 +221,9 @@ private boolean enqueueMessage(MessageQueue queue, Message msg, long uptimeMilli
 }
 ```
 
-我们看到msg的target的赋值是Handler自己，也就是说这个`msg`实例对象现在持有了主线程中`mHandler`这个对象。最后调用了`MessageQueue`类的`enqueueMessage()`方法加入到了消息队列。
+我们看到msg的target的赋值是Handler自己，也就是说这个`msg`实例对象现在持有了主线程中`mHandler`这个对象。注意这里，我们稍后会讲到`msg`持有这个`mHandler`对象的用途。最后调用了`MessageQueue`类的`enqueueMessage()`方法加入到了消息队列。
 
-## 消息队列MessageQueue
-
-`MessageQueue`类的`enqueueMessage()`方法较长，我们现在继续进入看看：
+看来真正的入队方法交给了**MessageQueue**，这个`enqueueMessage()`方法较长，我们现在继续进入看看：
 
 ```java
 boolean enqueueMessage(Message msg, long when) {
@@ -331,12 +390,12 @@ Message next() {
 
 如果有阻塞（没有消息了或者只有 Delay 的消息），会把 `mBlocked`这个变量标记为 `true`，在下一个 Message 进队时会判断这个`message` 的位置，如果在队首就会调用` nativeWake()` 方法唤醒线程！
 
-不过`MessageQueue.next()` 这个方法是在什么地方调用的呢，不是在`Handler`中，我们找到了`Looper`这个关键人物，专门负责从消息队列中拿消息。
+不过`MessageQueue.next()` 这个方法是在什么地方调用的呢，不是在`Handler`中，我们找到了**`Looper`**这个关键人物，专门负责从消息队列中拿消息。
 
 
-## Looper
+## Looper如何处理Message
 
-我们来到了`Looper`的阵地，他在调用MessageQueue的`next()`方法，来从消息队列中拿Message对象，关键代码如下：
+我们又来到了`Looper`的阵地，他在调用MessageQueue的`next()`方法，来从消息队列中拿Message对象，关键代码如下：
 
 ```java
 /**
@@ -374,9 +433,13 @@ public static void loop() {
 }
 ```
 
-可以看到，`Looper.loop()` 也很简单，就是调用 `MessageQueue.next()` 方法取消息，如果没有消息的话会阻塞，直到有新的消息进入或者消息队列退出。
+可以看到，`Looper.loop()` 也很简单，就是调用消息队列 `MessageQueue.next()` 方法取消息，如果没有消息的话会阻塞，直到有新的消息进入或者消息队列退出。也就是不断重复下面的操作，直到没有消息时退出循环
 
-拿到消息后调用`msg.target`的`dispatchMessage(msg)`方法，而这个`msg.target`是什么呢？就是前面`Handler`发送消息`sendMessageAtTime()`时把自己赋值给`msg.target`的主线程的`mHandler`对象。所以，最后还是 Handler 负责处理消息。可以看到，**Looper 并没有执行消息，真正执行消息的还是添加消息到队列中的那个 Handler**。
+- 读取MessageQueue的下一条**Message**；
+- 把Message分发给相应的**target**；
+- 再把分发后的Message回收到消息池，以便重复利用。
+
+拿到消息后调用`msg.target`的`dispatchMessage(msg)`方法，而这个`msg.target`是什么呢？就是前面`Handler`发送消息`sendMessageAtTime()`时把自己赋值给`msg.target`的主线程的`mHandler`对象。也就是说，最后还是 Handler 负责处理消息。可以看到，**Looper 并没有执行消息，真正执行消息的还是添加消息到队列中的那个 Handler**。
 
 所以我们来看Handler中的`dispatchMessage(msg)`方法：
 
@@ -447,7 +510,7 @@ public void handleMessage(Message msg) {
 
 ## 参考资料
 
-
+- [Android消息机制1-Handler(Java层)](http://gityuan.com/2015/12/26/handler-message-framework/)
 - [从Handler.post(Runnable r)再一次梳理Android的消息机制](http://blog.csdn.net/ly502541243/article/details/52062179/)
 - [[Android 进阶14：源码解读 Android 消息机制（ Message MessageQueue Handler Looper）](http://blog.csdn.net/u011240877/article/details/72892321)](http://blog.csdn.net/u011240877/article/details/72892321)
 - [Android源码：Handler, Looper和MessageQueue实现解析](http://www.jianshu.com/p/10dd4d605d40)
