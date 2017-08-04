@@ -10,8 +10,12 @@ categories:
 keywords: 
 description: 
 photos:
-   - /gallery/memoryleak.png
+   - /gallery/14987336455200.jpg
 ---
+
+
+
+
 
 ## 前言
 
@@ -21,7 +25,9 @@ photos:
 2. 然后 Looper 无限循环读取消息
 3. 再调用 Handler 处理消息
 
-但是只知道整体流程，细节还不是特别透彻。最近不甚忙碌，回头看到这块又有些许收获，我们来记录一下吧。Android 消息机制主要涉及 4 个类：
+但是只知道整体流程，细节还不是特别透彻。最近不甚忙碌，回头看到这块又有些许收获，我们来记录一下吧。
+
+在整个Android的源码世界里，有两大利剑，其一是**Binder IPC机制**，另一个便是**消息机制**。Android有大量的消息驱动方式来进行交互，比如Android的四剑客`Activity`, `Service`, `Broadcast`, `ContentProvider`的启动过程的交互，都离不开消息机制，Android某种意义上也可以说成是一个以消息驱动的系统。而Android 消息机制主要涉及 4 个类：
 
 - Handler
 - Message
@@ -117,7 +123,12 @@ public boolean sendMessageAtTime(Message msg, long uptimeMillis) {
 }
 ```
 
-这个方法我们看到两个亮点：
+也就是说，目前我们看到的Handler的`sendEmptyMessage()`方法调用逻辑如下图：
+
+![Handler的sendEmptyMessage()方法调用逻辑](/gallery/android-handler/java_sendmessage.png)
+
+
+最后这个`sendMessageAtTime()`方法我们看到两个亮点：
 
 - 第一步，**首先拿到消息队列`MessageQueue`类型的`mQueue`对象**。
 - 第二步，**把消息`Message`类型的实例`msg`对象入队**。
@@ -193,6 +204,39 @@ private static void prepare(boolean quitAllowed) {
 ```
 
 原来是给`ThreadLocal`线程本地存储TLS对象set了一个新的Looper对象。换句话说，就是new了一个Looper对象然后保存在了线程本地存储区里了。而这个`ThreadLocal`线程本地存储对象就是每个线程专有的变量，可以理解成线程的自有变量保存区。我们这里不作深入介绍，只用理解每个线程可以通过`Looper.prepare()`方法new一个Looper对象保存起来，然后就可以拥有一个Looper了。这也就是我们在非UI线程中使用Handler之前必须首先调用`Looper.prepare()`方法的根本原因。
+
+> **插播**：`ThreadLocal`类实现一个线程本地的存储，也就是说，每个线程都有自己的局部变量。所有线程都共享一个ThreadLocal对象，但是每个线程在访问这些变量的时候能得到不同的值，每个线程可以更改这些变量并且不会影响其他的线程，并且支持null值。详细介绍可以看看这里：[Android线程管理之ThreadLocal理解及应用场景](http://www.cnblogs.com/whoislcj/p/5811989.html)
+
+比如我们在Activity的onCreate()方法中写一段这样的代码：
+
+```java
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+
+    Handler h1 = new Handler();
+
+    new Thread(new Runnable() {
+        @Override public void run() {
+            Handler h2 = new Handler();		//直接在子线程中new一个Handler
+        }
+    }).start();
+}
+```
+
+运行之后h1正常创建，但是创建h2的时候crash了：
+
+> --------- beginning of crash
+> E/AndroidRuntime: FATAL EXCEPTION: Thread-263
+> Process: com.example.stone.sfsandroidclient, PID: 32286
+> java.lang.RuntimeException: **Can't create handler inside thread that has not called Looper.prepare()**
+>    at android.os.Handler.<init>(Handler.java:200)
+>    at android.os.Handler.<init>(Handler.java:114)
+>    at com.example.stone.sfsandroidclient.MainActivity$1.run(MainActivity.java:71)
+>    at java.lang.Thread.run(Thread.java:818)
+
+很明显，出错日志提示**不能在一个没有调用过`Looper.prepare()`的Thread里边`new Handler()`**。
 
 看到了这里有一个疑惑，那就是我们在文章开头的示例代码中新建`mHandler`的时候并没有调用`Looper.prepare()`方法，那Looper的创建以及方法调用在哪里呢？其实这些东西Android本身已经帮我们做了，在程序入口**ActivityThread**的main方法里面我们可以找到：
 
@@ -441,6 +485,8 @@ public static void loop() {
 
 拿到消息后调用`msg.target`的`dispatchMessage(msg)`方法，而这个`msg.target`是什么呢？就是前面`Handler`发送消息`sendMessageAtTime()`时把自己赋值给`msg.target`的主线程的`mHandler`对象。也就是说，最后还是 Handler 负责处理消息。可以看到，**Looper 并没有执行消息，真正执行消息的还是添加消息到队列中的那个 Handler**。
 
+![Looper处理Message的大致流程](/gallery/android-handler/looper.png)
+
 所以我们来看Handler中的`dispatchMessage(msg)`方法：
 
 ```java
@@ -480,28 +526,161 @@ public void handleMessage(Message msg) {
 3. **最后就调用` Handler.handleMessage()` 方法**
    - 这是一个空实现，需要我们在 Handler 子类里重写
 
+而我们开头的例子，使用的就是第3种方法，大家可以回顾一下。
+
+![子线程向主线程中发送UI更新消息的整体流程](/gallery/android-handler/0_1327991304aZK7.jpg)
+
+到这里，我们的疑问基本上就解决了，虽然没有再深入到jni层看native底层实现，但是java层的机制我们大概明白了。最后我们对上面的源码跟踪分析做一个宏观上的总结。
+
+## 整体运行机制
+
+### 四大主角
+
+与Windows系统一样，Android也是消息驱动型的系统。引用一下消息驱动机制的四要素：
+
+- 接收消息的“消息队列”
+- 阻塞式地从消息队列中接收消息并进行处理的“线程”
+- 可发送的“消息的格式”
+- “消息发送函数”
+
+与之对应，Android中的实现对应了
+
+- 接收消息的“消息队列” ——【MessageQueue】
+- 阻塞式地从消息队列中接收消息并进行处理的“线程” ——【Thread+Looper】
+- 可发送的“消息的格式” ——【Message】
+- “消息发送函数”——【Handler的post和sendMessage】
+
+也就是说，消息机制主要包含以下四个主角：
+
+- **Message**：消息分为硬件产生的消息（如按钮、触摸）和软件生成的消息；
+- **MessageQueue**：消息队列的主要功能向消息池投递消息（`MessageQueue.enqueueMessage()`）和取走消息池的消息（`MessageQueue.next()`）；
+- **Handler**：消息辅助类，主要功能向消息池发送各种消息事件（`Handler.sendMessage()`）和处理相应消息事件（`Handler.handleMessage()`）；
+- **Looper**：不断循环执行（`Looper.loop()`），按分发机制将消息分发给目标处理者。
+
+他们之间的关系如下：
+
+- **Thread**：一个线程有唯一一个对应的Looper；
+- **Looper**：有一个MessageQueue消息队列；
+- **MessageQueue**：有一组待处理的Message；
+- **Message**中有一个用于处理消息的Handler；
+- **Handler**中有Looper和MessageQueue。
+
+### 流程图
+
+
+![](/gallery/android-handler/1836169-c13aab3f58697aaa.png)
+
+一个`Looper`类似一个消息泵。它本身是一个死循环，不断地从`MessageQueue`中提取`Message`或者Runnable。而`Handler`可以看做是一个`Looper`的暴露接口，向外部暴露一些事件，并暴露`sendMessage()`和`post()`函数。
 
 
 
+在安卓中，除了`UI线程`/`主线程`以外，普通的线程(先不提`HandlerThread`)是不自带`Looper`的。想要通过UI线程与子线程通信需要在子线程内自己实现一个`Looper`。开启Looper分**三步走**：
+
+1. 判定是否已有`Looper`并`Looper.prepare()`
+2. 做一些准备工作(如暴露handler等)
+3. 调用`Looper.loop()`，线程进入阻塞态
+
+由于每一个线程内最多只可以有一个`Looper`，所以一定要在`Looper.prepare()`之前做好判定，否则会抛出`java.lang.RuntimeException: Only one Looper may be created per thread`。为了获取Looper的信息可以使用两个方法：
+
+- Looper.myLooper()
+- Looper.getMainLooper()
+
+`Looper.myLooper()`获取当前线程绑定的Looper，如果没有返回`null`。`Looper.getMainLooper()`返回主线程的`Looper`,这样就可以方便的与主线程通信。
 
 
 
+### 总结
+
+- `Looper`调用`prepare()`进行初始化，创建了一个与当前线程对应的`Looper`对象（通过`ThreadLocal`实现），并且初始化了一个与当前`Looper`对应的`MessageQueue`对象。
+- `Looper`调用静态方法`loop()`开始消息循环，通过`MessageQueue.next()`方法获取`Message`对象。
+- 当获取到一个`Message`对象时，让`Message`的发送者（`target`）去处理它。
+- `Message`对象包括数据，发送者（`Handler`），可执行代码段（`Runnable`）三个部分组成。
+- `Handler`可以在一个已经`Looper.prepare()`的线程中初始化，如果线程没有初始化`Looper`，创建`Handler`对象会失败
+- 一个线程的执行流中可以构造多个`Handler`对象，它们都往同一个MQ中发消息，消息也只会分发给对应的`Handler`处理。
+- `Handler`将消息发送到MQ中，`Message`的`target`域会引用自己的发送者，`Looper`从MQ中取出来后，再交给发送这个`Message`的`Handler`去处理。
+- `Message`可以直接添加一个`Runnable`对象，当这条消息被处理的时候，直接执行`Runnable.run()`方法。
 
 
+## Handler的内存泄露问题
+
+再来看看我们的新建Handler的代码：
+
+```java
+private Handler mHandler = new Handler() {
+    @Override
+    public void handleMessage(Message msg) {
+        ...
+    }
+};
+```
+
+**当使用内部类（包括匿名类）来创建Handler的时候，Handler对象会隐式地持有Activity的引用。**
+
+而Handler通常会伴随着一个耗时的后台线程一起出现，这个后台线程在任务执行完毕后发送消息去更新UI。然而，如果用户在网络请求过程中关闭了Activity，正常情况下，Activity不再被使用，它就有可能在GC检查时被回收掉，但由于这时线程尚未执行完，而该线程持有Handler的引用（不然它怎么发消息给Handler？），这个Handler又持有Activity的引用，就导致该Activity无法被回收（即内存泄露），直到网络请求结束。
+
+另外，如果执行了Handler的postDelayed()方法，那么在设定的delay到达之前，会有一条**MessageQueue -> Message -> Handler -> Activity**的链，导致你的Activity被持有引用而无法被回收。
+
+解决方法之一，使用弱引用：
+
+```java
+static class MyHandler extends Handler {
+    WeakReference<Activity > mActivityReference;
+    MyHandler(Activity activity) {
+        mActivityReference= new WeakReference<Activity>(activity);
+    }
+    @Override
+    public void handleMessage(Message msg) {
+        final Activity activity = mActivityReference.get();
+        if (activity != null) {
+            mImageView.setImageBitmap(mBitmap);
+        }
+    }
+}
+```
+
+从JDK1.2开始，Java把对象的引用分为四种级别，这四种级别由高到低依次为：强引用、软引用、弱引用和虚引用。
+
+1. **强引用**：我们一般使用的就是强引用，垃圾回收器一般都不会对其进行回收操作。当内存空间不足时Java虚拟机宁愿抛出OutOfMemoryError错误使程序异常终止，也不会回收具有强引用的对象。
+
+2. **软引用(SoftReference)**：如果一个对象具有软引用(SoftReference)，在内存空间足够的时候GC不会回收它，如果内存空间不足了GC就会回收这些对象的内存空间。
+
+3. **弱引用(WeakReference)** ：如果一个对象具有弱引用(WeakReference)，那么当GC线程扫描的过程中一旦发现某个对象只具有弱引用而不存在强引用时不管当前内存空间足够与否GC都会回收它的内存。由于垃圾回收器是一个优先级较低的线程，所以不一定会很快发现那些只具有弱引用的对象。为了防止内存溢出，在处理一些占用内存大而且生命周期较长的对象时候，可以尽量使用软引用和弱引用。
+
+4. **虚引用(PhantomReference)** ：虚引用(PhantomReference)与其他三种引用都不同，它并不会决定对象的生命周期。如果一个对象仅持有虚引用，那么它就和没有任何引用一样，在任何时候都可能被垃圾回收器回收。所以，虚引用主要用来跟踪对象被垃圾回收器回收的活动，在一般的开发中并不会使用它。
+
+## 进程、线程间通信方式
+
+文章最后，我们来整理一下进程、线程间通信方式，参考[线程通信与进程通信的区别](http://www.cnblogs.com/xh0102/p/5710074.html)。看看Handler消息传递机制属于哪种？
+
+### 一、进程间的通信方式
+
+- **管道( pipe )**：管道是一种半双工的通信方式，数据只能单向流动，而且只能在具有亲缘关系的进程间使用。进程的亲缘关系通常是指父子进程关系。
+- **有名管道 (namedpipe)** ： 有名管道也是半双工的通信方式，但是它允许无亲缘关系进程间的通信。
+- **信号量(semophore )** ： 信号量是一个计数器，可以用来控制多个进程对共享资源的访问。它常作为一种锁机制，防止某进程正在访问共享资源时，其他进程也访问该资源。因此，主要作为进程间以及同一进程内不同线程之间的同步手段。
+- **消息队列( messagequeue )** ： 消息队列是由消息的链表，存放在内核中并由消息队列标识符标识。消息队列克服了信号传递信息少、管道只能承载无格式字节流以及缓冲区大小受限等缺点。
+- **信号 (sinal )** ： 信号是一种比较复杂的通信方式，用于通知接收进程某个事件已经发生。
+- **共享内存(shared memory )** ：共享内存就是映射一段能被其他进程所访问的内存，这段共享内存由一个进程创建，但多个进程都可以访问。共享内存是最快的 IPC 方式，它是针对其他进程间通信方式运行效率低而专门设计的。它往往与其他通信机制，如信号两，配合使用，来实现进程间的同步和通信。
+- **套接字(socket )** ： 套解口也是一种进程间通信机制，与其他通信机制不同的是，它可用于不同及其间的进程通信。
 
 
+| **IPC**        | **数据拷贝次数** |
+| -------------- | ---------- |
+| 共享内存           | 0          |
+| Android Binder | 1          |
+| Socket/管道/消息队列 | 2          |
 
+### 二、线程间的通信方式
 
+-  **锁机制**：包括互斥锁、条件变量、读写锁
+   1. 互斥锁提供了以排他方式防止数据结构被并发修改的方法。
+   2. 读写锁允许多个线程同时读共享数据，而对写操作是互斥的。
+   3. 条件变量可以以原子的方式阻塞进程，直到某个特定条件为真为止。对条件的测试是在互斥锁的保护下进行的。条件变量始终与互斥锁一起使用。
+-  **信号量机制(Semaphore)**：包括无名线程信号量和命名线程信号量
+-  **信号机制(Signal)**：类似进程间的信号处理
 
+线程间的通信目的主要是用于线程同步，所以线程没有像进程通信中的用于数据交换的通信机制。
 
-
-
-
-
-
-
-
-
+> 很明显，Android的Handler消息机制使用消息队列( MessageQueue )实现的线程间通信方式。而Binder是Android建立额一套新的IPC机制来满足系统对通信方式，传输性能和安全性的要求。**Binder基于Client-Server通信模式，传输过程只需一次拷贝，为发送发添加UID/PID身份，既支持实名Binder也支持匿名Binder，安全性高。**此处就不对Binder作更多介绍了。
 
 
 
