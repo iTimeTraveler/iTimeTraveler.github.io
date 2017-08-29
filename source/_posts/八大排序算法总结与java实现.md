@@ -828,7 +828,7 @@ public static void radixSort(int[] arr){
     System.out.println("maxDigit: " + maxDigit);
 
     //申请一个桶空间
-    int[][] buckets = new int[10][arr.length-1];
+    int[][] buckets = new int[10][arr.length];
     int base = 10;
 
     //从低位到高位，对每一位遍历，将所有元素分配到桶中
@@ -882,7 +882,7 @@ Tips: 基数排序不改变相同元素之间的相对顺序，因此它是稳�
 
 ---
 
-各种排序性能对比如下，有些排序未详细介绍，暂且放到这里:
+各种排序性能对比如下，有些排序未详细介绍，暂且放到这里。实例测试结果可以看这里：[**八大排序算法耗时对比**](https://github.com/iTimeTraveler/SortAlgorithms/blob/master/BENCH_RESULT.md) 。
 
 
 | 排序类型   | 平均情况      | 最好情况      | 最坏情况       | 辅助空间      | 稳定性   |
@@ -910,6 +910,11 @@ Tips: 基数排序不改变相同元素之间的相对顺序，因此它是稳�
 
 (4). 线性阶O(n)排序：**`基数排序，此外还有桶、箱排序`**。
 　　
+到此，很多人会注意到**基数排序**的时间复杂度是最小的，那么为什么却没有快排、堆排序流行呢？我们看看下图算法导论的相关说明：
+
+![](/gallery/sort-algorithms/radixsort-comparison.jpg)
+
+基数排序只适用于有基数的情况，而基于比较的排序适用范围就广得多。另一方面是内存上的考虑。作为一种通用的排序方法，最好不要带来意料之外的内存开销，所以各语言的默认实现都没有用基数排序，但是不能否认基数排序在各领域的应用。
 
 #### 说明
 

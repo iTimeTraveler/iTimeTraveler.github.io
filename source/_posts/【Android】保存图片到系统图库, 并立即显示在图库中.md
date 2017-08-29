@@ -100,7 +100,7 @@ MediaStore.Images.Media.insertImage(getContentResolver(), "image path", "title",
 
 所以写了一个方法，完整的代码如下：
 
-```
+```java
 public static void saveImageToGallery(Context context, Bitmap bmp) {
     // 首先保存图片
     File appDir = new File(Environment.getExternalStorageDirectory(), "Boohee");
