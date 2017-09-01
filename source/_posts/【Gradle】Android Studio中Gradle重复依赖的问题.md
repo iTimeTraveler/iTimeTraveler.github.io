@@ -31,7 +31,7 @@ Error:Execution failed for task ':app:transformClassesWithJarMergingForAutoioDeb
 
 使用快捷键（Shift + Ctrl + T）查看项目中的`Expose.class` 类，发现是和passport-1.4.2.jar这个本地jar包冲突了，它也依赖了gson库所以导致了重复依赖。
 
-![](http://img.blog.csdn.net/20170223114733531?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDk4Mzg4MQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![](http://img.blog.csdn.net/20170223114733531)
 
 <!-- more -->
 
@@ -39,7 +39,7 @@ Error:Execution failed for task ':app:transformClassesWithJarMergingForAutoioDeb
 
 在往下面分析之前，需要先根据项目结构说明一下问题的本质，就是Module
 
-![](http://img.blog.csdn.net/20170223124701598?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDk4Mzg4MQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![](http://img.blog.csdn.net/20170223124701598)
 
 
 ### 踩过的坑
@@ -99,7 +99,7 @@ dependencies {
 
 ---
 
-### 【参考资料】：
+## 参考资料
 
 1、[**AndroidStudio中如何解决重复依赖导致的app:transformClassesWithJarMergingForDebug**](http://blog.csdn.net/cx1229/article/details/52786168)
-2、[  **AndroidStudio的Gradle添加重复依赖的问题** ](http://blog.csdn.net/yisizhu/article/details/49952841)
+2、[**AndroidStudio的Gradle添加重复依赖的问题**](http://blog.csdn.net/yisizhu/article/details/49952841)
