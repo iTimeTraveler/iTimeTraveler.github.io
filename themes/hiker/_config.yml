@@ -22,11 +22,11 @@ keywords: ""
 # Put your favicon.ico or avatar.jpg into `hexo-site/themes/hiker/source/` directory.
 avatar: 
   enable: true
-  border: true
-  width: 124
-  height: 124
-  top: 0
-  url: http://tvax2.sinaimg.cn/crop.0.0.440.440.180/5c78db24ly8fga78ly31oj20c80c874e.jpg
+  border: false
+  width: 75
+  height: 75
+  top: 8
+  url: gallery/avatar/0.svg
 
 
 # Homepage

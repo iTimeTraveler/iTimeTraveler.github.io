@@ -46,6 +46,24 @@ http://archive.li/A7Ro2
 ![](/funnysite/images/jason-theme.jpg)
 
 
+## <span class="fa fa-link"></span> Funny Links
+
+- [**ibireme**](http://blog.ibireme.com/)
+- [**Red Blob Games**](http://theory.stanford.edu/~amitp/GameProgramming/)
+- [**Joe's Blog**](https://hijiangtao.github.io/)
+- [tarikfayad](http://tarikfayad.com/)
+- [设计筆記](https://biji.io/)
+- [**朱腾鹏（像素癖）**](http://div63.com/index.html)
+- [**CaiCai**](https://www.caicai.me/)
+- [PHILANTHROPY 2016](https://www.palantir.com/philanthropy-engineering/annual-report/2016/#)
+- [**tagDiv**](http://tagdiv.com/)
+- [IGK](http://www.igkhair.com)
+- [nerds.company](https://nerds.company/) & [404](https://nerds.company/404)
+- [Oops 404](http://oops.re/)
+- [A Developer Diary](http://www.adeveloperdiary.com/)
+
+
+
 ## 图集
 
 - [from Dribbble](https://dribbble.com/shots/1706854-Nice-Bird-Wordpress-Theme-for-Newspaper-Bloggers-Magazines)
