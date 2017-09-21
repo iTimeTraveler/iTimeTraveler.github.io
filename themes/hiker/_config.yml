@@ -74,11 +74,10 @@ sidebar: right
 widgets:
 - curtains
 - social
+- recent_posts
 - category
-- tag
 - tagcloud
 - archive
-- recent_posts
 
 
 # Social Links
@@ -112,7 +111,7 @@ wumii:
 # Available value:
 #    default | gray | normal | night | night eighties | night blue | night bright
 # https://github.com/chriskempson/tomorrow-theme
-highlight_theme: gray
+highlight_theme: normal
 
 
 # Article theme color

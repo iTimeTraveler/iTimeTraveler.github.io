@@ -35,7 +35,9 @@ photos:
 
 <!-- more -->
 
-其中我们讨论的这八大排序算法的实现可以参考[我的Github：**SortAlgorithms**](https://github.com/iTimeTraveler/SortAlgorithms)，它们都属于内部排序，也就是只考虑数据量较小仅需要使用内存的排序算法，他们之间关系如下：
+我们讨论的这八大排序算法的实现可以参考[我的Github：**SortAlgorithms**](https://github.com/iTimeTraveler/SortAlgorithms)，其中也包括了排序测试模块[[Test.java]](https://github.com/iTimeTraveler/SortAlgorithms/blob/master/src/main/java/com/example/Test.java)和排序算法对比模块[[Bench.java]](https://github.com/iTimeTraveler/SortAlgorithms/blob/master/src/main/java/com/example/Bench.java)，大家可以试运行。
+
+它们都属于内部排序，也就是只考虑数据量较小仅需要使用内存的排序算法，他们之间关系如下：
 
 
 
@@ -201,22 +203,24 @@ Tips: 由于直接插入排序每次只移动一个元素的位， 并不会改�
 public static void shellSort(int[] arr){
     int gap = arr.length / 2;
     for (; gap > 0; gap /= 2) {      //不断缩小gap，直到1为止
-        for (int j = 0; (j+gap) < arr.length; j++){     //使用每个gap进行遍历
-            for(int k = 0; (k+gap) < arr.length; k += gap){
-                if(arr[k] > arr[k+gap]){
+        for (int j = 0; (j+gap) < arr.length; j++){     //使用当前gap进行组内插入排序
+            for(int k = 0; (k+gap)< arr.length; k += gap){
+                if(arr[k] > arr[k+gap]) {
                     int temp = arr[k+gap];      //交换操作
                     arr[k+gap] = arr[k];
                     arr[k] = temp;
-                    System.out.println("Gap=" + gap + ", Sorting:  " + Arrays.toString(arr));
+                    System.out.println("    Sorting:  " + Arrays.toString(arr));
                 }
             }
-        }
-        if(gap == 1){
-            break;
         }
     }
 }
 ```
+
+**注意：**
+
+①. 第一层for循环表示一共有多少个增量。增量的序列的个数，就是希尔排序的趟数。上面的增量序列为： `arr.length/2, arr.length/2/2, arr.length/2/2/2,     ....   2,  1`
+②. 里层的两个for循环，实际上就是以一个gap拆分为一组的**组内插入排序**。
 
 下面是维基百科官方实现，大家注意gap步长取值部分：
 
@@ -856,12 +860,14 @@ public static void radixSort(int[] arr){
 }
 ```
 
-以下是基数排序算法复杂度:
+以下是基数排序算法复杂度，其中k为最大数的位数：
 
 | 平均时间复杂度  | 最好情况     | 最坏情况     | 空间复杂度  |
 | -------- | -------- | -------- | ------ |
-| O(n * k) | O(n * k) | O(n * k) | O(k+N) |
+| O(d*(n+r)) | O(d*(n+r)) | O(d*(n+r)) | O(n+r) |
 
+
+其中，**d 为位数，r 为基数，n 为原数组个数**。在基数排序中，因为没有比较操作，所以在复杂上，最好的情况与最坏的情况在时间上是一致的，均为 `O(d*(n + r))`。
 
 基数排序更适合用于对时间, 字符串等这些**整体权值未知的数据**进行排序。
 
