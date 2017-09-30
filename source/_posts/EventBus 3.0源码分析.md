@@ -286,5 +286,7 @@ public class EventBusBuilder {
 - [EventBus3.0源码解析](http://yydcdut.com/2016/03/07/eventbus3-code-analyse/)
 - [EventBus 3.0 源代码分析](http://skykai521.github.io/2016/02/20/EventBus-3-0%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/)
 - [EventBus 源码解析](http://a.codekk.com/detail/Android/Trinea/EventBus%20%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90)
+- [EventBus源码解析](https://segmentfault.com/a/1190000004295210)
+- [EventBus 源码解析](https://juejin.im/entry/58710e9eb123db4a2eb866c4)
 
 
