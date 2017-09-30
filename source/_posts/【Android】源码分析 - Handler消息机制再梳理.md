@@ -680,7 +680,7 @@ static class MyHandler extends Handler {
 
 线程间的通信目的主要是用于线程同步，所以线程没有像进程通信中的用于数据交换的通信机制。
 
-> 很明显，Android的Handler消息机制使用消息队列( MessageQueue )实现的线程间通信方式。而Binder是Android建立额一套新的IPC机制来满足系统对通信方式，传输性能和安全性的要求。**Binder基于Client-Server通信模式，传输过程只需一次拷贝，为发送发添加UID/PID身份，既支持实名Binder也支持匿名Binder，安全性高。**此处就不对Binder作更多介绍了。
+> 很明显，Android的Handler消息机制使用消息队列( MessageQueue )实现的线程间通信方式。而Binder是Android建立额一套新的IPC机制来满足系统对通信方式，传输性能和安全性的要求。**Binder基于Client-Server通信模式，传输过程只需一次拷贝，为发送方添加UID/PID身份，既支持实名Binder也支持匿名Binder，安全性高。**此处就不对Binder作更多介绍了。
 
 
 
