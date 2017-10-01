@@ -1114,19 +1114,59 @@ EventBus的核心工作机制透过作者Blog中的这张图就能很好地理�
 
 ### 四、缺点与问题
 
+一直以来，EventBus被大家吐槽的一大问题就是代码混淆问题。
+
+#### 4.1 混淆问题
+
+混淆作为版本发布必备的流程，经常会闹出很多奇奇怪怪的问题，且不方便定位，尤其是EventBus这种依赖反射技术的库。通常情况下都会把相关的类和回调方法都keep住，但这样其实会留下被人反编译后破解的后顾之忧，所以我们的目标是keep最少的代码。
+
+首先，因为EventBus 3弃用了反射的方式去寻找回调方法，改用注解的方式。作者的意思是在混淆时就不用再keep住相应的类和方法。但是我们在运行时，却会报`java.lang.NoSuchFieldError: No static field POSTING`。网上给出的解决办法是keep住所有eventbus相关的代码：
+
+```java
+-keep class de.greenrobot.** {*;}
+```
+
+其实我们仔细分析，可以看到是因为在SubscriberMethodFinder的findUsingReflection方法中，在调用Method.getAnnotation()时获取ThreadMode这个enum失败了，所以我们只需要keep住这个enum就可以了（如下）。
+
+```java
+-keep public enum org.greenrobot.eventbus.ThreadMode { public static *; }
+```
+
+这样就能正常编译通过了，但如果使用了索引加速，是不会有上面这个问题的。因为在找方法时，调用的不是findUsingReflection，而是findUsingInfo。但是使用了索引加速后，编译后却会报新的错误：`Could not find subscriber method in XXX Class. Maybe a missing ProGuard rule?`
+
+这就很好理解了，因为生成索引GeneratedSubscriberIndex是在代码混淆之前进行的，混淆之后类名和方法名都不一样了（上面这个错误是方法无法找到），得keep住所有被Subscribe注解标注的方法：
+
+```java
+-keepclassmembers class * {
+    @de.greenrobot.event.Subscribe <methods>;
+}
+```
+
+所以又倒退回了EventBus2.4时不能混淆onEvent开头的方法一样的处境了。所以这里就得权衡一下利弊：使用了注解不用索引加速，则只需要keep住EventBus相关的代码，现有的代码可以正常的进行混淆。而使用了索引加速的话，则需要keep住相关的方法和类。
+
+#### 4.2 跨进程问题
+
+目前EventBus只支持跨线程，而**不支持跨进程**。如果一个app的service起到了另一个进程中，那么注册监听的模块则会收不到另一个进程的EventBus发出的事件。这里可以考虑利用IPC做映射表，并在两个进程中各维护一个EventBus，不过这样就要自己去维护register和unregister的关系，比较繁琐，而且这种情况下通常用广播会更加方便，大家可以思考一下有没有更优的解决方案。
+
+#### 4.3 事件环路问题
+
+在使用EventBus时，通常我们会把两个模块相互监听，来达到一个相互回调通信的目的。但这样一旦出现死循环，而且如果没有相应的日志信息，很难定位问题。所以在使用EventBus的模块，如果在回调上有环路，而且回调方法复杂到了一定程度的话，就要考虑把接收事件专门封装成一个子模块，同时考虑避免出现事件环路。
+
 ### 五、总结
 
 
 
+`EventBus`不论从使用方式和实现方式上都是非常值得我们学习的开源项目，可以说是目前消息通知里最好用的项目。但是业内对`EventBus`的主要争论点是在于`EventBus`使用反射会出现性能问题，实际上在`EventBus`里我们可以看到不仅可以使用注解处理器预处理获取订阅信息，`EventBus`也会将订阅者的方法缓存到`METHOD_CACHE`里避免重复查找，所以只有在最后`invoke()`方法的时候会比直接调用多出一些性能损耗。
 
-现在新版的EventBus，订阅者已经没有固定的处理事件的方法了，onEvent、onEventMainThread、onEventBackgroundThread、onEventAsync都没有了，现在支持处理事件的方法名自定义，但必须public，只有一个参数，然后使用注解Subscribe来标记该方法为处理事件的方法，ThreadMode和priority也通过该注解来定义。在subscriberMethodFinder中，通过反射的方式寻找事件方法。使用注解，用起来才更爽。[嘻嘻]
+而且相比旧版的2.x，现在新版的EventBus 3.0，订阅者已经没有固定的处理事件的方法了，`onEvent`、`onEventMainThread`、`onEventBackgroundThread`、`onEventAsync`都没有了，现在支持处理事件的方法名自定义，但必须public，只有一个参数，然后使用注解`@Subscribe`来标记该方法为处理事件的方法，ThreadMode和priority也通过该注解来定义。在subscriberMethodFinder中，通过反射的方式寻找事件方法。使用注解，用起来才更爽。
 
-
+当然，EventBus并不是重构代码的唯一之选。作为观察者模式的“同门师兄弟”——RxJava，作为功能更为强大的响应式编程框架，可以轻松实现EventBus的事件总线功能（[RxBus](http://www.jianshu.com/p/ca090f6e2fe2)）。但毕竟大型项目要接入RxJava的成本高，复杂的操作符需要开发者投入更多的时间去学习。所以想在成熟的项目中快速地重构、解耦模块，EventBus依旧是我们的不二之选。
 
 ---
 
 ### 参考资料
 
+- [Markus Junginger - EventBus 3 beta announced at droidcon](http://androiddevblog.com/eventbus-3-droidcon/)
 - [老司机教你 “飙” EventBus 3](https://segmentfault.com/a/1190000005089229) -  [**腾讯Bugly**](https://segmentfault.com/u/tencentbugly)
 - [EventBus源码研读(上)](https://kymjs.com/code/2015/12/12/01/)，[(中)](https://www.kymjs.com/code/2015/12/13/01/)，[(下)](https://kymjs.com/code/2015/12/16/01/) - kymjs张涛
 - [EventBus3.0源码解析](http://yydcdut.com/2016/03/07/eventbus3-code-analyse/) - yydcdut
