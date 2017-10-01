@@ -16,6 +16,7 @@ photos:
 
 
 
+
 ### 概述
 
 **[EventBus](https://github.com/greenrobot/EventBus)**是一个基于**观察者模式**的事件发布/订阅框架，开发者可以通过极少的代码去实现多个模块之间的通信，既可用于 Android 四大组件间通讯，也可以用于异步线程和主线程间通讯，而不需要以Interface回调、handler或者BroadCastReceiver的形式去单独构建通信桥梁。从而降低因多重回调导致的模块间强耦合，同时避免产生大量内部类。
@@ -141,7 +142,7 @@ Subscriber class XXX and its super classes have no public methods with the @Subs
 EventBus.getDefault().post(new MessageEvent("Hello everyone!"));
 ```
 
-在实际项目的使用中，register和unregister通常与Activity和Fragment的生命周期相关，ThreadMode.MainThread可以很好地解决Android的界面刷新必须在UI线程的问题，不需要再回调后用Handler中转（EventBus中已经自动用Handler做了处理），黏性事件可以很好地解决post与register同时执行时的异步问题（这个在原理中会说到），事件的传递也没有序列化与反序列化的性能消耗，足以满足我们大部分情况下的模块间通信需求。
+在实际项目的使用中，register和unregister通常与Activity和Fragment的生命周期相关，ThreadMode.MainThread可以很好地解决Android的界面刷新必须在UI线程的问题，不需要再回调后用Handler中转（**EventBus中已经自动用Handler做了处理**），黏性事件可以很好地解决post与register同时执行时的异步问题（这个在原理中会说到），事件的传递也没有序列化与反序列化的性能消耗，足以满足我们大部分情况下的模块间通信需求。
 
 ### 二、EventBus源码跟踪
 
@@ -505,7 +506,126 @@ private void findUsingReflectionInSingleClass(FindState findState) {
 这里走完，我们订阅类的所有`SubscriberMethod`都已经被保存了，最后再通过`getMethodsAndRelease()`返回`List<SubscriberMethod>`。至此，所有关于如何获得订阅类的订阅方法信息即：`SubscriberMethod`对象就已经完全分析完了，下面我们来看`subscribe()`是如何实现的。
 
 
+**subscribe()方法的实现**
 
+下面看一下`subscribe()`的实现：
+
+```java
+//必须在同步代码块里调用
+private void subscribe(Object subscriber, SubscriberMethod subscriberMethod) {
+    //获取订阅的事件类型
+    Class<?> eventType = subscriberMethod.eventType;
+    //创建Subscription对象
+    Subscription newSubscription = new Subscription(subscriber, subscriberMethod);
+    //从subscriptionsByEventType里检查是否已经添加过该Subscription,如果添加过就抛出异常,也就是每个类只能有一个函数响应同一种事件类型
+    CopyOnWriteArrayList<Subscription> subscriptions = subscriptionsByEventType.get(eventType);
+    if (subscriptions == null) {
+        subscriptions = new CopyOnWriteArrayList<>();
+        subscriptionsByEventType.put(eventType, subscriptions);
+    } else {
+        if (subscriptions.contains(newSubscription)) {
+            throw new EventBusException("Subscriber " + subscriber.getClass() + " already registered to event "
+                    + eventType);
+        }
+    }
+    //根据优先级priority来添加Subscription对象
+    int size = subscriptions.size();
+    for (int i = 0; i <= size; i++) {
+        if (i == size || subscriberMethod.priority > subscriptions.get(i).subscriberMethod.priority) {
+            subscriptions.add(i, newSubscription);
+            break;
+        }
+    }
+    //将订阅者对象以及订阅的事件保存到typesBySubscriber里.
+    List<Class<?>> subscribedEvents = typesBySubscriber.get(subscriber);
+    if (subscribedEvents == null) {
+        subscribedEvents = new ArrayList<>();
+        typesBySubscriber.put(subscriber, subscribedEvents);
+    }
+    subscribedEvents.add(eventType);
+    //如果接收sticky事件,立即分发sticky事件
+    if (subscriberMethod.sticky) {
+        //eventInheritance 表示是否分发订阅了响应事件类父类事件的方法
+        if (eventInheritance) {
+            // Existing sticky events of all subclasses of eventType have to be considered.
+            // Note: Iterating over all events may be inefficient with lots of sticky events,
+            // thus data structure should be changed to allow a more efficient lookup
+            // (e.g. an additional map storing sub classes of super classes: Class -> List<Class>).
+            Set<Map.Entry<Class<?>, Object>> entries = stickyEvents.entrySet();
+            for (Map.Entry<Class<?>, Object> entry : entries) {
+                Class<?> candidateEventType = entry.getKey();
+                if (eventType.isAssignableFrom(candidateEventType)) {
+                    Object stickyEvent = entry.getValue();
+                    checkPostStickyEventToSubscription(newSubscription, stickyEvent);
+                }
+            }
+        } else {
+            Object stickyEvent = stickyEvents.get(eventType);
+            checkPostStickyEventToSubscription(newSubscription, stickyEvent);
+        }
+    }
+}
+```
+
+#### **2.3 事件分发Post**
+
+我们知道发送事件是通过`post()` 方法进行广播的，比如第一节我们例子中提到的`EventBus.getDefault().post(new MessageEvent("Hello everyone!"));` 接下来我们进入这个`post()`方法一窥究竟：
+
+```java
+public void post(Object event) {
+    //得到当前线程的Posting状态.
+    PostingThreadState postingState = currentPostingThreadState.get();
+    //获取当前线程的事件队列
+    List<Object> eventQueue = postingState.eventQueue;
+    eventQueue.add(event);
+
+    if (!postingState.isPosting) {
+        // 记录当前发送线程是否为主线程
+        postingState.isMainThread = Looper.getMainLooper() == Looper.myLooper();
+        postingState.isPosting = true;
+        if (postingState.canceled) {
+            throw new EventBusException("Internal error. Abort state was not reset");
+        }
+        try {
+            //处理队列，一直发送完所有事件
+            while (!eventQueue.isEmpty()) {
+                //发送单个事件
+                postSingleEvent(eventQueue.remove(0), postingState);
+            }
+        } finally {
+            postingState.isPosting = false;
+            postingState.isMainThread = false;
+        }
+    }
+}
+```
+
+首先是通过`currentPostingThreadState.get()`方法来得到当前线程`PostingThreadState`的对象，为什么是说当前线程？我们来看看`currentPostingThreadState`的实现：
+
+```java
+private final ThreadLocal<PostingThreadState> currentPostingThreadState = new ThreadLocal<PostingThreadState>() {
+    @Override
+    protected PostingThreadState initialValue() {
+        return new PostingThreadState();
+    }
+};
+```
+
+
+
+
+
+
+
+
+
+### 三、EventBus原理分析
+
+
+
+### 四、缺点与问题
+
+### 五、总结
 
 
 
