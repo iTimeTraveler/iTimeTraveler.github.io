@@ -311,6 +311,9 @@ SerialExecutor实现了Executor接口中的execute方法，该类用于串行执
 - 当将mTasks中的Runnable作为参数传递给THREAD_POOL_EXECUTOR执行execute方法时，会在线程池的工作线程中执行匿名内部类Runnable中的try-finally代码段，即先在工作线程中执行r.run()方法去执行任务，无论任务r正常完成还是抛出异常，都会在finally中执行scheduleNext方法，用于执行mTasks中的下一个任务。从而在此处我们可以看出SerialExecutor是一个接一个执行任务，是串行执行任务，而不是并行执行。
 
 
+![SerialExecutor串行执行任务](/gallery/android-asynctask/serial.png)
+
+
 #### 执行任务 - 调用doInBackground()
 
 然后我们看看mWorker这个任务对象了，在构造函数中的mWorker定义如下，
