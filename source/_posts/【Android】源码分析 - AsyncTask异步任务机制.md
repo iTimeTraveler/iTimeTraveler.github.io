@@ -17,8 +17,6 @@ photos:
 
 
 
-
-
 ### 前言
 
 提到Android的多线程机制，常用的有如下几种方式：
@@ -151,7 +149,7 @@ public static final Executor THREAD_POOL_EXECUTOR
 
 通过以上代码和注释我们可以知道，AsyncTask初始化了一些参数，并用这些参数实例化了一个线程池`THREAD_POOL_EXECUTOR`，需要注意的是该线程池被定义为`public static final`，由此我们可以看出AsyncTask内部维护了一个静态的线程池，默认情况下，AsyncTask的实际工作就是通过该`THREAD_POOL_EXECUTOR`完成的。
 
-#### 构造函数
+#### **构造函数**
 
 我们来看一看AsyncTask的构造函数：
 
@@ -218,7 +216,7 @@ private static abstract class WorkerRunnable<Params, Result> implements Callable
 构造函数我们先分析到这里，关于**mWorker**这个对象里调用**`doInBackground()`函数**的流程我们稍后讲到然后把它们串起来。
 
 
-#### execute()方法
+#### **execute()方法**
 
 如果我们想要启动某一个任务，就需要调用该任务的`execute()`方法，因此现在我们来看一看它的源码：
 
@@ -325,8 +323,56 @@ SerialExecutor实现了Executor接口中的execute方法，该类用于串行执
 
 ![SerialExecutor串行执行任务](http://itimetraveler.github.io/gallery/android-asynctask/serial.png)
 
+我们看SerialExecutor最终执行的是`r.run()`，那这里的r是什么呢？就是execute方法中的**`exec.execute(mFuture)`**中的参数mFuture。也就是最终执行了mFuture这个FutureTask对象的run()方法，我们进入看看**FutureTask**类中的run()方法：
 
-#### 执行任务 - 调用doInBackground()
+```java
+//FutureTask的构造函数
+public FutureTask(Callable<V> callable) {
+    if (callable == null)
+        throw new NullPointerException();
+    //此处的callable就是接收的mWorker对象
+    this.callable = callable;
+    this.state = NEW;
+}
+
+
+public void run() {
+    if (state != NEW ||
+        !UNSAFE.compareAndSwapObject(this, runnerOffset,
+                                     null, Thread.currentThread()))
+        return;
+    try {
+        Callable<V> c = callable;
+        if (c != null && state == NEW) {
+            V result;
+            boolean ran;
+            try {
+                //核心是调用了callable（也就是mWorker）的call方法
+                result = c.call();
+                ran = true;
+            } catch (Throwable ex) {
+                result = null;
+                ran = false;
+                setException(ex);
+            }
+            if (ran)
+                set(result);
+        }
+    } finally {
+        // runner must be non-null until state is settled to
+        // prevent concurrent calls to run()
+        runner = null;
+        // state must be re-read after nulling runner to prevent
+        // leaked interrupts
+        int s = state;
+        if (s >= INTERRUPTING)
+            handlePossibleCancellationInterrupt(s);
+    }
+}
+```
+可以看到核心代码是调用了callable对象（也就是mWorker）的call方法。所以我们回头看看构造函数中的mWorker对象。
+
+#### **执行任务 - 调用doInBackground()**
 
 我们前面知道，Executor的execute方法接收Runnable参数，由于mFuture是FutureTask的实例，且FutureTask同时实现了Callable和Runnable接口，所以此处可以让exec通过execute方法在执行mFuture。在执行了`exec.execute(mFuture)`之后，后面会在exec的工作线程中执行mWorker的call方法，我们之前在构造函数中介绍mWorker的实例化的时候也介绍了call方法内部的执行过程，会首先在工作线程中执行doInBackground方法，并返回结果，然后将结果传递给postResult方法。
 
