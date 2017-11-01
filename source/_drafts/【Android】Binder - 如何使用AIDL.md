@@ -2,13 +2,9 @@ Binder系列9—如何使用AIDL
 
 
 
-### 同一进程
+### 一、不同进程
 
-
-
-### 不同进程
-
-
+为了演示方便，将Service与Activity处于不同的进程，可以在AndroidManifest.xml中，把service配置成`android:process=":remote"` ，也可以命名成其他的。
 
 ### AIDL
 
@@ -171,9 +167,15 @@ public class MyData implements Parcelable{
 
 
 
+### 二、同一进程
+
 
 
 ### 参考资料
 
+- [Android 接口定义语言 (AIDL)](https://developer.android.com/guide/components/aidl.html) - Google Developer文档
+
+
 - [Binder系列9—如何使用AIDL](http://gityuan.com/2015/11/23/binder-aidl/)
+- [Android跨进程bindService与callback](http://blog.csdn.net/saberviii/article/details/51470347)
 - [本地Binder：在Activity和Service之间使用本地Binder和回调接口进行通信](http://blog.csdn.net/liuyi1207164339/article/details/51683544)
