@@ -26,9 +26,13 @@ Binder是Android进程间通信（IPC）的方式之一。
 
 ### 参考资料
 
+- [Android 接口定义语言 (AIDL)](https://developer.android.com/guide/components/aidl.html) - Google Developer文档
+
+
 - [Android Binder机制原理（史上最强理解，没有之一）](http://blog.csdn.net/boyupeng/article/details/47011383)
 - [Android Bander设计与实现 - 设计篇](http://blog.csdn.net/universus/article/details/6211589) - [universus](http://blog.csdn.net/universus)
 - [为什么 Android 要采用 Binder 作为 IPC 机制？](https://www.zhihu.com/question/39440766)
 - [Binder系列—开篇](http://gityuan.com/2015/10/31/binder-prepare/) - Gityuan
+- [本地Binder：在Activity和Service之间使用本地Binder和回调接口进行通信](http://blog.csdn.net/liuyi1207164339/article/details/51683544)
 
 
