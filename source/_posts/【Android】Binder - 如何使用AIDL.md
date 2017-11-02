@@ -1,7 +1,7 @@
 ---
 title: 【Android】Binder - 如何使用AIDL
 layout: post
-date: 2017-11-02 22:20:55
+date: 2017-08-02 22:20:55
 comments: true
 tags: 
     - Android
@@ -688,6 +688,8 @@ public class ClientActivity extends AppCompatActivity {
 ```
 
 #### 运行
+
+因为这个Acitivy和Sevice位于同一进程，所以当点击KILL按钮杀死Service进程时，Activity也会同时被杀掉，所以可以看到动画最后就退出了App。
 
 ![](/gallery/android-binder/ezgif-5-bba2b7e591.gif)
 
