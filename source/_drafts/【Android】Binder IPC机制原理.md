@@ -19,6 +19,23 @@ Binder是Android进程间通信（IPC）的方式之一。
 
 
 
+# Serializable 和Parcelable的对比
+
+两种都是用于支持序列化、反序列化话操作，两者最大的区别在于存储媒介的不同，Serializable使用IO读写存储在硬盘上，而Parcelable是直接在内存中读写，很明显内存的读写速度通常大于IO读写，所以在Android中通常优先选择Parcelable。
+
+android上应该尽量采用Parcelable，效率至上
+编码上：
+Serializable代码量少，写起来方便
+Parcelable代码多一些
+效率上：
+Parcelable的速度比高十倍以上
+serializable的迷人之处在于你只需要对某个类以及它的属性实现Serializable 接口即可。Serializable 接口是一种标识接口（marker interface），这意味着无需实现方法，Java便会对这个对象进行高效的序列化操作。
+这种方法的缺点是使用了反射，序列化的过程较慢。这种机制会在序列化的时候创建许多的临时对象，容易触发垃圾回收。
+Parcelable方式的实现原理是将一个完整的对象进行分解，而分解后的每一部分都是Intent所支持的数据类型，这样也就实现传递对象的功能了
+
+
+
+
 ### Binder
 
 
