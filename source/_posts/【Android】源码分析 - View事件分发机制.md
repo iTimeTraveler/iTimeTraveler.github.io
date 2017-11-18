@@ -242,4 +242,6 @@ public boolean dispatchTouchEvent(MotionEvent ev) {
 - [Android ViewGroup/View 事件分发机制详解](http://blog.csdn.net/wallezhe/article/details/51737034)
 - [Android事件分发机制详解：史上最全面、最易懂](http://blog.csdn.net/carson_ho/article/details/54136311)
 - [Android 编程下 Touch 事件的分发和消费机制](https://www.cnblogs.com/sunzn/archive/2013/05/10/3064129.html)
+- [ViewGroup 源码解析](https://github.com/LittleFriendsGroup/AndroidSdkSourceAnalysis/blob/master/article/ViewGroup%20%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90.md)
+- [ViewGroup源码解读](http://blog.csdn.net/sw950729/article/details/77744545)
 

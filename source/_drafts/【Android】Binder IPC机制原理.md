@@ -372,5 +372,6 @@ public interface IServiceCallback extends android.os.IInterface {
 - [为什么 Android 要采用 Binder 作为 IPC 机制？](https://www.zhihu.com/question/39440766)
 - [Binder系列—开篇](http://gityuan.com/2015/10/31/binder-prepare/) - Gityuan
 - [本地Binder：在Activity和Service之间使用本地Binder和回调接口进行通信](http://blog.csdn.net/liuyi1207164339/article/details/51683544)
+- [Binder 源码分析](https://github.com/xdtianyu/SourceAnalysis/blob/master/Binder%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90.md)
 
 
