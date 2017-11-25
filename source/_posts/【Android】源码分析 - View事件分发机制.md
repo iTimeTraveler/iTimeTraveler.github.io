@@ -15,9 +15,8 @@ photos:
 
 
 
-### 前言
 
-### 1、事件分发对象
+### 事件分发对象
 
 （1）所有 Touch 事件都被封装成了 MotionEvent 对象，包括 Touch 的位置、时间、历史记录以及第几个手指(多指触摸)等。
 
@@ -40,8 +39,12 @@ photos:
 （3）对事件的处理包括三类，分别：
 
 - 传递——dispatchTouchEvent()函数；
+
 - 拦截——onInterceptTouchEvent()函数
+
 - 消费——onTouchEvent()函数和 OnTouchListener
+
+<!-- more -->
 
 
 ### 源码跟踪
