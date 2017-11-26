@@ -10,7 +10,7 @@ categories:
 keywords: HashMap 
 description: 
 photos:
-    - /gallery/java-common/java.util.map_class.png
+    - https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/master/gallery/java-common/java.util.map_class.png
 ---
 
 
@@ -19,7 +19,7 @@ photos:
 
 Java为数据结构中的映射定义了一个接口java.util.Map，此接口主要有四个常用的实现类，分别是`HashMap`、`Hashtable`、`LinkedHashMap`和`TreeMap`，类继承关系如下图所示：
 
-![](/gallery/java-common/java.util.map_class.png)
+![](https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/master/gallery/java-common/java.util.map_class.png)
 
 下面针对各个实现类的特点做一些说明：
 
@@ -47,7 +47,7 @@ JDK 1.8 以前 HashMap 的实现是 数组+链表，即使哈希函数取得再�
 
 针对这种情况，JDK 1.8 中引入了 红黑树（查找时间复杂度为 O(logn)）来优化这个问题。
 
-![](/gallery/java-common/hashMap内存结构图.png)
+![](https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/master/gallery/java-common/hashMap内存结构图.png)
 
 从源码可知，HashMap类中有一个非常重要的字段，就是 Node[] table，即哈希桶数组，明显它是一个Node的数组。我们来看Node[JDK1.8]是何物。
 
@@ -283,7 +283,7 @@ int n = cap - 1;
 
 举一个例子说明下吧。比如cap=10，则返回16。 
 
-![](/gallery/java-common/20160408183651111.jpg)
+![](https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/master/gallery/java-common/20160408183651111.jpg)
 
 由此可以看到，当在实例化HashMap实例时，如果给定了initialCapacity，由于HashMap的容量capacity都是2的幂，因此这个方法用于找到大于等于initialCapacity的最小的2的幂（initialCapacity如果就是2的幂，则返回的还是这个数）。 
 
@@ -367,7 +367,7 @@ final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
 
 HashMap的put方法执行过程可以通过下图来理解。
 
-![](/gallery/java-common/hashMapput方法执行流程图.png)
+![](https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/master/gallery/java-common/hashMapput方法执行流程图.png)
 
 图中的步骤总结如下：
 
@@ -480,7 +480,7 @@ indexFor()的代码也很简单，就是把散列值和数组长度做一个**"�
 
 这时候“**扰动函数**”的价值就体现出来了，说到这里大家应该猜出来了。看下面这个图，
 
-![](/gallery/java-common/hashMap哈希算法例图.png)
+![](https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/master/gallery/java-common/hashMap哈希算法例图.png)
 
 右位移16位，正好是32bit的一半，自己的高半区和低半区做异或，就是为了**混合原始哈希码的高位和低位，以此来加大低位的随机性**。而且混合后的低位掺杂了高位的部分特征，这样高位的信息也被变相保留下来。
 
@@ -577,19 +577,19 @@ final Node<K,V>[] resize() {
 
 下面举个例子说明下扩容过程。假设了我们的hash算法就是简单的用key mod 一下表的大小（也就是数组的长度）。其中的哈希桶数组table的size=2， 所以key = 3、7、5，put顺序依次为 5、7、3。在mod 2以后都冲突在table[1]这里了。这里假设负载因子 loadFactor=1，即当Entry的实际数量size 大于桶table的实际数量时进行扩容。接下来的三个步骤是哈希桶数组 resize成4，然后所有的Node重新rehash的过程。
 
-![](/gallery/java-common/jdk1.7扩容例图.png)
+![](https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/master/gallery/java-common/jdk1.7扩容例图.png)
 
 在JDK1.8中我们可以发现，我们使用的是2次幂的扩展(指长度扩为原来2倍)，所以，元素的位置要么是在原位置，要么是在原位置再移动2次幂的位置。看下图可以明白这句话的意思，n为table的长度，图（a）表示扩容前的key1和key2两种key确定索引位置的示例，图（b）表示扩容后key1和key2两种key确定索引位置的示例，其中hash1是key1对应的哈希与高位运算结果。
 
-![](/gallery/java-common/hashMap1.8哈希算法例图1.png)
+![](https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/master/gallery/java-common/hashMap1.8哈希算法例图1.png)
 
 元素在重新计算hash之后，因为n变为2倍，那么n-1的mask范围在高位多1bit(红色)，因此新的index就会发生这样的变化：
 
-![](/gallery/java-common/hashMap1.8哈希算法例图2.png)
+![](https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/master/gallery/java-common/hashMap1.8哈希算法例图2.png)
 
 因此，我们在扩充HashMap的时候，不需要像JDK1.7的实现那样重新计算hash，只需要看看原来的hash值新增的那个bit是1还是0就好了，是0的话索引没变，是1的话索引变成“**原索引+oldCap**”，可以看看下图为16扩充为32的resize示意图：
 
-![](/gallery/java-common/jdk1.8hashMap扩容例图.png)
+![](https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/master/gallery/java-common/jdk1.8hashMap扩容例图.png)
 
 这个设计确实非常的巧妙，既省去了重新计算hash值的时间，而且同时，由于新增的1bit是0还是1可以认为是随机的，因此resize的过程，均匀的把之前的冲突的节点分散到新的bucket了。这一块就是JDK1.8新增的优化点。有一点注意区别，JDK1.7中rehash的时候，旧链表迁移新链表的时候，如果在新表的数组索引位置相同，则链表元素会倒置，但是从上图可以看出，JDK1.8不会倒置。下面是JDK1.7的扩容方法：
 
