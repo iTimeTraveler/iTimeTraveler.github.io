@@ -367,7 +367,7 @@ final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
 
 HashMap的put方法执行过程可以通过下图来理解。
 
-![](/gallery/java-common/hashMap put方法执行流程图.png)
+![](/gallery/java-common/hashMapput方法执行流程图.png)
 
 图中的步骤总结如下：
 
@@ -581,15 +581,15 @@ final Node<K,V>[] resize() {
 
 在JDK1.8中我们可以发现，我们使用的是2次幂的扩展(指长度扩为原来2倍)，所以，元素的位置要么是在原位置，要么是在原位置再移动2次幂的位置。看下图可以明白这句话的意思，n为table的长度，图（a）表示扩容前的key1和key2两种key确定索引位置的示例，图（b）表示扩容后key1和key2两种key确定索引位置的示例，其中hash1是key1对应的哈希与高位运算结果。
 
-![](/gallery/java-common/hashMap 1.8 哈希算法例图1.png)
+![](/gallery/java-common/hashMap1.8哈希算法例图1.png)
 
 元素在重新计算hash之后，因为n变为2倍，那么n-1的mask范围在高位多1bit(红色)，因此新的index就会发生这样的变化：
 
-![](/gallery/java-common/hashMap 1.8 哈希算法例图2.png)
+![](/gallery/java-common/hashMap1.8哈希算法例图2.png)
 
 因此，我们在扩充HashMap的时候，不需要像JDK1.7的实现那样重新计算hash，只需要看看原来的hash值新增的那个bit是1还是0就好了，是0的话索引没变，是1的话索引变成“**原索引+oldCap**”，可以看看下图为16扩充为32的resize示意图：
 
-![](/gallery/java-common/jdk1.8 hashMap扩容例图.png)
+![](/gallery/java-common/jdk1.8hashMap扩容例图.png)
 
 这个设计确实非常的巧妙，既省去了重新计算hash值的时间，而且同时，由于新增的1bit是0还是1可以认为是随机的，因此resize的过程，均匀的把之前的冲突的节点分散到新的bucket了。这一块就是JDK1.8新增的优化点。有一点注意区别，JDK1.7中rehash的时候，旧链表迁移新链表的时候，如果在新表的数组索引位置相同，则链表元素会倒置，但是从上图可以看出，JDK1.8不会倒置。下面是JDK1.7的扩容方法：
 
