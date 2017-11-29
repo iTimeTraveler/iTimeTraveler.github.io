@@ -21,3 +21,4 @@ View绘制分三个步骤，顺序是：onMeasure，onLayout，onDraw。经代�
 - [Android View框架的measure机制](http://www.cnblogs.com/xyhuangjinfu/p/5435201.html)
 - [Android中mesure过程详解](http://www.cnblogs.com/xilinch/archive/2012/10/24/2737178.html)
 - [从ViewRootImpl类分析View绘制的流程](http://blog.csdn.net/feiduclear_up/article/details/46772477)
+

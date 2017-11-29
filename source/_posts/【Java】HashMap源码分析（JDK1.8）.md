@@ -854,11 +854,11 @@ Map m = Collections.synchronizedMap(new HashMap(...));
 
 #### 说明
 
-
 (1) 扩容是一个特别耗性能的操作，所以当程序员在使用HashMap的时候，估算map的大小，初始化的时候给一个大致的数值，避免map进行频繁的扩容。
 (2) 负载因子是可以修改的，也可以大于1，但是建议不要轻易修改，除非情况非常特殊。
 (3) HashMap是线程不安全的，不要在并发的环境中同时操作HashMap，建议使用ConcurrentHashMap。
 (4) JDK1.8引入红黑树大程度优化了HashMap的性能。
+(5) JDK1.7是新插入的节点放在链表的头部，但是JDK1.8是新插入的节点放到尾部
 
 
 
