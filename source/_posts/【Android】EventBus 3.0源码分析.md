@@ -1038,6 +1038,52 @@ private void unsubscribeByEventType(Object subscriber, Class<?> eventType) {
 
 
 
+#### 2.5 注解Subscribe
+
+最后我们来看一下EventBus中的这个`Subscribe`注解定义：
+
+```java
+
+@Documented
+@Retention(RetentionPolicy.RUNTIME)    //运行时注解
+@Target({ElementType.METHOD})        //用来修饰方法
+public @interface Subscribe {
+    ThreadMode threadMode() default ThreadMode.POSTING;
+
+    /**
+     * If true, delivers the most recent sticky event (posted with
+     * {@link EventBus#postSticky(Object)}) to this subscriber (if event available).
+     */
+    boolean sticky() default false;
+
+    /** Subscriber priority to influence the order of event delivery.
+     * Within the same delivery thread ({@link ThreadMode}), higher priority subscribers will receive events before
+     * others with a lower priority. The default priority is 0. Note: the priority does *NOT* affect the order of
+     * delivery among subscribers with different {@link ThreadMode}s! */
+    int priority() default 0;
+}
+
+```
+
+我们可以看到EventBus使用的这个注解`Subscribe`是**运行时注解**（RetentionPolicy.RUNTIME），为什么需要定义成运行时而不是编译时注解呢？我们先看一下三种不同时机的注解：
+
+```java
+/**
+1.SOURCE:在源文件中有效（即源文件保留）
+2.CLASS:在class文件中有效（即class保留）
+3.RUNTIME:在运行时有效（即运行时保留）
+*/
+@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.CLASS)
+```
+
+`@Retention`定义了该Annotation被保留的时间长短：某些Annotation仅出现在源代码中，而被编译器丢弃；而另一些却被编译在class文件中；编译在class文件中的Annotation可能会被虚拟机忽略，而另一些在class被装载时将被读取（请注意并不影响class的执行，因为Annotation与class在使用上是被分离的）。
+
+因为EventBus的`register()`方法中需要通过**反射**获得注册类中通过注解声明的订阅方法，也就意味着必须在运行时保留注解信息，以便能够反射得到这些方法。所以这个`Subcribe`注解必须是运行时注解。大家有疑惑的可以自己写个Demo尝试一下使用反射得到某个类中方法的编译时注解信息，一定会**抛出NullPointerException异常**。
+
+
+
 ### 三、EventBus原理分析
 
 在平时使用中我们不需要关心EventBus中对事件的分发机制，但要成为能够快速排查问题的老司机，我们还是得熟悉它的工作原理，下面我们就透过UML图来学习一下。
