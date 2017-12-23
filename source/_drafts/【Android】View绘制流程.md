@@ -2,6 +2,12 @@
 
 
 
+ 
+
+ [Android View 深度分析requestLayout、invalidate与postInvalidate](http://blog.csdn.net/a553181867/article/details/51583060)
+
+
+
 
 
 **总结：**
