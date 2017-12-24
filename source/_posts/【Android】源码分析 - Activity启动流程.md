@@ -1,5 +1,5 @@
 ---
-title: 【Android】Activity启动流程分析
+title: 【Android】源码分析 - Activity启动流程
 layout: post
 date: 2017-12-18 22:20:55
 comments: true
@@ -369,7 +369,9 @@ private boolean resumeTopActivityInnerLocked(ActivityRecord prev, Bundle options
 //ActivityStackSupervisor类
 void startSpecificActivityLocked(ActivityRecord r,
         boolean andResume, boolean checkConfig) {
+  
     // Is this activity's application already running?
+    // 判断需要启动的Activity所在进程和app已经存在，若存在，直接启动，否则准备创建该进程。
     ProcessRecord app = mService.getProcessRecordLocked(r.processName,
             r.info.applicationInfo.uid, true);
     r.task.stack.setLaunchTime(r);
@@ -394,14 +396,79 @@ void startSpecificActivityLocked(ActivityRecord r,
         // If a dead object exception was thrown -- fall through to
         // restart the application.
     }
+    // 否则准备创建该进程
     mService.startProcessLocked(r.processName, r.info.applicationInfo, true, 0,
             "activity", r.intent.getComponent(), false, false, true);
 }
 ```
 
-上面的`startSpecificActivityLocked()`方法调用了`realStartActivityLocked()`方法：
+上面的`startSpecificActivityLocked()`方法，首先判断需要启动的Activity所在进程和app是否已经存在。若存在，直接拿着该进行信息去启动该Activity，否则准备创建该进程。
+
+我们简单先看下创建该App进程的方法`startProcessLocked()`，位于ActivityManagerService类中：
 
 ```java
+//ActivityManagerService类中
+private final void startProcessLocked(ProcessRecord app, String hostingType,
+        String hostingNameStr, String abiOverride, String entryPoint, String[] entryPointArgs) {
+
+    long startTime = SystemClock.elapsedRealtime();
+    if (app.pid > 0 && app.pid != MY_PID) {
+        checkTime(startTime, "startProcess: removing from pids map");
+        synchronized (mPidsSelfLocked) {
+            mPidsSelfLocked.remove(app.pid);
+            mHandler.removeMessages(PROC_START_TIMEOUT_MSG, app);
+        }
+        checkTime(startTime, "startProcess: done removing from pids map");
+        app.setPid(0);
+    }
+
+    if (DEBUG_PROCESSES && mProcessesOnHold.contains(app)) Slog.v(TAG_PROCESSES,
+            "startProcessLocked removing on hold: " + app);
+    mProcessesOnHold.remove(app);
+
+    checkTime(startTime, "startProcess: starting to update cpu stats");
+    updateCpuStats();
+    checkTime(startTime, "startProcess: done updating cpu stats");
+
+    try {
+    
+    	//...省略其他代码...
+        
+        // Process.start()完成了ActivityThread的创建，之后就会执行ActivityThread的main()方法
+        // Start the process.  It will either succeed and return a result containing
+        // the PID of the new process, or else throw a RuntimeException.
+        boolean isActivityProcess = (entryPoint == null);
+        if (entryPoint == null) entryPoint = "android.app.ActivityThread";
+        Trace.traceBegin(Trace.TRACE_TAG_ACTIVITY_MANAGER, "Start proc: " +
+                    app.processName);
+        checkTime(startTime, "startProcess: asking zygote to start proc");
+        Process.ProcessStartResult startResult = Process.start(entryPoint,
+                app.processName, uid, uid, gids, debugFlags, mountExternal,
+                app.info.targetSdkVersion, app.info.seinfo, requiredAbi, instructionSet,
+                app.info.dataDir, entryPointArgs);
+        checkTime(startTime, "startProcess: returned from zygote!");
+        Trace.traceEnd(Trace.TRACE_TAG_ACTIVITY_MANAGER);
+
+        //...省略其他代码...
+
+    } catch (RuntimeException e) {
+        // XXX do better error recovery.
+        app.setPid(0);
+        mBatteryStatsService.noteProcessFinish(app.processName, app.info.uid);
+        if (app.isolated) {
+            mBatteryStatsService.removeIsolatedUid(app.uid, app.info.uid);
+        }
+        Slog.e(TAG, "Failure starting process " + app.processName, e);
+    }
+}
+```
+
+我们可以看到这个方法就是使用`Process.start()`，并通过Socket连接的方式孵化新建了一个**Zygote进程**，完成了ActivityThread的创建，之后就会执行ActivityThread的`main()`方法。
+
+接着上面，App进程如果存在就会直接调用`realStartActivityLocked()`方法：
+
+```java
+//ActivityStackSupervisor类中
 final boolean realStartActivityLocked(ActivityRecord r,
         ProcessRecord app, boolean andResume, boolean checkConfig)
         throws RemoteException {
@@ -1495,6 +1562,16 @@ public void callActivityOnResume(Activity activity) {
 
 
 
+**到这里，我们大概理解一下这几个相关类的定位**
+
+
+（一）**ActivityManagerService**：（ActivityManagerNative）是核心管理类，负责组件的管理，在这里主要与ActivityStackSupervisor通信。
+
+（二）**ActivityStackSupervisor**：管理整个手机任务栈，即管理着ActivityStack。
+
+（三）**ActivityStack**：是Activity的栈，即任务栈，从中可以获取需要进行操作的ActivityRecord，并且可以对任务的进程进行操作。
+
+（四）**ActivityThread**：是安卓java应用层的入口函数类，它会执行具体对Activity的操作，并将结果通知给ActivityManagerService。
 
 
 
