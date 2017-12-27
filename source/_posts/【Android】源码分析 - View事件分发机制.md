@@ -1,5 +1,5 @@
 ---
-title: 【Android】View事件分发机制
+title: 【Android】源码分析 - View事件分发机制
 layout: post
 date: 2017-11-18 22:20:55
 comments: true
