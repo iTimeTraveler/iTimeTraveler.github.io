@@ -862,7 +862,7 @@ Map m = Collections.synchronizedMap(new HashMap(...));
 
 
 
-当我们在HashMap中存储我们自己定义的类的时候，默认的equal函数的行为可能不能符合我们的要求，所以需要重写。此时：
+当我们在HashMap中存储我们自己定义的类的时候，默认的equals函数的行为可能不能符合我们的要求，所以需要重写。此时：
 
 1、如果两个对象相同（即用equals比较返回true），那么它们的hashCode值一定要相同；
 2、如果两个对象的hashCode相同，它们并不一定相同(即用equals比较返回false)  
