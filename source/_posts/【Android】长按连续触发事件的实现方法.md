@@ -15,7 +15,7 @@ description:
 ![](http://img.blog.csdn.net/20151119142521160)
 
 
-**【原理说明】**
+#### **【原理说明】**
 
  - 大致原理是,如果手指按在view上，则使用ScheduledExecutorService对象执行scheduleWithFixedDelay()方法，每隔一个间隔不停地向Handler发送Message，此处Message里的信息是View id，然后由Handler在handlemessage的时候处理需要触发的事件。
 
@@ -23,11 +23,11 @@ description:
 
 
 
-**【实现】**
+#### **【实现】**
 
 1、首先,让对应的View设置一个OnTouchListener，在手指按下时触发不停的发送消息,手指抬起时停止发送。
 
-```
+```java
 subtractButton.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -43,7 +43,7 @@ subtractButton.setOnTouchListener(new OnTouchListener() {
 
 2、发送消息与终止方法：先定义一个ScheduledExecutorService对象，然后调用scheduleWithFixedDelay()方法
 
-```
+```java
 private ScheduledExecutorService scheduledExecutor;
 private void updateAddOrSubtract(int viewId) {
         final int vid = viewId;
@@ -67,7 +67,7 @@ private void updateAddOrSubtract(int viewId) {
 ```
 
 3、用来处理Touch事件的Handler定义如下：
-```
+```java
 private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
