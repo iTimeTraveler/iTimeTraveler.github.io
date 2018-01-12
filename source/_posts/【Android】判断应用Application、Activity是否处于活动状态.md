@@ -102,7 +102,9 @@ private boolean isTopActivity(String activityName){
 public static boolean isServiceRunning(Context mContext,String className) {   
     boolean isRunning = false;   
     ActivityManager activityManager = (ActivityManager)   
-                                 mContext.getSystemService(Context.ACTIVITY_SERVICE);    
+                                 mContext.getSystemService(Context.ACTIVITY_SERVICE);
+  
+    //此处只在前30个中查找，大家根据需要调整
     List<ActivityManager.RunningServiceInfo> serviceList = activityManager.getRunningServices(30);   
     if (!(serviceList.size()>0)) {   
         return false;   
