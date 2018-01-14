@@ -21,7 +21,15 @@ photos:
 
 因此LRU(**Least Recently Used**)缓存算法便应运而生，LRU是近期最少使用的算法，它的核心思想是当缓存满时，会优先淘汰那些近期最少使用的缓存对象，有效的避免了OOM的出现。在Android中采用LRU算法的常用缓存有两种：[LruCache](https://developer.android.com/reference/android/util/LruCache.html)和DisLruCache，分别用于实现内存缓存和硬盘缓存，其核心思想都是LRU缓存算法。
 
-其实LRU缓存的实现类似于一个特殊的栈，把访问过的元素放置到栈顶（若栈中存在，则更新至栈顶；若栈中不存在则直接入栈），然后如果栈中元素数量超过限定值，则删除栈底元素（即最近最少使用的元素）。如下图：
+其实LRU缓存的实现类似于一个特殊的栈，把访问过的元素放置到栈顶（若栈中存在，则更新至栈顶；若栈中不存在则直接入栈），然后如果栈中元素数量超过限定值，则删除栈底元素（即最近最少使用的元素）。详细算法实现如下图：
+
+![](https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/master/gallery/algorithms/1337859321_3597.png)
+
+1. 新数据压入到栈顶；
+2. 每当缓存命中（即缓存数据被访问），则将数据移到栈顶；
+3. 当栈满的时候，将栈底的数据丢弃。
+
+举个例子演示一下：
 
 ![](https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/master/gallery/algorithms/lru-timg.jpg)
 
@@ -359,3 +367,4 @@ void afterNodeAccess(Node<K,V> e) { // move node to last
 
 - [内存缓存LruCache实现原理](http://www.cnblogs.com/liuling/p/2015-9-24-1.html)
 - [彻底解析Android缓存机制——LruCache](https://www.jianshu.com/p/b49a111147ee)
+- [缓存淘汰算法--LRU算法](http://flychao88.iteye.com/blog/1977653)
