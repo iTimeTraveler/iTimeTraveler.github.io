@@ -19,8 +19,11 @@ photos:
 
 一般来说，缓存策略主要包含缓存的添加、获取和删除这三类操作。如何添加和获取缓存这个比较好理解，那么为什么还要删除缓存呢？这是因为不管是内存缓存还是硬盘缓存，它们的缓存大小都是有限的。当缓存满了之后，再想其添加缓存，这个时候就需要删除一些旧的缓存并添加新的缓存。
 
-因此LRU(**Least Recently Used**)缓存算法便应运而生，LRU是近期最少使用的算法，它的核心思想是当缓存满时，会优先淘汰那些近期最少使用的缓存对象，有效的避免了OOM的出现。采用LRU算法的缓存有两种：[LruCache](https://developer.android.com/reference/android/util/LruCache.html)和DisLruCache，分别用于实现内存缓存和硬盘缓存，其核心思想都是LRU缓存算法。
+因此LRU(**Least Recently Used**)缓存算法便应运而生，LRU是近期最少使用的算法，它的核心思想是当缓存满时，会优先淘汰那些近期最少使用的缓存对象，有效的避免了OOM的出现。在Android中采用LRU算法的常用缓存有两种：[LruCache](https://developer.android.com/reference/android/util/LruCache.html)和DisLruCache，分别用于实现内存缓存和硬盘缓存，其核心思想都是LRU缓存算法。
 
+其实LRU缓存的实现类似于一个特殊的栈，把访问过的元素放置到栈顶（若栈中存在，则更新至栈顶；若栈中不存在则直接入栈），然后如果栈中元素数量超过限定值，则删除栈底元素（即最近最少使用的元素）。如下图：
+
+![](https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/master/gallery/algorithms/lru-timg.jpg)
 
 
 ### 二、LruCache的使用
@@ -123,13 +126,13 @@ public static final void main(String[] args) {
 > 1:1
 > 2:2
 
-即最近访问的最后输出，那么这就正好满足的LRU缓存算法的思想。**可见LruCache巧妙实现，就是利用了LinkedHashMap的这种数据结构。**
+即最近访问的对象会被放到队尾，然后最后输出，那么这就正好满足的LRU缓存算法的思想。**可见LruCache巧妙实现，就是利用了LinkedHashMap的这种数据结构。**
 
 下面我们在LruCache源码中具体看看，怎么应用LinkedHashMap来实现缓存的添加，获得和删除的。
 
 
 
-#### LruCache源码分析
+### LruCache源码分析
 
 我们先看看成员变量有哪些：
 
@@ -164,7 +167,7 @@ public LruCache(int maxSize) {
 }
 ```
 
-##### put方法
+#### put方法
 
 ```java
 public final V put(K key, V value) {
@@ -197,7 +200,7 @@ public final V put(K key, V value) {
 
 可以看到put()方法并没有什么难点，重要的就是在添加过缓存对象后，调用`trimToSize()`方法，来判断缓存是否已满，如果满了就要删除近期最少使用的算法。
 
-##### trimToSize方法
+#### trimToSize方法
 
 ```java
 public void trimToSize(int maxSize) {
@@ -216,7 +219,7 @@ public void trimToSize(int maxSize) {
                 break;
             }
           
-            //迭代器获取第一个对象，即队尾的元素，近期最少访问的元素
+            //迭代器获取第一个对象，即队头的元素，近期最少访问的元素
             Map.Entry<K, V> toEvict = map.entrySet().iterator().next();
             key = toEvict.getKey();
             value = toEvict.getValue();
@@ -230,13 +233,13 @@ public void trimToSize(int maxSize) {
 }
 ```
 
-`trimToSize()`方法不断地删除`LinkedHashMap`中队尾的元素，即近期最少访问的，直到缓存大小小于最大值。
+`trimToSize()`方法不断地删除`LinkedHashMap`中队头的元素，即近期最少访问的，直到缓存大小小于最大值。
 
 当调用LruCache的`get()`方法获取集合中的缓存对象时，就代表访问了一次该元素，将会更新队列，保持整个队列是按照访问顺序排序。这个更新过程就是在`LinkedHashMap`中的`get()`方法中完成的。
 
 我们先看LruCache的get()方法。
 
-##### get方法
+#### get方法
 
 ```java
 //LruCache的get()方法
@@ -248,7 +251,7 @@ public final V get(K key) {
     V mapValue;
     synchronized (this) {
         //获取对应的缓存对象
-        //LinkedHashMap的get()方法会实现将访问的元素更新到队列头部的功能
+        //LinkedHashMap的get()方法会实现将访问的元素更新到队列尾部的功能
         mapValue = map.get(key);
       
         //mapValue不为空表示命中，hitCount+1并返回mapValue对象
@@ -274,7 +277,7 @@ public final V get(K key) {
         return null;
     }
 	
-  	//假如创建了新的对象，则继续往下执行
+    //假如创建了新的对象，则继续往下执行
     synchronized (this) {
         createCount++;
         //将createdValue加入到map中，并且将原来键为key的对象保存到mapValue
@@ -316,7 +319,7 @@ public V get(Object key) {
 }
 ```
 
-调用的afterNodeAccess()方法将该元素移到队尾，如下：
+调用的afterNodeAccess()方法将该元素移到队尾，保证最后才删除，如下：
 
 ```java
 void afterNodeAccess(Node<K,V> e) { // move node to last
@@ -339,13 +342,14 @@ void afterNodeAccess(Node<K,V> e) { // move node to last
             p.before = last;
             last.after = p;
         }
+        //当前节点p移动到尾部之后，尾部指针指向当前节点
         tail = p;
         ++modCount;
     }
 }
 ```
 
-由此可见`LruCache`中维护了一个集合`LinkedHashMap`，该`LinkedHashMap`是以访问顺序排序的。当调用`put()`方法时，就会在结合中添加元素，并调用`trimToSize()`判断缓存是否已满，如果满了就用`LinkedHashMap`的迭代器删除队尾元素，即近期最少访问的元素。当调用get()方法访问缓存对象时，就会调用`LinkedHashMap`的`get()`方法获得对应集合元素，同时会更新该元素到队头。
+由此可见`LruCache`中维护了一个集合`LinkedHashMap`，该`LinkedHashMap`是以访问顺序排序的。当调用`put()`方法时，就会在结合中添加元素，并调用`trimToSize()`判断缓存是否已满，如果满了就用`LinkedHashMap`的迭代器删除队头元素，即近期最少访问的元素。当调用get()方法访问缓存对象时，就会调用`LinkedHashMap`的`get()`方法获得对应集合元素，同时会更新该元素到队尾。
 
 以上便是LruCache实现的原理，理解了LinkedHashMap的数据结构就能理解整个原理。如果不懂，可以先看看LinkedHashMap的具体实现。
 
