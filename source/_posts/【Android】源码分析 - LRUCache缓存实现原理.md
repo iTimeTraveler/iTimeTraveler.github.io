@@ -74,7 +74,7 @@ LruCache的核心思想很好理解，就是要维护一个缓存对象列表，
 
 那么这个队列到底是由谁来维护的，前面已经介绍了是由LinkedHashMap来维护。
 
-而LinkedHashMap是由数组+双向链表的数据结构来实现的。其中双向链表的结构可以实现访问顺序和插入顺序，使得LinkedHashMap中的<key,value>对按照一定顺序排列起来。
+而LinkedHashMap是由数组+双向链表的数据结构来实现的。其中双向链表的结构可以实现访问顺序和插入顺序，使得LinkedHashMap中的`<key,value>`对按照一定顺序排列起来。
 
 通过下面构造函数来指定LinkedHashMap中双向链表的结构是访问顺序还是插入顺序。
 
