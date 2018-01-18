@@ -82,11 +82,11 @@ getEventListeners($('#firstName')).click[0].listener
 当你需要监视某个DOM触发的事件时，也可以用到控制台。例如下面这些方法：
 
  - `monitorEvents($('selector'))` 会监测某个元素上绑定的所有事件，一旦该元素的某个事件被触发就会在控制台里显示出来。
- 
+
  - `monitorEvents($('selector'),'eventName')` 可以监听某个元素上绑定的具体事件。第二个参数代表事件类型的名称。例如 `monitorEvents($('#firstName'),'click')` 只监测ID为firstName的元素上的click事件。
- 
+
  - `monitorEvents($('selector'),['eventName1','eventName3',….])` 同上。可以同时检测具体指定的多个事件类型。
- 
+
  - `unmonitorEvents($('selector'))` 用来停止对某个元素的事件监测。
 
 
@@ -137,7 +137,7 @@ var myArray=[{a:1,b:2,c:3},{a:1,b:2,c:3,d:4},{k:11,f:22},{a:1,b:2,c:3}]
  - `inspect($('selector'))` 会检查所有匹配选择器的DOM元素，并返回所有选择器选择的DOM对象。例如
 
  - `inspect($('#firstName'))` 选择所有ID是 firstName 的元素，`inspect($('a')[3])` 检查并返回页面上第四个 p元素。
-\$0, \$1, \$2等等会返回你最近检查过的几个元素，例如 \$0 会返回你最后检查的元素，\$1 则返回倒数第二个。
+  \$0, \$1, \$2等等会返回你最近检查过的几个元素，例如 \$0 会返回你最后检查的元素，\$1 则返回倒数第二个。
 
 ![](http://img.blog.csdn.net/20160928184610441)
 
@@ -181,3 +181,10 @@ $_
 当你需要这么做的时候，只需要输入 `clear()` 然后回车就好啦！
 
 Chrome开发者工具的强大远远超出你的想象！这只是其中的一部分小技巧而已，希望能够帮到你！
+
+
+
+### 参考资料
+
+- [CHROME开发者工具的小技巧 - CoolShell](https://coolshell.cn/articles/17634.html)
+
