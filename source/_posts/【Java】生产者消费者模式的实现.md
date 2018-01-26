@@ -20,7 +20,7 @@ photos:
 
 阻塞队列就相当于一个缓冲区，平衡了生产者和消费者的处理能力。这个阻塞队列就是用来给生产者和消费者解耦的。
 
-<!-- more -->
+
 
 
 ### wait/notify方法
@@ -28,10 +28,10 @@ photos:
 首先，我们搞清楚Thread.sleep()方法和Object.wait()、Object.notify()方法的区别。根据这篇文章[java sleep和wait的区别的疑惑?](https://www.zhihu.com/question/23328075)
 
 1. `sleep()`是Thread类的方法；而`wait()`，`notify()`，`notifyAll()`是Object类中定义的方法；尽管这两个方法都会影响线程的执行行为，但是本质上是有区别的。
-
 2. `Thread.sleep()`不会导致锁行为的改变，如果当前线程是拥有锁的，那么`Thread.sleep()`不会让线程释放锁。如果能够帮助你记忆的话，可以简单认为和锁相关的方法都定义在Object类中，因此调用`Thread.sleep()`是不会影响锁的相关行为。
-
 3. `Thread.sleep`和`Object.wait`都会暂停当前的线程，对于CPU资源来说，不管是哪种方式暂停的线程，都表示它暂时不再需要CPU的执行时间。OS会将执行时间分配给其它线程。区别是调用wait后，需要别的线程执行notify/notifyAll才能够重新获得CPU执行时间。
+
+<!-- more -->
 
 **线程状态图：**
 
@@ -39,6 +39,7 @@ photos:
 
 - `Thread.sleep()`让线程从 【running】 -> 【阻塞态】 时间结束/interrupt -> 【runnable】
 - `Object.wait()`让线程从 【running】 -> 【等待队列】notify  -> 【锁池】 -> 【runnable】
+
 
 
 
