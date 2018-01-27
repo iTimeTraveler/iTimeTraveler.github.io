@@ -30,12 +30,12 @@ Android为我们提供了两种HTTP交互的方式：[HttpURLConnection](https:/
 **但从Android API Level 23（Android 6.0）开始，不能再在Android中使用`HttpClient`**，强制使用`HttpURLConnection`。参考官网：[Android 6.0 Changes - Google Developer](https://developer.android.com/about/versions/marshmallow/android-6.0-changes.html)
 
 > Android 6.0 版移除了对 Apache HTTP client的支持。如果您的应用使用该客户端，并以 Android 2.3（API level 9）或更高版本为目标平台，请改用 `HttpURLConnection` 类。此 API 效率更高，因为它可以通过透明压缩和响应缓存减少网络使用，并可最大限度降低耗电量。要继续使用 Apache HTTP API，您必须先在 `build.gradle` 文件中声明以下编译时依赖项：
->
-> ```gradle
-> android {
->     useLibrary 'org.apache.http.legacy'
-> }
-> ```
+
+```gradle
+android {
+    useLibrary 'org.apache.http.legacy'
+}
+```
 
 
 
