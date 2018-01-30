@@ -23,10 +23,10 @@ keywords: ""
 avatar: 
   enable: true
   border: false
-  width: 75
+  width: 62
   height: 75
   top: 8
-  url: gallery/avatar/0.svg
+  url: gallery/avatar/0.jpg
 
 
 # Homepage

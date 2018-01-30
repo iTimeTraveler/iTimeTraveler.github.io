@@ -3,74 +3,38 @@ date: 2015-08-16 14:58:08
 comments: true
 ---
 
-{% blockquote Chris Gardner https://en.wikipedia.org/wiki/The_Pursuit_of_Happyness The Pursuit of Happyness %}
-That maybe happiness is something that we can only pursue. And maybe we can actually never have it....no matter what.
-
-{% endblockquote %}
-
-<br>
 
 
 ### <span class="fa fa-info-circle"></span> Profile
 
-{% pullquote right%}
-![](/gallery/forbidden-city.jpg)
-this part of my life... this little part, is called **`happiness`** 🎁.
+{% pullquote right %}
+![](/gallery/campfire.gif)
+I am a slow walker, but I never walk backwards.
+
+—— [**Abraham Lincoln**](https://en.wikipedia.org/wiki/Abraham_Lincoln)
 {% endpullquote %}
 
 
-- Bello, guys. I am ： **iTimeTraveler**
+大家好，我是『**iTimeTraveler**』。发音读起来有点长还拗口，灵感来自于电影《The Time Traveler's Wife》（时间旅行者的妻子），有关时间，有关厮守，有关变化与永恒。
 
 
- I live in Beijing and work as a software developer. I use this site to blog on different topics that I like and hope you find interesting.
+毕业于中国传媒大学计算机系，一介码农，平时主要记录一些开发笔记，聚焦于Android移动开发领域，正在深入Framework。
 
 
- I'm an Android Developer <span class="fa fa-code"></span> + prefer Python & Golang + interest in AI(Artificial Intelligence) + <span><font color="#4086F5">G</font></span><span><font color="#EB4132">o</font></span><span><font color="#FCBD00">o</font></span><span><font color="#4086F5">g</font></span><span><font color="#31A952">l</font></span><span><font color="#EB4132">e</font></span> radicals（`Golang`+`Docker`+`Kubernetes`+`AngularJS`).
+喜欢一探究竟，寻根究底。偶尔也略懂，容易囫囵吞枣式学习。希望这些分享对你能有所帮助。
 
-<br>
-
-
-<!--
-### <span class="fa fa-battery-full"></span> Unlocked skills
-
-- Java
-- C
-- Linux, Vim
-- Data Structure & Algorithms
-- MySQL, SQLite
-- HTML, CSS
-- Javascript, jQuery
-- Bootstrap
-- D3.js
-- Git
-
-
-### <span class="fa fa-battery-three-quarters"></span> Know Something about
-
-- Python (Flask, Jinja, Numpy, Matplotlib)
-- Neo4j Database
-- PHP
-- Golang
-
-
-### <span class="fa fa-battery-half"></span> Skills being unlocked
-
-- JVM
-
--->
 
 
 ### <span class="fa fa-share-alt"></span> Social Info
 
-You can reach me by
 
 - <span class="fa fa-envelope-o"></span> : [iTime](mailto:xuewenlong_2008@sina.com)
-- <span class="fa fa-github"></span> : [iTimeTraveler](https://github.com/iTimeTraveler)
 - <span class="fa fa-google-plus"></span> : [iTimeTraveler](https://plus.google.com/116515515454998359216)
+- <span class="fa fa-github"></span> : [iTimeTraveler](https://github.com/iTimeTraveler)
 
 
 
 
-![So, if you got a dream, you gotta protect it.](/gallery/uconstruction.gif)
+
 
 
