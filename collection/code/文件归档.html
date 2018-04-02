@@ -1,0 +1,209 @@
+
+
+
+<html><head>
+<meta charset="utf-8">
+<title>jq22-code4</title>
+<script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+</head>
+
+<style>
+@import 'https://fonts.googleapis.com/css?family=Roboto:100,300,400,700';
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background-color: #37354c;
+  margin: 0;
+}
+
+body .mountains {
+  width: 100%;
+  background-color: #37354c;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: absolute;
+}
+
+body .mountains::before {
+  width: 100%;
+  height: 20em;
+  background-color: rgba(255, 255, 255, 0.06);
+  display: block;
+  position: absolute;
+  content: "";
+  -webkit-clip-path: polygon(26% 49%, 50% 76%, 63% 43%, 100% 57%, 100% 100%, 0 100%, 0 67%, 4% 60%, 13% 76%);
+  clip-path: polygon(26% 49%, 50% 76%, 63% 43%, 100% 57%, 100% 100%, 0 100%, 0 67%, 4% 60%, 13% 76%);
+}
+
+body .mountains::after {
+  width: 100%;
+  height: 20em;
+  background-color: rgba(255, 255, 255, 0.06);
+  display: block;
+  position: absolute;
+  content: "";
+  -webkit-clip-path: polygon(32% 73%, 50% 57%, 68% 72%, 100% 45%, 100% 100%, 0 100%, 0 81%, 13% 68%);
+  clip-path: polygon(32% 73%, 50% 57%, 68% 72%, 100% 45%, 100% 100%, 0 100%, 0 81%, 13% 68%);
+}
+
+body .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+body .container .case {
+  z-index: 2;
+  display: flex;
+  background-color: rgba(78, 170, 127, 0.95);
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  width: 15em;
+  height: 20em;
+  border-radius: 7px;
+  -webkit-clip-path: polygon(100% 55%, 89% 61%, 89% 83%, 100% 90%, 100% 100%, 0 100%, 0 67%, 0 0, 100% 0);
+  clip-path: polygon(100% 55%, 89% 61%, 89% 83%, 100% 90%, 100% 100%, 0 100%, 0 67%, 0 0, 100% 0);
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, .3);
+}
+
+body .container .case .ion {
+  color: white;
+  font-size: 6em;
+}
+
+body .container .case .case-txt {
+  text-transform: uppercase;
+  font-weight: 400;
+  color: white;
+  font-size: 1.5em;
+  padding-left: 45px;
+  padding-right: 45px;
+  text-align: center;
+}
+
+body .container .back {
+  display: flex;
+  background-color: #27915f;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  width: 15.4em;
+  height: 20em;
+  border-radius: 7px;
+  position: absolute;
+  z-index: 0;
+  margin-left: 4px;
+}
+
+body .container .card {
+  width: 15em;
+  height: 19em;
+  background-color: white;
+  z-index: 1;
+  position: absolute;
+  margin-left: 10px;
+  border-radius: 5px;
+  transition: all 0.5s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.2);
+}
+
+body .container .card:hover {
+  cursor: pointer;
+  transform: translateX(20px);
+}
+
+.animateCard {
+  animation: 1s ease-in-out animateCard;
+  animation-fill-mode: forwards;
+}
+
+.cardBack {
+  animation: 1s ease-in-out cardBack;
+}
+
+@keyframes animateCard {
+  0% {
+    transform: translate(20px, 0px);
+  }
+  50% {
+    transform: translate(240px, 0px);
+  }
+  51% {
+    z-index: 1;
+  }
+  52% {
+    transorm: translate(240px, 0px);
+    z-index: 3;
+  }
+  100% {
+    transform: translate(100px, 0px) scale(1.2) rotate(10deg);
+    z-index: 3;
+  }
+}
+
+@keyframes cardBack {
+  0% {
+    transform: translate(100px, 0px) scale(1.2) rotate(10deg);
+    z-index: 3;
+  }
+  50% {
+    transform: translate(240px, 0px);
+    z-index: 3;
+  }
+  51% {
+    transform: translate(240px, 0px);
+    z-index: 1;
+  }
+  52% {
+    transform: translate(240px, 0px);
+  }
+  100% {
+    transform: translate(0px, 0px);
+  }
+}
+</style>
+
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+  $('.card').click(function() {
+    $(this).toggleClass('animateCard');
+    $(this).toggleClass('cardBack');
+  });
+});
+</script>
+
+<body>
+<div class="main">
+  <div class="mountains">
+  </div>
+  <div class="container">
+    <div class="case">
+      <i class="ion ion-ios-albums-outline"></i>
+      <p class="case-txt">My card collector</p>
+    </div>
+    <div class="card animateCard">
+      <p>Click me!</p>
+    </div>
+    <div class="back">
+    </div>
+  </div>
+</div>
+
+
+</body></html>

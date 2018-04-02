@@ -1,0 +1,121 @@
+.clear {
+	clear: both
+}
+#main {
+	/*padding-left: 105px;
+	padding-top: 47px;
+	padding-bottom: 30px;*/
+	clear: both;
+/*	background: url(images/paper.jpg) left top #F2EDB4;*/
+	position: relative;
+/*	z-index: 11;*/
+	box-shadow: 5px 5px 8px #888;
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+/*
+#main h2 {
+	line-height: 30px;
+	font-size: 17px;
+	margin-bottom: 10px;
+	position: relative;
+}
+
+#main h2 em {
+	font-size: 14px;
+	margin-left: 20px;
+}
+
+#main h2 em span,#main h2 em img {
+	vertical-align: text-bottom;
+}
+
+#main h2 em a {
+	color: #000
+}
+
+#main h2 em a:hover {
+	color: #1C5F8C;
+	text-decoration: underline
+}
+
+#main h2 span.ad {
+	position: absolute;
+	top: -22px;
+	left: 250px
+}*/
+
+#main .tag {
+	margin-bottom: 20px;
+	height: 30px;
+	line-height: 30px;
+	font-size: 15px
+}
+
+#main .tag a {
+	padding: 4px 12px
+}
+
+#book {
+/*	margin: -47px 0 -30px -105px;*/
+	display: table;
+	width: 100%;
+	/*background: #F5F0B6*/
+}
+
+#book h2 {
+	height: 16px;
+	margin: 0;
+	/*padding: 45px 0 0 105px;*/
+	background: url(images/bookshelftop.jpg) no-repeat left top;
+	color: #000!important;
+	background-size: cover;
+}
+
+#book ul {
+	float: left;
+	height: auto;
+	background: url(images/bookshelfmiddle.jpg) repeat-y left top;
+	margin-bottom: 0;
+	background-size: 100% 196px;
+	-webkit-margin-before: 0em;
+    -webkit-margin-after: 0em;
+    -webkit-padding-start: 0em;
+    padding: 0 5%;
+    width: 90%;
+}
+
+#book ul li {
+	list-style-type: none;
+/*	height: 160px;*/
+/*	line-height: 160px;*/
+	vertical-align: bottom;
+	width: 110px;
+	float: left;
+	margin: 17px 14px 0;
+	padding-bottom: 19px;
+}
+
+#book ul li a {
+	display: block;
+	height: 160px;
+	line-height: 160px;
+	position: relative;
+}
+
+#book ul li img {
+	width: 110px;
+	vertical-align: bottom;
+	box-shadow: 5px 0 6px #512301;
+	position: absolute;
+    bottom: 0;
+    -webkit-transition: all .2s linear;
+    transition: all .2s linear;
+}
+
+#book ul li img:hover {
+    -webkit-box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    box-shadow: 5px 15px 30px rgba(0,0,0,0.4);
+    -webkit-transform: translate3d(0, -2px, 0);
+    transform: translate3d(0, -2px, 0);
+}

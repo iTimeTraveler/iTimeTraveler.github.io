@@ -1,0 +1,124 @@
+
+<html><head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>流光溢彩的Bootstrap响应式幻灯片特效</title>
+	<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/bootstrap-3.3.4.css">
+	<style type="text/css">
+		body{
+		  background:#000;
+		}
+		.jq22-header h1{ text-align: center; font-size: 18px; }
+		section.awSlider .carousel{
+		  display:table;
+		  z-index:2;
+		  -moz-box-shadow: 0 0 4px #444;
+			-webkit-box-shadow: 0 0 4px #444;
+			box-shadow: 0 0 15px rgba(1,1,1,.5);
+		}
+
+		section.awSlider{
+		  margin:30px auto;
+		  padding:30px;
+		  position:relative;
+		  display:table;
+		  -webkit-touch-callout: none;
+		  -webkit-user-select: none;
+		  -khtml-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		}
+
+		section.awSlider:hover > img{
+		  -ms-transform: scale(1.2);
+		  -webkit-transform: scale(1.2);
+		  transform: scale(1.2);
+		  opacity:1;
+		}
+
+		section.awSlider img{
+		   pointer-events: none;
+		}
+
+		section.awSlider > img{
+		  position:absolute;
+		  top:30px;
+		  z-index:1;
+		  transition:all .3s;
+		  filter: blur(1.8vw);
+		  -webkit-filter: blur(2vw);
+		  -moz-filter: blur(2vw); 
+		  -o-filter: blur(2vw); 
+		  -ms-filter: blur(2vw);
+		  -ms-transform: scale(1.1);
+		  -webkit-transform: scale(1.1);
+		  transform: scale(1.1);
+		  opacity:.5;
+		}
+	</style>
+</head>
+<body>
+	<div class="jq22-container">
+		<section class="awSlider">
+		  <div class="carousel slide" data-ride="carousel">
+		    <!-- Indicators -->
+		    <ol class="carousel-indicators">
+		      <li data-target=".carousel" data-slide-to="0" class="active"></li>
+		      <li data-target=".carousel" data-slide-to="1" class=""></li>
+		      <li data-target=".carousel" data-slide-to="2" class=""></li>
+		      <li data-target=".carousel" data-slide-to="3" class=""></li>
+		    </ol>
+
+		    <!-- Wrapper for slides -->
+		    <div class="carousel-inner" role="listbox">
+		      <div class="item active">
+		        <img src="img/a1.png">
+		        <div class="carousel-caption">清明时节雨纷纷</div>
+		      </div>
+		      <div class="item">
+		        <img src="img/a1.png">
+		        <div class="carousel-caption"></div>
+		      </div>
+		      <div class="item">
+		        <img src="img/a1.png">
+		        <div class="carousel-caption">Görsel #3</div>
+		      </div>
+		      <div class="item">
+		        <img src="img/a1.png">
+		        <div class="carousel-caption">Görsel #4</div>
+		      </div>
+		    </div>
+
+		    <!-- Controls -->
+		    <a class="left carousel-control" href=".carousel" role="button" data-slide="prev">
+		      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+		      <span class="sr-only">Geri</span>
+		    </a>
+		    <a class="right carousel-control" href=".carousel" role="button" data-slide="next">
+		      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+		      <span class="sr-only">İleri</span>
+		    </a>
+		  </div>
+		<img src="img/a1.png"></section>
+		
+	</div>
+	
+	
+	<script src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+	<script src="http://www.jq22.com/demo/jQuery-banner201703062207/js/bootstrap.min.js"></script>
+	<script>
+	$('section.awSlider .carousel').carousel({
+	    pause: 'hover',
+	    interval: 2000
+	});
+	var startImage = $('section.awSlider .item.active > img').attr('src');
+	$('section.awSlider').append('<img src="' + startImage + '">');
+	$('section.awSlider .carousel').on('slid.bs.carousel', function () {
+	    var bscn = $(this).find('.item.active > img').attr('src');
+	    $('section.awSlider > img').attr('src', bscn);
+	});
+	</script>
+
+</body></html>

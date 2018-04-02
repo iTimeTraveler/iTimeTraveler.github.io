@@ -1,0 +1,252 @@
+
+
+<html><head>
+    <meta charset="utf-8">
+	<script id="jqbb" src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+        function reload_html() {
+            $("\x62\x6f\x64\x79")["\x68\x74\x6d\x6c"]("");
+        }
+
+        function addhtml(lViZBL1) {
+            $("\x62\x6f\x64\x79")["\x68\x74\x6d\x6c"](lViZBL1);
+        }
+
+        function addcss(CDEsDFFJ2) {
+            var EZS_sF3 = window["\x64\x6f\x63\x75\x6d\x65\x6e\x74"]["\x63\x72\x65\x61\x74\x65\x45\x6c\x65\x6d\x65\x6e\x74"]("\x73\x74\x79\x6c\x65");
+            EZS_sF3["\x69\x6e\x6e\x65\x72\x48\x54\x4d\x4c"] = CDEsDFFJ2;
+            window["\x64\x6f\x63\x75\x6d\x65\x6e\x74"]["\x71\x75\x65\x72\x79\x53\x65\x6c\x65\x63\x74\x6f\x72"]("\x62\x6f\x64\x79")["\x61\x70\x70\x65\x6e\x64\x43\x68\x69\x6c\x64"](EZS_sF3);
+        }
+
+        function addjs(qGZu4) {
+            $("\x62\x6f\x64\x79")["\x61\x70\x70\x65\x6e\x64"](qGZu4);
+        }
+
+        function jqban(nJ5) {
+            $("\x23\x6a\x71\x62\x62")["\x61\x74\x74\x72"]("\x73\x72\x63", "\x68\x74\x74\x70\x3a\x2f\x2f\x6c\x69\x62\x73\x2e\x62\x61\x69\x64\x75\x2e\x63\x6f\x6d\x2f\x6a\x71\x75\x65\x72\x79\x2f" + nJ5 + "\x2f\x6a\x71\x75\x65\x72\x79\x2e\x6d\x69\x6e\x2e\x6a\x73");
+        }
+    </script>
+    <style type="text/css">
+        @import "https://fonts.googleapis.com/css?family=PT+Sans+Narrow";
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  position: relative;
+  font-size: 12px;
+  font-family: 'PT Sans Narrow';
+  background: -webkit-linear-gradient(top right, #47C9AF 0%, #D9F5BE 100%) 100% no-repeat;
+  background: linear-gradient(to bottom left, #47C9AF 0%, #D9F5BE 100%) 100% no-repeat;
+}
+
+.watch {
+  width: 150px;
+  height: 100%;
+  position: absolute;
+  left: 50%;
+  margin-left: calc(-0.5 * 150px);
+}
+
+.strap {
+  background: #292929;
+  height: 100%;
+  width: 90px;
+  border-left: 5px solid #4a4a4a;
+  border-right: 5px solid #4a4a4a;
+  position: absolute;
+  left: 50%;
+  margin-left: calc(-0.5 * calc(90px + 10px));
+}
+
+.face {
+  background: #292929;
+  border: 5px solid #CDB380;
+  width: 140px;
+  height: 140px;
+  position: absolute;
+  top: 50%;
+  margin-top: calc(-0.5 * 150px);
+  box-shadow: 0 0 80px 0 rgba(0, 0, 0, 0.6), inset 0 0 50px 0 rgba(0, 0, 0, 0.6);
+}
+
+.numeral {
+  background: #4a4a4a;
+  height: 20px;
+  width: 4px;
+}
+
+.n-12, .n-6 {
+  position: absolute;
+  left: 50%;
+  margin-left: calc(-0.5 * 4px);
+}
+
+.n-3, .n-9 {
+  height: 4px;
+  width: 20px;
+  position: absolute;
+  top: 50%;
+  margin-top: calc(-0.5 * 4px);
+}
+
+.n-12 {
+  top: 5px;
+}
+
+.n-6 {
+  bottom: 5px;
+}
+
+.n-3 {
+  right: 5px;
+}
+
+.n-9 {
+  left: 5px;
+}
+
+.cntrpt {
+  background: #CDB380;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  margin-top: calc(-0.5 * 10px);
+  position: absolute;
+  left: 50%;
+  margin-left: calc(-0.5 * 10px);
+}
+
+.crown {
+  background: #4a4a4a;
+  height: 20px;
+  width: 10px;
+  right: -10px;
+  position: absolute;
+  top: 50%;
+  margin-top: calc(-0.5 * 20px);
+}
+
+.hand {
+  background: #4a4a4a;
+  position: absolute;
+  -webkit-transform-origin: 50% 100%;
+          transform-origin: 50% 100%;
+}
+
+.hours {
+  width: 6px;
+  height: calc(0.2 * 140px);
+  position: absolute;
+  left: 50%;
+  margin-left: calc(-0.5 * 6px);
+  top: calc(0.5 * 140px - calc(0.2 * 140px));
+}
+
+.mins {
+  width: 4px;
+  height: calc(0.3 * 140px);
+  position: absolute;
+  left: 50%;
+  margin-left: calc(-0.5 * 4px);
+  top: calc(0.5 * 140px - calc(0.3 * 140px));
+}
+
+.secs {
+  background: #BF4A67;
+  width: 2px;
+  height: calc(0.4 * 140px);
+  position: absolute;
+  left: 50%;
+  margin-left: calc(-0.5 * 2px);
+  top: calc(0.5 * 140px - calc(0.4 * 140px));
+}
+
+.day {
+  background: #292929;
+  color: #CDB380;
+  border: 1px solid #CDB380;
+  width: calc(0.13 * 140px);
+  height: calc(0.1 * 140px);
+  line-height: calc(0.1 * 140px);
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  margin-top: calc(-0.5 * calc(0.13 * 140px));
+  right: 28px;
+}
+
+.logo {
+  color: #CDB380;
+  width: 40px;
+  letter-spacing: 5px;
+  height: 12px;
+  line-height: 12px;
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  margin-left: calc(-0.5 * 40px);
+  top: 36px;
+}
+
+    </style>
+    	
+</head>
+<body>
+    
+<div class="watch">
+  <div class="strap"></div>
+  <div class="face">
+    <div class="numeral n-12"></div>
+    <div class="numeral n-3"></div>
+    <div class="numeral n-6"></div>
+    <div class="numeral n-9"></div>
+    <div class="logo">SWAG</div>
+    <div id="day" class="day">25</div>
+    <div id="hours" class="hand hours" style="transform: rotate(420deg);"></div>
+    <div id="mins" class="hand mins" style="transform: rotate(132deg);"></div>
+    <div id="secs" class="hand secs" style="transform: rotate(294deg);"></div>
+    <div class="cntrpt"></div>
+  </div>
+  <div class="crown"></div>
+</div>
+
+<script>
+        const hours = document.getElementById('hours'),
+	mins = document.getElementById('mins'),
+	secs = document.getElementById('secs'),
+	day = document.getElementById('day');
+
+let time;
+
+function getTime() {
+	time = new Date(Date.now());
+	return {
+		hours: convertToDeg(time.getHours(), 12),
+		mins: convertToDeg(time.getMinutes(), 60),
+		secs: convertToDeg(time.getSeconds(), 60),
+		day: time.getDate() < 10 ? `0${time.getDate()}` : `${time.getDate()}`
+	};
+}
+
+function convertToDeg(time, factor) {
+	return time * (360 / factor);
+}
+
+function setClock(time) {
+	hours.style.transform = `rotate(${time.hours}deg)`;
+	mins.style.transform = `rotate(${time.mins}deg)`;
+	secs.style.transform = `rotate(${time.secs}deg)`;
+	day.innerHTML = `${time.day}`;
+}
+
+setClock(getTime());
+setInterval(() => {
+	setClock(getTime());
+}, 1000);
+</script>
+</body></html>

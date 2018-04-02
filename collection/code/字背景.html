@@ -1,0 +1,327 @@
+
+
+<html class="step-one step-two"><head>
+
+	<meta charset="UTF-8">
+
+	
+
+	<title>Animated Knockout Letters</title>
+
+	
+
+	<style>
+
+		html { background: black; }
+
+		html, body { overflow: hidden; }
+
+		#poster { 
+
+			width: 600px; 
+
+			margin: 30px auto; 
+
+	  		font-family: "newcomen-1","newcomen-2";
+
+ 		}
+
+ 		#poster h1 {
+
+ 			color: white; 
+
+ 			background: url(img/a1.png) 100% 100% repeat;
+
+			font-size: 130px;
+
+			line-height: 0.7;
+
+			text-align: center; 
+
+			-webkit-background-clip: text;
+
+			background-clip: text;
+
+			-webkit-text-fill-color: transparent;
+
+			letter-spacing: -8px; 
+
+			-webkit-transition: all 2.5s; 
+
+			padding-bottom: 40px; 
+
+		}
+
+ 		.step-one #poster h1 {
+
+ 			padding-top: 130px; 
+
+ 		}
+
+		#poster h1 span { 
+
+			-webkit-transition: all 2.5s;
+
+			-moz-transition: all 2.5s;
+
+			-o-transition: all 2.5s;
+
+		}
+
+		#poster h1 span.char1 { margin-left: -1450px; } 
+
+		#poster h1 span.char2 { margin-left: 200px; }
+
+		#poster h1 span.char3 { margin-left: 200px; }
+
+		#poster h1 span.char5 { margin-left: 1450px; }
+
+		#poster h1 span.char6 { margin-left: 200px; }
+
+		#poster h1 span.char7 { margin-left: 200px; }
+
+		#poster h1 span.char8 { margin-left: 200px; }
+
+		#poster h1 span.char9 { margin-left: 200px; }
+
+		.step-one #poster h1 span { margin: 0; }
+
+ 		
+
+ 		#poster p { text-align: center; font-size: 30px; letter-spacing: 20px; }
+
+ 		#poster p span { position: relative; -webkit-transition: all 2.5s ease; color: white; }
+
+ 		.step-two #poster p span { top: 0 !important; left: 0 !important; }
+
+	</style>
+
+	
+
+	<script src="http://www.jq22.com/demo/AnimatedKnockoutLetters/jquery.min.js"></script>
+
+	<script src="jquery.lettering.js"></script>
+
+	<script>
+
+		// DOM Ready
+
+		$(function() {
+
+			$("#poster h1, #poster p").lettering();
+
+			$("#poster p span").each(function() {  $(this).css({ top: -(Math.floor(Math.random()*1001)+1500), left: Math.floor(Math.random()*1001)-500,  }); });
+
+			setTimeout(function() {$('html').addClass("step-one");}, 1000);
+
+			setTimeout(function() {$('html').addClass("step-two");}, 3000);
+
+		});
+
+	</script>
+
+</head>
+
+
+
+<body>
+
+  
+
+	<div id="poster">
+
+	
+
+		<h1><span class="char1">笔</span><span class="char2">墨</span><span class="char3">伺</span><span class="char4">候</span></h1>
+
+		
+
+		<p><span class="char1" style="top: -2260px; left: -127px;">C</span><span class="char2" style="top: -1506px; left: 392px;">o</span><span class="char3" style="top: -1838px; left: -315px;">m</span><span class="char4" style="top: -2330px; left: 422px;">i</span><span class="char5" style="top: -2164px; left: 439px;">n</span><span class="char6" style="top: -2275px; left: 4px;">g</span><span class="char7" style="top: -2429px; left: 5px;"> </span><span class="char8" style="top: -2246px; left: 480px;">2</span><span class="char9" style="top: -1644px; left: 462px;">0</span><span class="char10" style="top: -2461px; left: -198px;">1</span><span class="char11" style="top: -1529px; left: 107px;">1</span></p>
+
+	
+
+	</div>
+
+	
+
+ <style type="text/css" style="display: none !important;">
+
+	* {
+
+		margin: 0;
+
+		padding: 0;
+
+	}
+
+	body {
+
+		overflow-x: hidden;
+
+	}
+
+	.bsa_it_ad {
+
+		padding: 8px 4px 8px 12px !important;
+
+		position: relative;
+
+		border: 0 !important;
+
+		background: #D6D5D5 !important;
+
+		border-top: 0 !important;
+
+		box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+
+		font: 11px "Lucida Grande", Sans-Serif !important;
+
+	}
+
+	.bsa_it_ad:before, .bsa_it_ad:after {
+
+		content: "";
+
+		position: absolute;
+
+		top: 0;
+
+		left: 6px;
+
+		width: 100%;
+
+		height: 100%;
+
+		background: #989898;
+
+		border-bottom: 6px solid #989898;
+
+		z-index: -1;
+
+		box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+
+	}
+
+	.bsa_it_ad:before {
+
+		top: 0;
+
+		left: 12px;
+
+		z-index: -2;
+
+		background: #6C6666;
+
+		border-bottom: 12px solid #6C6666;
+
+	}
+
+
+
+	.bsa_it_ad a {
+
+	  margin: 0 !important;
+
+		padding: 0 !important;
+
+	}
+
+	.bsa_it_ad a img {
+
+	  border: 0 !important;
+
+		position: static !important;
+
+	}
+
+	.bsa_it_ad a:hover img {
+
+		margin: 0 !important;
+
+	}
+
+	.bsa_it_ad a:hover {
+
+	  background: none !important;
+
+	}
+
+	.bsa_it_i {
+
+		margin: 0 15px 0 0 !important;
+
+	}
+
+	.bsa_it_t {
+
+		font-size: 14px !important;
+
+		margin: 12px 0 0 0 !important;
+
+	}
+
+	.bsa_it_d {
+
+		padding-right: 10px;
+
+	}
+
+	.bsa_it_p{
+
+		display: none !important;
+
+	}
+
+	#demo-bar-ad {
+
+		width: 416px;
+
+		position: absolute;
+
+		right: 0;
+
+		top: -20px;
+
+		font: 11px "Lucida Grande", Sans-Serif !important;
+
+	}
+
+	#bsap_aplink {
+
+		position: absolute;
+
+		color: #999;
+
+		text-decoration: none;
+
+		bottom: 8px !important;
+
+		right: 8px !important;
+
+		padding: 0 !important;
+
+	}
+
+	.bsa_it_p a:hover {
+
+		background:none !important;
+
+	}
+
+
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body></html>

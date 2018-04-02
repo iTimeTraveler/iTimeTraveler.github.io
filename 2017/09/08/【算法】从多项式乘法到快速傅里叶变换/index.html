@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>【算法】从多项式乘法到快速傅里叶变换 | iTimeTraveler</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Algorithm" />
+  
+  
+  
+  
+  <meta name="description" content="本文来自： 从多项式乘法到快速傅里叶变换 — miskcoo  概述计算多项式的乘法，或者计算两个大整数的乘法是在计算机中很常见的运算，如果用普通的方法进行，复杂度将会是$ \mathcal O(n^2) ​$的，还有一种分治乘法，可以做到 $\mathcal O(n^{\log_23}) ​$时间计算（可以看Karatsuba 乘法）。下面从计算多项式的乘法出发，介绍快速傅里叶变换（Fast">
+<meta name="keywords" content="Algorithm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【算法】从多项式乘法到快速傅里叶变换">
+<meta property="og:url" content="http://github.com/2017/09/08/【算法】从多项式乘法到快速傅里叶变换/index.html">
+<meta property="og:site_name" content="iTimeTraveler">
+<meta property="og:description" content="本文来自： 从多项式乘法到快速傅里叶变换 — miskcoo  概述计算多项式的乘法，或者计算两个大整数的乘法是在计算机中很常见的运算，如果用普通的方法进行，复杂度将会是$ \mathcal O(n^2) ​$的，还有一种分治乘法，可以做到 $\mathcal O(n^{\log_23}) ​$时间计算（可以看Karatsuba 乘法）。下面从计算多项式的乘法出发，介绍快速傅里叶变换（Fast">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://github.com/gallery/android_common/FFT-of-Cosine-Summation-Function.png">
+<meta property="og:updated_time" content="2018-03-14T08:13:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【算法】从多项式乘法到快速傅里叶变换">
+<meta name="twitter:description" content="本文来自： 从多项式乘法到快速傅里叶变换 — miskcoo  概述计算多项式的乘法，或者计算两个大整数的乘法是在计算机中很常见的运算，如果用普通的方法进行，复杂度将会是$ \mathcal O(n^2) ​$的，还有一种分治乘法，可以做到 $\mathcal O(n^{\log_23}) ​$时间计算（可以看Karatsuba 乘法）。下面从计算多项式的乘法出发，介绍快速傅里叶变换（Fast">
+<meta name="twitter:image" content="http://github.com/gallery/android_common/FFT-of-Cosine-Summation-Function.png">
+  
+    <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/gallery/avatar/0.jpg">
+  <link rel="apple-touch-icon" href="/gallery/avatar/0.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="../../../../css/style.css">
+
+  <script src="../../../../js/jquery-3.1.1.min.js"></script>
+  <script src="../../../../js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="../../../../css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 8px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="62px" height="75px" alt="Hike News" src="/gallery/avatar/0.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="../../../../index.html">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../funnysite">酷站</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../collection">收藏</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../mybooks">🎁</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '../../../../content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="../../../../js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-【算法】从多项式乘法到快速傅里叶变换" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" href="../../../../gallery/android_common/FFT-of-Cosine-Summation-Function.png" rel="gallery_cjfhnkgw0008udms6ijqonloi">
+        <img src="../../../../gallery/android_common/FFT-of-Cosine-Summation-Function.png" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      【算法】从多项式乘法到快速傅里叶变换
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="" class="article-date">
+	  <time datetime="2017-09-08T04:20:55.000Z" itemprop="datePublished">2017-09-08</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../../../categories/Algorithm/">Algorithm</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本文来自： <a href="http://blog.miskcoo.com/2015/04/polynomial-multiplication-and-fast-fourier-transform" target="_blank" rel="noopener">从多项式乘法到快速傅里叶变换</a> — <a href="http://blog.miskcoo.com/about" target="_blank" rel="noopener">miskcoo</a></p>
+</blockquote>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>计算多项式的乘法，或者计算两个大整数的乘法是在计算机中很常见的运算，如果用普通的方法进行，复杂度将会是$ \mathcal O(n^2) ​$的，还有一种分治乘法，可以做到 $\mathcal O(n^{\log_23}) ​$时间计算（可以看<a href="http://blog.miskcoo.com/2014/10/karatsuba-multiplication" target="_blank" rel="noopener">Karatsuba 乘法</a>）。下面从计算多项式的乘法出发，介绍<strong>快速傅里叶变换（Fast Fourier Transform, FFT）</strong>如何在 $\mathcal O(n\log n) ​$的时间内计算出两个多项式的乘积。</p>
+<h2 id="准备知识"><a href="#准备知识" class="headerlink" title="准备知识"></a>准备知识</h2><p>这里介绍一些后面可能会用到的知识（主要是关于多项式、卷积以及复数的），如果你已经知道觉得它太水了或者想用到的时候再看就跳过吧。</p>
+<h2 id="多项式"><a href="#多项式" class="headerlink" title="多项式"></a>多项式</h2><p>简单来说，形如 $ a_0+a_1X+a_2X^2+\cdots+a_nX^n $ 的代数表达式叫做<strong>多项式</strong>，可以记作$P(X)=a_0+a_1X+a_2X^2+\cdots+a_nX^n$，$a_0, a_1, \cdots, a_n $叫做多项式的<strong>系数</strong>，$X $是一个不定元，不表示任何值，不定元在多项式中最大项的次数称作多项式的<strong>次数</strong></p>
+<h3 id="多项式的系数表示法"><a href="#多项式的系数表示法" class="headerlink" title="多项式的系数表示法"></a>多项式的系数表示法</h3><p>像刚刚我们提到的那些多项式，都是以系数形式表示的，也就是将 n 次多项式$ A(x) $的系数 $a_0, a_1, \cdots, a_n $看作 $n+1 $维向量$ \vec a=(a_0,a_1,\cdots,a_n)$，其<strong>系数表示（coefficient representation）</strong>就是向量$ \vec a$ 。</p>
+<a id="more"></a>
+<h3 id="多项式的点值表示法"><a href="#多项式的点值表示法" class="headerlink" title="多项式的点值表示法"></a>多项式的点值表示法</h3><p>如果选取$ n+1 $个不同的数 $x_0, x_1, \cdots, x_n $对多项式进行求值，得到$ A(x_0), A(x_1), \cdots, A(x_n)$，那么就称$ {\left(x_i, A(x_i)\right) : 0 \leq i \leq n, i \in \mathbb Z} $为多项式$ A(x)$ 的<strong>点值表示（point-value representation）</strong></p>
+<p>多项式$ A(x) $的点值表示不止一种，你只要选取不同的数就可以得到不同的点值表示，但是任何一种点值表示都能唯一确定一个多项式，为了从点值表示转换成系数表示，可以直接通过<strong>插值</strong>的方法</p>
+<h2 id="复数"><a href="#复数" class="headerlink" title="复数"></a>复数</h2><p>后面提到的$ i$，除非作为$ \sum $求和的变量，其余的都表示虚数单位 $\sqrt{-1}$</p>
+<h3 id="单位根"><a href="#单位根" class="headerlink" title="单位根"></a>单位根</h3><p>$n $次单位根是指能够满足方程$ z^n=1 $的复数，这些复数一共有$ n $个它们都分布在复平面的单位圆上，并且构成一个正 $n $边形，它们把单位圆等分成$ n $个部分</p>
+<p>根据复数乘法相当于模长相乘，幅角相加就可以知道，$n $次单位根的模长一定是$ 1$，幅角的$ n $倍是$ 0$<br>这样，$n$ 次单位根也就是</p>
+<p>$$ e^{\frac{2\pi ki}{n}}, k = 0, 1, 2, \cdots, n - 1 $$<br>再根据欧拉公式</p>
+<p>$$ e^{\theta i}=\cos\theta + i\sin\theta $$<br>就可以知道 n 次单位根的算术表示</p>
+<p>如果记$ \omega_n=e^{\frac{2\pi i}{n}}$，那么$ n $次单位根就是 $\omega_n^0, \omega_n^1, \cdots, \omega_n^{n-1}$</p>
+<h2 id="多项式的乘法"><a href="#多项式的乘法" class="headerlink" title="多项式的乘法"></a>多项式的乘法</h2><p>给定两个多项式$ A(x), B(x)$<br>
+$$
+A(x) = \sum_{i=0}^na_ix^i = a_nx^n+a_{n-1}x^{n-1}+\cdots+a_1x+a_0 \\ B(x) = \sum_{i=0}^nb_ix^i = b_nx^n+b_{n-1}x^{n-1}+\cdots+b_1x+b_0 
+$$
+<br>将这两个多项式相乘得到$ C(x) = \sum_{i=0}^{2n}c_ix^i$，在这里</p>
+
+$$
+c_i=\sum_{j+k=i,0\leq j,k\leq n}a_jb_kx^i 
+$$
+
+<p>如果一个个去算$ c_i $的话，要花费$ \mathcal O(n^2) $的时间才可以完成，但是，这是在系数表示下计算的，如果转换成点值表示，知道了$ A(x), B(x) $的点值表示后，由于只有$ n+1$ 个点，就可以直接将其相乘，在 $\mathcal O(n) $的时间内得到$ C(x)$ 的点值表示</p>
+<p>如果能够找到一种有效的方法帮助我们在多项式的点值表示和系数表示之间转换，我们就可以快速地计算多项式的乘法了，快速傅里叶变换就可以做到这一点</p>
+<h2 id="快速傅里叶变换"><a href="#快速傅里叶变换" class="headerlink" title="快速傅里叶变换"></a>快速傅里叶变换</h2><p>快速傅里叶变换你可以认为有两个部分，DFT 和 IDFT，分别可以在$ \mathcal O(n\log n) $的时间内将多项式的系数表示转化成点值表示，并且转回来，就像下面这张图所示：</p>
+<p><img src="/gallery/fft/polynomial-multiplication.png" alt=""></p>
+<h3 id="Cooley-Tukey算法"><a href="#Cooley-Tukey算法" class="headerlink" title="Cooley-Tukey算法"></a>Cooley-Tukey算法</h3><p>FFT 最常见的算法是 Cooley-Tukey 算法，它的基本思路在 1965 年由 J. W. Cooley 和 J. W. Tukey 提出的，它是一个基于分治策略的算法</p>
+<p>假设现在有一个$ n-1 $次多项式$ A(x)=\sum_{i=0}^{n-1}a_ix^i$（为了方便，假设$ n=2^m, m\in \mathbb Z$，如果不足可以在高次项系数补成 0）</p>
+<p>将$ n $个$ n $次单位根$ \omega_n^0, \omega_n^1, \cdots, \omega_n^{n-1}$ 带入$ A(x) $将其转换成点值表达</p>
+
+$$
+A(\omega_n^k) = \sum_{i=0}^{n-1}a_i\omega^{ki} , k = 0, 1, \cdots, n - 1 
+$$
+
+<p>点值向量 $ \vec y=(A(\omega_n^0), A(\omega_n^1), \cdots, A(\omega_n^{n-1})) $ 称作系数向量$ \vec a=(a_0, a_1, \cdots, a_{n-1}) $的<strong>离散傅里叶变换</strong>（Discrete Fourier Transform, DFT），也记作$ \vec y=DFT_n(\vec a) $</p>
+<p>到此为止，直接计算$ DFT_n(\vec a) $还是需要$ \mathcal O(n^2) $的时间，Cooley-Tukey 算法接下来做的事情是将每一项按照指数奇偶分类</p>
+
+$$
+\begin{eqnarray*} A(\omega_n^k) &=& \sum_{i=0}^{n-1}a_i\omega_n^{ki} \\ &=& \sum_{i=0}^{\frac{n}{2}-1}a_{2i}\omega_n^{2ki}+\omega_n^k\sum_{i=0}^{\frac{n}{2}-1}a_{2i+1}\omega_n^{2ki} \\ \end{eqnarray*} 
+$$
+
+<p>但是，如果直接这样递归下去，你需要带入的值还是有$ n $个，也就是说，现在只是将系数减半，而没有将需要带入的值减半，上面的$ k $还是$ 0, 1, \cdots, n - 1$，这样的话复杂度还是$ \mathcal O(n^2)$</p>
+<p>但是你会注意到，根据准备知识中$ \omega_n^2=\left(e^{\frac{2\pi i}{n}}\right)^2=e^{\frac{2\pi i}{n/2}}=\omega_{\frac{n}{2}}$ ，并且$ \frac{n}{2} $次单位根只有$ \frac{n}{2} $个，也就是说，我们要带入的值再平方以后似乎变少了一半？仔细想想就会发现，既然单位根把单位圆等分，那么肯定会对称，也就是有一个正的，就会有一个负的，平方后这两个当然就相同了。严格一点的证明就是</p>
+
+$$
+\omega_n^{\frac{n}{2}+k} = \omega_n^{\frac{n}{2}}\cdot \omega_n^k = -\omega_n^k 
+$$
+
+<p>这也就是说，对于$ k &lt; \frac{n}{2}$ 的时候</p>
+
+$$
+A(\omega_n^k) = \sum_{i=0}^{\frac{n}{2}-1}a_{2i}\omega_{\frac{n}{2}}^{ki}+\omega_n^{k}\sum_{i=0}^{\frac{n}{2}-1}a_{2i+1}\omega_{\frac{n}{2}}^{ki} 
+$$
+
+<p>并且</p>
+
+$$
+\begin{eqnarray*} A(\omega_n^{k+\frac{n}{2}}) &=& \sum_{i=0}^{\frac{n}{2}-1}a_{2i}\omega_{\frac{n}{2}}^{ki}+\omega_n^{k+\frac{n}{2}}\sum_{i=0}^{\frac{n}{2}-1}a_{2i+1}\omega_{\frac{n}{2}}^{ki} \\ &=&\sum_{i=0}^{\frac{n}{2}-1}a_{2i}\omega_{\frac{n}{2}}^{ki}-\omega_n^k\sum_{i=0}^{\frac{n}{2}-1}a_{2i+1}\omega_{\frac{n}{2}}^{ki} \end{eqnarray*} 
+$$
+
+<p>这样我们就将需要带入的值也减少成了 $ 1, \omega_{\frac{n}{2}}, \omega_{\frac{n}{2}}^2, \cdots, \omega_{\frac{n}{2}}^{\frac{n}{2}-1} $，问题变成了两个规模减半的子问题，只要递归下去计算就可以了，至于复杂度</p>
+
+$$
+T(n) = 2T(\frac{n}{2})+\mathcal O(n) = \mathcal O(n\log n) 
+$$
+
+<h3 id="傅里叶逆变换（IDFT）"><a href="#傅里叶逆变换（IDFT）" class="headerlink" title="傅里叶逆变换（IDFT）"></a>傅里叶逆变换（IDFT）</h3><p>刚刚计算的是$ \vec y = DFT_n(\vec a)$，可以将多项式转化成点值表示，现在为了将点值表示转化成系数表示，需要计算 IDFT（Inverse Discrete Fourier Transform），它是 DFT 的逆</p>
+<p>这个问题实际上相当于是一个解线性方程组的问题，也就是给出了$ n $个线性方程</p>
+
+$$
+\begin{equation*} \left\{ \begin{array}{ccccccccc} a_0(\omega_n^0)^{0}&+&\cdots&+&a_{n-2}(\omega_n^0)^{n-2}&+&+a_{n-1}(\omega_n^0)^{n-1}&=&A(\omega_n^0) \\ a_0(\omega_n^1)^{0}&+&\cdots&+&a_{n-2}(\omega_n^1)^{n-2}&+&+a_{n-1}(\omega_n^1)^{n-1}&=&A(\omega_n^1) \\ \vdots & & \vdots & &\vdots& & \vdots & & \vdots\\ a_0(\omega_n^{n-1})^{0}&+&\cdots&+&a_{n-2}(\omega_n^{n-1})^{n-2}&+&+a_{n-1}(\omega_n^{n-1})^{n-1}&=&A(\omega_n^{n-1}) \end{array} \right. \end{equation*}
+$$
+
+<p>写成矩阵方程的形式就是</p>
+
+$$
+\begin{equation} \label{IDFT-equation} \begin{bmatrix} (\omega_n^0)^0 & (\omega_n^0)^1 & \cdots & (\omega_n^0)^{n-1} \\ (\omega_n^1)^0 & (\omega_n^1)^1 & \cdots & (\omega_n^1)^{n-1} \\ \vdots & \vdots & \ddots & \vdots \\ (\omega_n^{n-1})^0 & (\omega_n^{n-1})^1 & \cdots & (\omega_n^{n-1})^{n-1} \end{bmatrix} \begin{bmatrix} a_0 \\ a_1 \\ \vdots \\ a_{n-1} \end{bmatrix} = \begin{bmatrix} A(\omega_n^0) \\ A(\omega_n^1) \\ \vdots \\ A(\omega_n^{n-1}) \end{bmatrix} \end{equation}
+$$
+
+<p>记上面的系数矩阵为$ \mathbf V$ 现在考虑下面这个矩阵$ d_{ij}=\omega_n^{-ij}$</p>
+
+$$
+\begin{equation*} \mathbf D = \begin{bmatrix} (\omega_n^{-0})^0 & (\omega_n^{-0})^1 & \cdots & (\omega_n^{-0})^{n-1} \\ (\omega_n^{-1})^0 & (\omega_n^{-1})^1 & \cdots & (\omega_n^{-1})^{n-1} \\ \vdots & \vdots & \ddots & \vdots \\ (\omega_n^{-(n-1)})^0 & (\omega_n^{-(n-1)})^1 & \cdots & (\omega_n^{-(n-1)})^{n-1} \end{bmatrix} \end{equation*}
+$$
+
+<p>设它们相乘后的结果是$ \mathbf E=\mathbf D \cdot \mathbf V$</p>
+
+$$
+\begin{eqnarray*} e_{ij} &=& \sum_{k=0}^{n-1} d_{ik} v_{kj} \\ &=& \sum_{k=0}^{n-1} \omega_n^{-ik}\omega_n^{kj} \\ &=& \sum_{k=0}^{n-1} \omega_n^{k(j-i)} \end{eqnarray*}
+$$
+
+<p>当$ i=j $时，$e_{ij}=n$</p>
+<p>当$ i\neq j $时，</p>
+
+$$
+\begin{eqnarray*} e_{ij} &=& \sum_{k=0}^{n-1} (\omega_n^{j-i})^k \\ &=& \frac{1-(\omega_n^{j-i})^n}{1-\omega_n^{j-i}}\\ &=& 0 \end{eqnarray*}
+$$
+
+<p>因此可以知道$ \mathbf I_n=\frac{1}{n}\mathbf E$，所以$ \frac{1}{n}\mathbf D = \mathbf V^{-1}$</p>
+<p>将$ \frac{1}{n}\mathbf D $在$ \ref{IDFT-equation} $ 左乘就会得到</p>
+
+$$
+\begin{equation*} \begin{bmatrix} a_0 \\ a_1 \\ \vdots \\ a_{n-1} \end{bmatrix} = \frac{1}{n} \begin{bmatrix} (\omega_n^{-0})^0 & (\omega_n^{-0})^1 & \cdots & (\omega_n^{-0})^{n-1} \\ (\omega_n^{-1})^0 & (\omega_n^{-1})^1 & \cdots & (\omega_n^{-1})^{n-1} \\ \vdots & \vdots & \ddots & \vdots \\ (\omega_n^{-(n-1)})^0 & (\omega_n^{-(n-1)})^1 & \cdots & (\omega_n^{-(n-1)})^{n-1} \end{bmatrix} \begin{bmatrix} A(\omega_n^0) \\ A(\omega_n^1) \\ \vdots \\ A(\omega_n^{n-1}) \end{bmatrix} \end{equation*}
+$$
+
+<p>这样，IDFT 就相当于把 DFT 过程中的$ \omega_n^i $换成$ \omega_n^{-i}$，然后做一次 DFT，之后结果除以$ n$ 就可以了。</p>
+<h3 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h3><h4 id="递归实现"><a href="#递归实现" class="headerlink" title="递归实现"></a>递归实现</h4><p>根据前面的说明，递归实现的 FFT 应该不是什么大问题，下面就直接给出 C++ 代码了（主意 n要补齐到 $2^m$）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fft</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">complex</span>&lt;<span class="keyword">double</span>&gt;* buffer, <span class="keyword">int</span> offset, <span class="keyword">int</span> step, <span class="keyword">complex</span>&lt;<span class="keyword">double</span>&gt;* epsilon)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(n == <span class="number">1</span>) <span class="keyword">return</span>;</span><br><span class="line">	<span class="keyword">int</span> m = n &gt;&gt; <span class="number">1</span>;</span><br><span class="line">	fft(m, buffer, offset, step &lt;&lt; <span class="number">1</span>, epsilon);</span><br><span class="line">	fft(m, buffer, offset + step, step &lt;&lt; <span class="number">1</span>, epsilon);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">0</span>; k != m; ++k)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> pos = <span class="number">2</span> * step * k;</span><br><span class="line">		temp[k] = buffer[pos + offset] + epsilon[k * step] * buffer[pos + offset + step];</span><br><span class="line">		temp[k + m] = buffer[pos + offset] - epsilon[k * step] * buffer[pos + offset + step];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i != n; ++i)</span><br><span class="line">		buffer[i * step + offset] = temp[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的 <code>epsilon</code>是事先打好了的$ \omega_n $的表</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init_epsilon</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">	<span class="keyword">double</span> pi = <span class="built_in">acos</span>(<span class="number">-1</span>);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i != n; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		epsilon[i] = <span class="keyword">complex</span>&lt;<span class="keyword">double</span>&gt;(<span class="built_in">cos</span>(<span class="number">2.0</span> * pi * i / n), <span class="built_in">sin</span>(<span class="number">2.0</span> * pi * i / n)); </span><br><span class="line">		arti_epsilon[i] = conj(epsilon[i]);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="迭代实现"><a href="#迭代实现" class="headerlink" title="迭代实现"></a>迭代实现</h4><p>假设现在有$ 16 $个数要进行$DFT $来看看递归的过程</p>
+<p><img src="/gallery/fft/bit-reverse.png" alt=""></p>
+<p>在 Step1 -&gt; Step2 的过程中，按照奇偶分类，二进制位中最后一位相同的被分到同一组</p>
+<p>在 Step2 -&gt; Step3 的过程中，仍然按照奇偶，只不过不是按照数字的奇偶性，而是下标的奇偶性，二进制位中最后两位相同的才被分到同一组</p>
+<p>在 Step3 -&gt; Step4 的过程中，二进制位中最后三位相同的数字被分在同一组</p>
+<p>现在将整个二进制位反转，例如 0010 就变成 0100，这时候每次在同一组的数字，反转后的二进制位前几位都是相同的，这似乎十分类似加法，相邻两组二进制位反转之后数字会是连续的一段区间。例如在 Step3 中，1、5、9、13 这一组，反转二进制后是 1(1000)、5(1010)、9(1001)、13(1011)，分组后是 1(1000)、9(1001) 和 5(1010)、13(1011)</p>
+<p>假设<code>reverse(i)</code>是将二进制位反转的操作，DFT 最后一步的数组是 B，原来的数组是 A，那么 A 和 B 之间有这样的关系<code>B[reverse(i)]=A[i]</code>，也就是说， <code>B[i + 1]=A[reverse(reverse(i)+ 1)]</code>，B 中第 i 项的下一项就是将 i 反转后加 1 再反转回来 A 中的那一项，所以现在要模拟的就是从高位开始的二进制加法</p>
+<p>考虑正向二进制加法的过程，相当于从最低位开始，找到第一个 0，然后把这个 0 改成 1，之前的 1 全部变成 0。那么反向二进制加法就是从最高位开始，找到第一个 0，然后把这个 0 改成 1，前面的 1 全部改成 0，所以就是这样</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">reverse_add</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> l = <span class="number">1</span> &lt;&lt; bit_length; (x ^= l) &lt; l; l &gt;&gt;= <span class="number">1</span>);</span><br><span class="line">	<span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>为了从原来的 A 数组，得到最后一步所需要的 B 数组，只要维护两个变量，一个是当前下标 i，一个是反向加的下标 j，表示 B[i] 应该放 A[j] 放的东西，如果 i &gt; j，只要将 i 和 j 存的东西交换，这样最后就可以得到所需要的 B 数组</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 这时候 n 已经补齐到 2 的幂次 */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bit_reverse</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">complex_t</span> *x)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>; i != n; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(i &gt; j) swap(x[i], x[j]);</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> l = n &gt;&gt; <span class="number">1</span>; (j ^= l) &lt; l; l &gt;&gt;= <span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在已经把要变换的元素排在相邻位置了，所以从下往上 $2 $开始到 $2^m $来进行计算，每次枚举一块往上迭代即可！</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">transform</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">complex_t</span> *x, <span class="keyword">complex_t</span> *w)</span> </span>&#123;</span><br><span class="line">	bit_reverse(n, x);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; i &lt;&lt;= <span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> m = i &gt;&gt; <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; j += i)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">0</span>; k != m; ++k)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">complex_t</span> z = x[j + m + k] * w[n / i * k];</span><br><span class="line">				x[j + m + k] = x[j + k] - z;</span><br><span class="line">				x[j + k] += z;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="快速数论变换"><a href="#快速数论变换" class="headerlink" title="快速数论变换"></a>快速数论变换</h2><p>由于 FFT 涉及到复数运算，难免有精度问题，在计算一些只要求整数的卷积或高精度乘法的时候就有可能由于精度出现错误，这便让我们考虑是否有在模意义下的方法，这就是<strong>快速数论变换</strong>（Fast Number-Theoretic Transform，FNT）</p>
+<p>首先来看 FFT 中能在$ \mathcal O(n\log n) $时间内变换用到了单位根 $\omega $的什么性质</p>
+<ol>
+<li><p>$\omega_n^n=1$</p>
+</li>
+<li><p>$\omega_n^0, \omega_n^1, \cdots, \omega_n^{n-1} $是互不相同的，这样带入计算出来的点值才可以用来还原出系数</p>
+</li>
+<li><p>$ \omega_n^2=\omega_{\frac{n}{2}}, \omega_n^{\frac{n}{2}+k}=-\omega_n^k $ ，这使得在按照指数奇偶分类之后能够把带入的值也减半使得问题规模能够减半</p>
+</li>
+<li>$$ \sum_{k=0}^{n-1} (\omega_n^{j-i})^k = \begin{eqnarray*} \left\{ \begin{aligned}0, ~~~&i \neq j\\ n, ~~~&i = j \end{aligned} \right. \end{eqnarray*} $$ 
+<p>​</p>
+<p>这点保证了能够使用相同的方法进行逆变换得到系数表示</p>
+</li>
+</ol>
+<h3 id="原根"><a href="#原根" class="headerlink" title="原根"></a>原根</h3><p>现在我们要在数论中寻找满足这三个性质的数，首先来介绍原根的概念，根据费马定理我们知道，对于一个素数$ p$，有下面这样的关系</p>
+
+$$
+a^{p-1} \equiv 1 \pmod p 
+$$
+
+<p>这一点和单位根 $\omega$ 十分相似，$p$ 的<strong>原根</strong> $g $定义为使得 $g^0, g^1, \cdots, g^{p-2} \pmod p $互不相同的数</p>
+<p>如果我们取素数$ p = k\cdot 2^n + 1$，并且找到它的原根$ g$，然后我们令$ g_n\equiv g^k\pmod p$，这样就可以使得$ g_n^0, g_n^1, \cdots, g_n^{n-1} \pmod p $互不相同，并且$ g_n^n\equiv 1\pmod p$，这便满足了性质一和性质二</p>
+<p>由于$ p $是素数，并且$ g_n^n \equiv 1 \mod p$，这样 $g_n^\frac{n}{2} \bmod p $必然是$ -1 $或 $1$，再根据$ g^k $互不相同这个特点，所以$ g_n^\frac{n}{2} \equiv -1 \pmod p$，满足性质三</p>
+<p>对于性质四，和前面一样也可以验证是满足的，因此再 FNT 中，我们可以用原根替代单位根，<a href="http://blog.miskcoo.com/2014/07/fft-prime-table" target="_blank" rel="noopener">这里</a>已经有了一些数$ p $及其原根，可以满足大部分需求</p>
+<h3 id="模数任意的解决方案"><a href="#模数任意的解决方案" class="headerlink" title="模数任意的解决方案"></a>模数任意的解决方案</h3><p>前面说了，要进行快速数论变换需要模数是 $a\cdot 2^k + 1 $形式的素数，但是在实际应用中，要求的模数可能不是这样的形式，甚至是一个合数！</p>
+<p>假设现在需要模 $m$，并且进行变换的长度是$ n$</p>
+<p>那么这样任何多项式系数的范围是$ [0, m)$，两个相乘，不会超过$ (m - 1)^2$，一共 $n $项相加，不会超过 $n(m-1)^2$</p>
+<p>这样的话，选取$ k $个有上面形式的素数$ p_1, p_2, \cdots, p_k$，要求满足</p>
+
+$$
+\prod_{i=1}^k p_k > n(m-1)^2 
+$$
+
+<p>然后分别在$ \bmod k $的剩余系下做变换，最后使用<a href="http://blog.miskcoo.com/2014/09/chinese-remainder-theorem" target="_blank" rel="noopener">中国剩余定理</a>合并（当然这时候或许是需要高精度或者<code>__int128</code> 的）</p>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>FNT 的代码实现和 FFT 是一样的，只要把复数运算换成在 $\bmod p$ 剩余系下的运算即可</p>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><h3 id="快速卷积"><a href="#快速卷积" class="headerlink" title="快速卷积"></a>快速卷积</h3><p>现有两个定义在$ \mathbb N $上的函数$ f(n), g(n)$，定义$ f $和 $g $的<strong>卷积</strong>（convolution）为 $f \otimes g$</p>
+
+$$
+(f \otimes g)(n) = \sum_{i=0}^n f(i)g(n-i) 
+$$
+
+<p><img src="/gallery/fft/convolution.png" alt=""></p>
+<p>就像上面的图一样，注意到卷积的形式和多项式乘法的形式是相同的，也就是两个多项式$ A(x), B(x)$，令$ C(x) = A(x)B(x)$，那么会有$ c_i=(a \otimes b)(i)$，因此可以用 FFT 来计算卷积</p>
+<p>对于要计算某些形如  $h(k) = \sum_{i=0}^n f(i)g(i+k) $ 的问题，可以令$ f’(x) = f(n-x)$，这样问题就变成计算$ \sum_{i=0}^n f’(n-i)g(i+k)$，也就是一个卷积的形式</p>
+<h4 id="例1：-ZJOI2014-力"><a href="#例1：-ZJOI2014-力" class="headerlink" title="例1：[ZJOI2014]力"></a>例1：<a href="http://www.lydsy.com/JudgeOnline/problem.php?id=3527" target="_blank" rel="noopener">[ZJOI2014]力</a></h4><p>题目给出$ n $个数$ q_1, q_2, \cdots, q_n$，要求计算</p>
+
+$$
+F_i = \sum_{j=1}^{i-1}\frac{q_iq_j}{(j-i)^i}-\sum_{j=i+1}^{n}\frac{q_iq_j}{(j-i)^i} 
+$$
+
+<p>观察一下，假设有四个数$ q_1, q_2, q_3, q_4$，那么</p>
+
+$$
+\begin{eqnarray*} \frac{F_1}{q_1} &=& -\frac{q_2}{1^2}-\frac{q_3}{2^2}-\frac{q_4}{3^2} \\ 
+\frac{F_2}{q_2} &=& +\frac{q_1}{1^2}-\frac{q_3}{1^2}-\frac{q_4}{2^2} \\ 
+\frac{F_3}{q_3} &=& +\frac{q_1}{2^2}+\frac{q_2}{1^2}-\frac{q_4}{1^2} \\ 
+\frac{F_4}{q_4} &=& +\frac{q_1}{3^2}+\frac{q_2}{2^2}+\frac{q_3}{1^2} \\ 
+\end{eqnarray*} 
+$$
+
+<p>初看之下似乎没什么规律，但是这之中出现的几个数列出来</p>
+<table>
+<thead>
+<tr>
+<th>q_1</th>
+<th>q_2</th>
+<th>q_3</th>
+<th>q_4</th>
+<th>0</th>
+<th>0</th>
+<th>0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$-\frac{1}{3^2}$</td>
+<td>$-\frac{1}{2^2}$</td>
+<td>$-\frac{1}{1^2}$</td>
+<td>$0$</td>
+<td>$\frac{1}{1^2}$</td>
+<td>$\frac{1}{2^2}$</td>
+<td>$\frac{1}{3^2}$</td>
+</tr>
+</tbody>
+</table>
+<p>列出来之后你看看每个 $\frac{F_i}{q_i} $的计算，就会发现刚好是像上面那张图一样的顺序相乘再相加，是个卷积的形式！因此最后只需要用 FFT 优化计算卷积，就可以解决此问题，不过要注意精度问题</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;complex&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MaxL = <span class="number">18</span>, MaxN = <span class="number">1</span> &lt;&lt; MaxL;</span><br><span class="line"><span class="keyword">typedef</span> <span class="built_in">std</span>::<span class="keyword">complex</span>&lt;<span class="keyword">double</span>&gt; <span class="keyword">complex_t</span>;</span><br><span class="line"><span class="keyword">complex_t</span> f[MaxN], g[MaxN];</span><br><span class="line"><span class="keyword">complex_t</span> eps[MaxN], inv_eps[MaxN];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init_eps</span><span class="params">(<span class="keyword">int</span> p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">double</span> pi = <span class="built_in">acos</span>(<span class="number">-1</span>);</span><br><span class="line">	<span class="keyword">double</span> angle = <span class="number">2.0</span> * pi / p;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i != p; ++i)</span><br><span class="line">		eps[i] = <span class="keyword">complex_t</span>(<span class="built_in">cos</span>(<span class="number">2.0</span> * pi * i / p), <span class="built_in">sin</span>(<span class="number">2.0</span> * pi * i / p));</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i != p; ++i)</span><br><span class="line">		inv_eps[i] = conj(eps[i]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">transform</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">complex_t</span> *x, <span class="keyword">complex_t</span> *w)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>; i != n; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(i &gt; j) <span class="built_in">std</span>::swap(x[i], x[j]);</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> l = n &gt;&gt; <span class="number">1</span>; (j ^= l) &lt; l; l &gt;&gt;= <span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; i &lt;&lt;= <span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> m = i &gt;&gt; <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; j += i)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">0</span>; k != m; ++k)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">complex_t</span> z = x[j + m + k] * w[n / i * k];</span><br><span class="line">				x[j + m + k] = x[j + k] - z;</span><br><span class="line">				x[j + k] += z;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;n);</span><br><span class="line">	<span class="keyword">int</span> l = <span class="number">0</span>, p = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span>(p &lt; n) ++l, p &lt;&lt;= <span class="number">1</span>;</span><br><span class="line">	++l, p &lt;&lt;= <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i != p; ++i)</span><br><span class="line">		f[i] = g[i] = <span class="number">0.0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i != n; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">double</span> x;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">scanf</span>(<span class="string">"%lf"</span>, &amp;x);</span><br><span class="line">		f[i] = x;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i + <span class="number">1</span> &lt; n; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		g[i] = <span class="number">1.0</span> / ((n - i - <span class="number">1.0</span>) * (n - i - <span class="number">1.0</span>));</span><br><span class="line">		g[<span class="number">2</span> * n - i - <span class="number">2</span>] = -g[i];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	init_eps(p);</span><br><span class="line">	<span class="built_in">std</span>::reverse(g, g + p);</span><br><span class="line"></span><br><span class="line">	transform(p, f, eps);</span><br><span class="line">	transform(p, g, eps);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i != p; ++i)</span><br><span class="line">		f[i] *= g[i];</span><br><span class="line">	transform(p, f, inv_eps);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = p - n; i != p; ++i)</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">printf</span>(<span class="string">"%.3lf\n"</span>, f[i].real() / p);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="生成函数运算"><a href="#生成函数运算" class="headerlink" title="生成函数运算"></a>生成函数运算</h3><p>对于一些需要用到生成函数的计数问题，在列出生成函数之后有可能需要将其平方、求对数、求逆元或者开方，这时便可以用 FFT 来加速计算</p>
+<h4 id="例2：-BZOJ3771-Triple"><a href="#例2：-BZOJ3771-Triple" class="headerlink" title="例2：[BZOJ3771]Triple"></a>例2：<a href="http://blog.miskcoo.com/2015/04/bzoj-3771" target="_blank" rel="noopener">[BZOJ3771]Triple</a></h4><p>这个问题就是用 FFT 加速多项式乘法的过程，具体可以看上面这篇题解</p>
+<h3 id="多项式求逆、除法、取模"><a href="#多项式求逆、除法、取模" class="headerlink" title="多项式求逆、除法、取模"></a>多项式求逆、除法、取模</h3><p>关于多项式的求逆元，可以看<a href="http://blog.miskcoo.com/2015/05/polynomial-inverse" target="_blank" rel="noopener">这里</a></p>
+<p>关于多项式的除法和求模，可以看<a href="http://blog.miskcoo.com/2015/05/polynomial-division" target="_blank" rel="noopener">这里</a></p>
+<h3 id="多项式多点求值和快速插值"><a href="#多项式多点求值和快速插值" class="headerlink" title="多项式多点求值和快速插值"></a>多项式多点求值和快速插值</h3><p>关于多项式的多点求值和快速插值，可以看<a href="http://blog.miskcoo.com/2015/05/polynomial-multipoint-eval-and-interpolation" target="_blank" rel="noopener">这里</a></p>
+<h2 id="Related-Posts"><a href="#Related-Posts" class="headerlink" title="Related Posts:"></a>Related Posts:</h2><ol>
+<li><a href="http://blog.miskcoo.com/2014/07/fft-prime-table" target="_blank" rel="noopener">FFT用到的各种素数</a></li>
+<li><a href="http://blog.miskcoo.com/2015/05/polynomial-inverse" target="_blank" rel="noopener">多项式求逆元</a></li>
+<li><a href="http://blog.miskcoo.com/2015/05/polynomial-multipoint-eval-and-interpolation" target="_blank" rel="noopener">多项式的多点求值与快速插值</a></li>
+<li><a href="http://blog.miskcoo.com/2015/06/polynomial-with-newton-method" target="_blank" rel="noopener">牛顿迭代法在多项式运算的应用</a></li>
+<li><a href="http://blog.miskcoo.com/2015/08/special-polynomial-linear-interpolation" target="_blank" rel="noopener">特殊多项式在整点上的线性插值方法</a></li>
+<li><a href="http://blog.miskcoo.com/2014/10/karatsuba-multiplication" target="_blank" rel="noopener">Karatsuba 乘法</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="../../../../js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Algorithm/">Algorithm</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../20/【Java】try-catch-finally语句中return的执行顺序思考/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          【Java】try-catch-finally语句中return的执行顺序思考
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../../08/22/【算法】大数相乘问题及其高效算法/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">【算法】大数乘法问题及其高效算法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备知识"><span class="nav-number">2.</span> <span class="nav-text">准备知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多项式"><span class="nav-number">3.</span> <span class="nav-text">多项式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#多项式的系数表示法"><span class="nav-number">3.1.</span> <span class="nav-text">多项式的系数表示法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多项式的点值表示法"><span class="nav-number">3.2.</span> <span class="nav-text">多项式的点值表示法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复数"><span class="nav-number">4.</span> <span class="nav-text">复数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单位根"><span class="nav-number">4.1.</span> <span class="nav-text">单位根</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多项式的乘法"><span class="nav-number">5.</span> <span class="nav-text">多项式的乘法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快速傅里叶变换"><span class="nav-number">6.</span> <span class="nav-text">快速傅里叶变换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Cooley-Tukey算法"><span class="nav-number">6.1.</span> <span class="nav-text">Cooley-Tukey算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#傅里叶逆变换（IDFT）"><span class="nav-number">6.2.</span> <span class="nav-text">傅里叶逆变换（IDFT）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法实现"><span class="nav-number">6.3.</span> <span class="nav-text">算法实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#递归实现"><span class="nav-number">6.3.1.</span> <span class="nav-text">递归实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#迭代实现"><span class="nav-number">6.3.2.</span> <span class="nav-text">迭代实现</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快速数论变换"><span class="nav-number">7.</span> <span class="nav-text">快速数论变换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原根"><span class="nav-number">7.1.</span> <span class="nav-text">原根</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模数任意的解决方案"><span class="nav-number">7.2.</span> <span class="nav-text">模数任意的解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现"><span class="nav-number">7.3.</span> <span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用"><span class="nav-number">8.</span> <span class="nav-text">应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#快速卷积"><span class="nav-number">8.1.</span> <span class="nav-text">快速卷积</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#例1：-ZJOI2014-力"><span class="nav-number">8.1.1.</span> <span class="nav-text">例1：[ZJOI2014]力</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成函数运算"><span class="nav-number">8.2.</span> <span class="nav-text">生成函数运算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#例2：-BZOJ3771-Triple"><span class="nav-number">8.2.1.</span> <span class="nav-text">例2：[BZOJ3771]Triple</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多项式求逆、除法、取模"><span class="nav-number">8.3.</span> <span class="nav-text">多项式求逆、除法、取模</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多项式多点求值和快速插值"><span class="nav-number">8.4.</span> <span class="nav-text">多项式多点求值和快速插值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-Posts"><span class="nav-number">9.</span> <span class="nav-text">Related Posts:</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2018 iTimeTraveler All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="../../../../categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="../../../../tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="../../../../funnysite" class="mobile-nav-link">酷站</a>
+  
+    <a href="../../../../collection" class="mobile-nav-link">收藏</a>
+  
+    <a href="../../../../about" class="mobile-nav-link">About</a>
+  
+    <a href="../../../../mybooks" class="mobile-nav-link">🎁</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.css">
+  <script src="../../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="../../../../js/scripts.js"></script>
+
+
+
+
+  <script src="../../../../js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            iTimeTraveler
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Mr.Seven All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

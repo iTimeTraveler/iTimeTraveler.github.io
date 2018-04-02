@@ -1,0 +1,156 @@
+
+
+
+<html><head>
+<meta charset="utf-8">
+<title>jq22-code4</title>
+<script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+</head>
+
+<style>
+body {
+  background: #291f34;
+  overflow: hidden;
+}
+
+.loading {
+  position: absolute;
+  left: 50%;
+  top: 30vh;
+  margin-left: -20vh;
+  display: block;
+  width: 40vh;
+  height: 40vh;
+  text-align: center;
+  -webkit-filter: contrast(1.2);
+          filter: contrast(1.2);
+}
+.loading span {
+  mix-blend-mode: screen;
+  display: block;
+  position: absolute;
+  border-radius: 50%;
+  -webkit-animation: wave 3s infinite linear;
+          animation: wave 3s infinite linear;
+}
+.loading span:nth-child(0) {
+  left: -11%;
+  right: -2%;
+  top: -12%;
+  bottom: -5%;
+  -webkit-transform-origin: 46% 53%;
+          transform-origin: 46% 53%;
+  -webkit-animation-delay: 0;
+          animation-delay: 0;
+  background-color: red;
+}
+.loading span:nth-child(1) {
+  left: -4%;
+  right: -4%;
+  top: -9%;
+  bottom: -2%;
+  -webkit-transform-origin: 47% 50%;
+          transform-origin: 47% 50%;
+  -webkit-animation-delay: -1s;
+          animation-delay: -1s;
+  background-color: #ffd500;
+}
+.loading span:nth-child(2) {
+  left: -11%;
+  right: -4%;
+  top: -10%;
+  bottom: -11%;
+  -webkit-transform-origin: 49% 53%;
+          transform-origin: 49% 53%;
+  -webkit-animation-delay: -1.5s;
+          animation-delay: -1.5s;
+  background-color: #55ff00;
+}
+.loading span:nth-child(3) {
+  left: -7%;
+  right: -9%;
+  top: -11%;
+  bottom: -4%;
+  -webkit-transform-origin: 47% 52%;
+          transform-origin: 47% 52%;
+  -webkit-animation-delay: -2s;
+          animation-delay: -2s;
+  background-color: #00ff80;
+}
+.loading span:nth-child(4) {
+  left: -8%;
+  right: -3%;
+  top: -5%;
+  bottom: -11%;
+  -webkit-transform-origin: 47% 52%;
+          transform-origin: 47% 52%;
+  -webkit-animation-delay: -2.5s;
+          animation-delay: -2.5s;
+  background-color: #00aaff;
+}
+.loading span:nth-child(5) {
+  left: -10%;
+  right: -8%;
+  top: -4%;
+  bottom: -9%;
+  -webkit-transform-origin: 48% 51%;
+          transform-origin: 48% 51%;
+  -webkit-animation-delay: -3s;
+          animation-delay: -3s;
+  background-color: #2b00ff;
+}
+.loading span:nth-child(6) {
+  left: -9%;
+  right: -11%;
+  top: -5%;
+  bottom: -8%;
+  -webkit-transform-origin: 47% 50%;
+          transform-origin: 47% 50%;
+  -webkit-animation-delay: -3.5s;
+          animation-delay: -3.5s;
+  background-color: magenta;
+}
+
+@-webkit-keyframes wave {
+  from {
+    -webkit-transform: rotateZ(0deg);
+            transform: rotateZ(0deg);
+  }
+  to {
+    -webkit-transform: rotateZ(360deg);
+            transform: rotateZ(360deg);
+  }
+}
+
+@keyframes wave {
+  from {
+    -webkit-transform: rotateZ(0deg);
+            transform: rotateZ(0deg);
+  }
+  to {
+    -webkit-transform: rotateZ(360deg);
+            transform: rotateZ(360deg);
+  }
+}
+
+</style>
+
+
+
+<script type="text/javascript">
+
+</script>
+
+<body>
+<strong class="loading">
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+</strong>
+
+
+</body></html>
