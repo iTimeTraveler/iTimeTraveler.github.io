@@ -350,6 +350,75 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Android】源码分析 - View事件分发机制"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/11/18/【Android】源码分析 - View事件分发机制/">【Android】源码分析 - View事件分发机制</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/11/18/【Android】源码分析 - View事件分发机制/" class="article-date">
+	  <time datetime="2017-11-18T14:20:55.000Z" itemprop="datePublished">2017-11-18</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Android/">Android</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="事件分发对象"><a href="#事件分发对象" class="headerlink" title="事件分发对象"></a>事件分发对象</h3><p>（1）所有 Touch 事件都被封装成了 MotionEvent 对象，包括 Touch 的位置、时间、历史记录以及第几个手指(多指触摸)等。</p>
+<p>（2）事件类型分为 <code>ACTION_DOWN</code>， <code>ACTION_UP</code>，<code>ACTION_MOVE</code>，<code>ACTION_POINTER_DOWN</code>，<code>ACTION_POINTER_UP</code>， <code>ACTION_CANCEL</code>，每个事件都是以 <code>ACTION_DOWN</code> 开始 <code>ACTION_UP</code> 结束。</p>
+<p>主要发生的Touch事件有如下四种：</p>
+<ul>
+<li>MotionEvent.ACTION_DOWN：按下View（所有事件的开始）</li>
+<li>MotionEvent.ACTION_MOVE：滑动View</li>
+<li>MotionEvent.ACTION_CANCEL：非人为原因结束本次事件</li>
+<li>MotionEvent.ACTION_UP：抬起View（与DOWN对应）</li>
+</ul>
+<p>事件列：从手指接触屏幕至手指离开屏幕，这个过程产生的一系列事件<br>任何事件列都是以DOWN事件开始，UP事件结束，中间有无数的MOVE事件，如下图： </p>
+<p><img src="/gallery/android-view/944365-79b1e86793514e99.png" alt=""></p>
+<p>即当一个点击事件发生后，系统需要将这个事件传递给一个具体的View去处理。这个事件传递的过程就是分发过程。</p>
+<p>（3）对事件的处理包括三类，分别：</p>
+<ul>
+<li><p>传递——dispatchTouchEvent()函数；</p>
+</li>
+<li><p>拦截——onInterceptTouchEvent()函数</p>
+</li>
+<li><p>消费——onTouchEvent()函数和 OnTouchListener</p>
+</li>
+</ul>
+        <!-- 事件分发对象（1）所有 Touch 事件都被封装成了 MotionEvent 对象，包括 Touch 的位置、时间、历史记录以及第几个手指(多指触摸)等。
+（2）事件类型分为 ACTION_DOWN， ACTION_UP，ACTION_MOVE，ACTION_POINTER_DOWN，ACTION_POINTER_UP， ACTION_CANCEL，每个事件都是以 ACTION_DOWN 开......  -->
+        <p class="article-more-link">
+          <a href="../../2017/11/18/【Android】源码分析 - View事件分发机制/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【Java】生产者消费者模式的实现"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -881,62 +950,6 @@ IntentService：一个内部采用HandlerThread来执行任务的Service服务�
 分析所谓大数......  -->
         <p class="article-more-link">
           <a href="../../2017/08/22/【算法】大数相乘问题及其高效算法/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【算法】反转字符串"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/08/05/【算法】反转字符串/">【算法】反转字符串</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/08/05/【算法】反转字符串/" class="article-date">
-	  <time datetime="2017-08-05T14:20:55.000Z" itemprop="datePublished">2017-08-05</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>研究算法能提高我们的编程功底，更好地编写出高效稳健的代码。今天，我们研究的是 —— 反转字符串。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//输入一个字符串，输出它的倒序字符串</span></span><br><span class="line">input:  Hello</span><br><span class="line">output: olleH</span><br></pre></td></tr></table></figure>
-<h2 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h2><p>反转字符串，确实没什么难度，但是我无意间搜索了一下，才发现这么一个看似简单的反转算法实现起来真可谓花样繁多。这里我们尽可能分别总结介绍一下。</p>
-<h3 id="1、使用字符数组倒序输出"><a href="#1、使用字符数组倒序输出" class="headerlink" title="1、使用字符数组倒序输出"></a>1、使用字符数组倒序输出</h3><p>最常规的解法，也是最容易想到的一种方法就是使用字符数组倒序输出。</p>
-<p>具体思路是：倒序遍历字符串字符循环给char数组赋值</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">strReverseWithArray</span><span class="params">(String string)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (string == <span class="keyword">null</span> || string.length() == <span class="number">0</span>) <span class="keyword">return</span> string;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">char</span>[] array = <span class="keyword">new</span> <span class="keyword">char</span>[string.length()];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; string.length(); i++)&#123;</span><br><span class="line">        array[i] = string.charAt(string.length() - i - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> String(array);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-        <!-- 前言研究算法能提高我们的编程功底，更好地编写出高效稳健的代码。今天，我们研究的是 —— 反转字符串。
-123//输入一个字符串，输出它的倒序字符串input:  Hellooutput: olleH
-解法反转字符串，确实没什么难度，但是我无意间搜索了一下，才发现这么一个看似简单的反转算法实现起来真可谓花样繁多。这里我们尽可能分别总结介绍一下。
-1、使用字符数组倒序输出最常规的解法，也是最容易......  -->
-        <p class="article-more-link">
-          <a href="../../2017/08/05/【算法】反转字符串/#more">阅读全文</a>
         </p>
       
     </div>

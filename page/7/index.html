@@ -350,6 +350,68 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Go语言】基本类型排序和 slice 排序"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2016/09/07/【Go语言】基本类型排序和 slice 排序/">【Go语言】基本类型排序和 slice 排序</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2016/09/07/【Go语言】基本类型排序和 slice 排序/" class="article-date">
+	  <time datetime="2016-09-07T08:36:00.000Z" itemprop="datePublished">2016-09-07</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Go语言/">Go语言</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>Go 是通过 sort 包提供排序和搜索，因为 Go 暂时不支持泛型（将来也不好说支不支持），所以，Go 的 sort 和 search 使用起来跟类型是有关的，或是需要像 c 一样写比较函数等，稍微显得也不是很方便。</p>
+</blockquote>
+<h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a><strong>引言</strong></h3><p>  Go 的排序思路和 C 和 C++ 有些差别。 C 默认是对数组进行排序， C++ 是对一个序列进行排序， Go 则更宽泛一些，待排序的可以是<strong><code>任何对象</code></strong>， 虽然很多情况下是一个 <code>slice</code> (分片， 类似于数组)，或是包含 slice 的一个对象。</p>
+<p>排序(接口)的三个要素：</p>
+<ul>
+<li>待排序元素个数 n ；</li>
+<li>第 i 和第 j 个元素的比较函数 cmp ；</li>
+<li>第 i 和 第 j 个元素的交换 swap ；</li>
+</ul>
+<p>乍一看条件 3 是多余的， c 和 c++ 都不提供 swap 。 c 的 qsort 的用法： <code>qsort(data, n, sizeof(int), cmp_int);</code>  data 是起始地址， n 是元素个数， sizeof(int) 是每个元素的大小， cmp_int 是一个比较两个 int 的函数。</p>
+<p>c++ 的 sort 的用法： <code>sort(data, data+n, cmp_int);</code> data 是第一个元素的位置， data+n 是最后一个元素的下一个位置， cmp_int 是比较函数。</p>
+        <!-- 
+Go 是通过 sort 包提供排序和搜索，因为 Go 暂时不支持泛型（将来也不好说支不支持），所以，Go 的 sort 和 search 使用起来跟类型是有关的，或是需要像 c 一样写比较函数等，稍微显得也不是很方便。
+
+引言  Go 的排序思路和 C 和 C++ 有些差别。 C 默认是对数组进行排序， C++ 是对一个序列进行排序， Go 则更宽泛一些，待排序的可以是任何对象， 虽然很多......  -->
+        <p class="article-more-link">
+          <a href="../../2016/09/07/【Go语言】基本类型排序和 slice 排序/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Go语言/">Go语言</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【Android 】TextView 局部文字变色"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -895,70 +957,6 @@ Computation ......  -->
 一、名词介绍1.  PPI = Pixel......  -->
         <p class="article-more-link">
           <a href="../../2016/07/22/【Android】dip和px之间到底如何转换/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【Android】Monkey压力测试与停止"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/07/19/【Android】Monkey压力测试与停止/">【Android】Monkey压力测试与停止</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2016/07/19/【Android】Monkey压力测试与停止/" class="article-date">
-	  <time datetime="2016-07-19T03:09:00.000Z" itemprop="datePublished">2016-07-19</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Android/">Android</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="一、Monkey-是什么？"><a href="#一、Monkey-是什么？" class="headerlink" title="一、Monkey 是什么？"></a><strong>一、Monkey 是什么？</strong></h4><p>Monkey测试是Android自动化测试的一种手段。该工具用于进行压力测试，就是模拟用户的按键输入，触摸屏输入，手势输入等，看设备多长时间会出异常。 然后开发人员结合monkey 打印的日志 和系统打印的日志，结局测试中出现的问题。</p>
-<h4 id="二、Monkey命令"><a href="#二、Monkey命令" class="headerlink" title="二、Monkey命令"></a><strong>二、Monkey命令</strong></h4><p>1）. 标准的monkey 命令<br>[adb shell] monkey [options] &lt; eventcount &gt; , 例如：</p>
-<blockquote>
-<p>adb shell monkey -v 500</p>
-</blockquote>
-<p>产生500次随机事件，作用在系统中所有activity（其实也不是所有的activity，而是包含  Intent.CATEGORY_LAUNCHER 或Intent.CATEGORY_MONKEY 的activity）。<br>上面只是一个简单的例子，实际情况中通常会有很多的options 选项.</p>
-<p>2）. 四大类</p>
-<blockquote>
-<ul>
-<li>常用选项</li>
-<li>事件选项 </li>
-<li>约束选项 </li>
-<li>调试选项</li>
-</ul>
-</blockquote>
-<p>具体的命令解释可以看这里：<a href="http://www.jb51.net/article/48557.htm" target="_blank" rel="noopener">android 压力测试命令monkey详解</a></p>
-        <!-- 一、Monkey 是什么？Monkey测试是Android自动化测试的一种手段。该工具用于进行压力测试，就是模拟用户的按键输入，触摸屏输入，手势输入等，看设备多长时间会出异常。 然后开发人员结合monkey 打印的日志 和系统打印的日志，结局测试中出现的问题。
-二、Monkey命令1）. 标准的monkey 命令[adb shell] monkey [options] &lt; eventc......  -->
-        <p class="article-more-link">
-          <a href="../../2016/07/19/【Android】Monkey压力测试与停止/#more">阅读全文</a>
         </p>
       
     </div>

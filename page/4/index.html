@@ -350,6 +350,61 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-详解Java类的生命周期"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/06/02/详解Java类的生命周期/">详解Java类的生命周期</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/06/02/详解Java类的生命周期/" class="article-date">
+	  <time datetime="2017-06-02T03:36:55.000Z" itemprop="datePublished">2017-06-02</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Java/">Java</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a><strong>引言</strong></h2><p>最近有位细心的朋友在阅读笔者的文章时，对Java类的生命周期问题有一些疑惑，笔者打开百度搜了一下相关的问题，看到网上的资料很少有把这个问题讲明白的，主要是因为目前国内Java方面的教材大多只是告诉你“怎样做”，但至于“为什么这样做”却不多说，所以造成大家在基础和原理方面的知识比较匮乏，所以笔者今天就斗胆来讲一下这个问题，权当抛砖引玉，希望对在这个问题上有疑惑的朋友有所帮助，文中有说的不对的地方，也希望各路高手前来指正。</p>
+<p>首先来了解一下jvm（java虚拟机）中的几个比较重要的内存区域，这几个区域在java类的生命周期中扮演着比较重要的角色：</p>
+<ul>
+<li><strong>方法区</strong>：在java的虚拟机中有一块专门用来存放已经加载的类信息、常量、静态变量以及方法代码的内存区域，叫做方法区。</li>
+<li><strong>常量池</strong>：常量池是方法区的一部分，主要用来存放常量和类中的符号引用等信息。</li>
+<li><strong>堆区</strong>：用于存放类的对象实例。</li>
+<li><strong>栈区</strong>：也叫java虚拟机栈，是由一个一个的栈帧组成的后进先出的栈式结构，栈桢中存放方法运行时产生的局部变量、方法出口等信息。当调用一个方法时，虚拟机栈中就会创建一个栈帧存放这些数据，当方法调用完成时，栈帧消失，如果方法中调用了其他方法，则继续在栈顶创建新的栈桢。</li>
+</ul>
+        <!-- 引言最近有位细心的朋友在阅读笔者的文章时，对Java类的生命周期问题有一些疑惑，笔者打开百度搜了一下相关的问题，看到网上的资料很少有把这个问题讲明白的，主要是因为目前国内Java方面的教材大多只是告诉你“怎样做”，但至于“为什么这样做”却不多说，所以造成大家在基础和原理方面的知识比较匮乏，所以笔者今天就斗胆来讲一下这个问题，权当抛砖引玉，希望对在这个问题上有疑惑的朋友有所帮助，文中有说的不对......  -->
+        <p class="article-more-link">
+          <a href="../../2017/06/02/详解Java类的生命周期/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【Android】Audio音频输出通道切换 - 蓝牙、外放"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -857,68 +912,6 @@ Java 中的内存分配
 Note: Ac......  -->
         <p class="article-more-link">
           <a href="../../2017/01/20/【Android】AlertDialog中的EditText不能弹出软键盘的问题/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【Android】TextView中不同大小字体如何上下垂直居中？"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/01/03/【Android】TextView中不同大小字体如何上下垂直居中？/">【Android】TextView中不同大小字体如何上下垂直居中？</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/01/03/【Android】TextView中不同大小字体如何上下垂直居中？/" class="article-date">
-	  <time datetime="2017-01-03T09:03:00.000Z" itemprop="datePublished">2017-01-03</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Android/">Android</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h2><p>在客户端开发中，我们往往需要对一个TextView的文字的部分内容进行特殊化处理，比如加粗、改变颜色、加链接、下划线等。iOS为我们提供了<code>AttributedString</code>，而Android则提供了<strong><code>SpannableString</code></strong>。</p>
-<p>在Android的android.text.style包下为我们提供了各种各样的span（可以<a href="http://blog.csdn.net/u010983881/article/details/52383539" target="_blank" rel="noopener"><strong>参考这篇文章</strong></a>），例如：</p>
-<ul>
-<li><p><strong>AbsoluteSizeSpan(int size)</strong> —— 设置字体大小，参数是绝对数值，相当于Word中的字体大小</p>
-</li>
-<li><p><strong>RelativeSizeSpan(float proportion)</strong> —— 设置字体大小，参数是相对于默认字体大小的倍数，比如默认字体大小是x, 那么设置后的字体大小就是x*proportion，这个用起来比较灵活，proportion&gt;1就是放大(zoom in), proportion&lt;1就是缩小(zoom out)</p>
-</li>
-<li><p><strong>BackgroundColorSpan(int color)</strong> —— 背景着色，参数是颜色数值，可以直接使用android.graphics.Color里面定义的常量，或是用Color.rgb(int, int, int)</p>
-</li>
-<li><p><strong>ForegroundColorSpan(int color)</strong> —— 前景着色，也就是字的着色，参数与背景着色一致</p>
-</li>
-</ul>
-        <!-- 前言在客户端开发中，我们往往需要对一个TextView的文字的部分内容进行特殊化处理，比如加粗、改变颜色、加链接、下划线等。iOS为我们提供了AttributedString，而Android则提供了SpannableString。
-在Android的android.text.style包下为我们提供了各种各样的span（可以参考这篇文章），例如：
-
-AbsoluteSizeSpan(int......  -->
-        <p class="article-more-link">
-          <a href="../../2017/01/03/【Android】TextView中不同大小字体如何上下垂直居中？/#more">阅读全文</a>
         </p>
       
     </div>

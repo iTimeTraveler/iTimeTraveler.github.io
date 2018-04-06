@@ -350,6 +350,72 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Android】App应用前后台切换的一种监听方法"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="2018/04/06/【Android】App应用前后台切换的一种监听方法/">【Android】App应用前后台切换的一种监听方法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="2018/04/06/【Android】App应用前后台切换的一种监听方法/" class="article-date">
+	  <time datetime="2018-04-06T04:20:55.000Z" itemprop="datePublished">2018-04-06</time>
+	</a>
+
+      
+    <a class="article-category-link" href="categories/Android/">Android</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Android本身并没有提供监听App的前后台切换操作的方法。最近看到一种简单巧妙的方法来监听前后台，这里分享记录一下。</p>
+<h3 id="一、Activity生命周期"><a href="#一、Activity生命周期" class="headerlink" title="一、Activity生命周期"></a>一、Activity生命周期</h3><p>我们知道在Android中，两个Activity，分别为A和B。假设此时A在前台，当A启动B时，他们俩之间的生命周期关系如下，可以参考之前的这篇文章<a href="https://blog.csdn.net/u010983881/article/details/50036647" target="_blank" rel="noopener">【Android】Activity与Fragment的生命周期的关系</a>：</p>
+<blockquote>
+<p>A.onPause()  -&gt;  B.onCreate()  -&gt;  <strong>B.onStart()</strong>  -&gt;  B.onResume()  -&gt;  <strong>A.onStop()</strong></p>
+</blockquote>
+<p>也就是说B的onStart()方法是在A的onStop()方法之前执行的，我们可以根据这点来做文章。<strong>在所有Activity的onStart()和onStop()方法中进行计数，计数变量为count，在onStart中将变量加1，onStop中减1。</strong></p>
+<p>那么这个count在整个App的生命周期里的值就会像下面这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">count</span><br><span class="line">2|          _     _     _     _</span><br><span class="line">1|     ____| |___| |___| |___| |____</span><br><span class="line">0| ___|                             |___</span><br><span class="line"> ===========================================&gt; 时间</span><br><span class="line">      a     b     c                 d</span><br></pre></td></tr></table></figure>
+<p>横轴表示时间，纵轴表示count的值。那么a、b、c、d四个时间点发生的事情如下：</p>
+<ol>
+<li>a点就是启动了应用；</li>
+<li>b点是<strong>Activity_A</strong>启动了另一个<strong>Activity_B</strong>；</li>
+<li>c点是<strong>Activity_B</strong>启动了另一个<strong>Activity_C</strong>，后面以此类推；</li>
+<li>d点是应用切换到了后台；</li>
+</ol>
+<p>从上面的情况看出，可以通过对count计数为0，来判断应用被从前台切到了后台。同样的，从后台切到前台也是类似的道理。具体实现看后面的代码。</p>
+        <!-- Android本身并没有提供监听App的前后台切换操作的方法。最近看到一种简单巧妙的方法来监听前后台，这里分享记录一下。
+一、Activity生命周期我们知道在Android中，两个Activity，分别为A和B。假设此时A在前台，当A启动B时，他们俩之间的生命周期关系如下，可以参考之前的这篇文章【Android】Activity与Fragment的生命周期的关系：
+
+A.onPause()......  -->
+        <p class="article-more-link">
+          <a href="2018/04/06/【Android】App应用前后台切换的一种监听方法/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/Android/">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【Java】线程池ThreadPoolExecutor实现原理"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -871,75 +937,6 @@ Big-Endian和Little-Endian的定义如下：
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/Java/">Java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【Android】源码分析 - View事件分发机制"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="2017/11/18/【Android】源码分析 - View事件分发机制/">【Android】源码分析 - View事件分发机制</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="2017/11/18/【Android】源码分析 - View事件分发机制/" class="article-date">
-	  <time datetime="2017-11-18T14:20:55.000Z" itemprop="datePublished">2017-11-18</time>
-	</a>
-
-      
-    <a class="article-category-link" href="categories/Android/">Android</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="事件分发对象"><a href="#事件分发对象" class="headerlink" title="事件分发对象"></a>事件分发对象</h3><p>（1）所有 Touch 事件都被封装成了 MotionEvent 对象，包括 Touch 的位置、时间、历史记录以及第几个手指(多指触摸)等。</p>
-<p>（2）事件类型分为 <code>ACTION_DOWN</code>， <code>ACTION_UP</code>，<code>ACTION_MOVE</code>，<code>ACTION_POINTER_DOWN</code>，<code>ACTION_POINTER_UP</code>， <code>ACTION_CANCEL</code>，每个事件都是以 <code>ACTION_DOWN</code> 开始 <code>ACTION_UP</code> 结束。</p>
-<p>主要发生的Touch事件有如下四种：</p>
-<ul>
-<li>MotionEvent.ACTION_DOWN：按下View（所有事件的开始）</li>
-<li>MotionEvent.ACTION_MOVE：滑动View</li>
-<li>MotionEvent.ACTION_CANCEL：非人为原因结束本次事件</li>
-<li>MotionEvent.ACTION_UP：抬起View（与DOWN对应）</li>
-</ul>
-<p>事件列：从手指接触屏幕至手指离开屏幕，这个过程产生的一系列事件<br>任何事件列都是以DOWN事件开始，UP事件结束，中间有无数的MOVE事件，如下图： </p>
-<p><img src="/gallery/android-view/944365-79b1e86793514e99.png" alt=""></p>
-<p>即当一个点击事件发生后，系统需要将这个事件传递给一个具体的View去处理。这个事件传递的过程就是分发过程。</p>
-<p>（3）对事件的处理包括三类，分别：</p>
-<ul>
-<li><p>传递——dispatchTouchEvent()函数；</p>
-</li>
-<li><p>拦截——onInterceptTouchEvent()函数</p>
-</li>
-<li><p>消费——onTouchEvent()函数和 OnTouchListener</p>
-</li>
-</ul>
-        <!-- 事件分发对象（1）所有 Touch 事件都被封装成了 MotionEvent 对象，包括 Touch 的位置、时间、历史记录以及第几个手指(多指触摸)等。
-（2）事件类型分为 ACTION_DOWN， ACTION_UP，ACTION_MOVE，ACTION_POINTER_DOWN，ACTION_POINTER_UP， ACTION_CANCEL，每个事件都是以 ACTION_DOWN 开......  -->
-        <p class="article-more-link">
-          <a href="2017/11/18/【Android】源码分析 - View事件分发机制/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/Android/">Android</a></li></ul>
 
     </footer>
   </div>
