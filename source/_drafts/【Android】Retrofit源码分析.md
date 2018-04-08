@@ -21,3 +21,4 @@ photos:
 
 - [Retrofit2.0源码解析](http://wensibo.top/2017/09/05/retrofit/)
 - [Retrofit分析-漂亮的解耦套路](https://www.jianshu.com/p/45cb536be2f4)
+- [「Android技术汇」Retrofit2 源码解析和案例说明](https://zhuanlan.zhihu.com/p/21662195)
