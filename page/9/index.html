@@ -350,6 +350,65 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Android】Picasso加载本地图片如何清理缓存cache？"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2016/03/08/【Android】Picasso加载本地图片如何清理缓存cache？/">【Android】Picasso加载本地图片如何清理缓存cache？</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2016/03/08/【Android】Picasso加载本地图片如何清理缓存cache？/" class="article-date">
+	  <time datetime="2016-03-08T07:03:00.000Z" itemprop="datePublished">2016-03-08</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Android/">Android</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>使用Picasso加载SD卡图片的时候，Picasso也会对该图片进行缓存。所以如果该图片即使已经变了，Picasso在加载时会仍然使用缓存，而不更新图片。</p>
+</blockquote>
+<h3 id="1、Picasso缓存策略"><a href="#1、Picasso缓存策略" class="headerlink" title="1、Picasso缓存策略"></a>1、<strong>Picasso缓存策略</strong></h3><p>我们都知道图片缓存使用的是Map键值对存储的，这里的Key就是加载的图片的Url，所以如果我们使用相同的ImageUrl去加载图片的话，如果使用了缓存，Picasso会直接读取缓存的内容，而不是从SD卡、或者网络Http中重新加载。</p>
+<h3 id="2、Picasso如何跳过缓存"><a href="#2、Picasso如何跳过缓存" class="headerlink" title="2、Picasso如何跳过缓存"></a>2、<strong>Picasso如何跳过缓存</strong></h3><p>试了很多网上推荐的方法均不见起效，最后使用了下面这种策略，也就是<strong><code>加载图片时直接跳过缓存</code></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Picasso.with(getContext()).load(imageUrl).memoryPolicy(MemoryPolicy.NO_CACHE).into(image);</span><br></pre></td></tr></table></figure>
+<p>注意其中的<em>.memoryPolicy(MemoryPolicy.NO_CACHE)</em>即是关键代码，其中</p>
+<ul>
+<li>MemoryPolicy.NO_CACHE：是指图片加载时放弃在内存缓存中查找。</li>
+<li>MemoryPolicy.NO_STORE：是指图片加载完不缓存在内存中。</li>
+</ul>
+<p>ps：<strong>此处的方法并不是真正的清理缓存，而是跳过缓存直接从源头获取</strong>。</p>
+<p>网上有几种错误的方法如下，经验证均不起效：</p>
+<p>1、<code>Picasso.with(getActivity()).invalidate(file);</code><br>2、<code>Picasso.with(getActivity()).load(url).skipMemoryCache().into(image);</code></p>
+<p>最后还是在StackOverFlow的<a href="http://stackoverflow.com/questions/27502659/clear-cache-memory-of-picasso" target="_blank" rel="noopener">Clear Cache memory of Picasso</a>查到了如上的解决办法。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-如何生成100个1-100以内的不重复的随机数"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -885,66 +944,6 @@ from Dribbbl......  -->
         <p class="article-more-link">
           <a href="../../2015/12/31/【Android】 加解密算法 HMAC 的使用/#more">阅读全文</a>
         </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【Android】app打包成apk文件以后，如何查看VersionCode、VersionName等版本信息"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2015/12/25/【Android】app打包成apk文件以后，如何查看VersionCode、VersionName等版本信息/">【Android】app打包成apk文件以后，如何查看VersionCode、VersionName等版本信息</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2015/12/25/【Android】app打包成apk文件以后，如何查看VersionCode、VersionName等版本信息/" class="article-date">
-	  <time datetime="2015-12-25T02:57:55.000Z" itemprop="datePublished">2015-12-25</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Android/">Android</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>​    </p>
-<blockquote>
-<p>Android App打包成Apk后，其实是一个压缩文件，可以将后缀名apk改为zip然后用winrar打开也能看到里面的文件结构。还能看到AndroidManifest.xml。但是里面的内容经过编码显示为乱码，不方便查看。</p>
-</blockquote>
-<p><br></p>
-<h3 id="aapt工具："><a href="#aapt工具：" class="headerlink" title="aapt工具："></a><strong>aapt工具：</strong></h3><p>&nbsp;&nbsp;这里我们可以使用<strong>aapt工具</strong>来查看。aapt.exe工具即Android Asset Packaging Tool，在SDK的build-tools目录下。</p>
-<p>&nbsp;&nbsp;该工具可以查看，创建， 更新ZIP格式的文档附件(zip, jar, apk)。也可将资源文件编译成二进制文件，尽管你可能没有直接使用过aapt工具，但是build scripts和IDE插件会使用这个工具打包apk文件构成一个Android 应用程序。在使用aapt之前需要在环境变量里面配置SDK-tools路径，或者是路径+aapt的方式进入aapt。</p>
-<p>&nbsp;&nbsp;也就是说平时我们不会用这个东西，但是打包成Apk的时候其实是用到了的，只不过IDE替我们做了这一步，那么我们就用这个工具来查看VersionCode和VersionName。<br><br></p>
-<h3 id="操作流程："><a href="#操作流程：" class="headerlink" title="操作流程："></a><strong>操作流程：</strong></h3><p>1、首先找到aapt工具，在Android SDK文件夹下的build-tools包里，如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd D:\Android\SDK\build-tools\23.0.0_rc3</span><br></pre></td></tr></table></figure></p>
-<p>2、然后使用aapt dump bading XXX.apk<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aapt dump badging C:\Users\kuguan\Desktop\app-release_1.0.9.apk</span><br></pre></td></tr></table></figure></p>
-<p>就能看到PackageName，VersionCode，LauncherActivity等信息，如下图：</p>
-<p><img src="http://img.blog.csdn.net/20151225105455337" alt=""></p>
-<p>应用包名PackageName：</p>
-<p><img src="http://img.blog.csdn.net/20170906110944152" alt=""></p>
-<p>LauncherActivity：</p>
-<p><img src="http://img.blog.csdn.net/20170906111009222" alt=""></p>
-
       
     </div>
     <footer class="article-footer">

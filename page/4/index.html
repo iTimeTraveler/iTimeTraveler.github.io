@@ -350,6 +350,56 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【面试题】Java String常量相等（==）问题"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/06/15/【面试题】Java String常量相等（==）问题/">【面试题】Java String常量相等（==）问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/06/15/【面试题】Java String常量相等（==）问题/" class="article-date">
+	  <time datetime="2017-06-15T08:51:55.000Z" itemprop="datePublished">2017-06-15</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Java/">Java</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>以下三个结果分别输出（true or false）？别小看它，很多程序员因为上面问题出过生产bug</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">String s3 = <span class="string">"s"</span>;</span><br><span class="line">String s4 = <span class="string">"s"</span>;</span><br><span class="line">System.out.println(s3==s4);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">String s5 = <span class="string">"hello"</span>;</span><br><span class="line">String s6 = <span class="string">"he"</span>+<span class="string">"llo"</span>;</span><br><span class="line">System.out.println(s5==s6);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">Integer i = <span class="number">2017</span>;</span><br><span class="line">Integer j = <span class="number">2017</span>;</span><br><span class="line">System.out.println(i==j);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">String s1 = <span class="keyword">new</span> String(<span class="string">"s"</span>);</span><br><span class="line">String s2 = <span class="keyword">new</span> String(<span class="string">"s"</span>);</span><br><span class="line">System.out.println(s1==s2);</span><br><span class="line">System.out.println(s1.intern()==s2.intern());</span><br></pre></td></tr></table></figure>
+        <!-- 问题以下三个结果分别输出（true or false）？别小看它，很多程序员因为上面问题出过生产bug
+12345678910111213141516171819202122String s3 = "s";String s4 = "s";System.out.println(s3==s4);---String s5 = "hello";String s6 = "he"+"llo";Syste......  -->
+        <p class="article-more-link">
+          <a href="../../2017/06/15/【面试题】Java String常量相等（==）问题/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-详解Java类的生命周期"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -865,61 +915,6 @@ Java 中的内存分配
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【Android】AlertDialog中的EditText不能弹出软键盘的问题"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/01/20/【Android】AlertDialog中的EditText不能弹出软键盘的问题/">【Android】AlertDialog中的EditText不能弹出软键盘的问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/01/20/【Android】AlertDialog中的EditText不能弹出软键盘的问题/" class="article-date">
-	  <time datetime="2017-01-20T03:03:00.000Z" itemprop="datePublished">2017-01-20</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Android/">Android</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a><strong>摘要</strong></h2><p>AlertDialog中加入EditText但是不弹出软键盘等问题网上有很多不管用的解决方案，有的方案是<strong>强制弹出软键盘</strong>，然而即使弹出来，也是显示在AlertDialog的后面，被Dialog遮挡。</p>
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a><strong>解决方案</strong></h2><p>Dialog的官方文档：<a href="http://developer.android.com/reference/android/app/Dialog.html" target="_blank" rel="noopener">http://developer.android.com/reference/android/app/Dialog.html</a> ，其中有一段：</p>
-<blockquote>
-<p><strong>Note:</strong> Activities provide a facility to manage the creation, saving and restoring of dialogs. See <a href="https://developer.android.com/reference/android/app/Activity.html#onCreateDialog%28int%29" target="_blank" rel="noopener">onCreateDialog(int)</a>, <a href="https://developer.android.com/reference/android/app/Activity.html#onPrepareDialog%28int,%20android.app.Dialog%29" target="_blank" rel="noopener">onPrepareDialog(int, Dialog)</a>, <a href="https://developer.android.com/reference/android/app/Activity.html#showDialog%28int%29" target="_blank" rel="noopener">showDialog(int)</a>, and <a href="https://developer.android.com/reference/android/app/Activity.html#dismissDialog%28int%29" target="_blank" rel="noopener">dismissDialog(int)</a>. If these methods are used, <a href="https://developer.android.com/reference/android/app/Dialog.html#getOwnerActivity%28%29" target="_blank" rel="noopener">getOwnerActivity()</a> will return the Activity that managed this dialog.</p>
-</blockquote>
-        <!-- 摘要AlertDialog中加入EditText但是不弹出软键盘等问题网上有很多不管用的解决方案，有的方案是强制弹出软键盘，然而即使弹出来，也是显示在AlertDialog的后面，被Dialog遮挡。
-解决方案Dialog的官方文档：http://developer.android.com/reference/android/app/Dialog.html ，其中有一段：
-
-Note: Ac......  -->
-        <p class="article-more-link">
-          <a href="../../2017/01/20/【Android】AlertDialog中的EditText不能弹出软键盘的问题/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
 
     </footer>
   </div>

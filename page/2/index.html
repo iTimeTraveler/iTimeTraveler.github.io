@@ -350,6 +350,65 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Java】HashMap源码分析（JDK1.8）"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/11/25/【Java】HashMap源码分析（JDK1.8）/">【Java】HashMap源码分析（JDK1.8）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/11/25/【Java】HashMap源码分析（JDK1.8）/" class="article-date">
+	  <time datetime="2017-11-25T14:20:55.000Z" itemprop="datePublished">2017-11-25</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Java/">Java</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>Java为数据结构中的映射定义了一个接口java.util.Map，此接口主要有四个常用的实现类，分别是<code>HashMap</code>、<code>Hashtable</code>、<code>LinkedHashMap</code>和<code>TreeMap</code>，类继承关系如下图所示：</p>
+<p><img src="https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/master/gallery/java-common/java.util.map_class.png" alt=""></p>
+<p>下面针对各个实现类的特点做一些说明：</p>
+<p>(1) <strong>HashMap</strong>：它根据键的hashCode值存储数据，大多数情况下可以直接定位到它的值，因而具有很快的访问速度，但遍历顺序却是不确定的。 HashMap最多只允许一条记录的键为null，允许多条记录的值为null。HashMap非线程安全，即任一时刻可以有多个线程同时写HashMap，可能会导致数据的不一致。如果需要满足线程安全，可以用 Collections的synchronizedMap方法使HashMap具有线程安全的能力，或者使用ConcurrentHashMap。</p>
+<p>(2) <strong>Hashtable</strong>：Hashtable是遗留类，很多映射的常用功能与HashMap类似，不同的是它继承自Dictionary类，并且是线程安全的，任一时间只有一个线程能写Hashtable，并发性不如<strong>ConcurrentHashMap</strong>，因为ConcurrentHashMap引入了分段锁。Hashtable不建议在新代码中使用，不需要线程安全的场合可以用HashMap替换，需要线程安全的场合可以用ConcurrentHashMap替换。</p>
+<p>(3) <strong>LinkedHashMap</strong>：LinkedHashMap是HashMap的一个子类，保存了记录的插入顺序，在用Iterator遍历LinkedHashMap时，先得到的记录肯定是先插入的，也可以在构造时带参数，按照访问次序排序。</p>
+<p>(4) <strong>TreeMap</strong>：TreeMap实现SortedMap接口，能够把它保存的记录根据键排序，默认是按键值的升序排序，也可以指定排序的比较器，当用Iterator遍历TreeMap时，得到的记录是排过序的。如果使用排序的映射，建议使用TreeMap。在使用TreeMap时，key必须实现Comparable接口或者在构造TreeMap传入自定义的Comparator，否则会在运行时抛出java.lang.ClassCastException类型的异常。</p>
+<p>对于上述四种Map类型的类，要求映射中的key是不可变对象。不可变对象是该对象在创建后它的哈希值不会被改变。如果对象的哈希值发生变化，Map对象很可能就定位不到映射的位置了。</p>
+<p>通过上面的比较，我们知道了HashMap是Java的Map家族中一个普通成员，鉴于它可以满足大多数场景的使用条件，所以是使用频度最高的一个。下文我们主要结合源码，从存储结构、常用方法分析、扩容以及安全性等方面深入讲解HashMap的工作原理。</p>
+        <!-- 前言Java为数据结构中的映射定义了一个接口java.util.Map，此接口主要有四个常用的实现类，分别是HashMap、Hashtable、LinkedHashMap和TreeMap，类继承关系如下图所示：
+
+下面针对各个实现类的特点做一些说明：
+(1) HashMap：它根据键的hashCode值存储数据，大多数情况下可以直接定位到它的值，因而具有很快的访问速度，但遍历顺序却是不确定的......  -->
+        <p class="article-more-link">
+          <a href="../../2017/11/25/【Java】HashMap源码分析（JDK1.8）/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【Android】源码分析 - View事件分发机制"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -882,74 +941,6 @@ IntentService：一个内部采用HandlerThread来执行任务的Service服务�
 概述计算多项式的乘法，或者计算两个大整数的乘法是在计算机中很常见的运算，如果用普通的方法进行，复杂度将会是$ \mathcal O(n^2) ​$的，还有一种分治乘法，可以做到 $\mathcal O(n^{\log_23}) ​$时间计算（可以看Karatsuba 乘法）。下面从计算多项式的乘法出发，介绍快速傅里叶变换（Fa......  -->
         <p class="article-more-link">
           <a href="../../2017/09/08/【算法】从多项式乘法到快速傅里叶变换/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【算法】大数相乘问题及其高效算法"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/08/22/【算法】大数相乘问题及其高效算法/">【算法】大数乘法问题及其高效算法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/08/22/【算法】大数相乘问题及其高效算法/" class="article-date">
-	  <time datetime="2017-08-22T14:20:55.000Z" itemprop="datePublished">2017-08-22</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>编写两个任意位数的大数相乘的程序，给出计算结果。比如：</p>
-<blockquote>
-<p>题目描述：    输出两个不超过100位的大整数的乘积。<br>输入：    输入两个大整数，如1234567 和 123<br>输出：    输出乘积，如：151851741</p>
-</blockquote>
-<p>或者</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">求 <span class="number">1234567891011121314151617181920</span> * <span class="number">2019181716151413121110987654321</span> 的乘积结果</span><br></pre></td></tr></table></figure>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>所谓大数相乘（Multiplication algorithm），就是指数字比较大，相乘的结果超出了基本类型的表示范围，所以这样的数不能够直接做乘法运算。</p>
-<p>参考了很多资料，包括维基百科词条<a href="https://en.wikipedia.org/wiki/Multiplication_algorithm" target="_blank" rel="noopener">Multiplication algorithm</a>，才知道目前大数乘法算法主要有以下几种思路：</p>
-<ol>
-<li><strong>模拟小学乘法</strong>：最简单的乘法竖式手算的累加型；</li>
-<li><strong>分治乘法</strong>：最简单的是Karatsuba乘法，一般化以后有Toom-Cook乘法；</li>
-<li><strong>快速傅里叶变换FFT</strong>：（为了避免精度问题，可以改用快速数论变换FNTT），时间复杂度O(N lgN lglgN)。具体可参照<a href="https://en.wikipedia.org/wiki/Sch%C3%B6nhage%E2%80%93Strassen_algorithm" target="_blank" rel="noopener">Schönhage–Strassen algorithm</a>；</li>
-<li><strong>中国剩余定理</strong>：把每个数分解到一些互素的模上，然后每个同余方程对应乘起来就行；</li>
-<li><strong>Furer’s algorithm</strong>：在渐进意义上FNTT还快的算法。不过好像不太实用，本文就不作介绍了。大家可以参考维基百科<a href="https://en.wikipedia.org/wiki/F%C3%BCrer%27s_algorithm" target="_blank" rel="noopener">Fürer’s algorithm</a></li>
-</ol>
-        <!-- 题目编写两个任意位数的大数相乘的程序，给出计算结果。比如：
-
-题目描述：    输出两个不超过100位的大整数的乘积。输入：    输入两个大整数，如1234567 和 123输出：    输出乘积，如：151851741
-
-或者
-1求 1234567891011121314151617181920 * 2019181716151413121110987654321 的乘积结果
-分析所谓大数......  -->
-        <p class="article-more-link">
-          <a href="../../2017/08/22/【算法】大数相乘问题及其高效算法/#more">阅读全文</a>
         </p>
       
     </div>

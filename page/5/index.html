@@ -350,6 +350,61 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Android】AlertDialog中的EditText不能弹出软键盘的问题"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/01/20/【Android】AlertDialog中的EditText不能弹出软键盘的问题/">【Android】AlertDialog中的EditText不能弹出软键盘的问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/01/20/【Android】AlertDialog中的EditText不能弹出软键盘的问题/" class="article-date">
+	  <time datetime="2017-01-20T03:03:00.000Z" itemprop="datePublished">2017-01-20</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Android/">Android</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a><strong>摘要</strong></h2><p>AlertDialog中加入EditText但是不弹出软键盘等问题网上有很多不管用的解决方案，有的方案是<strong>强制弹出软键盘</strong>，然而即使弹出来，也是显示在AlertDialog的后面，被Dialog遮挡。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a><strong>解决方案</strong></h2><p>Dialog的官方文档：<a href="http://developer.android.com/reference/android/app/Dialog.html" target="_blank" rel="noopener">http://developer.android.com/reference/android/app/Dialog.html</a> ，其中有一段：</p>
+<blockquote>
+<p><strong>Note:</strong> Activities provide a facility to manage the creation, saving and restoring of dialogs. See <a href="https://developer.android.com/reference/android/app/Activity.html#onCreateDialog%28int%29" target="_blank" rel="noopener">onCreateDialog(int)</a>, <a href="https://developer.android.com/reference/android/app/Activity.html#onPrepareDialog%28int,%20android.app.Dialog%29" target="_blank" rel="noopener">onPrepareDialog(int, Dialog)</a>, <a href="https://developer.android.com/reference/android/app/Activity.html#showDialog%28int%29" target="_blank" rel="noopener">showDialog(int)</a>, and <a href="https://developer.android.com/reference/android/app/Activity.html#dismissDialog%28int%29" target="_blank" rel="noopener">dismissDialog(int)</a>. If these methods are used, <a href="https://developer.android.com/reference/android/app/Dialog.html#getOwnerActivity%28%29" target="_blank" rel="noopener">getOwnerActivity()</a> will return the Activity that managed this dialog.</p>
+</blockquote>
+        <!-- 摘要AlertDialog中加入EditText但是不弹出软键盘等问题网上有很多不管用的解决方案，有的方案是强制弹出软键盘，然而即使弹出来，也是显示在AlertDialog的后面，被Dialog遮挡。
+解决方案Dialog的官方文档：http://developer.android.com/reference/android/app/Dialog.html ，其中有一段：
+
+Note: Ac......  -->
+        <p class="article-more-link">
+          <a href="../../2017/01/20/【Android】AlertDialog中的EditText不能弹出软键盘的问题/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【Android】TextView中不同大小字体如何上下垂直居中？"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -860,58 +915,6 @@ Tinker GitHub: https://github.......  -->
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Tinker/">Tinker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/hotfix/">hotfix</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【D3】Link Nodes by Name"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/11/16/【D3】Link Nodes by Name/">【D3】Link Nodes by Name</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2016/11/16/【D3】Link Nodes by Name/" class="article-date">
-	  <time datetime="2016-11-16T08:08:00.000Z" itemprop="datePublished">2016-11-16</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/D3-js/">D3.js</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Source : <a href="http://bl.ocks.org/mbostock/533daf20348023dfdd76" target="_blank" rel="noopener">http://bl.ocks.org/mbostock/533daf20348023dfdd76</a></p>
-<p>This example shows how to link nodes in a <a href="http://bl.ocks.org/mbostock/4062045" target="_blank" rel="noopener"><strong>force-directed graph</strong></a> using a named identifier rather than a numeric index.</p>
-        <!-- Source : http://bl.ocks.org/mbostock/533daf20348023dfdd76
-This example shows how to link nodes in a force-directed graph using a named identifier rather than a numeric index.
-
-# index.html123456789......  -->
-        <p class="article-more-link">
-          <a href="../../2016/11/16/【D3】Link Nodes by Name/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/D3/">D3</a></li></ul>
 
     </footer>
   </div>

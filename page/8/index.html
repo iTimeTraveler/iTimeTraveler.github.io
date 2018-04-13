@@ -350,6 +350,91 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Android】dip和px之间到底如何转换"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2016/07/22/【Android】dip和px之间到底如何转换/">【Android】dip和px之间到底如何转换</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2016/07/22/【Android】dip和px之间到底如何转换/" class="article-date">
+	  <time datetime="2016-07-22T04:02:00.000Z" itemprop="datePublished">2016-07-22</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Android/">Android</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>在Android xml布局文件中，我们既可以设置px，也可以设置dp（或者dip）。一般情况下，我们都会选择使用dp，这样可以保证不同屏幕分辨率的机器上布局一致。</p>
+</blockquote>
+<blockquote>
+<p>但是在代码中，如何处理呢？很多控件的方法中都只提供了设置px的方法，例如setPadding，并没有提供设置dp的方法。这个时候，如果需要设置dp的话，就要将dp转换成px了。</p>
+</blockquote>
+<h3 id="一、名词介绍"><a href="#一、名词介绍" class="headerlink" title="一、名词介绍"></a><strong>一、名词介绍</strong></h3><h4 id="1-PPI-Pixels-per-inch，每英寸上的像素数-即-“像素密度”"><a href="#1-PPI-Pixels-per-inch，每英寸上的像素数-即-“像素密度”" class="headerlink" title="1.  PPI = Pixels per inch，每英寸上的像素数,即 “像素密度”"></a>1.  <strong>PPI</strong> = Pixels per inch，每英寸上的像素数,即 “像素密度”</h4><ul>
+<li><p>xhdpi: 2.0</p>
+</li>
+<li><p>hdpi: 1.5</p>
+</li>
+<li><p>mdpi: 1.0 (baseline)</p>
+</li>
+<li><p>ldpi: 0.75</p>
+</li>
+</ul>
+<p>下图是Android官网dpi的定义（其实在计算机中dpi就是ppi，不明白可以看这里 <a href="http://zhidao.baidu.com/link?url=vPAxK6EdTCzBfQy8xUCnHcZS6M45oijy87YKvW7UlM4W7majdUf7Af3tL8S8CvCX8Thswwf2SU-uKSwpdLQ-6a" target="_blank" rel="noopener">dpi与ppi区别</a>）：</p>
+<p><strong>同时也注意，是dpi，不是dip。</strong></p>
+<blockquote>
+<p>dpi是<strong>Dots Per Inch，每英寸点数</strong>。（一个量度单位，用于点阵数码影像，指每一英寸长度中，取样、可显示或输出点的数目。是现实概念）。</p>
+<p>dip是<strong>Device Independent Pixels，设备独立像素</strong>。（又称设备无关像，是人为抽象概念 ）。</p>
+</blockquote>
+<p><img src="http://img.blog.csdn.net/20160722113144430" alt="官方dpi定义"></p>
+<h4 id="2-dp-也就是dip（device-independent-pixels），设备独立像素。"><a href="#2-dp-也就是dip（device-independent-pixels），设备独立像素。" class="headerlink" title="2.  dp = 也就是dip（device independent pixels），设备独立像素。"></a>2.  <strong>dp</strong> = 也就是dip（device independent pixels），设备独立像素。</h4><p>以160PPI屏幕为标准，则1dp=1px，在不同的像素密度的设备上会自动适配，比如:</p>
+<ul>
+<li>在320x480分辨率，像素密度为160，1dp=1px</li>
+<li>在480x800分辨率，像素密度为240，1dp=1.5px<blockquote>
+<p>计算公式：1dp*像素密度/160 = 实际像素数</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="3-sp-scaled-pixels，放大像素，它是安卓的字体单位"><a href="#3-sp-scaled-pixels，放大像素，它是安卓的字体单位" class="headerlink" title="3.  sp = scaled pixels，放大像素，它是安卓的字体单位"></a>3.  <strong>sp</strong> = scaled pixels，放大像素，它是安卓的字体单位</h4><p>主要用于字体显示best for textsize。根据 google 的建议，TextView 的字号最好使用 sp 做单位，而且查看TextView的源码可知 Android 默认使用 sp 作为字号单位。</p>
+        <!-- 
+在Android xml布局文件中，我们既可以设置px，也可以设置dp（或者dip）。一般情况下，我们都会选择使用dp，这样可以保证不同屏幕分辨率的机器上布局一致。
+
+
+但是在代码中，如何处理呢？很多控件的方法中都只提供了设置px的方法，例如setPadding，并没有提供设置dp的方法。这个时候，如果需要设置dp的话，就要将dp转换成px了。
+
+一、名词介绍1.  PPI = Pixel......  -->
+        <p class="article-more-link">
+          <a href="../../2016/07/22/【Android】dip和px之间到底如何转换/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【Android】Monkey压力测试与停止"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -854,65 +939,6 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
       
       
       
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【Android】Picasso加载本地图片如何清理缓存cache？"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/03/08/【Android】Picasso加载本地图片如何清理缓存cache？/">【Android】Picasso加载本地图片如何清理缓存cache？</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2016/03/08/【Android】Picasso加载本地图片如何清理缓存cache？/" class="article-date">
-	  <time datetime="2016-03-08T07:03:00.000Z" itemprop="datePublished">2016-03-08</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Android/">Android</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>使用Picasso加载SD卡图片的时候，Picasso也会对该图片进行缓存。所以如果该图片即使已经变了，Picasso在加载时会仍然使用缓存，而不更新图片。</p>
-</blockquote>
-<h3 id="1、Picasso缓存策略"><a href="#1、Picasso缓存策略" class="headerlink" title="1、Picasso缓存策略"></a>1、<strong>Picasso缓存策略</strong></h3><p>我们都知道图片缓存使用的是Map键值对存储的，这里的Key就是加载的图片的Url，所以如果我们使用相同的ImageUrl去加载图片的话，如果使用了缓存，Picasso会直接读取缓存的内容，而不是从SD卡、或者网络Http中重新加载。</p>
-<h3 id="2、Picasso如何跳过缓存"><a href="#2、Picasso如何跳过缓存" class="headerlink" title="2、Picasso如何跳过缓存"></a>2、<strong>Picasso如何跳过缓存</strong></h3><p>试了很多网上推荐的方法均不见起效，最后使用了下面这种策略，也就是<strong><code>加载图片时直接跳过缓存</code></strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Picasso.with(getContext()).load(imageUrl).memoryPolicy(MemoryPolicy.NO_CACHE).into(image);</span><br></pre></td></tr></table></figure>
-<p>注意其中的<em>.memoryPolicy(MemoryPolicy.NO_CACHE)</em>即是关键代码，其中</p>
-<ul>
-<li>MemoryPolicy.NO_CACHE：是指图片加载时放弃在内存缓存中查找。</li>
-<li>MemoryPolicy.NO_STORE：是指图片加载完不缓存在内存中。</li>
-</ul>
-<p>ps：<strong>此处的方法并不是真正的清理缓存，而是跳过缓存直接从源头获取</strong>。</p>
-<p>网上有几种错误的方法如下，经验证均不起效：</p>
-<p>1、<code>Picasso.with(getActivity()).invalidate(file);</code><br>2、<code>Picasso.with(getActivity()).load(url).skipMemoryCache().into(image);</code></p>
-<p>最后还是在StackOverFlow的<a href="http://stackoverflow.com/questions/27502659/clear-cache-memory-of-picasso" target="_blank" rel="noopener">Clear Cache memory of Picasso</a>查到了如上的解决办法。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
-
     </footer>
   </div>
   

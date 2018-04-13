@@ -350,6 +350,74 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【算法】大数相乘问题及其高效算法"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/08/22/【算法】大数相乘问题及其高效算法/">【算法】大数乘法问题及其高效算法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/08/22/【算法】大数相乘问题及其高效算法/" class="article-date">
+	  <time datetime="2017-08-22T14:20:55.000Z" itemprop="datePublished">2017-08-22</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>编写两个任意位数的大数相乘的程序，给出计算结果。比如：</p>
+<blockquote>
+<p>题目描述：    输出两个不超过100位的大整数的乘积。<br>输入：    输入两个大整数，如1234567 和 123<br>输出：    输出乘积，如：151851741</p>
+</blockquote>
+<p>或者</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">求 <span class="number">1234567891011121314151617181920</span> * <span class="number">2019181716151413121110987654321</span> 的乘积结果</span><br></pre></td></tr></table></figure>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>所谓大数相乘（Multiplication algorithm），就是指数字比较大，相乘的结果超出了基本类型的表示范围，所以这样的数不能够直接做乘法运算。</p>
+<p>参考了很多资料，包括维基百科词条<a href="https://en.wikipedia.org/wiki/Multiplication_algorithm" target="_blank" rel="noopener">Multiplication algorithm</a>，才知道目前大数乘法算法主要有以下几种思路：</p>
+<ol>
+<li><strong>模拟小学乘法</strong>：最简单的乘法竖式手算的累加型；</li>
+<li><strong>分治乘法</strong>：最简单的是Karatsuba乘法，一般化以后有Toom-Cook乘法；</li>
+<li><strong>快速傅里叶变换FFT</strong>：（为了避免精度问题，可以改用快速数论变换FNTT），时间复杂度O(N lgN lglgN)。具体可参照<a href="https://en.wikipedia.org/wiki/Sch%C3%B6nhage%E2%80%93Strassen_algorithm" target="_blank" rel="noopener">Schönhage–Strassen algorithm</a>；</li>
+<li><strong>中国剩余定理</strong>：把每个数分解到一些互素的模上，然后每个同余方程对应乘起来就行；</li>
+<li><strong>Furer’s algorithm</strong>：在渐进意义上FNTT还快的算法。不过好像不太实用，本文就不作介绍了。大家可以参考维基百科<a href="https://en.wikipedia.org/wiki/F%C3%BCrer%27s_algorithm" target="_blank" rel="noopener">Fürer’s algorithm</a></li>
+</ol>
+        <!-- 题目编写两个任意位数的大数相乘的程序，给出计算结果。比如：
+
+题目描述：    输出两个不超过100位的大整数的乘积。输入：    输入两个大整数，如1234567 和 123输出：    输出乘积，如：151851741
+
+或者
+1求 1234567891011121314151617181920 * 2019181716151413121110987654321 的乘积结果
+分析所谓大数......  -->
+        <p class="article-more-link">
+          <a href="../../2017/08/22/【算法】大数相乘问题及其高效算法/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【算法】反转字符串"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -857,56 +925,6 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
 摘要HashMap是Java程序员使用频率最高的用于映射(键值对)处理的数据类型。随着JDK（Java Developmet Kit）版本的更新，JDK1.8对HashMap底层的实现进行了优化，例如引入红黑树的数据结构和扩容的优化等。本文结合JDK1.7和JDK1.8的区别，深入探讨HashMap的结构实现和功能原理......  -->
         <p class="article-more-link">
           <a href="../../2017/06/16/Java 8系列之重新认识HashMap/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【面试题】Java String常量相等（==）问题"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/06/15/【面试题】Java String常量相等（==）问题/">【面试题】Java String常量相等（==）问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/06/15/【面试题】Java String常量相等（==）问题/" class="article-date">
-	  <time datetime="2017-06-15T08:51:55.000Z" itemprop="datePublished">2017-06-15</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Java/">Java</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>以下三个结果分别输出（true or false）？别小看它，很多程序员因为上面问题出过生产bug</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">String s3 = <span class="string">"s"</span>;</span><br><span class="line">String s4 = <span class="string">"s"</span>;</span><br><span class="line">System.out.println(s3==s4);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">String s5 = <span class="string">"hello"</span>;</span><br><span class="line">String s6 = <span class="string">"he"</span>+<span class="string">"llo"</span>;</span><br><span class="line">System.out.println(s5==s6);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">Integer i = <span class="number">2017</span>;</span><br><span class="line">Integer j = <span class="number">2017</span>;</span><br><span class="line">System.out.println(i==j);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">String s1 = <span class="keyword">new</span> String(<span class="string">"s"</span>);</span><br><span class="line">String s2 = <span class="keyword">new</span> String(<span class="string">"s"</span>);</span><br><span class="line">System.out.println(s1==s2);</span><br><span class="line">System.out.println(s1.intern()==s2.intern());</span><br></pre></td></tr></table></figure>
-        <!-- 问题以下三个结果分别输出（true or false）？别小看它，很多程序员因为上面问题出过生产bug
-12345678910111213141516171819202122String s3 = "s";String s4 = "s";System.out.println(s3==s4);---String s5 = "hello";String s6 = "he"+"llo";Syste......  -->
-        <p class="article-more-link">
-          <a href="../../2017/06/15/【面试题】Java String常量相等（==）问题/#more">阅读全文</a>
         </p>
       
     </div>

@@ -350,6 +350,69 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Java】设计模式：深入理解单例模式"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2016/09/08/【Java】设计模式：深入理解单例模式/">【Java】设计模式：深入理解单例模式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2016/09/08/【Java】设计模式：深入理解单例模式/" class="article-date">
+	  <time datetime="2016-09-08T06:18:20.000Z" itemprop="datePublished">2016-09-08</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Java/">Java</a><a class="article-category-link" href="../../categories/Java/Design-Pattern/">Design Pattern</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>什么是设计模式？简单的理解就是前人留下来的一些经验总结而已，然后把这些经验起了个名字叫Design Pattern，翻译过来就是设计模式，通过使用设计模式可以让我们的代码复用性更高，可维护性更高，让你的代码写的更优雅。设计模式理论上有23种，今天就先来分享下最常用的单例模式。</p>
+</blockquote>
+<h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a><strong>引言</strong></h3><p>对于单例模式，有工作经验的人基本上都使用过。面试的时候提到设计模式基本上都会提到单例模式，但是很多人对单例模式也是一知半解，当然也包括我哈哈哈=_=。所以我们有必要深入理解一下所谓的「单例模式」。</p>
+<h3 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a><strong>单例模式</strong></h3><p>定义：<strong><code>保证一个类仅有一个实例，并提供一个访问它的全局访问点。</code></strong></p>
+<p>单例模式结构图： </p>
+<p><img src="http://img.blog.csdn.net/20160908131425758" alt=""></p>
+<p>使用单例的优点：</p>
+<ul>
+<li>单例类只有一个实例</li>
+<li>共享资源，全局使用</li>
+<li>节省创建时间，提高性能</li>
+</ul>
+        <!-- 
+什么是设计模式？简单的理解就是前人留下来的一些经验总结而已，然后把这些经验起了个名字叫Design Pattern，翻译过来就是设计模式，通过使用设计模式可以让我们的代码复用性更高，可维护性更高，让你的代码写的更优雅。设计模式理论上有23种，今天就先来分享下最常用的单例模式。
+
+引言对于单例模式，有工作经验的人基本上都使用过。面试的时候提到设计模式基本上都会提到单例模式，但是很多人对单例模......  -->
+        <p class="article-more-link">
+          <a href="../../2016/09/08/【Java】设计模式：深入理解单例模式/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Design-Pattern/">Design Pattern</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【Go语言】基本类型排序和 slice 排序"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -880,91 +943,6 @@ Computation ......  -->
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/BAT/">BAT</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【Android】dip和px之间到底如何转换"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/07/22/【Android】dip和px之间到底如何转换/">【Android】dip和px之间到底如何转换</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2016/07/22/【Android】dip和px之间到底如何转换/" class="article-date">
-	  <time datetime="2016-07-22T04:02:00.000Z" itemprop="datePublished">2016-07-22</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Android/">Android</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>在Android xml布局文件中，我们既可以设置px，也可以设置dp（或者dip）。一般情况下，我们都会选择使用dp，这样可以保证不同屏幕分辨率的机器上布局一致。</p>
-</blockquote>
-<blockquote>
-<p>但是在代码中，如何处理呢？很多控件的方法中都只提供了设置px的方法，例如setPadding，并没有提供设置dp的方法。这个时候，如果需要设置dp的话，就要将dp转换成px了。</p>
-</blockquote>
-<h3 id="一、名词介绍"><a href="#一、名词介绍" class="headerlink" title="一、名词介绍"></a><strong>一、名词介绍</strong></h3><h4 id="1-PPI-Pixels-per-inch，每英寸上的像素数-即-“像素密度”"><a href="#1-PPI-Pixels-per-inch，每英寸上的像素数-即-“像素密度”" class="headerlink" title="1.  PPI = Pixels per inch，每英寸上的像素数,即 “像素密度”"></a>1.  <strong>PPI</strong> = Pixels per inch，每英寸上的像素数,即 “像素密度”</h4><ul>
-<li><p>xhdpi: 2.0</p>
-</li>
-<li><p>hdpi: 1.5</p>
-</li>
-<li><p>mdpi: 1.0 (baseline)</p>
-</li>
-<li><p>ldpi: 0.75</p>
-</li>
-</ul>
-<p>下图是Android官网dpi的定义（其实在计算机中dpi就是ppi，不明白可以看这里 <a href="http://zhidao.baidu.com/link?url=vPAxK6EdTCzBfQy8xUCnHcZS6M45oijy87YKvW7UlM4W7majdUf7Af3tL8S8CvCX8Thswwf2SU-uKSwpdLQ-6a" target="_blank" rel="noopener">dpi与ppi区别</a>）：</p>
-<p><strong>同时也注意，是dpi，不是dip。</strong></p>
-<blockquote>
-<p>dpi是<strong>Dots Per Inch，每英寸点数</strong>。（一个量度单位，用于点阵数码影像，指每一英寸长度中，取样、可显示或输出点的数目。是现实概念）。</p>
-<p>dip是<strong>Device Independent Pixels，设备独立像素</strong>。（又称设备无关像，是人为抽象概念 ）。</p>
-</blockquote>
-<p><img src="http://img.blog.csdn.net/20160722113144430" alt="官方dpi定义"></p>
-<h4 id="2-dp-也就是dip（device-independent-pixels），设备独立像素。"><a href="#2-dp-也就是dip（device-independent-pixels），设备独立像素。" class="headerlink" title="2.  dp = 也就是dip（device independent pixels），设备独立像素。"></a>2.  <strong>dp</strong> = 也就是dip（device independent pixels），设备独立像素。</h4><p>以160PPI屏幕为标准，则1dp=1px，在不同的像素密度的设备上会自动适配，比如:</p>
-<ul>
-<li>在320x480分辨率，像素密度为160，1dp=1px</li>
-<li>在480x800分辨率，像素密度为240，1dp=1.5px<blockquote>
-<p>计算公式：1dp*像素密度/160 = 实际像素数</p>
-</blockquote>
-</li>
-</ul>
-<h4 id="3-sp-scaled-pixels，放大像素，它是安卓的字体单位"><a href="#3-sp-scaled-pixels，放大像素，它是安卓的字体单位" class="headerlink" title="3.  sp = scaled pixels，放大像素，它是安卓的字体单位"></a>3.  <strong>sp</strong> = scaled pixels，放大像素，它是安卓的字体单位</h4><p>主要用于字体显示best for textsize。根据 google 的建议，TextView 的字号最好使用 sp 做单位，而且查看TextView的源码可知 Android 默认使用 sp 作为字号单位。</p>
-        <!-- 
-在Android xml布局文件中，我们既可以设置px，也可以设置dp（或者dip）。一般情况下，我们都会选择使用dp，这样可以保证不同屏幕分辨率的机器上布局一致。
-
-
-但是在代码中，如何处理呢？很多控件的方法中都只提供了设置px的方法，例如setPadding，并没有提供设置dp的方法。这个时候，如果需要设置dp的话，就要将dp转换成px了。
-
-一、名词介绍1.  PPI = Pixel......  -->
-        <p class="article-more-link">
-          <a href="../../2016/07/22/【Android】dip和px之间到底如何转换/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
 
     </footer>
   </div>
