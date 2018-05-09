@@ -350,6 +350,58 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Android】源码分析 - Activity启动流程"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/12/18/【Android】源码分析 - Activity启动流程/">【Android】源码分析 - Activity启动流程</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/12/18/【Android】源码分析 - Activity启动流程/" class="article-date">
+	  <time datetime="2017-12-18T14:20:55.000Z" itemprop="datePublished">2017-12-18</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Android/">Android</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="启动Activity的方式"><a href="#启动Activity的方式" class="headerlink" title="启动Activity的方式"></a>启动Activity的方式</h3><p>Activity有2种启动的方式，一种是在Launcher界面点击应用的图标、另一种是在应用中通过Intent进行跳转。我们主要介绍与后者相关的启动流程。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent(<span class="keyword">this</span>, TestActivity.class);</span><br><span class="line">startActivity(intent);</span><br></pre></td></tr></table></figure>
+<h3 id="从Activity入手"><a href="#从Activity入手" class="headerlink" title="从Activity入手"></a>从Activity入手</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startActivity</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.startActivity(intent, <span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startActivity</span><span class="params">(Intent intent, @Nullable Bundle options)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (options != <span class="keyword">null</span>) &#123;</span><br><span class="line">        startActivityForResult(intent, -<span class="number">1</span>, options);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// Note we want to go through this call for compatibility with</span></span><br><span class="line">        <span class="comment">// applications that may have overridden the method.</span></span><br><span class="line">        startActivityForResult(intent, -<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <!-- 启动Activity的方式Activity有2种启动的方式，一种是在Launcher界面点击应用的图标、另一种是在应用中通过Intent进行跳转。我们主要介绍与后者相关的启动流程。
+12Intent intent = new Intent(this, TestActivity.class);startActivity(intent);
+从Activity入手12345678910111213......  -->
+        <p class="article-more-link">
+          <a href="../../2017/12/18/【Android】源码分析 - Activity启动流程/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【Java】HashMap源码分析（JDK1.8）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -892,63 +944,6 @@ IntentService：一个内部采用HandlerThread来执行任务的Service服务�
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【算法】从多项式乘法到快速傅里叶变换"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/09/08/【算法】从多项式乘法到快速傅里叶变换/">【算法】从多项式乘法到快速傅里叶变换</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/09/08/【算法】从多项式乘法到快速傅里叶变换/" class="article-date">
-	  <time datetime="2017-09-08T04:20:55.000Z" itemprop="datePublished">2017-09-08</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>本文来自： <a href="http://blog.miskcoo.com/2015/04/polynomial-multiplication-and-fast-fourier-transform" target="_blank" rel="noopener">从多项式乘法到快速傅里叶变换</a> — <a href="http://blog.miskcoo.com/about" target="_blank" rel="noopener">miskcoo</a></p>
-</blockquote>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>计算多项式的乘法，或者计算两个大整数的乘法是在计算机中很常见的运算，如果用普通的方法进行，复杂度将会是$ \mathcal O(n^2) ​$的，还有一种分治乘法，可以做到 $\mathcal O(n^{\log_23}) ​$时间计算（可以看<a href="http://blog.miskcoo.com/2014/10/karatsuba-multiplication" target="_blank" rel="noopener">Karatsuba 乘法</a>）。下面从计算多项式的乘法出发，介绍<strong>快速傅里叶变换（Fast Fourier Transform, FFT）</strong>如何在 $\mathcal O(n\log n) ​$的时间内计算出两个多项式的乘积。</p>
-<h2 id="准备知识"><a href="#准备知识" class="headerlink" title="准备知识"></a>准备知识</h2><p>这里介绍一些后面可能会用到的知识（主要是关于多项式、卷积以及复数的），如果你已经知道觉得它太水了或者想用到的时候再看就跳过吧。</p>
-<h2 id="多项式"><a href="#多项式" class="headerlink" title="多项式"></a>多项式</h2><p>简单来说，形如 $ a_0+a_1X+a_2X^2+\cdots+a_nX^n $ 的代数表达式叫做<strong>多项式</strong>，可以记作$P(X)=a_0+a_1X+a_2X^2+\cdots+a_nX^n$，$a_0, a_1, \cdots, a_n $叫做多项式的<strong>系数</strong>，$X $是一个不定元，不表示任何值，不定元在多项式中最大项的次数称作多项式的<strong>次数</strong></p>
-<h3 id="多项式的系数表示法"><a href="#多项式的系数表示法" class="headerlink" title="多项式的系数表示法"></a>多项式的系数表示法</h3><p>像刚刚我们提到的那些多项式，都是以系数形式表示的，也就是将 n 次多项式$ A(x) $的系数 $a_0, a_1, \cdots, a_n $看作 $n+1 $维向量$ \vec a=(a_0,a_1,\cdots,a_n)$，其<strong>系数表示（coefficient representation）</strong>就是向量$ \vec a$ 。</p>
-        <!-- 
-本文来自： 从多项式乘法到快速傅里叶变换 — miskcoo
-
-概述计算多项式的乘法，或者计算两个大整数的乘法是在计算机中很常见的运算，如果用普通的方法进行，复杂度将会是$ \mathcal O(n^2) ​$的，还有一种分治乘法，可以做到 $\mathcal O(n^{\log_23}) ​$时间计算（可以看Karatsuba 乘法）。下面从计算多项式的乘法出发，介绍快速傅里叶变换（Fa......  -->
-        <p class="article-more-link">
-          <a href="../../2017/09/08/【算法】从多项式乘法到快速傅里叶变换/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
 
     </footer>
   </div>

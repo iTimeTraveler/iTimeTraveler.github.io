@@ -350,6 +350,63 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【算法】从多项式乘法到快速傅里叶变换"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/09/08/【算法】从多项式乘法到快速傅里叶变换/">【算法】从多项式乘法到快速傅里叶变换</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/09/08/【算法】从多项式乘法到快速傅里叶变换/" class="article-date">
+	  <time datetime="2017-09-08T04:20:55.000Z" itemprop="datePublished">2017-09-08</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本文来自： <a href="http://blog.miskcoo.com/2015/04/polynomial-multiplication-and-fast-fourier-transform" target="_blank" rel="noopener">从多项式乘法到快速傅里叶变换</a> — <a href="http://blog.miskcoo.com/about" target="_blank" rel="noopener">miskcoo</a></p>
+</blockquote>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>计算多项式的乘法，或者计算两个大整数的乘法是在计算机中很常见的运算，如果用普通的方法进行，复杂度将会是$ \mathcal O(n^2) ​$的，还有一种分治乘法，可以做到 $\mathcal O(n^{\log_23}) ​$时间计算（可以看<a href="http://blog.miskcoo.com/2014/10/karatsuba-multiplication" target="_blank" rel="noopener">Karatsuba 乘法</a>）。下面从计算多项式的乘法出发，介绍<strong>快速傅里叶变换（Fast Fourier Transform, FFT）</strong>如何在 $\mathcal O(n\log n) ​$的时间内计算出两个多项式的乘积。</p>
+<h2 id="准备知识"><a href="#准备知识" class="headerlink" title="准备知识"></a>准备知识</h2><p>这里介绍一些后面可能会用到的知识（主要是关于多项式、卷积以及复数的），如果你已经知道觉得它太水了或者想用到的时候再看就跳过吧。</p>
+<h2 id="多项式"><a href="#多项式" class="headerlink" title="多项式"></a>多项式</h2><p>简单来说，形如 $ a_0+a_1X+a_2X^2+\cdots+a_nX^n $ 的代数表达式叫做<strong>多项式</strong>，可以记作$P(X)=a_0+a_1X+a_2X^2+\cdots+a_nX^n$，$a_0, a_1, \cdots, a_n $叫做多项式的<strong>系数</strong>，$X $是一个不定元，不表示任何值，不定元在多项式中最大项的次数称作多项式的<strong>次数</strong></p>
+<h3 id="多项式的系数表示法"><a href="#多项式的系数表示法" class="headerlink" title="多项式的系数表示法"></a>多项式的系数表示法</h3><p>像刚刚我们提到的那些多项式，都是以系数形式表示的，也就是将 n 次多项式$ A(x) $的系数 $a_0, a_1, \cdots, a_n $看作 $n+1 $维向量$ \vec a=(a_0,a_1,\cdots,a_n)$，其<strong>系数表示（coefficient representation）</strong>就是向量$ \vec a$ 。</p>
+        <!-- 
+本文来自： 从多项式乘法到快速傅里叶变换 — miskcoo
+
+概述计算多项式的乘法，或者计算两个大整数的乘法是在计算机中很常见的运算，如果用普通的方法进行，复杂度将会是$ \mathcal O(n^2) ​$的，还有一种分治乘法，可以做到 $\mathcal O(n^{\log_23}) ​$时间计算（可以看Karatsuba 乘法）。下面从计算多项式的乘法出发，介绍快速傅里叶变换（Fa......  -->
+        <p class="article-more-link">
+          <a href="../../2017/09/08/【算法】从多项式乘法到快速傅里叶变换/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【算法】大数相乘问题及其高效算法"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -869,62 +926,6 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
 12345678910111213class TestIntegerCache &#123;    public static void main(String[] args)&#123;        Integer i3 = 100;        Integer i4 = 100;        System.out.println(i3 ==......  -->
         <p class="article-more-link">
           <a href="../../2017/07/11/【Java】Integer变量相等（==）比较问题/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Java 8系列之重新认识HashMap"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/06/16/Java 8系列之重新认识HashMap/">Java 8系列之重新认识HashMap</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/06/16/Java 8系列之重新认识HashMap/" class="article-date">
-	  <time datetime="2017-06-16T09:30:55.000Z" itemprop="datePublished">2017-06-16</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Java/">Java</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>本文来自美团点评技术团队： <a href="http://tech.meituan.com/java-hashmap.html" target="_blank" rel="noopener">Java 8系列之重新认识HashMap</a></p>
-</blockquote>
-<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a><strong>摘要</strong></h2><p>HashMap是Java程序员使用频率最高的用于映射(键值对)处理的数据类型。随着JDK（Java Developmet Kit）版本的更新，JDK1.8对HashMap底层的实现进行了优化，例如引入红黑树的数据结构和扩容的优化等。本文结合JDK1.7和JDK1.8的区别，深入探讨HashMap的结构实现和功能原理。</p>
-<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a><strong>简介</strong></h2><p>Java为数据结构中的映射定义了一个接口java.util.Map，此接口主要有四个常用的实现类，分别是<code>HashMap</code>、<code>Hashtable</code>、<code>LinkedHashMap</code>和<code>TreeMap</code>，类继承关系如下图所示：</p>
-<p><img src="http://img.blog.csdn.net/20170616165413193" alt=""></p>
-        <!-- 
-本文来自美团点评技术团队： Java 8系列之重新认识HashMap
-
-摘要HashMap是Java程序员使用频率最高的用于映射(键值对)处理的数据类型。随着JDK（Java Developmet Kit）版本的更新，JDK1.8对HashMap底层的实现进行了优化，例如引入红黑树的数据结构和扩容的优化等。本文结合JDK1.7和JDK1.8的区别，深入探讨HashMap的结构实现和功能原理......  -->
-        <p class="article-more-link">
-          <a href="../../2017/06/16/Java 8系列之重新认识HashMap/#more">阅读全文</a>
         </p>
       
     </div>

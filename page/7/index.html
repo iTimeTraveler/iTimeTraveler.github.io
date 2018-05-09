@@ -350,6 +350,58 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Android】抽象布局 — include、merge 、ViewStub"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2016/09/19/【Android】抽象布局 — include、merge 、ViewStub/">【Android】抽象布局 — include、merge 、ViewStub</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2016/09/19/【Android】抽象布局 — include、merge 、ViewStub/" class="article-date">
+	  <time datetime="2016-09-19T03:47:00.000Z" itemprop="datePublished">2016-09-19</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Android/">Android</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在布局优化中，Androi的官方提到了这三种布局<code>&lt;include/&gt;</code>、<code>&lt;merge /&gt;</code>、<code>&lt;ViewStub /&gt;</code>，并介绍了这三种布局各有的优势，下面也是简单说一下他们的优势，以及怎么使用，记下来权当做笔记。</p>
+<h3 id="一、布局重用-lt-include-gt"><a href="#一、布局重用-lt-include-gt" class="headerlink" title="一、布局重用&lt;include/&gt;"></a><strong>一、布局重用&lt;include/&gt;</strong></h3><p>&lt;include /&gt;标签能够重用布局文件，简单的使用如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">LinearLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>  </span></span><br><span class="line"><span class="tag">    <span class="attr">android:orientation</span>=<span class="string">"vertical"</span>   </span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">”match_parent”</span>  </span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">”match_parent”</span>  </span></span><br><span class="line"><span class="tag">    <span class="attr">android:background</span>=<span class="string">"@color/app_bg"</span>  </span></span><br><span class="line"><span class="tag">    <span class="attr">android:gravity</span>=<span class="string">"center_horizontal"</span>&gt;</span>  </span><br><span class="line">  </span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">layout</span>=<span class="string">"@layout/titlebar"</span>/&gt;</span>  </span><br><span class="line">  </span><br><span class="line">    <span class="tag">&lt;<span class="name">TextView</span> <span class="attr">android:layout_width</span>=<span class="string">”match_parent”</span>  </span></span><br><span class="line"><span class="tag">              <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span>  </span></span><br><span class="line"><span class="tag">              <span class="attr">android:text</span>=<span class="string">"@string/hello"</span>  </span></span><br><span class="line"><span class="tag">              <span class="attr">android:padding</span>=<span class="string">"10dp"</span> /&gt;</span>  </span><br><span class="line">  </span><br><span class="line"><span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br></pre></td></tr></table></figure>
+        <!-- 在布局优化中，Androi的官方提到了这三种布局&lt;include/&gt;、&lt;merge /&gt;、&lt;ViewStub /&gt;，并介绍了这三种布局各有的优势，下面也是简单说一下他们的优势，以及怎么使用，记下来权当做笔记。
+一、布局重用&lt;include/&gt;&lt;include /&gt;标签能够重用布局文件，简单的使用如下：
+123456789101112......  -->
+        <p class="article-more-link">
+          <a href="../../2016/09/19/【Android】抽象布局 — include、merge 、ViewStub/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【Java】设计模式：深入理解单例模式"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -869,80 +921,6 @@ Computation ......  -->
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-BAT人才体系的职位层级、薪酬、晋升标准大全"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/08/02/BAT人才体系的职位层级、薪酬、晋升标准大全/">BAT人才体系的职位层级、薪酬、晋升标准</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2016/08/02/BAT人才体系的职位层级、薪酬、晋升标准大全/" class="article-date">
-	  <time datetime="2016-08-02T03:06:00.000Z" itemprop="datePublished">2016-08-02</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/BAT/">BAT</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <img src="/2016/08/02/BAT人才体系的职位层级、薪酬、晋升标准大全/01.jpg" title="&nbsp;">
-<blockquote>
-<p>互联网圈有这么一句话：百度的技术，阿里的运营，腾讯的产品。那么代表互联网三座大山的BAT，内部人才体系有什么区别呢？可以先看看这个话题<a href="https://www.zhihu.com/question/27108669" target="_blank" rel="noopener">百度、腾讯和阿里内部的级别和薪资待遇是什么样的？</a></p>
-</blockquote>
-<h3 id="★-腾讯-★"><a href="#★-腾讯-★" class="headerlink" title="★ 腾讯 ★"></a><strong>★ 腾讯 ★</strong></h3><h4 id="1、职级"><a href="#1、职级" class="headerlink" title="1、职级"></a><strong>1、职级</strong></h4><p>腾讯职级体系分6级，最低1级，最高6级。同时按照岗位又划分为四大通道，内部也叫“族”，比如：</p>
-<p>产品/项目通道，简称P族<br>技术通道，简称T族<br>市场通道，简称M族<br>职能通道，简称S族</p>
-<p>以T族为例，分别为：</p>
-<ul>
-<li><p>T1：助理工程师 （一般为校招新人）</p>
-</li>
-<li><p>T2：工程师</p>
-</li>
-<li><p>T3：高级工程师 3-1相当于阿里的p6+到p7（能力强可能到p7）</p>
-</li>
-<li><p>T4：专家工程师</p>
-</li>
-<li><p>T5：科学家</p>
-</li>
-<li><p>T6：首席科学家</p>
-</li>
-</ul>
-        <!-- 
-
-互联网圈有这么一句话：百度的技术，阿里的运营，腾讯的产品。那么代表互联网三座大山的BAT，内部人才体系有什么区别呢？可以先看看这个话题百度、腾讯和阿里内部的级别和薪资待遇是什么样的？
-
-★ 腾讯 ★1、职级腾讯职级体系分6级，最低1级，最高6级。同时按照岗位又划分为四大通道，内部也叫“族”，比如：
-产品/项目通道，简称P族技术通道，简称T族市场通道，简称M族职能通道，简称S族
-以T族为例......  -->
-        <p class="article-more-link">
-          <a href="../../2016/08/02/BAT人才体系的职位层级、薪酬、晋升标准大全/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/BAT/">BAT</a></li></ul>
 
     </footer>
   </div>

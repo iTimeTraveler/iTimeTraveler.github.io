@@ -350,6 +350,62 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-Java 8系列之重新认识HashMap"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/06/16/Java 8系列之重新认识HashMap/">Java 8系列之重新认识HashMap</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/06/16/Java 8系列之重新认识HashMap/" class="article-date">
+	  <time datetime="2017-06-16T09:30:55.000Z" itemprop="datePublished">2017-06-16</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Java/">Java</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本文来自美团点评技术团队： <a href="http://tech.meituan.com/java-hashmap.html" target="_blank" rel="noopener">Java 8系列之重新认识HashMap</a></p>
+</blockquote>
+<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a><strong>摘要</strong></h2><p>HashMap是Java程序员使用频率最高的用于映射(键值对)处理的数据类型。随着JDK（Java Developmet Kit）版本的更新，JDK1.8对HashMap底层的实现进行了优化，例如引入红黑树的数据结构和扩容的优化等。本文结合JDK1.7和JDK1.8的区别，深入探讨HashMap的结构实现和功能原理。</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a><strong>简介</strong></h2><p>Java为数据结构中的映射定义了一个接口java.util.Map，此接口主要有四个常用的实现类，分别是<code>HashMap</code>、<code>Hashtable</code>、<code>LinkedHashMap</code>和<code>TreeMap</code>，类继承关系如下图所示：</p>
+<p><img src="http://img.blog.csdn.net/20170616165413193" alt=""></p>
+        <!-- 
+本文来自美团点评技术团队： Java 8系列之重新认识HashMap
+
+摘要HashMap是Java程序员使用频率最高的用于映射(键值对)处理的数据类型。随着JDK（Java Developmet Kit）版本的更新，JDK1.8对HashMap底层的实现进行了优化，例如引入红黑树的数据结构和扩容的优化等。本文结合JDK1.7和JDK1.8的区别，深入探讨HashMap的结构实现和功能原理......  -->
+        <p class="article-more-link">
+          <a href="../../2017/06/16/Java 8系列之重新认识HashMap/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【面试题】Java String常量相等（==）问题"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -859,62 +915,6 @@ Java 中的内存分配
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【算法】单链表反转，两两反转"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/01/31/【算法】单链表反转，两两反转/">【算法】反转单链表，两两反转</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/01/31/【算法】单链表反转，两两反转/" class="article-date">
-	  <time datetime="2017-01-31T09:20:55.000Z" itemprop="datePublished">2017-01-31</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="问题一、反转单链表"><a href="#问题一、反转单链表" class="headerlink" title="问题一、反转单链表"></a>问题一、反转单链表</h2><p>题目：定义一个函数，输入一个链表的头结点，反转该链表并输出反转后链表的头结点。</p>
-<p><img src="/gallery/reverse-linklist.jpg" alt=""></p>
-<p>链表结点定义如下，这里使用的是Java描述：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> val;</span><br><span class="line">    ListNode next;</span><br><span class="line">    ListNode(<span class="keyword">int</span> x) &#123; val = x; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-        <!-- 问题一、反转单链表题目：定义一个函数，输入一个链表的头结点，反转该链表并输出反转后链表的头结点。
-
-链表结点定义如下，这里使用的是Java描述：
-12345public class ListNode &#123;    int val;    ListNode next;    ListNode(int x) &#123; val = x; &#125;&#125;
-
-思路如何把一个单链表进......  -->
-        <p class="article-more-link">
-          <a href="../../2017/01/31/【算法】单链表反转，两两反转/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
 
     </footer>
   </div>

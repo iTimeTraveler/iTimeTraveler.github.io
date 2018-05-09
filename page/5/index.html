@@ -350,6 +350,62 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【算法】单链表反转，两两反转"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/01/31/【算法】单链表反转，两两反转/">【算法】反转单链表，两两反转</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/01/31/【算法】单链表反转，两两反转/" class="article-date">
+	  <time datetime="2017-01-31T09:20:55.000Z" itemprop="datePublished">2017-01-31</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="问题一、反转单链表"><a href="#问题一、反转单链表" class="headerlink" title="问题一、反转单链表"></a>问题一、反转单链表</h2><p>题目：定义一个函数，输入一个链表的头结点，反转该链表并输出反转后链表的头结点。</p>
+<p><img src="/gallery/reverse-linklist.jpg" alt=""></p>
+<p>链表结点定义如下，这里使用的是Java描述：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> val;</span><br><span class="line">    ListNode next;</span><br><span class="line">    ListNode(<span class="keyword">int</span> x) &#123; val = x; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <!-- 问题一、反转单链表题目：定义一个函数，输入一个链表的头结点，反转该链表并输出反转后链表的头结点。
+
+链表结点定义如下，这里使用的是Java描述：
+12345public class ListNode &#123;    int val;    ListNode next;    ListNode(int x) &#123; val = x; &#125;&#125;
+
+思路如何把一个单链表进......  -->
+        <p class="article-more-link">
+          <a href="../../2017/01/31/【算法】单链表反转，两两反转/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【Android】AlertDialog中的EditText不能弹出软键盘的问题"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -858,63 +914,6 @@ AbsoluteSizeSpan(int......  -->
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/D3/">D3</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【Android】微信热修复 Tinker 的集成和使用"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/11/17/【Android】微信热修复 Tinker 的集成和使用/">【Android】微信热修复 Tinker 的集成和使用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2016/11/17/【Android】微信热修复 Tinker 的集成和使用/" class="article-date">
-	  <time datetime="2016-11-17T03:51:55.000Z" itemprop="datePublished">2016-11-17</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Android/">Android</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a><strong>简介</strong></h2><p> <strong><code>Tinker</code></strong>： n.   〈英〉小炉匠，补锅匠，修补匠</p>
-<p><a href="https://github.com/Tencent/tinker"><strong>Tinker</strong></a> 是微信官方开源的 Android 热修复框架，支持在无需升级APK的前提下更新 <code>dex</code>, <code>library</code> and <code>resources</code> 文件。它也就是今年9月24才刚刚开源，几天功夫star数就超过3000，可见在开发者中的影响力有多大，也说明这是一个刚需。</p>
-<p>Tinker GitHub: <a href="https://github.com/Tencent/tinker">https://github.com/Tencent/tinker</a></p>
-<h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a><strong>使用步骤</strong></h2><h3 id="一个小坑"><a href="#一个小坑" class="headerlink" title="一个小坑"></a>一个小坑</h3><p>很多人遇到的第一个错误就是提示 <code>tinkerId is not set</code> ，这个在tinker-sample-android的<code>app/build.gradle</code> 中默认设置为Git的提交版本号，如下</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> getTinkerIdValue() &#123;</span><br><span class="line">    <span class="keyword">return</span> hasProperty(<span class="string">"TINKER_ID"</span>) ? TINKER_ID : gitSha()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果不是通过git clone方式下载的就可能出现这个错误，其实可以简单粗暴的方式解决，那就是在app/build.gradle中把tinker id写死：</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> getTinkerIdValue() &#123;</span><br><span class="line">    <span class="keyword">return</span> hasProperty(<span class="string">"TINKER_ID"</span>) ? TINKER_ID : <span class="string">"tinker_id_2333"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>下面介绍一下如何一步步的把Tinker集成到自己的项目中，以及会遇到哪些问题该如何解决。</p>
-        <!-- 简介 Tinker： n.   〈英〉小炉匠，补锅匠，修补匠
-Tinker 是微信官方开源的 Android 热修复框架，支持在无需升级APK的前提下更新 dex, library and resources 文件。它也就是今年9月24才刚刚开源，几天功夫star数就超过3000，可见在开发者中的影响力有多大，也说明这是一个刚需。
-Tinker GitHub: https://github.......  -->
-        <p class="article-more-link">
-          <a href="../../2016/11/17/【Android】微信热修复 Tinker 的集成和使用/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Tinker/">Tinker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/hotfix/">hotfix</a></li></ul>
 
     </footer>
   </div>
