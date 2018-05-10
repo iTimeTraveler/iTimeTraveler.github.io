@@ -788,4 +788,5 @@ public boolean performClick() {
 - [Android 编程下 Touch 事件的分发和消费机制](https://www.cnblogs.com/sunzn/archive/2013/05/10/3064129.html)
 - [ViewGroup 源码解析](https://github.com/LittleFriendsGroup/AndroidSdkSourceAnalysis/blob/master/article/ViewGroup%20%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90.md)
 - [ViewGroup源码解读](http://blog.csdn.net/sw950729/article/details/77744545)
+- [Android中点击事件的来源](https://blog.csdn.net/a992036795/article/details/51690303)
 
