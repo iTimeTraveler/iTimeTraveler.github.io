@@ -3,28 +3,28 @@
 <head>
   <meta charset="utf-8">
   
-  <title>【面试题】java string常量相等（==）问题 | iTimeTraveler</title>
+  <title>【java】nio的理解 | iTimeTraveler</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-    <meta name="keywords" content="Java" />
+    <meta name="keywords" content="线程池" />
   
   
   
   
-  <meta name="description" content="问题以下三个结果分别输出（true or false）？别小看它，很多程序员因为上面问题出过生产bug 12345678910111213141516171819202122String s3 = &quot;s&quot;;String s4 = &quot;s&quot;;System.out.println(s3==s4);---String s5 = &quot;hello&quot;;String s6 = &quot;he&quot;+&quot;llo&quot;;System.o">
-<meta name="keywords" content="Java">
+  <meta name="description" content="NIO的概念NIO是从JDK 1.4开始引入的。 参考资料 Java NIO浅析 - 美团点评技术团队">
+<meta name="keywords" content="线程池">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【面试题】Java String常量相等（==）问题">
-<meta property="og:url" content="http://github.com/2017/06/15/【面试题】Java String常量相等（==）问题/index.html">
+<meta property="og:title" content="【Java】NIO的理解">
+<meta property="og:url" content="http://github.com/2018/05/15/【Java】NIO的理解/index.html">
 <meta property="og:site_name" content="iTimeTraveler">
-<meta property="og:description" content="问题以下三个结果分别输出（true or false）？别小看它，很多程序员因为上面问题出过生产bug 12345678910111213141516171819202122String s3 = &quot;s&quot;;String s4 = &quot;s&quot;;System.out.println(s3==s4);---String s5 = &quot;hello&quot;;String s6 = &quot;he&quot;+&quot;llo&quot;;System.o">
+<meta property="og:description" content="NIO的概念NIO是从JDK 1.4开始引入的。 参考资料 Java NIO浅析 - 美团点评技术团队">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://github.com/gallery/java-string-pool.png">
-<meta property="og:updated_time" content="2018-03-14T08:13:59.000Z">
+<meta property="og:image" content="http://github.com/gallery/java-common/20150716165059215.jpg">
+<meta property="og:updated_time" content="2018-05-15T03:54:58.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="【面试题】Java String常量相等（==）问题">
-<meta name="twitter:description" content="问题以下三个结果分别输出（true or false）？别小看它，很多程序员因为上面问题出过生产bug 12345678910111213141516171819202122String s3 = &quot;s&quot;;String s4 = &quot;s&quot;;System.out.println(s3==s4);---String s5 = &quot;hello&quot;;String s6 = &quot;he&quot;+&quot;llo&quot;;System.o">
-<meta name="twitter:image" content="http://github.com/gallery/java-string-pool.png">
+<meta name="twitter:title" content="【Java】NIO的理解">
+<meta name="twitter:description" content="NIO的概念NIO是从JDK 1.4开始引入的。 参考资料 Java NIO浅析 - 美团点评技术团队">
+<meta name="twitter:image" content="http://github.com/gallery/java-common/20150716165059215.jpg">
   
     <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
   
@@ -170,14 +170,14 @@
             
       <div id="content" class="outer">
         
-          <section id="main" style="float:none;"><article id="post-【面试题】Java String常量相等（==）问题" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+          <section id="main" style="float:none;"><article id="post-【Java】NIO的理解" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
 <div class="article-gallery">
   <div class="article-gallery-photos">
     
-      <a class="article-gallery-img fancybox" href="../../../../gallery/java-string-pool.png" rel="gallery_cjh7god3r009ws2s6mdthyue1">
-        <img src="../../../../gallery/java-string-pool.png" itemprop="image">
+      <a class="article-gallery-img fancybox" href="../../../../gallery/java-common/20150716165059215.jpg" rel="gallery_cjh7god2s0077s2s6tv1yd1y3">
+        <img src="../../../../gallery/java-common/20150716165059215.jpg" itemprop="image">
       </a>
     
   </div>
@@ -188,7 +188,7 @@
         
   
     <h1 class="thumb" class="article-title" itemprop="name">
-      【面试题】Java String常量相等（==）问题
+      【Java】NIO的理解
     </h1>
   
 
@@ -197,7 +197,7 @@
     <div class="article-meta">
       
 	<a href="" class="article-date">
-	  <time datetime="2017-06-15T08:51:55.000Z" itemprop="datePublished">2017-06-15</time>
+	  <time datetime="2018-05-15T14:20:55.000Z" itemprop="datePublished">2018-05-15</time>
 	</a>
 
       
@@ -213,24 +213,10 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>以下三个结果分别输出（true or false）？别小看它，很多程序员因为上面问题出过生产bug</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">String s3 = <span class="string">"s"</span>;</span><br><span class="line">String s4 = <span class="string">"s"</span>;</span><br><span class="line">System.out.println(s3==s4);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">String s5 = <span class="string">"hello"</span>;</span><br><span class="line">String s6 = <span class="string">"he"</span>+<span class="string">"llo"</span>;</span><br><span class="line">System.out.println(s5==s6);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">Integer i = <span class="number">2017</span>;</span><br><span class="line">Integer j = <span class="number">2017</span>;</span><br><span class="line">System.out.println(i==j);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">String s1 = <span class="keyword">new</span> String(<span class="string">"s"</span>);</span><br><span class="line">String s2 = <span class="keyword">new</span> String(<span class="string">"s"</span>);</span><br><span class="line">System.out.println(s1==s2);</span><br><span class="line">System.out.println(s1.intern()==s2.intern());</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>真正执行结果如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">String s3 = <span class="string">"s"</span>;</span><br><span class="line">String s4 = <span class="string">"s"</span>;</span><br><span class="line">System.out.println(s3==s4);   <span class="comment">//true</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">String s5 = <span class="string">"hello"</span>;</span><br><span class="line">String s6 = <span class="string">"he"</span>+<span class="string">"llo"</span>;</span><br><span class="line">System.out.println(s5==s6);   <span class="comment">//true</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">Integer i = <span class="number">2017</span>;</span><br><span class="line">Integer j = <span class="number">2017</span>;</span><br><span class="line">System.out.println(i==j);   <span class="comment">//false</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">String s1 = <span class="keyword">new</span> String(<span class="string">"s"</span>);</span><br><span class="line">String s2 = <span class="keyword">new</span> String(<span class="string">"s"</span>);</span><br><span class="line">System.out.println(s1==s2);   <span class="comment">//false</span></span><br><span class="line">System.out.println(s1.intern()==s2.intern());   <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
-<h1 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h1><ol>
-<li><p>看看Integer的源代码就知道Integer 把-128-127之间的每个值建立了缓存池，所以Integer i =127，Integer j =127，他们是true，超出就是false。</p>
-</li>
-<li><p>String s = “s” 是常量池中创建一个对象”s”，所以是true。而String s = new String（”s”）在堆上面分配内存创建一个String对象，栈放了对象引用。如下图：</p>
-</li>
-</ol>
-<p><img src="http://img.blog.csdn.net/20170615170007540" alt=""></p>
-<p>但在调用s.intern()方法的时候，会将共享池中的字符串与外部的字符串(s）进行比较,如果共享池存在，返回它，如果不同则将外部字符串放入共享池中，并返回其字符串的引用，这样做的好处就是能够节约空间。</p>
-<p>String 的<code>intern()</code>方法的官方解释如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * Returns an interned string equal to this string. The VM maintains an internal set of</span></span><br><span class="line"><span class="comment">  * unique strings. All string literals found in loaded classes'</span></span><br><span class="line"><span class="comment">  * constant pools are automatically interned. Manually-interned strings are only weakly</span></span><br><span class="line"><span class="comment">  * referenced, so calling &#123;<span class="doctag">@code</span> intern&#125; won't lead to unwanted retention.</span></span><br><span class="line"><span class="comment">  *</span></span><br><span class="line"><span class="comment">  * &lt;p&gt;Interning is typically used because it guarantees that for interned strings</span></span><br><span class="line"><span class="comment">  * &#123;<span class="doctag">@code</span> a&#125; and &#123;<span class="doctag">@code</span> b&#125;, &#123;<span class="doctag">@code</span> a.equals(b)&#125; can be simplified to</span></span><br><span class="line"><span class="comment">  * &#123;<span class="doctag">@code</span> a == b&#125;. (This is not true of non-interned strings.)</span></span><br><span class="line"><span class="comment">  *</span></span><br><span class="line"><span class="comment">  * &lt;p&gt;Many applications find it simpler and more convenient to use an explicit</span></span><br><span class="line"><span class="comment">  * &#123;<span class="doctag">@link</span> java.util.HashMap&#125; to implement their own pools.</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">native</span> String <span class="title">intern</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
-<p>s.intern()作用还是很多，比如for循环创建String对象，因为代码事先不并不知道是否存在”hello”或者其他字符串的实例。这样可以节约很多内存空间。</p>
-<p>参考资料：</p>
-<p>1、<a href="https://www.zhihu.com/question/60949531/answer/182458705" target="_blank" rel="noopener">你遇到过哪些质量很高的 Java 面试？</a></p>
+        <h2 id="NIO的概念"><a href="#NIO的概念" class="headerlink" title="NIO的概念"></a>NIO的概念</h2><p>NIO是从JDK 1.4开始引入的。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://tech.meituan.com/nio.html" target="_blank" rel="noopener">Java NIO浅析 - 美团点评技术团队</a></li>
+</ul>
 
       
     </div>
@@ -284,19 +270,10 @@ var a = new Donate({
     
 <nav id="article-nav">
   
-    <a href="../../16/Java 8系列之重新认识HashMap/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">
-        
-          Java 8系列之重新认识HashMap
-        
-      </div>
-    </a>
   
-  
-    <a href="../../02/详解Java类的生命周期/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="../../04/【Java】Thread类中的join()方法原理/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">详解Java类的生命周期</div>
+      <div class="article-nav-title">【Java】Thread类中的join()方法原理</div>
     </a>
   
 </nav>
@@ -310,7 +287,7 @@ var a = new Donate({
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
     
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解释"><span class="nav-number">2.</span> <span class="nav-text">解释</span></a></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#NIO的概念"><span class="nav-number">1.</span> <span class="nav-text">NIO的概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">2.</span> <span class="nav-text">参考资料</span></a></li></ol>
     
     </div>
   </aside>

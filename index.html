@@ -350,6 +350,54 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Java】NIO的理解"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="2018/05/15/【Java】NIO的理解/">【Java】NIO的理解</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="2018/05/15/【Java】NIO的理解/" class="article-date">
+	  <time datetime="2018-05-15T14:20:55.000Z" itemprop="datePublished">2018-05-15</time>
+	</a>
+
+      
+    <a class="article-category-link" href="categories/Java/">Java</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="NIO的概念"><a href="#NIO的概念" class="headerlink" title="NIO的概念"></a>NIO的概念</h2><p>NIO是从JDK 1.4开始引入的。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://tech.meituan.com/nio.html" target="_blank" rel="noopener">Java NIO浅析 - 美团点评技术团队</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【Java】Thread类中的join()方法原理"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -880,70 +928,6 @@ Big-Endian和Little-Endian的定义如下：
 解法一最直接最笨的方法就对s1进行循环移动，再进行字符串包含的判断，从而遍历其所有的可能性。字符串循环移动，时间复杂度为O（n），字符串包含判断，采用普通的方法，时间复杂度为O（......  -->
         <p class="article-more-link">
           <a href="2017/12/31/【算法】字符串循环移位后是否可包含/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/Algorithm/">Algorithm</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【算法】如何判断链表有环"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="2017/12/24/【算法】如何判断链表有环/">【算法】如何判断链表有环</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="2017/12/24/【算法】如何判断链表有环/" class="article-date">
-	  <time datetime="2017-12-24T14:20:55.000Z" itemprop="datePublished">2017-12-24</time>
-	</a>
-
-      
-    <a class="article-category-link" href="categories/Algorithm/">Algorithm</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="如何判断单链表是否存在环"><a href="#如何判断单链表是否存在环" class="headerlink" title="如何判断单链表是否存在环"></a>如何判断单链表是否存在环</h3><blockquote>
-<p>有一个单向链表，链表当中有可能出现“环”，就像题图这样。如何用程序判断出这个链表是有环链表？</p>
-<ul>
-<li>不允许修改链表结构。</li>
-<li>时间复杂度O(n)，空间复杂度O(1)。</li>
-</ul>
-</blockquote>
-<h4 id="方法一、穷举遍历"><a href="#方法一、穷举遍历" class="headerlink" title="方法一、穷举遍历"></a>方法一、穷举遍历</h4><p>方法一：首先从头节点开始，依次遍历单链表的每一个节点。每遍历到一个新节点，就从头节点重新遍历新节点之前的所有节点，用新节点ID和此节点之前所有节点ID依次作比较。如果发现新节点之前的所有节点当中存在相同节点ID，则说明该节点被遍历过两次，链表有环；如果之前的所有节点当中不存在相同的节点，就继续遍历下一个新节点，继续重复刚才的操作。</p>
-<p>例如这样的链表：A-&gt;B-&gt;C-&gt;D-&gt;B-&gt;C-&gt;D， 当遍历到节点D的时候，我们需要比较的是之前的节点A、B、C，不存在相同节点。这时候要遍历的下一个新节点是B，B之前的节点A、B、C、D中恰好也存在B，因此B出现了两次，判断出链表有环。</p>
-<p>假设从链表头节点到入环点的距离是D，链表的环长是S。那么算法的时间复杂度是0+1+2+3+….+(D+S-1) = (D+S-1)*(D+S)/2 ， 可以简单地理解成 O(N*N)。而此算法没有创建额外存储空间，空间复杂度可以简单地理解成为O(1)。</p>
-        <!-- 如何判断单链表是否存在环
-有一个单向链表，链表当中有可能出现“环”，就像题图这样。如何用程序判断出这个链表是有环链表？
-
-不允许修改链表结构。
-时间复杂度O(n)，空间复杂度O(1)。
-
-
-方法一、穷举遍历方法一：首先从头节点开始，依次遍历单链表的每一个节点。每遍历到一个新节点，就从头节点重新遍历新节点之前的所有节点，用新节点ID和此节点之前所有节点ID依次作比较。如果发现新节点之前的所有节......  -->
-        <p class="article-more-link">
-          <a href="2017/12/24/【算法】如何判断链表有环/#more">阅读全文</a>
         </p>
       
     </div>

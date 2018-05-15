@@ -350,6 +350,74 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Android】内存泄漏分析心得"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/02/13/【Android】内存泄漏分析心得/">【Android】内存泄漏分析心得</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/02/13/【Android】内存泄漏分析心得/" class="article-date">
+	  <time datetime="2017-02-13T08:03:00.000Z" itemprop="datePublished">2017-02-13</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Android/">Android</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本文来源：<a href="http://mp.weixin.qq.com/s?__biz=MzI1MTA1MzM2Nw==&amp;mid=2649796884&amp;idx=1&amp;sn=92b4e344060362128e4a86d6132c3736&amp;chksm=f1fcc54cc68b4c5add08371265320163381ea81333daea5664b94e9a12246a34cfaa31e6f0b3&amp;mpshare=1&amp;scene=1&amp;srcid=0213Ssp5geOThmtF6tg9Bz7U#rd" target="_blank" rel="noopener">QQ空间终端开发团队公众号</a></p>
+</blockquote>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h2><p>对于C++来说，内存泄漏就是new出来的对象没有delete，俗称野指针；<br>对于Java来说，就是new出来的Object 放在Heap上无法被GC回收；</p>
+<p><img src="http://img.blog.csdn.net/20170213160148023?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDk4Mzg4MQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
+<p>本文通过QQ和Qzone中内存泄漏实例来讲android中内存泄漏分析解法和编写代码应注意的事项。</p>
+<h2 id="Java-中的内存分配"><a href="#Java-中的内存分配" class="headerlink" title="Java 中的内存分配"></a><strong>Java 中的内存分配</strong></h2><ul>
+<li><p><strong>静态储存区</strong>：编译时就分配好，在程序整个运行期间都存在。它主要存放静态数据和常量；</p>
+</li>
+<li><p><strong>栈区</strong>：当方法执行时，会在栈区内存中创建方法体内部的局部变量，方法结束后自动释放内存；</p>
+</li>
+<li><p><strong>堆区</strong>：通常存放 new 出来的对象。由 Java 垃圾回收器回收。</p>
+</li>
+</ul>
+        <!-- 
+本文来源：QQ空间终端开发团队公众号
+
+前言对于C++来说，内存泄漏就是new出来的对象没有delete，俗称野指针；对于Java来说，就是new出来的Object 放在Heap上无法被GC回收；
+
+本文通过QQ和Qzone中内存泄漏实例来讲android中内存泄漏分析解法和编写代码应注意的事项。
+Java 中的内存分配
+静态储存区：编译时就分配好，在程序整个运行期间都存在。它主要存放静态......  -->
+        <p class="article-more-link">
+          <a href="../../2017/02/13/【Android】内存泄漏分析心得/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【算法】单链表反转，两两反转"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -860,60 +928,6 @@ AbsoluteSizeSpan(int......  -->
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Neo4j/">Neo4j</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【D3.js】力导向布局 + 圆形图片展示的人物关系"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/11/18/【D3.js】力导向布局 + 圆形图片展示的人物关系/">【D3.js】力导向布局 + 圆形图片展示的人物关系</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2016/11/18/【D3.js】力导向布局 + 圆形图片展示的人物关系/" class="article-date">
-	  <time datetime="2016-11-18T08:06:00.000Z" itemprop="datePublished">2016-11-18</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/D3-js/">D3.js</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h2><p>使用d3的力学图（力导向图）与生活中常见的人物关系图结合，已经有了很好的例子： <a href="http://blog.csdn.net/lzhlzz/article/details/40450379" target="_blank" rel="noopener"><strong>【 D3.js 进阶系列 — 2.0 】 力学图 + 人物关系图</strong></a>，博主实现了下面这种样式，已经相当不错了。</p>
-<p><img src="http://img.blog.csdn.net/20161118161553200" alt=""></p>
-<p>但是对于想把节点的方形图片换成圆形头像，网上的资料却很少，本例子就在上面的实例的基础上实现圆形头像，让人物关系图看起来更漂亮了一个档次。两个主要文件如下：</p>
-        <!-- 前言使用d3的力学图（力导向图）与生活中常见的人物关系图结合，已经有了很好的例子： 【 D3.js 进阶系列 — 2.0 】 力学图 + 人物关系图，博主实现了下面这种样式，已经相当不错了。
-
-但是对于想把节点的方形图片换成圆形头像，网上的资料却很少，本例子就在上面的实例的基础上实现圆形头像，让人物关系图看起来更漂亮了一个档次。两个主要文件如下：
-
-# index.html123456789......  -->
-        <p class="article-more-link">
-          <a href="../../2016/11/18/【D3.js】力导向布局 + 圆形图片展示的人物关系/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/D3/">D3</a></li></ul>
 
     </footer>
   </div>

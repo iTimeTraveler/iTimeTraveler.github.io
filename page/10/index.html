@@ -350,6 +350,64 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Java】内部类（Inner Class）如何创建（new）"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2016/01/02/【Java】内部类（Inner Class）如何创建（new）/">【Java】内部类（Inner Class）如何创建（new）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2016/01/02/【Java】内部类（Inner Class）如何创建（new）/" class="article-date">
+	  <time datetime="2016-01-02T13:13:20.000Z" itemprop="datePublished">2016-01-02</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Java/">Java</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>简单来说，内部类（inner class）指那些类定义代码被置于其它类定义中的类；而对于一般的、类定义代码不嵌套在其它类定义中的类，称为顶层（top-level）类。对于一个内部类，包含其定义代码的类称为它的外部（outer）类。 </p>
+</blockquote>
+<p>那么对于内部类，该如何去使用呢？</p>
+<p>下面给出静态成员类（Static Member Class）和普通成员类（Member Class）使用的方式。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cuc;</span><br><span class="line"><span class="keyword">import</span> cuc.TestClass.Inner1;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">		<span class="comment">//静态的内部类</span></span><br><span class="line">		TestClass.Inner1 inner1 = <span class="keyword">new</span> Inner1();   <span class="comment">//和普通的顶层类new的方法一样</span></span><br><span class="line">		inner1.report();</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//普通内部成员类</span></span><br><span class="line">		TestClass tc = <span class="keyword">new</span> TestClass();</span><br><span class="line">		TestClass.Inner2 inner2 = tc.new Inner2();    <span class="comment">//注意这里的使用方式</span></span><br><span class="line">		inner2.report();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <!-- 
+简单来说，内部类（inner class）指那些类定义代码被置于其它类定义中的类；而对于一般的、类定义代码不嵌套在其它类定义中的类，称为顶层（top-level）类。对于一个内部类，包含其定义代码的类称为它的外部（outer）类。 
+
+那么对于内部类，该如何去使用呢？
+下面给出静态成员类（Static Member Class）和普通成员类（Member Class）使用的方式。
+1234......  -->
+        <p class="article-more-link">
+          <a href="../../2016/01/02/【Java】内部类（Inner Class）如何创建（new）/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【Android】 加解密算法 HMAC 的使用"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -856,60 +914,6 @@ Activity和Fragment生命周期的对比图：【参考资料】：1、Android F
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【Android】Activity四种启动模式"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2015/10/09/【Android】Activity四种启动模式/">【Android】Activity四种启动模式</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2015/10/09/【Android】Activity四种启动模式/" class="article-date">
-	  <time datetime="2015-10-09T12:03:00.000Z" itemprop="datePublished">2015-10-09</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Android/">Android</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="Task栈"><a href="#Task栈" class="headerlink" title="Task栈"></a>Task栈</h3><p>每个应用都有一个任务栈，是用来存放Activity的，功能类似于函数调用的栈，先后顺序代表了Activity的出现顺序；比如Activity1–&gt;Activity2–&gt;Activity3，则任务栈为：</p>
-<p><img src="/gallery/android_common/120721093646151.gif" alt=""></p>
-<h3 id="四种启动模式"><a href="#四种启动模式" class="headerlink" title="四种启动模式"></a>四种启动模式</h3><p>启动模式简单地说就是Activity启动时的策略，在AndroidManifest.xml中的标签的android:launchMode属性设置；</p>
-<p>启动模式有4种，分别为standard、singleTop、singleTask、singleInstance；</p>
-        <!-- Task栈每个应用都有一个任务栈，是用来存放Activity的，功能类似于函数调用的栈，先后顺序代表了Activity的出现顺序；比如Activity1–&gt;Activity2–&gt;Activity3，则任务栈为：
-
-四种启动模式启动模式简单地说就是Activity启动时的策略，在AndroidManifest.xml中的标签的android:launchMode属性设置；
-启动模式......  -->
-        <p class="article-more-link">
-          <a href="../../2015/10/09/【Android】Activity四种启动模式/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
 
     </footer>
   </div>

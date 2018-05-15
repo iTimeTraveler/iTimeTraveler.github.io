@@ -350,6 +350,61 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Java】Integer变量相等（==）比较问题"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/07/11/【Java】Integer变量相等（==）比较问题/">【Java】Integer变量相等（==）比较问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/07/11/【Java】Integer变量相等（==）比较问题/" class="article-date">
+	  <time datetime="2017-07-11T04:30:55.000Z" itemprop="datePublished">2017-07-11</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Java/">Java</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>这是关于一段令人疑惑的Java代码:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestIntegerCache</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Integer i3 = <span class="number">100</span>;</span><br><span class="line">        Integer i4 = <span class="number">100</span>;</span><br><span class="line">        System.out.println(i3 == i4);</span><br><span class="line"></span><br><span class="line">        Integer i5 = <span class="number">1000</span>;</span><br><span class="line">        Integer i6 = <span class="number">1000</span>;</span><br><span class="line">        System.out.println(i5 == i6);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这么简单，执行结果是什么？</p>
+<blockquote>
+<p>true<br>false</p>
+</blockquote>
+<p>一个是true，一个是false！<br>这是为什么呢？为什么和大多数人心里想的不一样！</p>
+        <!-- 题目这是关于一段令人疑惑的Java代码:
+12345678910111213class TestIntegerCache &#123;    public static void main(String[] args)&#123;        Integer i3 = 100;        Integer i4 = 100;        System.out.println(i3 ==......  -->
+        <p class="article-more-link">
+          <a href="../../2017/07/11/【Java】Integer变量相等（==）比较问题/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-Java 8系列之重新认识HashMap"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -847,74 +902,6 @@
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Gradle/">Gradle</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【Android】内存泄漏分析心得"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/02/13/【Android】内存泄漏分析心得/">【Android】内存泄漏分析心得</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/02/13/【Android】内存泄漏分析心得/" class="article-date">
-	  <time datetime="2017-02-13T08:03:00.000Z" itemprop="datePublished">2017-02-13</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Android/">Android</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>本文来源：<a href="http://mp.weixin.qq.com/s?__biz=MzI1MTA1MzM2Nw==&amp;mid=2649796884&amp;idx=1&amp;sn=92b4e344060362128e4a86d6132c3736&amp;chksm=f1fcc54cc68b4c5add08371265320163381ea81333daea5664b94e9a12246a34cfaa31e6f0b3&amp;mpshare=1&amp;scene=1&amp;srcid=0213Ssp5geOThmtF6tg9Bz7U#rd" target="_blank" rel="noopener">QQ空间终端开发团队公众号</a></p>
-</blockquote>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h2><p>对于C++来说，内存泄漏就是new出来的对象没有delete，俗称野指针；<br>对于Java来说，就是new出来的Object 放在Heap上无法被GC回收；</p>
-<p><img src="http://img.blog.csdn.net/20170213160148023?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDk4Mzg4MQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
-<p>本文通过QQ和Qzone中内存泄漏实例来讲android中内存泄漏分析解法和编写代码应注意的事项。</p>
-<h2 id="Java-中的内存分配"><a href="#Java-中的内存分配" class="headerlink" title="Java 中的内存分配"></a><strong>Java 中的内存分配</strong></h2><ul>
-<li><p><strong>静态储存区</strong>：编译时就分配好，在程序整个运行期间都存在。它主要存放静态数据和常量；</p>
-</li>
-<li><p><strong>栈区</strong>：当方法执行时，会在栈区内存中创建方法体内部的局部变量，方法结束后自动释放内存；</p>
-</li>
-<li><p><strong>堆区</strong>：通常存放 new 出来的对象。由 Java 垃圾回收器回收。</p>
-</li>
-</ul>
-        <!-- 
-本文来源：QQ空间终端开发团队公众号
-
-前言对于C++来说，内存泄漏就是new出来的对象没有delete，俗称野指针；对于Java来说，就是new出来的Object 放在Heap上无法被GC回收；
-
-本文通过QQ和Qzone中内存泄漏实例来讲android中内存泄漏分析解法和编写代码应注意的事项。
-Java 中的内存分配
-静态储存区：编译时就分配好，在程序整个运行期间都存在。它主要存放静态......  -->
-        <p class="article-more-link">
-          <a href="../../2017/02/13/【Android】内存泄漏分析心得/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
 
     </footer>
   </div>
