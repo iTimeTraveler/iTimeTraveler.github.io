@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>【java】nio的理解 | iTimeTraveler</title>
+  <title>【java】nio的原理与浅析 | iTimeTraveler</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
     <meta name="keywords" content="线程池" />
@@ -11,20 +11,20 @@
   
   
   
-  <meta name="description" content="NIO的概念NIO是从JDK 1.4开始引入的。 参考资料 Java NIO浅析 - 美团点评技术团队">
+  <meta name="description" content="几个概念用户空间与内核空间现在操作系统都是采用虚拟存储器，那么对32位操作系统而言，它的寻址空间（虚拟存储空间）为4G（2的32次方）。操作系统的核心是内核，独立于普通的应用程序，可以访问受保护的内存空间，也有访问底层硬件设备的所有权限。为了保证用户进程不能直接操作内核（kernel），保证内核的安全，操心系统将虚拟空间划分为两部分，一部分为内核空间，一部分为用户空间。针对linux操作系统而言，">
 <meta name="keywords" content="线程池">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【Java】NIO的理解">
+<meta property="og:title" content="【Java】NIO的原理与浅析">
 <meta property="og:url" content="http://github.com/2018/05/15/【Java】NIO的理解/index.html">
 <meta property="og:site_name" content="iTimeTraveler">
-<meta property="og:description" content="NIO的概念NIO是从JDK 1.4开始引入的。 参考资料 Java NIO浅析 - 美团点评技术团队">
+<meta property="og:description" content="几个概念用户空间与内核空间现在操作系统都是采用虚拟存储器，那么对32位操作系统而言，它的寻址空间（虚拟存储空间）为4G（2的32次方）。操作系统的核心是内核，独立于普通的应用程序，可以访问受保护的内存空间，也有访问底层硬件设备的所有权限。为了保证用户进程不能直接操作内核（kernel），保证内核的安全，操心系统将虚拟空间划分为两部分，一部分为内核空间，一部分为用户空间。针对linux操作系统而言，">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://github.com/gallery/java-common/20150716165059215.jpg">
-<meta property="og:updated_time" content="2018-05-15T03:54:58.000Z">
+<meta property="og:image" content="http://github.com/gallery/java-common/nio-selector-model.png">
+<meta property="og:updated_time" content="2018-05-17T06:00:40.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="【Java】NIO的理解">
-<meta name="twitter:description" content="NIO的概念NIO是从JDK 1.4开始引入的。 参考资料 Java NIO浅析 - 美团点评技术团队">
-<meta name="twitter:image" content="http://github.com/gallery/java-common/20150716165059215.jpg">
+<meta name="twitter:title" content="【Java】NIO的原理与浅析">
+<meta name="twitter:description" content="几个概念用户空间与内核空间现在操作系统都是采用虚拟存储器，那么对32位操作系统而言，它的寻址空间（虚拟存储空间）为4G（2的32次方）。操作系统的核心是内核，独立于普通的应用程序，可以访问受保护的内存空间，也有访问底层硬件设备的所有权限。为了保证用户进程不能直接操作内核（kernel），保证内核的安全，操心系统将虚拟空间划分为两部分，一部分为内核空间，一部分为用户空间。针对linux操作系统而言，">
+<meta name="twitter:image" content="http://github.com/gallery/java-common/nio-selector-model.png">
   
     <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
   
@@ -176,8 +176,8 @@
 <div class="article-gallery">
   <div class="article-gallery-photos">
     
-      <a class="article-gallery-img fancybox" href="../../../../gallery/java-common/20150716165059215.jpg" rel="gallery_cjh7h9paw0071vds6wel6kc8a">
-        <img src="../../../../gallery/java-common/20150716165059215.jpg" itemprop="image">
+      <a class="article-gallery-img fancybox" href="../../../../gallery/java-common/nio-selector-model.png" rel="gallery_cjha4mzgm005o5hfyjfz37m4g">
+        <img src="../../../../gallery/java-common/nio-selector-model.png" itemprop="image">
       </a>
     
   </div>
@@ -188,7 +188,7 @@
         
   
     <h1 class="thumb" class="article-title" itemprop="name">
-      【Java】NIO的理解
+      【Java】NIO的原理与浅析
     </h1>
   
 
@@ -213,9 +213,67 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="NIO的概念"><a href="#NIO的概念" class="headerlink" title="NIO的概念"></a>NIO的概念</h2><p>NIO是从JDK 1.4开始引入的。</p>
+        <h2 id="几个概念"><a href="#几个概念" class="headerlink" title="几个概念"></a>几个概念</h2><h3 id="用户空间与内核空间"><a href="#用户空间与内核空间" class="headerlink" title="用户空间与内核空间"></a>用户空间与内核空间</h3><p>现在操作系统都是采用虚拟存储器，那么对32位操作系统而言，它的寻址空间（虚拟存储空间）为4G（2的32次方）。操作系统的核心是内核，独立于普通的应用程序，可以访问受保护的内存空间，也有访问底层硬件设备的所有权限。为了保证用户进程不能直接操作内核（kernel），保证内核的安全，操心系统将虚拟空间划分为两部分，一部分为内核空间，一部分为用户空间。针对linux操作系统而言，将最高的1G字节（从虚拟地址0xC0000000到0xFFFFFFFF），供内核使用，称为内核空间，而将较低的3G字节（从虚拟地址0x00000000到0xBFFFFFFF），供各个进程使用，称为用户空间。</p>
+<p>在Linux世界，进程不能直接访问硬件设备，当进程需要访问硬件设备(比如读取磁盘文件，接收网络数据等等)时，必须由用户态模式切换至内核态模式，通过系统调用访问硬件设备。</p>
+<h3 id="文件描述符fd"><a href="#文件描述符fd" class="headerlink" title="文件描述符fd"></a>文件描述符fd</h3><p>文件描述符（File descriptor）是计算机科学中的一个术语，是一个用于表述指向文件的引用的抽象化概念。</p>
+<p>文件描述符在形式上是一个非负整数。实际上，它是一个索引值，指向内核为每一个进程所维护的该进程打开文件的记录表。当程序打开一个现有文件或者创建一个新文件时，内核向进程返回一个文件描述符。在程序设计中，一些涉及底层的程序编写往往会围绕着文件描述符展开。但是文件描述符这一概念往往只适用于UNIX、Linux这样的操作系统。</p>
+<h2 id="传统IO"><a href="#传统IO" class="headerlink" title="传统IO"></a>传统IO</h2><p>本文讨论的背景是Linux环境下的network IO。同步（Synchronous） IO和异步（Asynchronous） IO，阻塞（Blocking） IO和非阻塞（Non-Blocking）IO分别是什么，到底有什么区别？ 我们可以参考下这篇文章：<a href="https://blog.csdn.net/historyasamirror/article/details/5778378" target="_blank" rel="noopener">IO - 同步，异步，阻塞，非阻塞 （亡羊补牢篇）</a></p>
+<p>本文最重要的参考文献是Richard Stevens的“<strong>UNIX® Network Programming Volume 1, Third Edition: The Sockets Networking</strong> ”，6.2节“<strong>I/O Models</strong> ”，Stevens在这节中详细说明了各种IO的特点和区别。</p>
+<p>Stevens在文章中一共比较了五种IO Model：</p>
+<ul>
+<li>[1] blocking IO - 阻塞IO</li>
+<li>[2] nonblocking IO - 非阻塞IO</li>
+<li>[3] IO multiplexing - IO多路复用</li>
+<li>[4] signal driven IO - 信号驱动IO</li>
+<li>[5] asynchronous IO - 异步IO</li>
+</ul>
+<p>其中前面4种IO都可以归类为synchronous IO - 同步IO。由于signal driven IO在实际中并不常用，所以我这只提及剩下的四种IO Model。</p>
+<h3 id="1-IO-同步、异步、阻塞、非阻塞"><a href="#1-IO-同步、异步、阻塞、非阻塞" class="headerlink" title="1. IO - 同步、异步、阻塞、非阻塞"></a>1. IO - 同步、异步、阻塞、非阻塞</h3><p>下面以network IO中的read读操作为切入点，来讲述同步（synchronous） IO和异步（asynchronous） IO、阻塞（blocking） IO和非阻塞（non-blocking）IO的异同。一般情况下，一次网络IO读操作会涉及两个系统对象：(1) 用户进程(线程)Process；(2)内核对象kernel，两个处理阶段：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>] Waiting <span class="keyword">for</span> the data to be ready - 等待数据准备好</span><br><span class="line">[<span class="number">2</span>] Copying the data <span class="keyword">from</span> the kernel to the process - 将数据从内核空间的buffer拷贝到用户空间进程的buffer</span><br></pre></td></tr></table></figure>
+<p>IO模型的异同点就是区分在这两个系统对象、两个处理阶段的不同上。</p>
+<h4 id="1-1-同步IO-之-Blocking-IO"><a href="#1-1-同步IO-之-Blocking-IO" class="headerlink" title="1.1 同步IO 之 Blocking IO"></a>1.1 同步IO 之 Blocking IO</h4><p><img src="blocking-io.png" alt=""></p>
+<p>如上图所示，用户进程process在Blocking IO读recvfrom操作的两个阶段都是等待的。在数据没准备好的时候，process原地等待kernel准备数据。kernel准备好数据后，process继续等待kernel将数据copy到自己的buffer。在kernel完成数据的copy后process才会从recvfrom系统调用中返回。</p>
+<p>普通的Java IO就是阻塞I/O模式，一个线程只能处理一个流的I/O事件。如果想要同时处理多个流，要么多进程(fork)，要么多线程(pthread_create)，很不幸这两种方法效率都不高。</p>
+<h2 id="NIO的概念"><a href="#NIO的概念" class="headerlink" title="NIO的概念"></a>NIO的概念</h2><p>自从JDK 1.4版本以来，JDK发布了全新的I/O类库，简称NIO，其不但引入了全新的高效的I/O机制，同时，也引入了多路复用的异步模式。NIO的包中主要包含了这样几种抽象数据类型： </p>
+<ul>
+<li><strong>Buffer</strong>：包含数据且用于读写的线形表结构。其中还提供了一个特殊类用于内存映射文件的I/O操作。</li>
+<li><strong>Charset</strong>：它提供Unicode字符串影射到字节序列以及逆映射的操作。</li>
+<li><strong>Channels</strong>：包含socket，file和pipe三种管道，都是全双工的通道。</li>
+<li><strong>Selector</strong>：多个异步I/O操作集中到一个或多个线程中（可以被看成是Unix中select()函数的面向对象版本）。</li>
+</ul>
+<p><img src="/gallery/java-common/200901051231133411250.jpg" alt=""></p>
+<p><img src="/gallery/java-common/Nio_Selector.png" alt=""></p>
+<h1 id="epoll与select-poll的区别"><a href="#epoll与select-poll的区别" class="headerlink" title="epoll与select/poll的区别"></a>epoll与select/poll的区别</h1><p>select，poll，epoll三个都是Linux的IO多路复用的机制，可以监视多个描述符的读/写等事件，一旦某个描述符就绪（一般是读或者写事件发生了），就能够将发生的事件通知给关心的应用程序去处理该事件。本质上，select、poll、epoll本质上都是同步I/O。</p>
+<p>select的本质是采用32个整数的32位，即32<em>32= 1024来标识，fd值为1-1024。当fd的值超过1024限制时，就必须修改FD_SETSIZE的大小。这个时候就可以标识32</em>max值范围的fd。</p>
+<p>poll与select不同，通过一个pollfd数组向内核传递需要关注的事件，故没有描述符个数的限制，pollfd中的events字段和revents分别用于标示关注的事件和发生的事件，故pollfd数组只需要被初始化一次。</p>
+<p>epoll还是poll的一种优化，返回后不需要对所有的fd进行遍历，在内核中维持了fd的列表。select和poll是将这个内核列表维持在用户态，然后传递到内核中。与poll/select不同，epoll不再是一个单独的系统调用，而是由epoll_create/epoll_ctl/epoll_wait三个系统调用组成，后面将会看到这样做的好处。epoll在2.6以后的内核才支持。</p>
+<p><img src="/gallery/java-common/nio-buffer.png" alt=""></p>
+<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><h3 id="简单了解Channel和Buffer"><a href="#简单了解Channel和Buffer" class="headerlink" title="简单了解Channel和Buffer"></a>简单了解Channel和Buffer</h3><h3 id="深入理解Selector"><a href="#深入理解Selector" class="headerlink" title="深入理解Selector"></a>深入理解Selector</h3><h1 id="BIO-NIO-AIO"><a href="#BIO-NIO-AIO" class="headerlink" title="BIO, NIO, AIO"></a>BIO, NIO, AIO</h1><p>BIO同步阻塞IO，适用于连接数目比较小且固定的架构，这种方式对服务器资源要求比较高，并发局限于应用中，JDK1.4以前的唯一选择，但程序直观简单易理解。</p>
+<p>NIO同步非阻塞IO，适用于连接数目多且连接比较短（轻操作）的架构，比如聊天服务器，并发局限于应用中，编程比较复杂，JDK1.4开始支持。</p>
+<p>AIO异步非阻塞IO，AIO方式适用于连接数目多且连接比较长（重操作）的架构，比如相册服务器，充分调用OS参与并发操作，编程比较复杂，JDK7开始支持。</p>
+<h2 id="几个问题"><a href="#几个问题" class="headerlink" title="几个问题"></a>几个问题</h2><blockquote>
+<ol>
+<li>IO - 同步，异步，阻塞，非阻塞 </li>
+</ol>
+</blockquote>
+<p>ddd</p>
+<blockquote>
+<ol start="2">
+<li><a href="https://www.zhihu.com/question/59975081" target="_blank" rel="noopener">IO多路复用（比如epoll）到底是不是异步的？</a></li>
+</ol>
+</blockquote>
+<p>Java NIO是同步非阻塞io。简单来说同步和异步需要说明针对哪一个通信层次来讨论，异步编程框架是说框架内的业务代码与框架的接口是异步的，而框架与操作系统的接口是同步非阻塞。</p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://blog.csdn.net/historyasamirror/article/details/5778378" target="_blank" rel="noopener">IO - 同步，异步，阻塞，非阻塞 （亡羊补牢篇）</a></li>
 <li><a href="https://tech.meituan.com/nio.html" target="_blank" rel="noopener">Java NIO浅析 - 美团点评技术团队</a></li>
+<li><a href="https://www.jianshu.com/p/0d497fe5484a" target="_blank" rel="noopener">深入浅出NIO之Selector实现原理 - 占小狼</a></li>
+<li><a href="http://goon.iteye.com/blog/1775421" target="_blank" rel="noopener">Java NIO——Selector机制解析三（源码分析）</a></li>
+<li><a href="https://blog.csdn.net/haoel/article/details/2224055" target="_blank" rel="noopener">Java NIO类库Selector机制解析（上）—— 陈皓</a></li>
+<li><a href="https://yq.aliyun.com/articles/466889" target="_blank" rel="noopener">Java NIO类库Selector机制解析（下）—— 陈皓</a></li>
+<li><a href="http://www.cnblogs.com/melons/p/5791788.html" target="_blank" rel="noopener">Linux下I/O多路转接之epoll(绝对经典)</a></li>
+<li><a href="https://www.zhihu.com/question/20122137" target="_blank" rel="noopener">epoll 或者 kqueue 的原理是什么？- 知乎</a></li>
+<li><a href="https://cloud.tencent.com/developer/article/1005481" target="_blank" rel="noopener">大话 Select、Poll、Epoll</a></li>
+<li><a href="https://blog.csdn.net/wangpeihuixyz/article/details/41732127" target="_blank" rel="noopener">linux内核epoll实现分析</a></li>
 </ul>
 
       
@@ -287,7 +345,7 @@ var a = new Donate({
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
     
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#NIO的概念"><span class="nav-number">1.</span> <span class="nav-text">NIO的概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">2.</span> <span class="nav-text">参考资料</span></a></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#几个概念"><span class="nav-number">1.</span> <span class="nav-text">几个概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用户空间与内核空间"><span class="nav-number">1.1.</span> <span class="nav-text">用户空间与内核空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件描述符fd"><span class="nav-number">1.2.</span> <span class="nav-text">文件描述符fd</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传统IO"><span class="nav-number">2.</span> <span class="nav-text">传统IO</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-IO-同步、异步、阻塞、非阻塞"><span class="nav-number">2.1.</span> <span class="nav-text">1. IO - 同步、异步、阻塞、非阻塞</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-同步IO-之-Blocking-IO"><span class="nav-number">2.1.1.</span> <span class="nav-text">1.1 同步IO 之 Blocking IO</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NIO的概念"><span class="nav-number">3.</span> <span class="nav-text">NIO的概念</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#epoll与select-poll的区别"><span class="nav-number"></span> <span class="nav-text">epoll与select/poll的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#源码分析"><span class="nav-number">1.</span> <span class="nav-text">源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简单了解Channel和Buffer"><span class="nav-number">1.1.</span> <span class="nav-text">简单了解Channel和Buffer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#深入理解Selector"><span class="nav-number">1.2.</span> <span class="nav-text">深入理解Selector</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BIO-NIO-AIO"><span class="nav-number"></span> <span class="nav-text">BIO, NIO, AIO</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#几个问题"><span class="nav-number">1.</span> <span class="nav-text">几个问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">2.</span> <span class="nav-text">参考资料</span></a></li></ol>
     
     </div>
   </aside>
