@@ -350,6 +350,60 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Android】EventBus 3.0源码分析"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/09/30/【Android】EventBus 3.0源码分析/">【Android】EventBus 3.0 源码分析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/09/30/【Android】EventBus 3.0源码分析/" class="article-date">
+	  <time datetime="2017-09-30T14:03:00.000Z" itemprop="datePublished">2017-09-30</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/源码分析/">源码分析</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><strong><a href="https://github.com/greenrobot/EventBus">EventBus</a></strong>是Android中一个基于<strong>观察者模式</strong>的事件发布/订阅框架，开发者可以通过极少的代码去实现多个模块之间的通信，主要功能是替代Intent，Handler，BroadCast 在 Fragment，Activity，Service，线程Thread之间传递消息。优点是开销小，使用方便，可以很大程度上降低它们之间的耦合。 类似的库还有<a href="https://github.com/square/otto">Otto</a> ，今天就带大家一起研读 EventBus 的源码。</p>
+<p>这是EventBus源码中的介绍：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * EventBus is a central publish/subscribe event system for Android. Events are posted (&#123;<span class="doctag">@link</span> #post(Object)&#125;) to the</span></span><br><span class="line"><span class="comment"> * bus, which delivers it to subscribers that have a matching handler method for the event type. To receive events,</span></span><br><span class="line"><span class="comment"> * subscribers must register themselves to the bus using &#123;<span class="doctag">@link</span> #register(Object)&#125;. Once registered, subscribers</span></span><br><span class="line"><span class="comment"> * receive events until &#123;<span class="doctag">@link</span> #unregister(Object)&#125; is called. Event handling methods must be annotated by</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link</span> Subscribe&#125;, must be public, return nothing (void), and have exactly one parameter</span></span><br><span class="line"><span class="comment"> * (the event).</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Markus Junginger, greenrobot</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>EventBus 是Android上的以<strong>发布\订阅事件</strong>为核心的库。事件 (<code>event</code>) 通过 <code>post()</code> 发送到总线，然后再分发到匹配事件类型的订阅者 (<code>subscribers</code>) 。订阅者只有在总线中注册 (<code>register</code>) 了才能收到事件，注销 (<code>unrigister</code>) 之后就收不到任何事件了。事件方法必须带有 <code>Subscribe</code> 的注解，必须是 <code>public</code> ，没有返回类型 <code>void</code> 并且只能有一个参数。</p>
+</blockquote>
+<p>EventBus3 与之前的相比，其主要差别在于订阅方法可以不再以<code>onEvent</code> 开头了，改为用<strong>注解</strong>。</p>
+        <!-- 概述EventBus是Android中一个基于观察者模式的事件发布/订阅框架，开发者可以通过极少的代码去实现多个模块之间的通信，主要功能是替代Intent，Handler，BroadCast 在 Fragment，Activity，Service，线程Thread之间传递消息。优点是开销小，使用方便，可以很大程度上降低它们之间的耦合。 类似的库还有Otto ，今天就带大家一起研读 Event......  -->
+        <p class="article-more-link">
+          <a href="../../2017/09/30/【Android】EventBus 3.0源码分析/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/源码分析/">源码分析</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【Java】try-catch-finally语句中return的执行顺序思考"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -871,58 +925,6 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
 位图法：用一个bit......  -->
         <p class="article-more-link">
           <a href="../../2017/07/13/【算法】10亿int型数，统计只出现一次的数/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-遗传算法的基本概念和Java实现"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/07/11/遗传算法的基本概念和Java实现/">遗传算法的基本概念和Java实现</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/07/11/遗传算法的基本概念和Java实现/" class="article-date">
-	  <time datetime="2017-07-11T10:30:55.000Z" itemprop="datePublished">2017-07-11</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>基因遗传算法是一种灵感源于达尔文自然进化理论的启发式搜索算法。该算法反映了自然选择的过程，即最适者被选定繁殖，并产生下一代。本文简要地介绍了遗传算法的基本概念和实现，希望能为读者展示启发式搜索的魅力。</p>
-<p><img src="/gallery/genetic-algorithms/1-BYDJpa6M2rzWNSurvspf8Q.png" alt="如上图（左）所示，遗传算法的个体由多条染色体组成，每条染色体由多个基因组成。上图（右）展示了染色体分割和组合的方式。"></p>
-        <!-- 基因遗传算法是一种灵感源于达尔文自然进化理论的启发式搜索算法。该算法反映了自然选择的过程，即最适者被选定繁殖，并产生下一代。本文简要地介绍了遗传算法的基本概念和实现，希望能为读者展示启发式搜索的魅力。
-
-
-遗传算法的概念自然选择的过程从选择群体中最适应环境的个体开始。后代继承了父母的特性，并且这些特性将添加到下一代中。如果父母具有更好的适应性，那么它们的后代将更易于存活。迭代地进行该自然选择......  -->
-        <p class="article-more-link">
-          <a href="../../2017/07/11/遗传算法的基本概念和Java实现/#more">阅读全文</a>
         </p>
       
     </div>
