@@ -350,6 +350,58 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-基于社区发现算法和图分析Neo4j解读《权力的游戏》"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2016/11/21/基于社区发现算法和图分析Neo4j解读《权力的游戏》/">基于社区发现算法和图分析Neo4j解读《权力的游戏》</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2016/11/21/基于社区发现算法和图分析Neo4j解读《权力的游戏》/" class="article-date">
+	  <time datetime="2016-11-21T03:08:00.000Z" itemprop="datePublished">2016-11-21</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Web/">Web</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="导读"><a href="#导读" class="headerlink" title="导读"></a>导读</h2><p>几个月前，数学家 Andrew Beveridge 和Jie Shan在数学杂志上发表<a href="http://www.maa.org/sites/default/files/pdf/Mathhorizons/NetworkofThrones.pdf" target="_blank" rel="noopener"><strong>《权力的网络》</strong></a>，主要分析畅销小说《冰与火之歌》第三部《冰雨的风暴》中人物关系，其已经拍成电视剧《权力的游戏》系列。他们在论文中介绍了如何通过文本分析和实体提取构建人物关系的网络。紧接着，使用社交网络分析算法对人物关系网络分析找出最重要的角色；应用社区发现算法来找到人物聚类。</p>
+<p>其中的分析和可视化是用Gephi做的，Gephi是非常流行的图分析工具。但作者觉得使用Neo4j来实现更有趣。</p>
+<h2 id="导入原始数据到Neo4j"><a href="#导入原始数据到Neo4j" class="headerlink" title="导入原始数据到Neo4j"></a>导入原始数据到Neo4j</h2><p>原始数据可<a href="https://www.macalester.edu/~abeverid/data/stormofswords.csv" target="_blank" rel="noopener">从网络上下载</a>，格式如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Source,Target,Weight</span><br><span class="line">Aemon,Grenn,5</span><br><span class="line">Aemon,Samwell,31</span><br><span class="line">Aerys,Jaime,18</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+        <!-- 导读几个月前，数学家 Andrew Beveridge 和Jie Shan在数学杂志上发表《权力的网络》，主要分析畅销小说《冰与火之歌》第三部《冰雨的风暴》中人物关系，其已经拍成电视剧《权力的游戏》系列。他们在论文中介绍了如何通过文本分析和实体提取构建人物关系的网络。紧接着，使用社交网络分析算法对人物关系网络分析找出最重要的角色；应用社区发现算法来找到人物聚类。
+其中的分析和可视化是用Gep......  -->
+        <p class="article-more-link">
+          <a href="../../2016/11/21/基于社区发现算法和图分析Neo4j解读《权力的游戏》/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Neo4j/">Neo4j</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【D3.js】力导向布局 + 圆形图片展示的人物关系"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -861,62 +913,6 @@ CB Insights 今日发布了一篇关于谷歌业务战略的深度分析报告: 
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Hiker中文使用教程"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/10/17/Hiker中文使用教程/">Hiker Guide</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2016/10/17/Hiker中文使用教程/" class="article-date">
-	  <time datetime="2016-10-17T07:47:20.000Z" itemprop="datePublished">2016-10-17</time>
-	</a>
-
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Hiker"><a href="#Hiker" class="headerlink" title="Hiker"></a>Hiker</h1><p><a href="https://travis-ci.org/iTimeTraveler/hexo-theme-hiker" target="_blank" rel="noopener"><img src="https://travis-ci.org/iTimeTraveler/hexo-theme-hiker.svg?branch=master" alt="Build Status"></a>        <a href="https://github.com/iTimeTraveler/hexo-theme-hiker/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="GitHub license"></a></p>
-<p>An attractive, exquisite theme for <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>. named “Hiker”, short for “HikerNews”.  </p>
-<p><a href="https://itimetraveler.github.io/hexo-theme-hiker/" target="_blank" rel="noopener"><strong>☞ Live Preview</strong></a>  |  <a href="https://github.com/iTimeTraveler/hexo-theme-hiker/blob/master/README.cn.md"><strong>Hiker 中文版使用文档</strong></a></p>
-<p><img src="https://itimetraveler.github.io/hexo-theme-hiker/2016/10/24/Hiker%E4%B8%BB%E9%A2%98%E9%A2%84%E8%A7%88/homepage-index.png" alt="Desktop Preview"><br><img src="https://itimetraveler.github.io/hexo-theme-hiker/2016/10/24/Hiker%E4%B8%BB%E9%A2%98%E9%A2%84%E8%A7%88/article-chrome.png" alt="Post Preview"><br><img src="https://github.com/iTimeTraveler/hexo-theme-hiker/blob/master/source/preview/preview-mobile.png?raw=true" alt="Mobile Preview"></p>
-        <!-- Hiker        
-An attractive, exquisite theme for Hexo. named “Hiker”, short for “HikerNews”.  
-☞ Live Preview  |  Hiker 中文版使用文档
-
-
-Installation
-Get it from GitHub
-1$ git clone https://github.com/iTi......  -->
-        <p class="article-more-link">
-          <a href="../../2016/10/17/Hiker中文使用教程/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Hexo/">Hexo</a></li></ul>
 
     </footer>
   </div>

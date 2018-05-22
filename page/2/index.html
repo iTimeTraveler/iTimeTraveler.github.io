@@ -350,6 +350,70 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【算法】字符串循环移位后是否可包含"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/12/31/【算法】字符串循环移位后是否可包含/">【算法】字符串循环移位后是否可包含</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/12/31/【算法】字符串循环移位后是否可包含/" class="article-date">
+	  <time datetime="2017-12-31T07:20:55.000Z" itemprop="datePublished">2017-12-31</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><blockquote>
+<p>给定两个字符串s1和s2，要求判断s2是否能够被通过s1做循环移位（rotate）得到的字符串包含。<br>例如，s1=AABCD和s2=CDAA，返回true；给定s1=ABCD和s2=ACBD，返回false。</p>
+</blockquote>
+<h3 id="解法一"><a href="#解法一" class="headerlink" title="解法一"></a>解法一</h3><p>最直接最笨的方法就对s1进行循环移动，再进行字符串包含的判断，从而遍历其所有的可能性。字符串循环移动，时间复杂度为O（n），字符串包含判断，采用普通的方法，时间复杂度为O（n*m），总体复杂度为O（n*n*m）。字符串包含判断，若采用KMP算法，时间复杂度为O（n），这样总体的复杂度为O（n*n）。若字符串的长度n较大，显然效率比较低。其中n为s1的长度，m为s2的长度。</p>
+<h3 id="解法二"><a href="#解法二" class="headerlink" title="解法二"></a>解法二</h3><p>对s1的循环移位操作，可以使用拼接s1+s1的方式得到。</p>
+<p>以S1 = ABCD为例，先分析对S1进行循环移位之后的结果，如下所示：</p>
+<blockquote>
+<p>ABCD—&gt;BCDA—-&gt;CDAB—-&gt;DABC—-&gt;ABCD……</p>
+</blockquote>
+<p>假设我们把前面的移走的数据进行保留，会发现有如下的规律：</p>
+<blockquote>
+<p>ABCD—&gt;ABCDA—-&gt;ABCDAB—-&gt;ABCDABC—-&gt;ABCDABCD……</p>
+</blockquote>
+<p>因此，可以看出对s1做循环移位所得到的字符串都将是字符串s1s1的子字符串。如果s2可以由s1循环移位得到，那么s2一定在s1s1上，这样时间复杂度就降低了。</p>
+        <!-- 问题
+给定两个字符串s1和s2，要求判断s2是否能够被通过s1做循环移位（rotate）得到的字符串包含。例如，s1=AABCD和s2=CDAA，返回true；给定s1=ABCD和s2=ACBD，返回false。
+
+解法一最直接最笨的方法就对s1进行循环移动，再进行字符串包含的判断，从而遍历其所有的可能性。字符串循环移动，时间复杂度为O（n），字符串包含判断，采用普通的方法，时间复杂度为O（......  -->
+        <p class="article-more-link">
+          <a href="../../2017/12/31/【算法】字符串循环移位后是否可包含/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【算法】如何判断链表有环"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -894,60 +958,6 @@ IntentService：一个内部采用HandlerThread来执行任务的Service服务�
 今......  -->
         <p class="article-more-link">
           <a href="../../2017/10/05/【Android】源码分析 - IntentService机制/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/源码分析/">源码分析</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【Android】EventBus 3.0源码分析"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/09/30/【Android】EventBus 3.0源码分析/">【Android】EventBus 3.0 源码分析</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/09/30/【Android】EventBus 3.0源码分析/" class="article-date">
-	  <time datetime="2017-09-30T14:03:00.000Z" itemprop="datePublished">2017-09-30</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/源码分析/">源码分析</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><strong><a href="https://github.com/greenrobot/EventBus">EventBus</a></strong>是Android中一个基于<strong>观察者模式</strong>的事件发布/订阅框架，开发者可以通过极少的代码去实现多个模块之间的通信，主要功能是替代Intent，Handler，BroadCast 在 Fragment，Activity，Service，线程Thread之间传递消息。优点是开销小，使用方便，可以很大程度上降低它们之间的耦合。 类似的库还有<a href="https://github.com/square/otto">Otto</a> ，今天就带大家一起研读 EventBus 的源码。</p>
-<p>这是EventBus源码中的介绍：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * EventBus is a central publish/subscribe event system for Android. Events are posted (&#123;<span class="doctag">@link</span> #post(Object)&#125;) to the</span></span><br><span class="line"><span class="comment"> * bus, which delivers it to subscribers that have a matching handler method for the event type. To receive events,</span></span><br><span class="line"><span class="comment"> * subscribers must register themselves to the bus using &#123;<span class="doctag">@link</span> #register(Object)&#125;. Once registered, subscribers</span></span><br><span class="line"><span class="comment"> * receive events until &#123;<span class="doctag">@link</span> #unregister(Object)&#125; is called. Event handling methods must be annotated by</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link</span> Subscribe&#125;, must be public, return nothing (void), and have exactly one parameter</span></span><br><span class="line"><span class="comment"> * (the event).</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Markus Junginger, greenrobot</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>EventBus 是Android上的以<strong>发布\订阅事件</strong>为核心的库。事件 (<code>event</code>) 通过 <code>post()</code> 发送到总线，然后再分发到匹配事件类型的订阅者 (<code>subscribers</code>) 。订阅者只有在总线中注册 (<code>register</code>) 了才能收到事件，注销 (<code>unrigister</code>) 之后就收不到任何事件了。事件方法必须带有 <code>Subscribe</code> 的注解，必须是 <code>public</code> ，没有返回类型 <code>void</code> 并且只能有一个参数。</p>
-</blockquote>
-<p>EventBus3 与之前的相比，其主要差别在于订阅方法可以不再以<code>onEvent</code> 开头了，改为用<strong>注解</strong>。</p>
-        <!-- 概述EventBus是Android中一个基于观察者模式的事件发布/订阅框架，开发者可以通过极少的代码去实现多个模块之间的通信，主要功能是替代Intent，Handler，BroadCast 在 Fragment，Activity，Service，线程Thread之间传递消息。优点是开销小，使用方便，可以很大程度上降低它们之间的耦合。 类似的库还有Otto ，今天就带大家一起研读 Event......  -->
-        <p class="article-more-link">
-          <a href="../../2017/09/30/【Android】EventBus 3.0源码分析/#more">阅读全文</a>
         </p>
       
     </div>
