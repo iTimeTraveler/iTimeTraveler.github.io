@@ -29,7 +29,7 @@ IO模型的异同点就是区分在这两个系统对象、两个处理阶段的
 
 ### 1. 同步IO 之 Blocking IO
 
-![](/gallery/java-common/blocking-io.png)
+![](https://itimetraveler.github.io/gallery/java-common/blocking-io.png)
 
 当用户进程调用了recvfrom这个系统调用，kernel就开始了IO的第一个阶段：准备数据（对于网络IO来说，很多时候数据在一开始还没有到达。比如，还没有收到一个完整的UDP包。这个时候kernel就要等待足够的数据到来）。这个过程需要等待，也就是说数据被拷贝到操作系统内核的缓冲区中是需要一个过程的。而在用户进程这边，整个进程会被阻塞。当kernel一直等到数据准备好了，它就会将数据从kernel中拷贝到用户内存，然后kernel返回结果，用户进程才解除block的状态，重新运行起来。
 
@@ -37,7 +37,7 @@ IO模型的异同点就是区分在这两个系统对象、两个处理阶段的
 
 ### 2. 同步IO 之 NonBlocking IO
 
-![](/gallery/java-common/nonblocking-io.png)
+![](https://itimetraveler.github.io/gallery/java-common/nonblocking-io.png)
 
 从图中可以看出，process在NonBlocking IO读recvfrom操作的第一个阶段是不会block等待的，如果kernel数据还没准备好，那么recvfrom会立刻返回一个EWOULDBLOCK错误。当kernel准备好数据后，进入处理的第二阶段的时候，process会等待kernel将数据copy到自己的buffer，在kernel完成数据的copy后process才会从recvfrom系统调用中返回。
 
@@ -47,7 +47,7 @@ IO模型的异同点就是区分在这两个系统对象、两个处理阶段的
 
 IO多路复用，就是我们熟知的select、poll、epoll模型。从下图可见，在IO多路复用的时候，process在两个处理阶段都是block住等待的。初看好像IO多路复用没什么用，其实select、poll、epoll的优势在于可以以较少的代价来同时监听处理多个IO。在于使用单个process就可以同时处理多个网络连接的IO。它的基本原理就是select，poll，epoll这个function会不断的轮询所负责的所有socket，当某个socket有数据到达了，就通知用户进程
 
-![](/gallery/java-common/io-multiplexing.png)
+![](https://itimetraveler.github.io/gallery/java-common/io-multiplexing.png)
 
 `当用户进程调用了select，那么整个进程会被block`，而同时，kernel会“监视”所有select负责的socket，当任何一个socket中的数据准备好了，select就会返回。这个时候用户进程再调用read操作，将数据从kernel拷贝到用户进程。。
 
@@ -61,7 +61,7 @@ IO多路复用，就是我们熟知的select、poll、epoll模型。从下图可
 
 ### 4. 异步IO
 
-![](/gallery/java-common/asynchronus-io.png)
+![](https://itimetraveler.github.io/gallery/java-common/asynchronus-io.png)
 
 从上图看出，异步IO要求用户进程在**aio_read**操作的两个处理阶段上都不能等待，也就是用户进程调用aio_read后立刻返回，kernel自行去准备好数据并将数据从kernel的buffer中copy到用户进程的buffer在通知用户进程读操作完成了，然后会发送一个signal通知用户进程去继续处理。遗憾的是，linux的网络IO中是不存在异步IO的，linux的网络IO处理的第二阶段总是阻塞等待数据copy完成的。真正意义上的网络异步IO是Windows下的IOCP（IO完成端口）模型。
 
@@ -69,7 +69,7 @@ IO多路复用，就是我们熟知的select、poll、epoll模型。从下图可
 
 各个IO Model的比较如图所示：
 
-![](/gallery/java-common/compare.png)
+![](https://itimetraveler.github.io/gallery/java-common/compare.png)
 
 很多时候，我们比较容易混淆non-blocking IO和asynchronous IO，认为是一样的。但是通过上图，几种IO模型的比较，会发现non-blocking IO和asynchronous IO的区别还是很明显的，non-blocking IO仅仅要求处理的第一阶段不block即可，但是它仍然要求进程去主动的check，并且当数据准备完成以后，也需要进程主动的再次调用recvfrom来将数据拷贝到用户内存。而asynchronous IO要求两个阶段都不能block住。用户进程将整个IO操作交给了kernel系统调用去完成，然后kernel做完后发信号通知。在此期间，用户进程不需要去检查IO操作的状态，也不需要主动的去拷贝数据。
 
@@ -196,7 +196,7 @@ epoll是poll的一种优化，返回后不需要对所有的fd进行遍历，在
 
 自从JDK 1.4版本以来，JDK发布了全新的I/O类库，简称NIO（New I/O），是一种同步非阻塞的I/O模型，也是I/O多路复用的基础，已经被越来越多地应用到大型应用服务器，成为解决高并发与大量连接、I/O处理问题的有效方式。
 
-![](/gallery/java-common/200901051231133411250.jpg)
+![](https://itimetraveler.github.io/gallery/java-common/200901051231133411250.jpg)
 
 NIO的包中主要包含了这样几种抽象数据类型： 
 
@@ -207,7 +207,7 @@ NIO的包中主要包含了这样几种抽象数据类型：
 
 
 
-![](/gallery/java-common/Nio_Selector.png)
+![](https://itimetraveler.github.io/gallery/java-common/Nio_Selector.png)
 
 
 
@@ -217,11 +217,11 @@ NIO的包中主要包含了这样几种抽象数据类型：
 
 
 
-## 源码分析
+## 看看源码
 
-### 简单了解Channel和Buffer
+### 了解Channel和Buffer
 
-![](/gallery/java-common/nio-buffer.png)
+![](https://itimetraveler.github.io/gallery/java-common/nio-buffer.png)
 
 ### Channel
 
@@ -232,7 +232,7 @@ NIO把它支持的I/O对象抽象为Channel，Channel又称“通道”，类似
 2、流读写是阻塞的，通道可以异步读写。
 3、流中的数据可以选择性的先读到缓存中，通道的数据总是要先读到一个缓存中，或从缓存中写入，如下所示：
 
-![](/gallery/java-common/2184951-bd19826b2e3f7c26.png)
+![](https://itimetraveler.github.io/gallery/java-common/2184951-bd19826b2e3f7c26.png)
 
 目前已知Channel的实现类有：
 
@@ -241,7 +241,7 @@ NIO把它支持的I/O对象抽象为Channel，Channel又称“通道”，类似
 - SocketChannel
 - ServerSocketChannel
 
-### 深入理解Selector
+### 理解Selector
 
 之前进行socket编程时，accept方法会一直阻塞，直到有客户端请求的到来，并返回socket进行相应的处理。整个过程是流水线的，处理完一个请求，才能去获取并处理后面的请求，当然也可以把获取socket和处理socket的过程分开，一个线程负责accept，一个线程池负责处理请求。
 
@@ -249,7 +249,7 @@ NIO把它支持的I/O对象抽象为Channel，Channel又称“通道”，类似
 
 在这里，这个人就相当Selector，每个鸡笼相当于一个SocketChannel，每个线程通过一个Selector可以管理多个SocketChannel。
 
-![](/gallery/java-common/java-nio-selector.png)
+![](https://itimetraveler.github.io/gallery/java-common/java-nio-selector.png)
 
 为了实现Selector管理多个SocketChannel，必须将具体的SocketChannel对象注册到Selector，并声明需要监听的事件（这样Selector才知道需要记录什么数据），一共有4种事件：
 
@@ -337,7 +337,7 @@ public static SelectorProvider provider() {
 
 SelectorProvider在windows和linux下有不同的实现，provider方法会返回对应的实现。其中`provider = sun.nio.ch.DefaultSelectorProvider.create();`会根据操作系统来返回不同的实现类，windows平台就返回WindowsSelectorProvider；
 
-![](/gallery/java-common/WX20180517-182153@2xjietu.png)
+![](https://itimetraveler.github.io/gallery/java-common/WX20180517-182153@2xjietu.png)
 
 
 
@@ -345,7 +345,7 @@ SelectorProvider在windows和linux下有不同的实现，provider方法会返�
 
 ##### 主要作用
 
-解除阻塞在Selector.select()/select(long)上的线程，立即返回。
+解除阻塞在Selector.select() / select(long)上的线程，立即返回。
 
 两次成功的select之间多次调用wakeup等价于一次调用。
 
@@ -353,11 +353,9 @@ SelectorProvider在windows和linux下有不同的实现，provider方法会返�
 
 为什么要唤醒？
 
-注册了新的channel或者事件。
-
-channel关闭，取消注册。
-
-优先级更高的事件触发（如定时器事件），希望及时处理。
+- 注册了新的channel或者事件。
+- channel关闭，取消注册。
+- 优先级更高的事件触发（如定时器事件），希望及时处理。
 
 ##### 原理
 
@@ -396,10 +394,6 @@ NIO作为一种中高负载的I/O模型，相对于传统的BIO (Blocking I/O)�
 有人会说，non-blocking IO并没有被block啊。这里有个非常“狡猾”的地方，定义中所指的”IO operation”是指真实的IO操作，就是例子中的recvfrom这个system call。non-blocking IO在执行recvfrom这个system call的时候，如果kernel的数据没有准备好，这时候不会block进程。但是，当kernel中数据准备好的时候，recvfrom会将数据从kernel拷贝到用户内存中，这个时候进程是被block了，在这段时间内，进程是被block的。
 
 而asynchronous IO则不一样，当进程发起IO 操作之后，就直接返回再也不理睬了，直到kernel发送一个信号，告诉进程说IO完成。在这整个过程中，进程完全没有被block。
-
-> 2. [IO多路复用（比如epoll）到底是不是异步的？](https://www.zhihu.com/question/59975081)
-
-Java NIO是同步非阻塞io。简单来说同步和异步需要说明针对哪一个通信层次来讨论，异步编程框架是说框架内的业务代码与框架的接口是异步的，而框架与操作系统的接口是同步非阻塞。
 
 ## 参考资料
 
