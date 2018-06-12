@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>【android】activity四种启动模式 | iTimeTraveler</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="Android" />
+  
+  
+  
+  
+  <meta name="description" content="Task栈每个应用都有一个任务栈，是用来存放Activity的，功能类似于函数调用的栈，先后顺序代表了Activity的出现顺序；比如Activity1–&amp;gt;Activity2–&amp;gt;Activity3，则任务栈为：  四种启动模式启动模式简单地说就是Activity启动时的策略，在AndroidManifest.xml中的标签的android:launchMode属性设置； 启动模式有4种">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Android】Activity四种启动模式">
+<meta property="og:url" content="http://github.com/2015/10/09/【Android】Activity四种启动模式/index.html">
+<meta property="og:site_name" content="iTimeTraveler">
+<meta property="og:description" content="Task栈每个应用都有一个任务栈，是用来存放Activity的，功能类似于函数调用的栈，先后顺序代表了Activity的出现顺序；比如Activity1–&amp;gt;Activity2–&amp;gt;Activity3，则任务栈为：  四种启动模式启动模式简单地说就是Activity启动时的策略，在AndroidManifest.xml中的标签的android:launchMode属性设置； 启动模式有4种">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://github.com/gallery/14936293919569.jpg">
+<meta property="og:updated_time" content="2018-03-14T08:13:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【Android】Activity四种启动模式">
+<meta name="twitter:description" content="Task栈每个应用都有一个任务栈，是用来存放Activity的，功能类似于函数调用的栈，先后顺序代表了Activity的出现顺序；比如Activity1–&amp;gt;Activity2–&amp;gt;Activity3，则任务栈为：  四种启动模式启动模式简单地说就是Activity启动时的策略，在AndroidManifest.xml中的标签的android:launchMode属性设置； 启动模式有4种">
+<meta name="twitter:image" content="http://github.com/gallery/14936293919569.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/gallery/avatar/0.jpg">
+  <link rel="apple-touch-icon" href="/gallery/avatar/0.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="../../../../css/style.css">
+
+  <script src="../../../../js/jquery-3.1.1.min.js"></script>
+  <script src="../../../../js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="../../../../css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 8px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="62px" height="75px" alt="Hike News" src="/gallery/avatar/0.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="../../../../index.html">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../funnysite">酷站</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../collection">收藏</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../mybooks">🎁</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '../../../../content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="../../../../js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-【Android】Activity四种启动模式" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" href="../../../../gallery/14936293919569.jpg" rel="gallery_cjiblcthz0035pzs6o23kz3em">
+        <img src="../../../../gallery/14936293919569.jpg" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      【Android】Activity四种启动模式
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="" class="article-date">
+	  <time datetime="2015-10-09T12:03:00.000Z" itemprop="datePublished">2015-10-09</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../../../categories/Android/">Android</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="Task栈"><a href="#Task栈" class="headerlink" title="Task栈"></a>Task栈</h3><p>每个应用都有一个任务栈，是用来存放Activity的，功能类似于函数调用的栈，先后顺序代表了Activity的出现顺序；比如Activity1–&gt;Activity2–&gt;Activity3，则任务栈为：</p>
+<p><img src="/gallery/android_common/120721093646151.gif" alt=""></p>
+<h3 id="四种启动模式"><a href="#四种启动模式" class="headerlink" title="四种启动模式"></a>四种启动模式</h3><p>启动模式简单地说就是Activity启动时的策略，在AndroidManifest.xml中的标签的android:launchMode属性设置；</p>
+<p>启动模式有4种，分别为standard、singleTop、singleTask、singleInstance；</p>
+<a id="more"></a>
+<h4 id="1、standard"><a href="#1、standard" class="headerlink" title="1、standard"></a>1、standard</h4><p>每次激活Activity时(startActivity)，都创建Activity实例，并放入任务栈；</p>
+<p><img src="/gallery/android_common/120721093646152.gif" alt=""></p>
+<h4 id="2、singleTop（栈顶复用模式）"><a href="#2、singleTop（栈顶复用模式）" class="headerlink" title="2、singleTop（栈顶复用模式）"></a>2、singleTop（栈顶复用模式）</h4><p>如果某个Activity自己激活自己，即任务栈栈顶就是该Activity，则不需要创建，其余情况都要创建Activity实例；</p>
+<p><img src="/gallery/android_common/120721093646153.gif" alt=""></p>
+<p>singleTop模式分3种情况：</p>
+<ul>
+<li>当前栈中已有该Activity的实例并且该实例位于栈顶时，不会新建实例，而是复用栈顶的实例，并且会将Intent对象传入，回调onNewIntent方法。</li>
+<li>当前栈中已有该Activity的实例但是该实例不在栈顶时，其行为和standard启动模式一样，依然会创建一个新的实例</li>
+<li>当前栈中不存在该Activity的实例时，其行为同standard启动模式。</li>
+</ul>
+<h4 id="3、singleTask（栈内复用模式）"><a href="#3、singleTask（栈内复用模式）" class="headerlink" title="3、singleTask（栈内复用模式）"></a>3、singleTask（栈内复用模式）</h4><p>如果要激活的那个Activity在任务栈中存在该实例，则不需要创建，只需要把此Activity放入栈顶，并把该Activity以上的Activity实例都pop</p>
+<p><img src="/gallery/android_common/120721093646154.gif" alt=""></p>
+<p>singleTask启动模式启动Activity时，首先会根据taskAffinity去寻找当前是否存在一个对应名字的任务栈 </p>
+<ul>
+<li>如果不存在，则会创建一个新的Task，并创建新的Activity实例入栈到新创建的Task中去</li>
+<li>如果存在，则得到该任务栈，查找该任务栈中是否存在该Activity实例 <ul>
+<li>如果存在实例，则将它上面的Activity实例都出栈，然后回调启动的Activity实例的onNewIntent方法</li>
+<li>如果不存在该实例，则新建Activity，并入栈</li>
+</ul>
+</li>
+</ul>
+<h4 id="4、singleInstance（全局唯一模式）"><a href="#4、singleInstance（全局唯一模式）" class="headerlink" title="4、singleInstance（全局唯一模式）"></a>4、singleInstance（全局唯一模式）</h4><p>如果应用1的任务栈中创建了MainActivity实例，如果应用2也要激活MainActivity，则不需要创建，两应用共享该Activity实例；</p>
+<p><img src="/gallery/android_common/120721093646155.gif" alt=""></p>
+<p>该模式具备singleTask模式的所有特性外，与它的区别就是，这种模式下的Activity会单独占用一个Task栈，具有全局唯一性，即整个系统中就这么一个实例。以singleInstance模式启动的Activity在整个系统中是单例的，如果在启动这样的Activiyt时，已经存在了一个实例，那么会把它所在的任务调度到前台，重用这个实例。</p>
+<p>根据上面的讲解，并且参考谷歌官方文档，singleInstance的特点可以归结为以下三条：</p>
+<ol>
+<li>以singleInstance模式启动的Activity具有全局唯一性，即整个系统中只会存在一个这样的实例</li>
+<li>以singleInstance模式启动的Activity具有独占性，即它会独自占用一个任务，被他开启的任何activity都会运行在其他任务中（官方文档上的描述为，singleInstance模式的Activity不允许其他Activity和它共存在一个任务中）</li>
+<li>被singleInstance模式的Activity开启的其他activity，能够开启一个新任务，但不一定开启新的任务，也可能在已有的一个任务中开启</li>
+</ol>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a href="http://www.cnblogs.com/meizixiong/archive/2013/07/03/3170591.html" target="_blank" rel="noopener">Android入门：Activity四种启动模式</a></li>
+<li><a href="https://www.cnblogs.com/plokmju/p/android_ActivityLauncherMode.html" target="_blank" rel="noopener">Android–Activity的启动模式</a></li>
+<li><a href="http://blog.csdn.net/liuhe688/article/details/6754323" target="_blank" rel="noopener">基础总结篇之二：Activity的四种launchMode</a></li>
+<li><a href="http://blog.csdn.net/zhangjg_blog/article/details/10923643" target="_blank" rel="noopener">Android中Activity四种启动模式和taskAffinity属性详解</a></li>
+<li><a href="http://blog.csdn.net/mynameishuangshuai/article/details/51491074" target="_blank" rel="noopener">彻底弄懂Activity四大启动模式</a></li>
+<li><a href="http://blog.csdn.net/shinay/article/details/7898492/" target="_blank" rel="noopener">Activity四种启动模式</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="../../../../js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Android/">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../../11/02/【Java】函数中的参数传递是“引用传递”还是“值传递”？/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          【Java】函数中的参数传递是“引用传递”还是“值传递”？
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../../09/18/【Android】onActivityResult()和onResume()的调用顺序问题/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">【Android】onActivityResult()和onResume()的调用顺序问题</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Task栈"><span class="nav-number">1.</span> <span class="nav-text">Task栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四种启动模式"><span class="nav-number">2.</span> <span class="nav-text">四种启动模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、standard"><span class="nav-number">2.1.</span> <span class="nav-text">1、standard</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、singleTop（栈顶复用模式）"><span class="nav-number">2.2.</span> <span class="nav-text">2、singleTop（栈顶复用模式）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、singleTask（栈内复用模式）"><span class="nav-number">2.3.</span> <span class="nav-text">3、singleTask（栈内复用模式）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、singleInstance（全局唯一模式）"><span class="nav-number">2.4.</span> <span class="nav-text">4、singleInstance（全局唯一模式）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2018 iTimeTraveler All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="../../../../categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="../../../../tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="../../../../funnysite" class="mobile-nav-link">酷站</a>
+  
+    <a href="../../../../collection" class="mobile-nav-link">收藏</a>
+  
+    <a href="../../../../about" class="mobile-nav-link">About</a>
+  
+    <a href="../../../../mybooks" class="mobile-nav-link">🎁</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.css">
+  <script src="../../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="../../../../js/scripts.js"></script>
+
+
+
+
+  <script src="../../../../js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            iTimeTraveler
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Mr.Seven All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>【java】设计模式：深入理解单例模式 | iTimeTraveler</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Java" />
+  
+  
+  
+  
+  <meta name="description" content="什么是设计模式？简单的理解就是前人留下来的一些经验总结而已，然后把这些经验起了个名字叫Design Pattern，翻译过来就是设计模式，通过使用设计模式可以让我们的代码复用性更高，可维护性更高，让你的代码写的更优雅。设计模式理论上有23种，今天就先来分享下最常用的单例模式。  引言对于单例模式，有工作经验的人基本上都使用过。面试的时候提到设计模式基本上都会提到单例模式，但是很多人对单例模式也是">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Java】设计模式：深入理解单例模式">
+<meta property="og:url" content="http://github.com/2016/09/08/【Java】设计模式：深入理解单例模式/index.html">
+<meta property="og:site_name" content="iTimeTraveler">
+<meta property="og:description" content="什么是设计模式？简单的理解就是前人留下来的一些经验总结而已，然后把这些经验起了个名字叫Design Pattern，翻译过来就是设计模式，通过使用设计模式可以让我们的代码复用性更高，可维护性更高，让你的代码写的更优雅。设计模式理论上有23种，今天就先来分享下最常用的单例模式。  引言对于单例模式，有工作经验的人基本上都使用过。面试的时候提到设计模式基本上都会提到单例模式，但是很多人对单例模式也是">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://img.blog.csdn.net/20160908131425758">
+<meta property="og:image" content="http://img.blog.csdn.net/20160909190409989">
+<meta property="og:updated_time" content="2018-03-14T08:13:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【Java】设计模式：深入理解单例模式">
+<meta name="twitter:description" content="什么是设计模式？简单的理解就是前人留下来的一些经验总结而已，然后把这些经验起了个名字叫Design Pattern，翻译过来就是设计模式，通过使用设计模式可以让我们的代码复用性更高，可维护性更高，让你的代码写的更优雅。设计模式理论上有23种，今天就先来分享下最常用的单例模式。  引言对于单例模式，有工作经验的人基本上都使用过。面试的时候提到设计模式基本上都会提到单例模式，但是很多人对单例模式也是">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20160908131425758">
+  
+    <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/gallery/avatar/0.jpg">
+  <link rel="apple-touch-icon" href="/gallery/avatar/0.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="../../../../css/style.css">
+
+  <script src="../../../../js/jquery-3.1.1.min.js"></script>
+  <script src="../../../../js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="../../../../css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 8px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="62px" height="75px" alt="Hike News" src="/gallery/avatar/0.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="../../../../index.html">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../funnysite">酷站</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../collection">收藏</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../mybooks">🎁</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '../../../../content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="../../../../js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-【Java】设计模式：深入理解单例模式" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      【Java】设计模式：深入理解单例模式
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="" class="article-date">
+	  <time datetime="2016-09-08T06:18:20.000Z" itemprop="datePublished">2016-09-08</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../../../categories/Java/">Java</a><a class="article-category-link" href="../../../../categories/Java/Design-Pattern/">Design Pattern</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>什么是设计模式？简单的理解就是前人留下来的一些经验总结而已，然后把这些经验起了个名字叫Design Pattern，翻译过来就是设计模式，通过使用设计模式可以让我们的代码复用性更高，可维护性更高，让你的代码写的更优雅。设计模式理论上有23种，今天就先来分享下最常用的单例模式。</p>
+</blockquote>
+<h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a><strong>引言</strong></h3><p>对于单例模式，有工作经验的人基本上都使用过。面试的时候提到设计模式基本上都会提到单例模式，但是很多人对单例模式也是一知半解，当然也包括我哈哈哈=_=。所以我们有必要深入理解一下所谓的「单例模式」。</p>
+<h3 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a><strong>单例模式</strong></h3><p>定义：<strong><code>保证一个类仅有一个实例，并提供一个访问它的全局访问点。</code></strong></p>
+<p>单例模式结构图： </p>
+<p><img src="http://img.blog.csdn.net/20160908131425758" alt=""></p>
+<p>使用单例的优点：</p>
+<ul>
+<li>单例类只有一个实例</li>
+<li>共享资源，全局使用</li>
+<li>节省创建时间，提高性能</li>
+</ul>
+<a id="more"></a>
+<h3 id="它的七种写法"><a href="#它的七种写法" class="headerlink" title="它的七种写法"></a><strong>它的七种写法</strong></h3><p>单例模式有多种写法各有利弊，现在我们来看看各种模式写法。</p>
+<h4 id="1、饿汉式"><a href="#1、饿汉式" class="headerlink" title="1、饿汉式"></a><strong>1、饿汉式</strong></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;  </span><br><span class="line">     <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance = <span class="keyword">new</span> Singleton();  </span><br><span class="line">     <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span> <span class="params">()</span></span>&#123;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">	     <span class="keyword">return</span> instance;  </span><br><span class="line">     &#125;  </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>这种方式和名字很贴切，饥不择食，在类装载的时候就创建，不管你用不用，先创建了再说，如果一直没有被使用，便浪费了空间，典型的空间换时间，每次调用的时候，就不需要再判断，节省了运行时间。</p>
+<p>Java Runtime就是使用这种方式，它的源代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Runtime</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Runtime currentRuntime = <span class="keyword">new</span> Runtime();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Returns the runtime object associated with the current Java application.</span></span><br><span class="line"><span class="comment">     * Most of the methods of class &lt;code&gt;Runtime&lt;/code&gt; are instance</span></span><br><span class="line"><span class="comment">     * methods and must be invoked with respect to the current runtime object.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span>  the &lt;code&gt;Runtime&lt;/code&gt; object associated with the current</span></span><br><span class="line"><span class="comment">     *          Java application.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Runtime <span class="title">getRuntime</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> currentRuntime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Don't let anyone else instantiate this class */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Runtime</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//以下代码省略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>总结：</strong>「饿汉式」是最简单的实现方式，这种实现方式适合那些在初始化时就要用到单例的情况，这种方式简单粗暴，如果单例对象初始化非常快，而且占用内存非常小的时候这种方式是比较合适的，可以直接在应用启动时加载并初始化。</p>
+<p>但是，如果单例初始化的操作耗时比较长而应用对于启动速度又有要求，或者单例的占用内存比较大，再或者单例只是在某个特定场景的情况下才会被使用，而一般情况下是不会使用时，使用「饿汉式」的单例模式就是不合适的，这时候就需要用到「懒汉式」的方式去按需延迟加载单例。</p>
+<h4 id="2、懒汉式（非线程安全）"><a href="#2、懒汉式（非线程安全）" class="headerlink" title="2、懒汉式（非线程安全）"></a><strong>2、懒汉式（非线程安全）</strong></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;  </span><br><span class="line">      <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance;  </span><br><span class="line">      <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span> <span class="params">()</span></span>&#123;</span><br><span class="line">      &#125;   </span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">	      <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;  </span><br><span class="line">	          instance = <span class="keyword">new</span> Singleton();  </span><br><span class="line">	      &#125;  </span><br><span class="line">	      <span class="keyword">return</span> instance;  </span><br><span class="line">      &#125;  </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>懒汉模式申明了一个静态对象，在用户第一次调用时初始化，虽然节约了资源，但第一次加载时需要实例化，反映稍慢一些，而且<strong>在多线程不能正常工作</strong>。在多线程访问的时候，很可能会造成多次实例化，就不再是单例了。</p>
+<p>「懒汉式」与「饿汉式」的最大区别就是将单例的初始化操作，延迟到需要的时候才进行，这样做在某些场合中有很大用处。比如某个单例用的次数不是很多，但是这个单例提供的功能又非常复杂，而且加载和初始化要消耗大量的资源，这个时候使用「懒汉式」就是非常不错的选择。</p>
+<h4 id="3、懒汉式（线程安全）"><a href="#3、懒汉式（线程安全）" class="headerlink" title="3、懒汉式（线程安全）"></a><strong>3、懒汉式（线程安全）</strong></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;  </span><br><span class="line">      <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance;  </span><br><span class="line">      <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span> <span class="params">()</span></span>&#123;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">	      <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;  </span><br><span class="line">	          instance = <span class="keyword">new</span> Singleton();  </span><br><span class="line">	      &#125;  </span><br><span class="line">	      <span class="keyword">return</span> instance;  </span><br><span class="line">      &#125;  </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>这两种「懒汉式」单例，名字起的也很贴切，一直等到对象实例化的时候才会创建，确实够懒，不用鞭子抽就不知道走了，典型的时间换空间，每次获取实例的时候才会判断，看是否需要创建，浪费判断时间，如果一直没有被使用，就不会被创建，节省空间。</p>
+<p>因为这种方式在<code>getInstance()</code>方法上加了同步锁，所以在多线程情况下会造成线程阻塞，把大量的线程锁在外面，只有一个线程执行完毕才会执行下一个线程。</p>
+<p>Android中的 <code>InputMethodManager</code> 使用了这种方式，我们看看它的源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">InputMethodManager</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> InputMethodManager sInstance;</span><br><span class="line">    </span><br><span class="line">     <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Retrieve the global InputMethodManager instance, creating it if it</span></span><br><span class="line"><span class="comment">     * doesn't already exist.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@hide</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> InputMethodManager <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (InputMethodManager.class) &#123;</span><br><span class="line">            <span class="keyword">if</span> (sInstance == <span class="keyword">null</span>) &#123;</span><br><span class="line">                IBinder b = ServiceManager.getService(Context.INPUT_METHOD_SERVICE);</span><br><span class="line">                IInputMethodManager service = IInputMethodManager.Stub.asInterface(b);</span><br><span class="line">                sInstance = <span class="keyword">new</span> InputMethodManager(service, Looper.getMainLooper());</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> sInstance;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="4、双重校验锁（DCL）"><a href="#4、双重校验锁（DCL）" class="headerlink" title="4、双重校验锁（DCL）"></a><strong>4、双重校验锁（DCL）</strong></h4><p>上面的方法「懒汉式（线程安全）」毫无疑问存在性能的问题 — <strong>如果存在很多次getInstance()的调用，那性能问题就不得不考虑了！</strong> </p>
+<p>让我们来分析一下，究竟是整个方法都必须加锁，还是仅仅其中某一句加锁就足够了？我们为什么要加锁呢？分析一下出现lazy loaded的那种情形的原因。原因就是检测null的操作和创建对象的操作分离了。如果这两个操作能够原子地进行，那么单例就已经保证了。于是，我们开始修改代码，就成了下面的双重校验锁（Double Check Lock）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 注意此处使用的关键字 volatile，</span></span><br><span class="line"><span class="comment">     * 被volatile修饰的变量的值，将不会被本地线程缓存，</span></span><br><span class="line"><span class="comment">     * 所有对该变量的读写都是直接操作共享内存，从而确保多个线程能正确的处理该变量。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> Singleton singleton;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span>(Singleton.class) &#123;</span><br><span class="line">                <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> singleton;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种写法在<code>getSingleton()</code>方法中对singleton进行了<strong>两次判空</strong>，第一次是为了不必要的同步，第二次是在singleton等于null的情况下才创建实例。在这里用到了volatile关键字，不了解volatile关键字的可以查看<a href="http://blog.csdn.net/itachi85/article/details/50274169" target="_blank" rel="noopener"> Java多线程（三）volatile域 </a> 和 <a href="http://www.cnblogs.com/aigongsi/archive/2012/04/01/2429166.html" target="_blank" rel="noopener">java中volatile关键字的含义</a> 两篇文章，可以看到双重检查模式是正确使用volatile关键字的场景之一。 </p>
+<p>「双重校验锁」：既可以达到线程安全，也可以使性能不受很大的影响，换句话说在保证线程安全的前提下，既节省空间也节省了时间，集合了「饿汉式」和两种「懒汉式」的优点，取其精华，去其槽粕。</p>
+<blockquote>
+<p>对于volatile关键字，还是存在很多争议的。由于volatile关键字可能会屏蔽掉虚拟机中一些必要的代码优化，所以运行效率并不是很高。也就是说，<strong>虽然可以使用“双重检查加锁”机制来实现线程安全的单例，但并不建议大量采用，可以根据情况来选用。</strong></p>
+<p>还有就是在java1.4及以前版本中，很多JVM对于volatile关键字的实现的问题，会导致“双重检查加锁”的失败，因此“双重检查加锁”机制只只能用在java1.5及以上的版本。</p>
+</blockquote>
+<h4 id="5、静态内部类"><a href="#5、静态内部类" class="headerlink" title="5、静态内部类"></a><strong>5、静态内部类</strong></h4><p>另外，在很多情况下JVM已经为我们提供了同步控制，比如：</p>
+<ul>
+<li>在<code>static {...}</code>区块中初始化的数据</li>
+<li>访问final字段时</li>
+</ul>
+<p>因为在JVM进行类加载的时候他会保证数据是同步的，我们可以这样实现：<strong>采用内部类，在这个内部类里面去创建对象实例。</strong>这样的话，只要应用中不使用内部类 JVM 就不会去加载这个单例类，也就不会创建单例对象，从而实现「懒汉式」的延迟加载和线程安全。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123; </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;  </span><br><span class="line">        <span class="keyword">return</span> SingletonHolder.sInstance;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonHolder</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton sInstance = <span class="keyword">new</span> Singleton();  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第一次加载Singleton类时并不会初始化sInstance，只有第一次调用getInstance方法时虚拟机加载SingletonHolder 并初始化sInstance ，这样不仅能确保线程安全也能保证Singleton类的唯一性，所以推荐使用静态内部类单例模式。</p>
+<p>然而这还不是最简单的方式，《Effective Java》中作者推荐了一种更简洁方便的使用方式，就是使用「枚举」。</p>
+<h4 id="6、枚举"><a href="#6、枚举" class="headerlink" title="6、枚举"></a><strong>6、枚举</strong></h4><p>《Java与模式》中，作者这样写道，使用枚举来实现单实例控制会更加简洁，而且无偿地提供了序列化机制，并由JVM从根本上提供保障，绝对防止多次实例化，是更简洁、高效、安全的实现单例的方式。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Singleton &#123;</span><br><span class="line">	 <span class="comment">//定义一个枚举的元素，它就是 Singleton 的一个实例</span></span><br><span class="line">     INSTANCE;  </span><br><span class="line">     </span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSomeThing</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">	     <span class="comment">// do something...</span></span><br><span class="line">     &#125;  </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>使用方法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">	Singleton singleton = Singleton.instance;</span><br><span class="line">	singleton.doSomeThing();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>枚举单例的优点就是简单，但是大部分应用开发很少用枚举，可读性并不是很高，不建议用。</p>
+<h4 id="7-使用容器"><a href="#7-使用容器" class="headerlink" title="7. 使用容器"></a><strong>7. 使用容器</strong></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonManager</span> </span>&#123; </span><br><span class="line">　　<span class="keyword">private</span> <span class="keyword">static</span> Map&lt;String, Object&gt; objMap = <span class="keyword">new</span> HashMap&lt;String,Object&gt;();</span><br><span class="line">　　<span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123; </span><br><span class="line">　　&#125;</span><br><span class="line">　　<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">registerService</span><span class="params">(String key, Objectinstance)</span> </span>&#123;</span><br><span class="line">　　　　<span class="keyword">if</span> (!objMap.containsKey(key) ) &#123;</span><br><span class="line">　　　　　　objMap.put(key, instance) ;</span><br><span class="line">　　　　&#125;</span><br><span class="line">　　&#125;</span><br><span class="line">　　<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="title">ObjectgetService</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">　　　　<span class="keyword">return</span> objMap.get(key) ;</span><br><span class="line">　　&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种事用SingletonManager 将<strong>多种单例类统一管理</strong>，在使用时根据key获取对象对应类型的对象。这种方式使得我们可以管理多种类型的单例，并且在使用时可以通过统一的接口进行获取操作，降低了用户的使用成本，也对用户隐藏了具体实现，降低了耦合度。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h3><p>对于以上七种单例，分别是「饿汉式」、「懒汉式(非线程安全)」、「懒汉式(线程安全)」、「双重校验锁」、「静态内部类」、「枚举」和「容器类管理」。很多时候取决人个人的喜好，虽然双重检查有一定的弊端和问题，但我就是钟爱双重检查，觉得这种方式可读性高、安全、优雅（个人观点）。所以代码里常常默写这样的单例，写的时候真感觉自己是个<strong>伟大的建筑师</strong>哈哈哈哈（真不要脸(￢_￢)（逃。</p>
+<p><img src="http://img.blog.csdn.net/20160909190409989" alt="嘻嘻嘻"></p>
+<h4 id="【参考资料】："><a href="#【参考资料】：" class="headerlink" title="【参考资料】："></a>【参考资料】：</h4><p>1、<a href="http://mp.weixin.qq.com/s?__biz=MzA4NTQwNDcyMA==&amp;mid=403126596&amp;idx=1&amp;sn=101c6d4e363213bcdbe1879edeb08736&amp;scene=0#wechat_redirect" target="_blank" rel="noopener">Android设计模式之单例模式</a><br>2、<a href="http://blog.csdn.net/pangpang123654/article/details/51829431" target="_blank" rel="noopener">十分钟认识单例模式的多种姿势</a><br>3、<a href="http://blog.csdn.net/itachi85/article/details/50510124" target="_blank" rel="noopener">设计模式（二）单例模式的七种写法</a><br>4、<a href="http://devbean.blog.51cto.com/448512/203501" target="_blank" rel="noopener">深入Java单例模式</a><br>5、<a href="http://www.cnblogs.com/aigongsi/archive/2012/04/01/2429166.html" target="_blank" rel="noopener">java中volatile关键字的含义</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="../../../../js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Design-Pattern/">Design Pattern</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../19/【Android】抽象布局 — include、merge 、ViewStub/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          【Android】抽象布局 — include、merge 、ViewStub
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../07/【Go语言】基本类型排序和 slice 排序/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">【Go语言】基本类型排序和 slice 排序</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单例模式"><span class="nav-number">2.</span> <span class="nav-text">单例模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#它的七种写法"><span class="nav-number">3.</span> <span class="nav-text">它的七种写法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、饿汉式"><span class="nav-number">3.1.</span> <span class="nav-text">1、饿汉式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、懒汉式（非线程安全）"><span class="nav-number">3.2.</span> <span class="nav-text">2、懒汉式（非线程安全）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、懒汉式（线程安全）"><span class="nav-number">3.3.</span> <span class="nav-text">3、懒汉式（线程安全）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、双重校验锁（DCL）"><span class="nav-number">3.4.</span> <span class="nav-text">4、双重校验锁（DCL）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、静态内部类"><span class="nav-number">3.5.</span> <span class="nav-text">5、静态内部类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6、枚举"><span class="nav-number">3.6.</span> <span class="nav-text">6、枚举</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-使用容器"><span class="nav-number">3.7.</span> <span class="nav-text">7. 使用容器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#【参考资料】："><span class="nav-number">4.1.</span> <span class="nav-text">【参考资料】：</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2018 iTimeTraveler All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="../../../../categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="../../../../tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="../../../../funnysite" class="mobile-nav-link">酷站</a>
+  
+    <a href="../../../../collection" class="mobile-nav-link">收藏</a>
+  
+    <a href="../../../../about" class="mobile-nav-link">About</a>
+  
+    <a href="../../../../mybooks" class="mobile-nav-link">🎁</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.css">
+  <script src="../../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="../../../../js/scripts.js"></script>
+
+
+
+
+  <script src="../../../../js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            iTimeTraveler
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Mr.Seven All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

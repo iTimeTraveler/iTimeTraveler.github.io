@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>如何生成100个1-100以内的不重复的随机数 | iTimeTraveler</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Algorithm" />
+  
+  
+  
+  
+  <meta name="description" content="这是个经典的面试题目：生成长度为100的数组，插入1-100以内的但均不重复的随机数">
+<meta name="keywords" content="Algorithm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何生成100个1-100以内的不重复的随机数">
+<meta property="og:url" content="http://github.com/2016/01/22/如何生成100个1-100以内的不重复的随机数/index.html">
+<meta property="og:site_name" content="iTimeTraveler">
+<meta property="og:description" content="这是个经典的面试题目：生成长度为100的数组，插入1-100以内的但均不重复的随机数">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-03-14T08:13:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何生成100个1-100以内的不重复的随机数">
+<meta name="twitter:description" content="这是个经典的面试题目：生成长度为100的数组，插入1-100以内的但均不重复的随机数">
+  
+    <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/gallery/avatar/0.jpg">
+  <link rel="apple-touch-icon" href="/gallery/avatar/0.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="../../../../css/style.css">
+
+  <script src="../../../../js/jquery-3.1.1.min.js"></script>
+  <script src="../../../../js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="../../../../css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 8px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="62px" height="75px" alt="Hike News" src="/gallery/avatar/0.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="../../../../index.html">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../funnysite">酷站</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../collection">收藏</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../mybooks">🎁</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '../../../../content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="../../../../js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-如何生成100个1-100以内的不重复的随机数" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      如何生成100个1-100以内的不重复的随机数
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="" class="article-date">
+	  <time datetime="2016-01-22T03:55:00.000Z" itemprop="datePublished">2016-01-22</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../../../categories/Algorithm/">Algorithm</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>这是个经典的面试题目：生成长度为100的数组，插入1-100以内的但均不重复的随机数</p>
+</blockquote>
+<h2 id="一、简单实现思路"><a href="#一、简单实现思路" class="headerlink" title="一、简单实现思路:"></a><strong>一、简单实现思路:</strong></h2><p>(1) 把N个数放入Hashtable 或者arrayList 中.</p>
+<p>(2) 从上面的集合中随机抽取一个数放入int数组中.</p>
+<p>(3) 把取出的这个数从上面的集合中删除.</p>
+<p>(4) 循环 (2),(3) 步骤,直到int数组取满为止.</p>
+<a id="more"></a>
+<p>这是一种比较简单的实现思路，实现代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.Collections;</span><br><span class="line"><span class="keyword">import</span> java.util.Random;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> range = <span class="number">100</span>;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> ArrayList&lt;Integer&gt; originalList = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> ArrayList&lt;Integer&gt; result = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">static</span> &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= range; i++) &#123;</span><br><span class="line">			originalList.add(i);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; range; i++) &#123;</span><br><span class="line">			<span class="keyword">int</span> j = range - i;</span><br><span class="line">			<span class="keyword">int</span> r = (<span class="keyword">int</span>) (<span class="keyword">new</span> Random().nextInt(j));</span><br><span class="line"></span><br><span class="line">			result.add(originalList.get(r));</span><br><span class="line"></span><br><span class="line">			System.out.print(originalList.get(r) + <span class="string">", "</span>);</span><br><span class="line">			originalList.remove(r);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		Collections.sort(result);</span><br><span class="line">		System.out.println(<span class="string">"\n\n生成的数组大小是："</span> + result.size() + <span class="string">"------以下是排序结果，看是否有重复的随机数"</span>);</span><br><span class="line">		<span class="keyword">for</span> (Integer i : result) &#123;</span><br><span class="line">			System.out.print(i + <span class="string">", "</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行结果如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">74</span>, <span class="number">75</span>, <span class="number">47</span>, <span class="number">76</span>, <span class="number">59</span>, <span class="number">94</span>, <span class="number">2</span>, <span class="number">33</span>, <span class="number">23</span>, <span class="number">66</span>, <span class="number">60</span>, <span class="number">13</span>, <span class="number">44</span>, <span class="number">34</span>, <span class="number">7</span>, <span class="number">92</span>, <span class="number">11</span>, <span class="number">86</span>, <span class="number">4</span>, <span class="number">38</span>, <span class="number">26</span>, <span class="number">55</span>, <span class="number">64</span>, <span class="number">99</span>, <span class="number">1</span>, <span class="number">54</span>, <span class="number">30</span>, <span class="number">72</span>, <span class="number">80</span>, <span class="number">87</span>, <span class="number">15</span>, <span class="number">24</span>, <span class="number">25</span>, <span class="number">37</span>, <span class="number">83</span>, <span class="number">49</span>, <span class="number">28</span>, <span class="number">81</span>, <span class="number">79</span>, <span class="number">35</span>, <span class="number">18</span>, <span class="number">68</span>, <span class="number">61</span>, <span class="number">46</span>, <span class="number">98</span>, <span class="number">58</span>, <span class="number">85</span>, <span class="number">29</span>, <span class="number">39</span>, <span class="number">48</span>, <span class="number">53</span>, <span class="number">14</span>, <span class="number">8</span>, <span class="number">91</span>, <span class="number">42</span>, <span class="number">36</span>, <span class="number">65</span>, <span class="number">62</span>, <span class="number">6</span>, <span class="number">52</span>, <span class="number">21</span>, <span class="number">78</span>, <span class="number">63</span>, <span class="number">73</span>, <span class="number">16</span>, <span class="number">88</span>, <span class="number">5</span>, <span class="number">69</span>, <span class="number">19</span>, <span class="number">51</span>, <span class="number">50</span>, <span class="number">43</span>, <span class="number">40</span>, <span class="number">70</span>, <span class="number">89</span>, <span class="number">10</span>, <span class="number">12</span>, <span class="number">71</span>, <span class="number">96</span>, <span class="number">45</span>, <span class="number">93</span>, <span class="number">9</span>, <span class="number">31</span>, <span class="number">22</span>, <span class="number">95</span>, <span class="number">20</span>, <span class="number">17</span>, <span class="number">3</span>, <span class="number">67</span>, <span class="number">90</span>, <span class="number">41</span>, <span class="number">82</span>, <span class="number">57</span>, <span class="number">84</span>, <span class="number">100</span>, <span class="number">32</span>, <span class="number">77</span>, <span class="number">27</span>, <span class="number">97</span>, <span class="number">56</span>, </span><br><span class="line"></span><br><span class="line">生成的数组大小是：<span class="number">100</span>------以下是排序结果，看是否有重复的随机数</span><br><span class="line"><span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>, <span class="number">17</span>, <span class="number">18</span>, <span class="number">19</span>, <span class="number">20</span>, <span class="number">21</span>, <span class="number">22</span>, <span class="number">23</span>, <span class="number">24</span>, <span class="number">25</span>, <span class="number">26</span>, <span class="number">27</span>, <span class="number">28</span>, <span class="number">29</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">32</span>, <span class="number">33</span>, <span class="number">34</span>, <span class="number">35</span>, <span class="number">36</span>, <span class="number">37</span>, <span class="number">38</span>, <span class="number">39</span>, <span class="number">40</span>, <span class="number">41</span>, <span class="number">42</span>, <span class="number">43</span>, <span class="number">44</span>, <span class="number">45</span>, <span class="number">46</span>, <span class="number">47</span>, <span class="number">48</span>, <span class="number">49</span>, <span class="number">50</span>, <span class="number">51</span>, <span class="number">52</span>, <span class="number">53</span>, <span class="number">54</span>, <span class="number">55</span>, <span class="number">56</span>, <span class="number">57</span>, <span class="number">58</span>, <span class="number">59</span>, <span class="number">60</span>, <span class="number">61</span>, <span class="number">62</span>, <span class="number">63</span>, <span class="number">64</span>, <span class="number">65</span>, <span class="number">66</span>, <span class="number">67</span>, <span class="number">68</span>, <span class="number">69</span>, <span class="number">70</span>, <span class="number">71</span>, <span class="number">72</span>, <span class="number">73</span>, <span class="number">74</span>, <span class="number">75</span>, <span class="number">76</span>, <span class="number">77</span>, <span class="number">78</span>, <span class="number">79</span>, <span class="number">80</span>, <span class="number">81</span>, <span class="number">82</span>, <span class="number">83</span>, <span class="number">84</span>, <span class="number">85</span>, <span class="number">86</span>, <span class="number">87</span>, <span class="number">88</span>, <span class="number">89</span>, <span class="number">90</span>, <span class="number">91</span>, <span class="number">92</span>, <span class="number">93</span>, <span class="number">94</span>, <span class="number">95</span>, <span class="number">96</span>, <span class="number">97</span>, <span class="number">98</span>, <span class="number">99</span>, <span class="number">100</span>,</span><br></pre></td></tr></table></figure>
+<h2 id="二、改进算法"><a href="#二、改进算法" class="headerlink" title="二、改进算法"></a><strong>二、改进算法</strong></h2><p>我们一般都会想到这种做法,但是当Hashtable或者ArrayList中放几千万,几亿数据时,这时从集合中删除元素将严重影响性能,如果突破此瓶颈? 网上找到一种更好的方法.</p>
+<p>(1) 把N个数放到容器A(int数组)中.<br>(2) 从N个数中随机取出1个数放入容器B(int数组)中.<br>(3) 把容器A中最后一个数与随机抽取的数<strong>对调</strong> 或者 把容器A中最后一个数覆盖随机抽取出来的数.<br>(4) 这时从容器A(假设N个数,索引0 到 索引N-2)之间随机取一个数.再放入容器B中,重复此步骤.</p>
+<p>说明：也就是第二次是从容器A中 第一个元素到倒数第二个元素 中随机取一个数.<br>这种好处是,随机数所取范围逐步缩小,而且杜绝了大数据时集合执行删除操作时产生的瓶颈.</p>
+<p>所以，向下面这样实现会更好：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> range = <span class="number">100</span>;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span>[] result;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">		result = getNumber(range);</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; range; i++) &#123;</span><br><span class="line">			System.out.print(result[i] + <span class="string">", "</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] getNumber(<span class="keyword">int</span> total)&#123;</span><br><span class="line">		<span class="keyword">int</span>[] NumberBox = <span class="keyword">new</span> <span class="keyword">int</span>[total];			<span class="comment">//容器A</span></span><br><span class="line">		<span class="keyword">int</span>[] rtnNumber = <span class="keyword">new</span> <span class="keyword">int</span>[total];			<span class="comment">//容器B</span></span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; total; i++)&#123;</span><br><span class="line">		  NumberBox[i] = i;		<span class="comment">//先把N个数放入容器A中</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">int</span> end = total - <span class="number">1</span>;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; total; j++)&#123;</span><br><span class="line">		  <span class="keyword">int</span> num = <span class="keyword">new</span> Random().nextInt(end + <span class="number">1</span>);	<span class="comment">//取随机数</span></span><br><span class="line">		  rtnNumber[j] = NumberBox[num];			<span class="comment">//把随机数放入容器B</span></span><br><span class="line">		  NumberBox[num] = NumberBox[end];			<span class="comment">//把容器A中最后一个数覆盖所取的随机数</span></span><br><span class="line">		  end--;									<span class="comment">//缩小随机数所取范围</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> rtnNumber;							<span class="comment">//返回int型数组</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行结果如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">80</span>, <span class="number">9</span>, <span class="number">70</span>, <span class="number">22</span>, <span class="number">3</span>, <span class="number">63</span>, <span class="number">12</span>, <span class="number">81</span>, <span class="number">73</span>, <span class="number">41</span>, <span class="number">90</span>, <span class="number">83</span>, <span class="number">27</span>, <span class="number">71</span>, <span class="number">88</span>, <span class="number">5</span>, <span class="number">40</span>, <span class="number">18</span>, <span class="number">25</span>, <span class="number">37</span>, <span class="number">55</span>, <span class="number">60</span>, <span class="number">93</span>, <span class="number">87</span>, <span class="number">17</span>, <span class="number">89</span>, <span class="number">99</span>, <span class="number">84</span>, <span class="number">32</span>, <span class="number">96</span>, <span class="number">62</span>, <span class="number">98</span>, <span class="number">77</span>, <span class="number">30</span>, <span class="number">23</span>, <span class="number">35</span>, <span class="number">47</span>, <span class="number">24</span>, <span class="number">21</span>, <span class="number">53</span>, <span class="number">95</span>, <span class="number">7</span>, <span class="number">85</span>, <span class="number">2</span>, <span class="number">65</span>, <span class="number">1</span>, <span class="number">39</span>, <span class="number">43</span>, <span class="number">76</span>, <span class="number">46</span>, <span class="number">42</span>, <span class="number">91</span>, <span class="number">4</span>, <span class="number">26</span>, <span class="number">52</span>, <span class="number">86</span>, <span class="number">34</span>, <span class="number">54</span>, <span class="number">38</span>, <span class="number">78</span>, <span class="number">31</span>, <span class="number">11</span>, <span class="number">66</span>, <span class="number">36</span>, <span class="number">50</span>, <span class="number">75</span>, <span class="number">16</span>, <span class="number">68</span>, <span class="number">56</span>, <span class="number">33</span>, <span class="number">48</span>, <span class="number">15</span>, <span class="number">74</span>, <span class="number">69</span>, <span class="number">49</span>, <span class="number">6</span>, <span class="number">58</span>, <span class="number">10</span>, <span class="number">29</span>, <span class="number">92</span>, <span class="number">64</span>, <span class="number">59</span>, <span class="number">28</span>, <span class="number">61</span>, <span class="number">45</span>, <span class="number">19</span>, <span class="number">14</span>, <span class="number">13</span>, <span class="number">44</span>, <span class="number">72</span>, <span class="number">94</span>, <span class="number">20</span>, <span class="number">97</span>, <span class="number">51</span>, <span class="number">67</span>, <span class="number">79</span>, <span class="number">0</span>, <span class="number">82</span>, <span class="number">8</span>, <span class="number">57</span>,</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="../../../../js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Algorithm/">Algorithm</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../../03/08/【Android】Picasso加载本地图片如何清理缓存cache？/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          【Android】Picasso加载本地图片如何清理缓存cache？
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../19/【Android】如何查看Activity Task栈的情况/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">【Android】如何查看Activity Task栈的情况</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、简单实现思路"><span class="nav-number">1.</span> <span class="nav-text">一、简单实现思路:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、改进算法"><span class="nav-number">2.</span> <span class="nav-text">二、改进算法</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2018 iTimeTraveler All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="../../../../categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="../../../../tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="../../../../funnysite" class="mobile-nav-link">酷站</a>
+  
+    <a href="../../../../collection" class="mobile-nav-link">收藏</a>
+  
+    <a href="../../../../about" class="mobile-nav-link">About</a>
+  
+    <a href="../../../../mybooks" class="mobile-nav-link">🎁</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.css">
+  <script src="../../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="../../../../js/scripts.js"></script>
+
+
+
+
+  <script src="../../../../js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            iTimeTraveler
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Mr.Seven All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

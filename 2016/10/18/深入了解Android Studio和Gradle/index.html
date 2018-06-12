@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>深入了解android studio和gradle | iTimeTraveler</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Android" />
+  
+  
+  
+  
+  <meta name="description" content="原文链接： 重新认识AndroidStudio和Gradle，这些都是我们应该知道的  — by 井方哥  前言主要从AndroidStudio的环境安装升级，Gradle，Eclipse转AS,多渠道配置，Maven私服，Action,Option，快捷键等几个方面出发，讲一些操作技巧以及我对AndroidStudio使用的一些理解与经验。本文较全面的讲述了我们在开发中必须要了解的，比较多而全">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入了解Android Studio和Gradle">
+<meta property="og:url" content="http://github.com/2016/10/18/深入了解Android Studio和Gradle/index.html">
+<meta property="og:site_name" content="iTimeTraveler">
+<meta property="og:description" content="原文链接： 重新认识AndroidStudio和Gradle，这些都是我们应该知道的  — by 井方哥  前言主要从AndroidStudio的环境安装升级，Gradle，Eclipse转AS,多渠道配置，Maven私服，Action,Option，快捷键等几个方面出发，讲一些操作技巧以及我对AndroidStudio使用的一些理解与经验。本文较全面的讲述了我们在开发中必须要了解的，比较多而全">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-03-14T08:13:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入了解Android Studio和Gradle">
+<meta name="twitter:description" content="原文链接： 重新认识AndroidStudio和Gradle，这些都是我们应该知道的  — by 井方哥  前言主要从AndroidStudio的环境安装升级，Gradle，Eclipse转AS,多渠道配置，Maven私服，Action,Option，快捷键等几个方面出发，讲一些操作技巧以及我对AndroidStudio使用的一些理解与经验。本文较全面的讲述了我们在开发中必须要了解的，比较多而全">
+  
+    <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/gallery/avatar/0.jpg">
+  <link rel="apple-touch-icon" href="/gallery/avatar/0.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="../../../../css/style.css">
+
+  <script src="../../../../js/jquery-3.1.1.min.js"></script>
+  <script src="../../../../js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="../../../../css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 8px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="62px" height="75px" alt="Hike News" src="/gallery/avatar/0.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="../../../../index.html">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../funnysite">酷站</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../collection">收藏</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../mybooks">🎁</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '../../../../content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="../../../../js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-深入了解Android Studio和Gradle" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      深入了解Android Studio和Gradle
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="" class="article-date">
+	  <time datetime="2016-10-18T09:08:00.000Z" itemprop="datePublished">2016-10-18</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../../../categories/Android/">Android</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>原文链接： <a href="https://zhuanlan.zhihu.com/p/22990436" target="_blank" rel="noopener"><strong>重新认识AndroidStudio和Gradle，这些都是我们应该知道的</strong></a>  — by <a href="https://www.zhihu.com/people/zeng-jing-fang" target="_blank" rel="noopener">井方哥</a></p>
+</blockquote>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h2><p>主要从AndroidStudio的环境安装升级，Gradle，Eclipse转AS,多渠道配置，Maven私服，Action,Option，快捷键等几个方面出发，讲一些操作技巧以及我对AndroidStudio使用的一些理解与经验。本文较全面的讲述了我们在开发中必须要了解的，比较多而全，可能不能马上记住，目的在于大家看我之后能有一个认识，在需要使用的时候知道有这么个东西。希望对你的开发工作有所帮助，不足之处，请批评指正。</p>
+<h2 id="一、Install-amp-Settings-amp-Update"><a href="#一、Install-amp-Settings-amp-Update" class="headerlink" title="一、Install&amp;Settings&amp;Update"></a><strong>一、Install&amp;Settings&amp;Update</strong></h2><h3 id="1、Gradle"><a href="#1、Gradle" class="headerlink" title="1、Gradle"></a>1、Gradle</h3><p>Gradle官方会不断更新，我们可以使用本地安装的方式，并配置path，我们就可以使用Terminal直接输入gradle命令执行构建任务。当然如果我们想快速更新，可以修改配置文件。 首先，修改<code>project\gradle\warpper\gradle-wapper.properties</code> 文件，其中distributionUrl的值：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">distributionUrl=https\:<span class="comment">//services.gradle.org/distributions/gradle-2.4-all.zip</span></span><br></pre></td></tr></table></figure>
+<p>这里实际是从网络下载配置的版本，会自动检测，如果不是的就会下载。</p>
+<p>然后修改 project的build.gradle</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">dependencies</span> &#123;</span><br><span class="line">    <span class="keyword">classpath</span> <span class="string">'com.android.tools.build:gradle:1.3.0'</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// <span class="doctag">NOTE:</span> Do not place your application dependencies here; they belong</span></span><br><span class="line">    <span class="comment">// in the individual module build.gradle files</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>注意：这两个配置是一一对应的，比如gradle-2.4-all对应的就是1.3.0。后者的意思是这个project配置的gradle构建版本为1.3.0，前者的意思是这个project使用的gradle的版本为2.4。我们会发现，如果我们修改前者，如果本地没有安装这个版本的gradle，会自动从gradle官网下载。但是，如果我们修改后者，它会自动从jcenter()仓库下载一些plugin之类的。</p>
+<h3 id="2、AS具体的安装和更新网上有许多的详细教程，我只想说以下三点。"><a href="#2、AS具体的安装和更新网上有许多的详细教程，我只想说以下三点。" class="headerlink" title="2、AS具体的安装和更新网上有许多的详细教程，我只想说以下三点。"></a>2、AS具体的安装和更新网上有许多的详细教程，我只想说以下三点。</h3><ul>
+<li><p>Android Studio是Google官方基于IntelliJ IDEA开发的一款Android应用开发工具,绝逼比Eclipse强大，还没有转的尽快吧:</p>
+</li>
+<li><p>关闭AndroidStudio的自检升级，如果准备好升级还是自己选择想升级的版本升级靠谱；</p>
+</li>
+<li><p>升级前导出AndroidStudio的配置文件settings.jar(C:\Users\Administrator.AndroidStudio1.4\config目录下，或者操作File|Export Setings导出)，升级后导入Settings.jar，这样就不需要重新配置，有必要的话给自己备份一个，说不定老天无缘无故挂了重装很方便。</p>
+</li>
+<li><p>具体细节的配置可以阅读，强烈建议直接打开AS的设置窗口，多转几次就熟悉了里边的各种配置啦。也可以参考这边文章，（1.4版本，有点旧了，差不多够用）<a href="http://blog.csdn.net/JF_1994/article/details/50085825" target="_blank" rel="noopener">打造你的开发工具，settings必备</a></p>
+</li>
+</ul>
+<h2 id="二、Gradle"><a href="#二、Gradle" class="headerlink" title="二、Gradle"></a><strong>二、Gradle</strong></h2><h3 id="1-简述Groovy语言"><a href="#1-简述Groovy语言" class="headerlink" title="1 简述Groovy语言"></a>1 简述Groovy语言</h3><p>Groovy是一种开发语言，是在Java平台上的，具有向Python，Ruby语言特性的灵活动态语言,Groovy保重了这些特性像Java语法一样被Java开发者使用。编译最终都会转成java的.class文件。他们的关系如下图。我想这大概也是Gradle构建系统为什么要选择Groovy的原因，它具有java语言的特性，开发者容易理解使用。一定要明白我们在build.gradle里边不是简单的配置，而是直接的逻辑开发。如果你熟练掌握Groovy，那么你在build.grale里边可以做任何你想做的事。</p>
+<h3 id="2-Gradle编程框架"><a href="#2-Gradle编程框架" class="headerlink" title="2 Gradle编程框架"></a>2 Gradle编程框架</h3><p>Gradle是一个工具，同时它也是一个编程框架。使用这个工具可以完成app的编译打包等工作，也可以干别的工作！Gradle里边有许多不同的插件，对应不同的工程结构、打包方式和输出文件类型。我们经常使用到的便是maven\java\com.android.application\android-library等。当按照要求配置好gradle的环境后，执行gradle的task，便会自动编译打包输出你想要的.apk.aar.jar文件,如果你足够牛逼，你有gradle就够了，直接拿记事本开发；</p>
+<p><strong>如下图，是Gradle的工作流程。</strong></p>
+<ul>
+<li><p>Initializtion 初始化，执行settings.gradle(我们看到都是include”,实际里边可深了）</p>
+</li>
+<li><p>Hook 通过API来添加，这中间我们可以自己编程干些自己想做的事情</p>
+</li>
+<li><p>Configuration 解析每个project的build.gradle，确定project以及内部Task关系，形成一个有向图</p>
+</li>
+<li><p>Execution 执行任务，输入命令 gradle xxx ,按照顺序执行该task的所有依赖以自己本身</p>
+</li>
+</ul>
+<h3 id="3-关于gradle的task"><a href="#3-关于gradle的task" class="headerlink" title="3 关于gradle的task"></a>3 关于gradle的task</h3><p>每个构建由一个或者多个project构成，一个project代表一个jar，一个moudle等等。一个project包含若干个task，包含多少由插件决定，而每一个task就是更细的构建任务，比如创建一个jar、生成Javadoc、上传aar到maven仓库。我们可以通过执行如下命令查看所有的task:</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle tasks --all</span><br></pre></td></tr></table></figure>
+<p>当然，我们也可以在AS中可以看到所有的task，双击就可以执行单个的task.</p>
+<p>当然，我们也可以在build.gradle中写自己的task。关于详细的task介绍可以查看网络资料进行学习，推荐<a href="http://blog.jobbole.com/71999/" target="_blank" rel="noopener">Gradle入门系列</a>，基本花上半天到一天的时候简单的过一遍就有一个大概的了解。</p>
+<h3 id="4-Gradle环境下Android的文件结构"><a href="#4-Gradle环境下Android的文件结构" class="headerlink" title="4 Gradle环境下Android的文件结构"></a>4 Gradle环境下Android的文件结构</h3><blockquote>
+<ul>
+<li>project-name<ul>
+<li>gradle</li>
+<li>module-name<ul>
+<li>build    //构建生成文件<ul>
+<li>intermediates//构建打包的资源文件<ul>
+<li>assets//资源文件</li>
+<li>exploded-aar//如果我们依赖了许多的aar或者依赖工程，最终都“copy”到了这个目录下</li>
+<li>mainfests//合并的mainfest</li>
+</ul>
+</li>
+<li>outputs<ul>
+<li>apk//输出我们需要的.apk文件</li>
+<li>lint-results.html//lint检查报告</li>
+</ul>
+</li>
+<li>reports<ul>
+<li>tests//单元测试报告</li>
+</ul>
+</li>
+<li>ivy.xml//moudle的配置（task任务）、依赖关系等</li>
+</ul>
+</li>
+<li>libs    //本地的依赖jar包等</li>
+<li>src    //本moudule所有的代码和资源文件<ul>
+<li>androidTest    //需要android环境的单元测试，比如UI的单元测试</li>
+<li>Test    //普通的java单元测试</li>
+<li>main    //主渠道<ul>
+<li>java    //java code</li>
+<li>jni //navtive jni so</li>
+<li>gen</li>
+<li>res</li>
+<li>assets</li>
+<li>AndroidManifest.xml +build.gradle //module</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>build.gradle // for all module</li>
+<li>gradle.propeties //全局配置文件</li>
+<li>local.properties //SDK、NDK配置</li>
+<li>config.gradle//自定义的配置文件</li>
+<li>settings.gradle//module管理</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="6-关于几个buid-gradle、gradle-propeties文件"><a href="#6-关于几个buid-gradle、gradle-propeties文件" class="headerlink" title="6 关于几个buid.gradle、gradle.propeties文件"></a>6 关于几个buid.gradle、gradle.propeties文件</h3><ul>
+<li>build.gradle文件(主工程的Top-level)</li>
+</ul>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">apply <span class="keyword">from</span>:<span class="string">"config.gradle"</span><span class="comment">//可以给所有的moudle引入一个配置文件</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">buildscript</span> &#123;</span><br><span class="line">     <span class="keyword">repositories</span> &#123;</span><br><span class="line">     jcenter()</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">dependencies</span> &#123;</span><br><span class="line">    <span class="keyword">classpath</span> <span class="string">'com.android.tools.build:gradle:1.3.0'</span></span><br><span class="line">    <span class="comment">// <span class="doctag">NOTE:</span> Do not place your application dependencies here; they belong</span></span><br><span class="line">     <span class="comment">// in the individual module build.gradle files</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">allprojects</span> &#123;</span><br><span class="line">    <span class="keyword">repositories</span> &#123;</span><br><span class="line">        jcenter()<span class="comment">//引入远程仓库</span></span><br><span class="line">        maven &#123; url MAVEN_URL &#125;<span class="comment">//引入自己的私有maven仓库</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>gradle.properties(全局配置文件）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># This can really make a significant difference if you are building a very complex project with many sub-module dependencies:</span><br><span class="line">#sub-moudle并行构建</span><br><span class="line">org.gradle.parallel=true</span><br><span class="line">#后台进程构建</span><br><span class="line">org.gradle.daemon=true</span><br><span class="line">#私有maven仓库地址</span><br><span class="line">MAVEN_URL= http://xxx.xx.1.147:8081/nexus/content/repositories/thirdparty/</span><br></pre></td></tr></table></figure>
+<ul>
+<li>build.gradle(module)</li>
+</ul>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: <span class="string">'com.android.application'</span><span class="comment">//插件 决定是apk\aar\jar等</span></span><br><span class="line"></span><br><span class="line">android &#123;</span><br><span class="line">compileSdkVersion <span class="number">23</span></span><br><span class="line">buildToolsVersion <span class="string">"24.0.0"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 此处注释保持默认打开，关闭后可使不严格的图片可以通过编译,但会导致apk包变大</span></span><br><span class="line"><span class="comment">//aaptOptions.cruncherEnabled = false</span></span><br><span class="line"><span class="comment">//aaptOptions.useNewCruncher = false</span></span><br><span class="line"></span><br><span class="line"> packagingOptions &#123;</span><br><span class="line">     <span class="keyword">exclude</span> <span class="string">'META-INF/NOTICE.txt'</span><span class="comment">// 这里是具体的冲突文件全路径</span></span><br><span class="line">     <span class="keyword">exclude</span> <span class="string">'META-INF/LICENSE.txt'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//默认配置</span></span><br><span class="line">defaultConfig &#123;</span><br><span class="line">    applicationId <span class="string">"com.locove.meet"</span></span><br><span class="line">    minSdkVersion <span class="number">16</span></span><br><span class="line">    targetSdkVersion <span class="number">23</span></span><br><span class="line">    versionCode <span class="number">1</span></span><br><span class="line">    versionName <span class="string">"1.0"</span></span><br><span class="line">    multiDexEnabled=<span class="keyword">true</span><span class="comment">//65536问题</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">sourceSets</span> &#123;</span><br><span class="line">    main &#123;</span><br><span class="line">        jniLibs.srcDirs = [<span class="string">'libs'</span>]<span class="comment">//重新配置路径</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">buildTypes &#123;</span><br><span class="line">    release &#123;</span><br><span class="line">    <span class="comment">// zipAlign优化</span></span><br><span class="line">    zipAlignEnabled <span class="keyword">true</span></span><br><span class="line">    <span class="comment">// 移除无用的resource文件</span></span><br><span class="line">    shrinkResources <span class="keyword">false</span></span><br><span class="line">    <span class="comment">// 混淆</span></span><br><span class="line">    minifyEnabled <span class="keyword">false</span></span><br><span class="line">    proguardFiles getDefaultProguardFile(<span class="string">'proguard-android.txt'</span>), <span class="string">'proguard-rules.pro'</span></span><br><span class="line">    signingConfig signingConfigs.releaseConfig</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">dependencies</span> &#123;</span><br><span class="line">    <span class="keyword">compile</span> <span class="keyword">fileTree</span>(dir: <span class="string">'libs'</span>, <span class="keyword">include</span>: [<span class="string">'*.jar'</span>])</span><br><span class="line">    <span class="keyword">compile</span> <span class="string">'com.google.code.gson:gson:2.2.+'</span></span><br><span class="line">    testCompile <span class="string">'junit:junit:4.12'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="7-gradle编译文件和缓存文件"><a href="#7-gradle编译文件和缓存文件" class="headerlink" title="7 gradle编译文件和缓存文件"></a>7 gradle编译文件和缓存文件</h3><ul>
+<li>gradle缓存文件：C:\Users\Administrator.gradle\caches\modules-2\files-2.1</li>
+<li>idea缓存文件： C:\Users\Administrator.AndroidStudio1.4</li>
+</ul>
+<h2 id="三、构建过程简析"><a href="#三、构建过程简析" class="headerlink" title="三、构建过程简析"></a>三、构建过程简析</h2><p>这里参考了QQ音乐技术团队Android构建过程分析 下图是文章末尾的一张构建流程图：</p>
+<ul>
+<li><p><strong>解压合并资源</strong>： 主要是assets目录，res目录，Androidmainfest.xml目录。其中合并的时候会涉及到优先级的问题，详情请查看该篇文章。</p>
+</li>
+<li><p><strong>AAPT(Android Asset Packaging Tool)打包</strong></p>
+<ul>
+<li>R.java文件 资源ID</li>
+<li>app.ap 压缩包</li>
+<li>对png图进行优化等</li>
+</ul>
+</li>
+<li><p><strong>源码编译</strong>：  生成.class字节码，在这里可以进行删除无用类，字节码优化，重命名（包名），还有一点就是代码混淆。</p>
+</li>
+<li><p><strong>生成dex、打包签名、zipalign</strong></p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="../../../../js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Android/">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../21/谷歌整体战略：关于人工智能、云服务和登月计划的未来/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          谷歌整体战略：关于人工智能、云服务和登月计划的未来
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../17/Hiker中文使用教程/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Hiker Guide</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Install-amp-Settings-amp-Update"><span class="nav-number">2.</span> <span class="nav-text">一、Install&amp;Settings&amp;Update</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、Gradle"><span class="nav-number">2.1.</span> <span class="nav-text">1、Gradle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、AS具体的安装和更新网上有许多的详细教程，我只想说以下三点。"><span class="nav-number">2.2.</span> <span class="nav-text">2、AS具体的安装和更新网上有许多的详细教程，我只想说以下三点。</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Gradle"><span class="nav-number">3.</span> <span class="nav-text">二、Gradle</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-简述Groovy语言"><span class="nav-number">3.1.</span> <span class="nav-text">1 简述Groovy语言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Gradle编程框架"><span class="nav-number">3.2.</span> <span class="nav-text">2 Gradle编程框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-关于gradle的task"><span class="nav-number">3.3.</span> <span class="nav-text">3 关于gradle的task</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Gradle环境下Android的文件结构"><span class="nav-number">3.4.</span> <span class="nav-text">4 Gradle环境下Android的文件结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-关于几个buid-gradle、gradle-propeties文件"><span class="nav-number">3.5.</span> <span class="nav-text">6 关于几个buid.gradle、gradle.propeties文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-gradle编译文件和缓存文件"><span class="nav-number">3.6.</span> <span class="nav-text">7 gradle编译文件和缓存文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、构建过程简析"><span class="nav-number">4.</span> <span class="nav-text">三、构建过程简析</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2018 iTimeTraveler All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="../../../../categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="../../../../tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="../../../../funnysite" class="mobile-nav-link">酷站</a>
+  
+    <a href="../../../../collection" class="mobile-nav-link">收藏</a>
+  
+    <a href="../../../../about" class="mobile-nav-link">About</a>
+  
+    <a href="../../../../mybooks" class="mobile-nav-link">🎁</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.css">
+  <script src="../../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="../../../../js/scripts.js"></script>
+
+
+
+
+  <script src="../../../../js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            iTimeTraveler
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Mr.Seven All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

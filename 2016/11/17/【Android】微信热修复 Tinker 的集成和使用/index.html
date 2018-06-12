@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>【android】微信热修复 tinker 的集成和使用 | iTimeTraveler</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Tinker" />
+  
+  
+  
+  
+  <meta name="description" content="简介 Tinker： n.   〈英〉小炉匠，补锅匠，修补匠 Tinker 是微信官方开源的 Android 热修复框架，支持在无需升级APK的前提下更新 dex, library and resources 文件。它也就是今年9月24才刚刚开源，几天功夫star数就超过3000，可见在开发者中的影响力有多大，也说明这是一个刚需。 Tinker GitHub: https://github.com">
+<meta name="keywords" content="Tinker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Android】微信热修复 Tinker 的集成和使用">
+<meta property="og:url" content="http://github.com/2016/11/17/【Android】微信热修复 Tinker 的集成和使用/index.html">
+<meta property="og:site_name" content="iTimeTraveler">
+<meta property="og:description" content="简介 Tinker： n.   〈英〉小炉匠，补锅匠，修补匠 Tinker 是微信官方开源的 Android 热修复框架，支持在无需升级APK的前提下更新 dex, library and resources 文件。它也就是今年9月24才刚刚开源，几天功夫star数就超过3000，可见在开发者中的影响力有多大，也说明这是一个刚需。 Tinker GitHub: https://github.com">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://github.com/gallery/tinker.png">
+<meta property="og:updated_time" content="2018-03-14T08:13:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【Android】微信热修复 Tinker 的集成和使用">
+<meta name="twitter:description" content="简介 Tinker： n.   〈英〉小炉匠，补锅匠，修补匠 Tinker 是微信官方开源的 Android 热修复框架，支持在无需升级APK的前提下更新 dex, library and resources 文件。它也就是今年9月24才刚刚开源，几天功夫star数就超过3000，可见在开发者中的影响力有多大，也说明这是一个刚需。 Tinker GitHub: https://github.com">
+<meta name="twitter:image" content="http://github.com/gallery/tinker.png">
+  
+    <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/gallery/avatar/0.jpg">
+  <link rel="apple-touch-icon" href="/gallery/avatar/0.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="../../../../css/style.css">
+
+  <script src="../../../../js/jquery-3.1.1.min.js"></script>
+  <script src="../../../../js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="../../../../css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 8px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="62px" height="75px" alt="Hike News" src="/gallery/avatar/0.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="../../../../index.html">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../funnysite">酷站</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../collection">收藏</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../mybooks">🎁</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '../../../../content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="../../../../js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-【Android】微信热修复 Tinker 的集成和使用" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" href="../../../../gallery/tinker.png" rel="gallery_cjiblctiz005upzs6u5ucgmsf">
+        <img src="../../../../gallery/tinker.png" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      【Android】微信热修复 Tinker 的集成和使用
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="" class="article-date">
+	  <time datetime="2016-11-17T03:51:55.000Z" itemprop="datePublished">2016-11-17</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../../../categories/Android/">Android</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a><strong>简介</strong></h2><p> <strong><code>Tinker</code></strong>： n.   〈英〉小炉匠，补锅匠，修补匠</p>
+<p><a href="https://github.com/Tencent/tinker"><strong>Tinker</strong></a> 是微信官方开源的 Android 热修复框架，支持在无需升级APK的前提下更新 <code>dex</code>, <code>library</code> and <code>resources</code> 文件。它也就是今年9月24才刚刚开源，几天功夫star数就超过3000，可见在开发者中的影响力有多大，也说明这是一个刚需。</p>
+<p>Tinker GitHub: <a href="https://github.com/Tencent/tinker">https://github.com/Tencent/tinker</a></p>
+<h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a><strong>使用步骤</strong></h2><h3 id="一个小坑"><a href="#一个小坑" class="headerlink" title="一个小坑"></a>一个小坑</h3><p>很多人遇到的第一个错误就是提示 <code>tinkerId is not set</code> ，这个在tinker-sample-android的<code>app/build.gradle</code> 中默认设置为Git的提交版本号，如下</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> getTinkerIdValue() &#123;</span><br><span class="line">    <span class="keyword">return</span> hasProperty(<span class="string">"TINKER_ID"</span>) ? TINKER_ID : gitSha()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果不是通过git clone方式下载的就可能出现这个错误，其实可以简单粗暴的方式解决，那就是在app/build.gradle中把tinker id写死：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> getTinkerIdValue() &#123;</span><br><span class="line">    <span class="keyword">return</span> hasProperty(<span class="string">"TINKER_ID"</span>) ? TINKER_ID : <span class="string">"tinker_id_2333"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面介绍一下如何一步步的把Tinker集成到自己的项目中，以及会遇到哪些问题该如何解决。</p>
+<a id="more"></a>
+<h3 id="一、工程根目录的build-gradle中添加依赖"><a href="#一、工程根目录的build-gradle中添加依赖" class="headerlink" title="一、工程根目录的build.gradle中添加依赖"></a><strong>一、工程根目录的build.gradle中添加依赖</strong></h3><p>在项目的build.gradle中，添加<code>tinker-patch-gradle-plugin</code>的依赖</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        classpath (<span class="string">'com.tencent.tinker:tinker-patch-gradle-plugin:1.7.3'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时如果gradle Sync不成功可能是因为没有加入 <strong>jcenter仓库</strong></p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        mavenLocal()</span><br><span class="line">        jcenter()    <span class="comment">//注意这里，因为maven仓库里没有</span></span><br><span class="line">    &#125;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        classpath <span class="string">'com.android.tools.build:gradle:2.2.2'</span></span><br><span class="line">        classpath <span class="string">"com.tencent.tinker:tinker-patch-gradle-plugin:$&#123;TINKER_VERSION&#125;"</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// default values for all sub projects</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="二、在app-build-gradle中的dependencies节点添加依赖"><a href="#二、在app-build-gradle中的dependencies节点添加依赖" class="headerlink" title="二、在app/build.gradle中的dependencies节点添加依赖"></a><strong>二、在app/build.gradle中的dependencies节点添加依赖</strong></h3><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    <span class="comment">//可选，用于生成application类 </span></span><br><span class="line">    provided(<span class="string">'com.tencent.tinker:tinker-android-anno:1.7.3'</span>)</span><br><span class="line">    <span class="comment">//tinker的核心库</span></span><br><span class="line">    compile(<span class="string">'com.tencent.tinker:tinker-android-lib:1.7.3'</span>) </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="三、复制官方sample工程app-build-gradle中的其他相关配置"><a href="#三、复制官方sample工程app-build-gradle中的其他相关配置" class="headerlink" title="三、复制官方sample工程app/build.gradle中的其他相关配置"></a><strong>三、复制官方sample工程app/build.gradle中的其他相关配置</strong></h3><p>把官方 tinker-sample-android 工程中的<code>app/build.gradle</code>复制到自己的app/build.gradle中，特别是最下面的task 代码块，否则无法生成patch。</p>
+<h3 id="四、替换自己的Application类"><a href="#四、替换自己的Application类" class="headerlink" title="四、替换自己的Application类"></a><strong>四、替换自己的Application类</strong></h3><p>这一块需要特殊说明一下，tinker为了达到修改应用自己的Application的目的，使用代码框架封装继承<code>DefaultApplicationLike</code>的方式来实现对Application的修改，主要为了减少反射的使用和提高兼容性，具体说明参考 <a href="https://github.com/Tencent/tinker/wiki/Tinker-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%89%A9%E5%B1%95"><strong>Tinker Wiki：自定义Application类</strong></a>。</p>
+<blockquote>
+<p>在替换更改之前，强烈建议先把项目中的Application类做个备份。因为需要采用Annotation自动生成Application，<strong>原来的Application类需要删掉</strong>。</p>
+</blockquote>
+<p>然后我们修改项目的 Application ，使之继承<code>DefaultApplicationLike</code>; 这块的确有点奇葩,这个<code>DefaultApplicationLike</code>不是继承自Application，需要用注解来设置项目中真正的Application，<strong>Tinker插件会自动生成真正的Application</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@DefaultLifeCycle</span>(application = <span class="string">"com.cuc.android.aps.MyApplication"</span>,<span class="comment">//通过注解，由tinker自动生成MyApplication</span></span><br><span class="line">        flags = ShareConstants.TINKER_ENABLE_ALL,                 <span class="comment">//tinkerFlags</span></span><br><span class="line">        loaderClass = <span class="string">"com.tencent.tinker.loader.TinkerLoader"</span>,   <span class="comment">//loaderClassName, 我们这里使用默认</span></span><br><span class="line">        loadVerifyFlag = <span class="keyword">false</span>)</span><br><span class="line">        </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ApplicationFromTinkerLike</span> <span class="keyword">extends</span> <span class="title">DefaultApplicationLike</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ApplicationFromTinkerLike</span><span class="params">(Application application, <span class="keyword">int</span> tinkerFlags, <span class="keyword">boolean</span> tinkerLoadVerifyFlag, <span class="keyword">long</span> applicationStartElapsedTime, <span class="keyword">long</span> applicationStartMillisTime, Intent tinkerResultIntent, Resources[] resources, ClassLoader[] classLoader, AssetManager[] assetManager)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(application, tinkerFlags, tinkerLoadVerifyFlag, applicationStartElapsedTime, applicationStartMillisTime, tinkerResultIntent, resources, classLoader, assetManager);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上边的<strong><code>com.cuc.android.aps.MyApplication</code></strong>就是真正的Application,不用我们自己写,是自动生成的。然后修改manifest.xml将application指向<code>com.cuc.android.aps.MyApplication</code>就行，开始会报错，build一下项目就好了。</p>
+<h3 id="五、在刚改好的-ApplicationFromTinkerLike-中重载onBaseContextAttached方法"><a href="#五、在刚改好的-ApplicationFromTinkerLike-中重载onBaseContextAttached方法" class="headerlink" title="五、在刚改好的 ApplicationFromTinkerLike 中重载onBaseContextAttached方法"></a><strong>五、在刚改好的 ApplicationFromTinkerLike 中重载onBaseContextAttached方法</strong></h3><p>并在该方法中增加以下代码调用初始化tinker</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onBaseContextAttached</span><span class="params">(Context base)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onBaseContextAttached(base);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//you must install multiDex whatever tinker is installed!</span></span><br><span class="line">    MultiDex.install(base);</span><br><span class="line">    TinkerInstaller.install(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>或者</strong>，我们可以直接将Sample工程中的文件（特别是Utils包下的）拷贝到我们自己的工程中，就像我一样，方便后期使用。比如SampleResultService、TinkerManager这几个类</p>
+<p><img src="http://img.blog.csdn.net/20161117111013179" alt=""></p>
+<p>然后重载onBaseContextAttached方法，可以像我一样写成下面这样</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onBaseContextAttached</span><span class="params">(Context base)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onBaseContextAttached(base);</span><br><span class="line">    <span class="comment">//you must install multiDex whatever tinker is installed!</span></span><br><span class="line">    MultiDex.install(base);</span><br><span class="line"></span><br><span class="line">    MyApplicationContext.application = (MyApplication) getApplication();</span><br><span class="line">    MyApplicationContext.context = getApplication();</span><br><span class="line">    TinkerManager.setTinkerApplicationLike(<span class="keyword">this</span>);</span><br><span class="line">    TinkerManager.initFastCrashProtect();</span><br><span class="line">    <span class="comment">//should set before tinker is installed</span></span><br><span class="line">    TinkerManager.setUpgradeRetryEnable(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//optional set logIml, or you can use default debug log</span></span><br><span class="line">    TinkerInstaller.setLogIml(<span class="keyword">new</span> MyLogImp());</span><br><span class="line"></span><br><span class="line">    <span class="comment">//installTinker after load multiDex</span></span><br><span class="line">    <span class="comment">//or you can put com.tencent.tinker.** to main dex</span></span><br><span class="line">    TinkerManager.installTinker(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>至此，自定义Application，也就是将Application中的实现移动到SampleApplicationLike中已经完成。</p>
+<h3 id="六、可以开始写测试patch的代码啦"><a href="#六、可以开始写测试patch的代码啦" class="headerlink" title="六、可以开始写测试patch的代码啦"></a><strong>六、可以开始写测试patch的代码啦</strong></h3><p>使用下面代码来load patch</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TinkerInstaller.onReceiveUpgradePatch(<span class="keyword">this</span>.getApplication(), Environment.getExternalStorageDirectory().getAbsolutePath() + <span class="string">"/patch_signed_7zip.apk"</span>);</span><br></pre></td></tr></table></figure>
+<p>在自己的工程中增加两个按钮，其中一个按钮用来显示EditText中的内容，另一个按钮用来加载补丁，在加载补丁按钮点击事件中执行加载patch的操作，为后期修复代码bug做准备，代码为：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Button toastInfo = (Button) top.findViewById(R.id.toastInfo);</span><br><span class="line">toastInfo.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//清除补丁</span></span><br><span class="line">        Toast.makeText(SysUtils.getApp(),<span class="string">"clean patch!"</span>,Toast.LENGTH_LONG).show();</span><br><span class="line">        Tinker.with(SysUtils.getApp()).cleanPatch();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">Button loadPatchButton = (Button) top.findViewById(R.id.loadPatch);</span><br><span class="line">loadPatchButton.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//加载补丁（加载成功以后patch文件会自动删掉）</span></span><br><span class="line">        TinkerInstaller.onReceiveUpgradePatch(SysUtils.getApp(), Environment.getExternalStorageDirectory().getAbsolutePath() + <span class="string">"/patch_signed_7zip.apk"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h2 id="打patch包的步骤"><a href="#打patch包的步骤" class="headerlink" title="打patch包的步骤"></a><strong>打patch包的步骤</strong></h2><h3 id="1、调用assembleDebug编译原始包"><a href="#1、调用assembleDebug编译原始包" class="headerlink" title="1、调用assembleDebug编译原始包"></a>1、调用<code>assembleDebug</code>编译原始包</h3><p>AndroidStudio 命令行下运行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ./gradlew assembleDebug</span></span><br></pre></td></tr></table></figure>
+<p>编译过的包会保存在build/bakApk中。然后我们将它安装到手机，可以看到补丁并没有加载。</p>
+<h3 id="2、修改代码，添加新功能或者更改功能"><a href="#2、修改代码，添加新功能或者更改功能" class="headerlink" title="2、修改代码，添加新功能或者更改功能"></a>2、修改代码，添加新功能或者更改功能</h3><p>例如在MainActivity中添加一个<code>I am on patch onCreate</code>的Toast.</p>
+<h3 id="3、然后修改build-gradle中的参数"><a href="#3、然后修改build-gradle中的参数" class="headerlink" title="3、然后修改build.gradle中的参数"></a>3、然后修改build.gradle中的参数</h3><p>将步骤一编译保存的安装包路径拷贝到<code>tinkerPatch</code>中的<code>tinkerOldApkPath</code>参数中，根据需要也得同时修改<code>tinkerApplyResourcePath</code> ，<code>tinkerApplyMappingPath</code> 。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * you can use assembleRelease to build you base apk</span></span><br><span class="line"><span class="comment"> * use tinkerPatchRelease -POLD_APK=  -PAPPLY_MAPPING=  -PAPPLY_RESOURCE= to build patch</span></span><br><span class="line"><span class="comment"> * add apk from the build/bakApk</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">ext &#123;</span><br><span class="line">    <span class="comment">//for some reason, you may want to ignore tinkerBuild, such as instant run debug build?</span></span><br><span class="line">    tinkerEnabled = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//for normal build</span></span><br><span class="line">    <span class="comment">//old apk file to build patch apk</span></span><br><span class="line">    tinkerOldApkPath = <span class="string">"$&#123;bakPath&#125;/app-debug-1116-15-53-17.apk"</span></span><br><span class="line">    <span class="comment">//proguard mapping file to build patch apk</span></span><br><span class="line">    tinkerApplyMappingPath = <span class="string">"$&#123;bakPath&#125;/app-debug-1116-15-53-17-mapping.txt"</span></span><br><span class="line">    <span class="comment">//resource R.txt to build patch apk, must input if there is resource changed</span></span><br><span class="line">    tinkerApplyResourcePath = <span class="string">"$&#123;bakPath&#125;/app-debug-1116-15-53-17-R.txt"</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//only use for build all flavor, if not, just ignore this field</span></span><br><span class="line">    tinkerBuildFlavorDirectory = <span class="string">"$&#123;bakPath&#125;/app-debug-1107-10-33-32"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4、调用tinkerPatchDebug-生成补丁包"><a href="#4、调用tinkerPatchDebug-生成补丁包" class="headerlink" title="4、调用tinkerPatchDebug, 生成补丁包"></a>4、调用tinkerPatchDebug, 生成补丁包</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ./gradlew tinkerPatchDebug</span></span><br></pre></td></tr></table></figure>
+<p>补丁包与相关日志会保存在<code>/build/outputs/tinkerPatch/</code>中，我们将其中的<strong>patch_signed_7zip.apk</strong>推送到手机的sdcard中。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> adb push ./app/build/outputs/tinkerPatch/debug/patch_signed_7zip.apk /storage/sdcard0/</span></span><br></pre></td></tr></table></figure>
+<h3 id="5、运行app，执行LOAD-PATCH代码块"><a href="#5、运行app，执行LOAD-PATCH代码块" class="headerlink" title="5、运行app，执行LOAD PATCH代码块"></a>5、运行app，执行LOAD PATCH代码块</h3><p>如果看到<code>patch success, please restart process</code>的toast，即可锁屏或者KILL 应用进程。</p>
+<h3 id="6、重新启动App"><a href="#6、重新启动App" class="headerlink" title="6、重新启动App"></a>6、重新启动App</h3><p>我们可以看到，补丁包的确已经加载成功了。</p>
+<hr>
+<h2 id="使用Tinker的注意事项"><a href="#使用Tinker的注意事项" class="headerlink" title="使用Tinker的注意事项"></a><strong>使用Tinker的注意事项</strong></h2><ul>
+<li>1、Tinker_id的大版本升级问题</li>
+</ul>
+<p><img src="/gallery/tinker_id_problem.png" alt=""></p>
+<ul>
+<li>2、如果生成patch失败，并且原因如下：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Warning: ignoreWarning is false, but we found loader classes are found in old secondary dex.</span><br></pre></td></tr></table></figure>
+<p>那么需要把<strong>相应的报错类</strong>声明在项目的<code>keep_in_main_dex.txt</code> 文件中，保证它编译时会被放置到主dex中。参考<a href="https://github.com/Tencent/tinker/issues/96">Tinker Issue #96</a> 。</p>
+<hr>
+<h2 id="【参考资料】"><a href="#【参考资料】" class="headerlink" title="【参考资料】"></a>【参考资料】</h2><ul>
+<li><a href="https://github.com/Tencent/tinker/wiki/Tinker-%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97">Tinker 官方接入指南</a> </li>
+<li><a href="http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;mid=2649286306&amp;idx=1&amp;sn=d6b2865e033a99de60b2d4314c6e0a25&amp;scene=23&amp;srcid=0705vd1zLzQEHZ9G6JyQSqTG#rd" target="_blank" rel="noopener">微信Android热补丁实践演进之路</a></li>
+<li><a href="http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;mid=2649286384&amp;idx=1&amp;sn=f1aff31d6a567674759be476bcd12549&amp;scene=4#wechat_redirect" target="_blank" rel="noopener">微信Tinker的一切都在这里，包括源码(一)</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/22089905" target="_blank" rel="noopener">【腾讯Bugly干货分享】微信热补丁Tinker的实践演进之路</a></li>
+<li><a href="http://blog.csdn.net/xiejc01/article/details/52735920" target="_blank" rel="noopener">将Tinke集成到自己的项目</a></li>
+<li><a href="http://blog.csdn.net/a750457103/article/details/52815096" target="_blank" rel="noopener">Android 微信热修复Tinker接入过程以及使用方法</a></li>
+<li><a href="https://www.zybuluo.com/dodola/note/554061" target="_blank" rel="noopener">Tinker 逆向分析</a></li>
+</ul>
+<hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="../../../../js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Tinker/">Tinker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/hotfix/">hotfix</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../18/【D3.js】力导向布局 + 圆形图片展示的人物关系/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          【D3.js】力导向布局 + 圆形图片展示的人物关系
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../16/【D3】Link Nodes by Name/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">【D3】Link Nodes by Name</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用步骤"><span class="nav-number">2.</span> <span class="nav-text">使用步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一个小坑"><span class="nav-number">2.1.</span> <span class="nav-text">一个小坑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一、工程根目录的build-gradle中添加依赖"><span class="nav-number">2.2.</span> <span class="nav-text">一、工程根目录的build.gradle中添加依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、在app-build-gradle中的dependencies节点添加依赖"><span class="nav-number">2.3.</span> <span class="nav-text">二、在app/build.gradle中的dependencies节点添加依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、复制官方sample工程app-build-gradle中的其他相关配置"><span class="nav-number">2.4.</span> <span class="nav-text">三、复制官方sample工程app/build.gradle中的其他相关配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、替换自己的Application类"><span class="nav-number">2.5.</span> <span class="nav-text">四、替换自己的Application类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、在刚改好的-ApplicationFromTinkerLike-中重载onBaseContextAttached方法"><span class="nav-number">2.6.</span> <span class="nav-text">五、在刚改好的 ApplicationFromTinkerLike 中重载onBaseContextAttached方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、可以开始写测试patch的代码啦"><span class="nav-number">2.7.</span> <span class="nav-text">六、可以开始写测试patch的代码啦</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#打patch包的步骤"><span class="nav-number">3.</span> <span class="nav-text">打patch包的步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、调用assembleDebug编译原始包"><span class="nav-number">3.1.</span> <span class="nav-text">1、调用assembleDebug编译原始包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、修改代码，添加新功能或者更改功能"><span class="nav-number">3.2.</span> <span class="nav-text">2、修改代码，添加新功能或者更改功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、然后修改build-gradle中的参数"><span class="nav-number">3.3.</span> <span class="nav-text">3、然后修改build.gradle中的参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、调用tinkerPatchDebug-生成补丁包"><span class="nav-number">3.4.</span> <span class="nav-text">4、调用tinkerPatchDebug, 生成补丁包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5、运行app，执行LOAD-PATCH代码块"><span class="nav-number">3.5.</span> <span class="nav-text">5、运行app，执行LOAD PATCH代码块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6、重新启动App"><span class="nav-number">3.6.</span> <span class="nav-text">6、重新启动App</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Tinker的注意事项"><span class="nav-number">4.</span> <span class="nav-text">使用Tinker的注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#【参考资料】"><span class="nav-number">5.</span> <span class="nav-text">【参考资料】</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2018 iTimeTraveler All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="../../../../categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="../../../../tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="../../../../funnysite" class="mobile-nav-link">酷站</a>
+  
+    <a href="../../../../collection" class="mobile-nav-link">收藏</a>
+  
+    <a href="../../../../about" class="mobile-nav-link">About</a>
+  
+    <a href="../../../../mybooks" class="mobile-nav-link">🎁</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.css">
+  <script src="../../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="../../../../js/scripts.js"></script>
+
+
+
+
+  <script src="../../../../js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            iTimeTraveler
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Mr.Seven All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

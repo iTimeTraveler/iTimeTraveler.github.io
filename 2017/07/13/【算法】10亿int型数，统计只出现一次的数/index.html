@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>【算法】10亿int型数，统计只出现一次的数 | iTimeTraveler</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Bitmap" />
+  
+  
+  
+  
+  <meta name="description" content="题目10亿int整型数，以及一台可用内存为1GB的机器，时间复杂度要求O(n)，统计只出现一次的数？ 分析首先分析多大的内存能够表示10亿的数呢？一个int型占4字节，10亿就是40亿字节（很明显就是4GB），也就是如果完全读入内存需要占用4GB，而题目只给1GB内存，显然不可能将所有数据读入内存。 我们先不考虑时间复杂度，仅考虑解决问题。那么接下来的思路一般有两种。  位图法：用一个bit位来标">
+<meta name="keywords" content="Bitmap">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【算法】10亿int型数，统计只出现一次的数">
+<meta property="og:url" content="http://github.com/2017/07/13/【算法】10亿int型数，统计只出现一次的数/index.html">
+<meta property="og:site_name" content="iTimeTraveler">
+<meta property="og:description" content="题目10亿int整型数，以及一台可用内存为1GB的机器，时间复杂度要求O(n)，统计只出现一次的数？ 分析首先分析多大的内存能够表示10亿的数呢？一个int型占4字节，10亿就是40亿字节（很明显就是4GB），也就是如果完全读入内存需要占用4GB，而题目只给1GB内存，显然不可能将所有数据读入内存。 我们先不考虑时间复杂度，仅考虑解决问题。那么接下来的思路一般有两种。  位图法：用一个bit位来标">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://github.com/gallery/title-image.png">
+<meta property="og:updated_time" content="2018-03-14T08:13:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【算法】10亿int型数，统计只出现一次的数">
+<meta name="twitter:description" content="题目10亿int整型数，以及一台可用内存为1GB的机器，时间复杂度要求O(n)，统计只出现一次的数？ 分析首先分析多大的内存能够表示10亿的数呢？一个int型占4字节，10亿就是40亿字节（很明显就是4GB），也就是如果完全读入内存需要占用4GB，而题目只给1GB内存，显然不可能将所有数据读入内存。 我们先不考虑时间复杂度，仅考虑解决问题。那么接下来的思路一般有两种。  位图法：用一个bit位来标">
+<meta name="twitter:image" content="http://github.com/gallery/title-image.png">
+  
+    <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/gallery/avatar/0.jpg">
+  <link rel="apple-touch-icon" href="/gallery/avatar/0.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="../../../../css/style.css">
+
+  <script src="../../../../js/jquery-3.1.1.min.js"></script>
+  <script src="../../../../js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="../../../../css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 8px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="62px" height="75px" alt="Hike News" src="/gallery/avatar/0.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="../../../../index.html">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../funnysite">酷站</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../collection">收藏</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../mybooks">🎁</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '../../../../content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="../../../../js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-【算法】10亿int型数，统计只出现一次的数" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" href="../../../../gallery/title-image.png" rel="gallery_cjiblctjy0099pzs6fgdsahhp">
+        <img src="../../../../gallery/title-image.png" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      【算法】10亿int型数，统计只出现一次的数
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="" class="article-date">
+	  <time datetime="2017-07-13T10:30:55.000Z" itemprop="datePublished">2017-07-13</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../../../categories/Algorithm/">Algorithm</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a><strong>题目</strong></h2><p>10亿int整型数，以及一台可用内存为1GB的机器，时间复杂度要求O(n)，统计只出现一次的数？</p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>首先分析多大的内存能够表示10亿的数呢？一个int型占4字节，10亿就是40亿字节（很明显就是4GB），也就是如果完全读入内存需要占用4GB，而题目只给1GB内存，显然不可能将所有数据读入内存。</p>
+<p>我们先不考虑时间复杂度，仅考虑解决问题。那么接下来的思路一般有两种。</p>
+<ol>
+<li><strong>位图法</strong>：用一个bit位来标识一个int整数。</li>
+<li><strong>分治法</strong>：分批处理这10亿的数。</li>
+</ol>
+<p>一种是位图法，如果各位老司机有经验的话很快会想到int整型数是4字节（Byte），也就是32位（bit），如果能用一个bit位来标识一个int整数那么存储空间将大大减少。另一种是分治法，内存有限，我想办法分批读取处理。下面大致分析一下两种思路。</p>
+<a id="more"></a>
+<h3 id="1、位图法（Bitmap）"><a href="#1、位图法（Bitmap）" class="headerlink" title="1、位图法（Bitmap）"></a>1、位图法（Bitmap）</h3><p>位图法是基于int型数的表示范围这个概念的，用一个bit位来标识一个int整数，若该位为1，则说明该数出现；若该位为0，则说明该数没有出现。一个int整型数占4字节（Byte），也就是32位（bit）。那么把所有int整型数字表示出来需要2^32 bit的空间，换算成字节单位也就是2^32/8 = 2^29 Byte，大约等于512MB</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 插播一个常识</span></span><br><span class="line"><span class="number">2</span>^<span class="number">10</span> Byte = <span class="number">1024</span> Byte = <span class="number">1</span>KB</span><br><span class="line"><span class="number">2</span>^<span class="number">30</span> Byte = (<span class="number">2</span>^<span class="number">10</span>)^<span class="number">3</span> Byte = <span class="number">1024</span> * <span class="number">1024</span> * <span class="number">1024</span> Byte = <span class="number">1</span>GB</span><br></pre></td></tr></table></figure>
+<p>这下就好办了，只需要用512MB的内存就能存储所有的int的范围数。</p>
+<h4 id="具体方案"><a href="#具体方案" class="headerlink" title="具体方案"></a>具体方案</h4><p>那么接下来我们只需要申请一个int数组长度为 int tmp[<strong>N/32+1</strong>]即可存储完这些数据，其中<strong>N代表要进行查找的总数（这里也就是2^32）</strong>，tmp中的每个元素在内存在占32位可以对应表示十进制数0~31,所以可得到BitMap表:</p>
+<ul>
+<li>tmp[0]:可表示0~31</li>
+<li>tmp[1]:可表示32~63</li>
+<li>tmp[2]可表示64~95</li>
+<li>~~</li>
+</ul>
+<p>假设这10亿int数据为：6,3,8,32,36,……，那么具体的BitMap表示为：</p>
+<p><img src="/gallery/bitmap/37237-20160302211041080-958649492.png" alt=""></p>
+<p>(1).  如何判断int数字放在哪一个tmp数组中：将数字直接除以32取整数部分(x/32)，例如：整数8除以32取整等于0，那么8就在tmp[0]上；</p>
+<p>(2).  如何确定数字放在32个位中的哪个位：将数字mod32取模(x%32)。上例中我们如何确定8在tmp[0]中的32个位中的哪个位，这种情况直接mod上32就ok，又如整数8，在tmp[0]中的第8 mod上32等于8，那么整数8就在tmp[0]中的第八个bit位（从右边数起）。</p>
+<p>然后我们怎么统计只出现一次的数呢？每一个数出现的情况我们可以分为三种：0次、1次、大于1次。也就是说我们需要用2个bit位才能表示每个数的出现情况。此时则三种情况分别对应的bit位表示是：00、01、11</p>
+<p>我们顺序扫描这10亿的数，在对应的双bit位上标记该数出现的次数。最后取出所有双bit位为01的int型数就可以了。</p>
+<h4 id="Bitmap拓展"><a href="#Bitmap拓展" class="headerlink" title="Bitmap拓展"></a>Bitmap拓展</h4><p>位图（Bitmap）算法思想比较简单，但关键是如何确定十进制的数映射到二进制bit位的map图。</p>
+<p><strong>优点：</strong></p>
+<ol>
+<li><p>运算效率高，不许进行比较和移位；</p>
+</li>
+<li><p>占用内存少，比如N=10000000；只需占用内存为N/8=1250000Byte=1.25M</p>
+</li>
+</ol>
+<p><strong>缺点：</strong>所有的数据不能重复。即不可对重复的数据进行排序和查找。</p>
+<p> 建立了Bit-Map之后，就可以方便的使用了。一般来说Bit-Map可作为数据的<strong>查找、去重、排序</strong>等操作。比如以下几个例子：</p>
+<blockquote>
+<p> 1、在3亿个整数中找出重复的整数个数，限制内存不足以容纳3亿个整数</p>
+</blockquote>
+<p>对于这种场景可以采用2-BitMap来解决，即为每个整数分配2bit，用不同的0、1组合来标识特殊意思，如00表示此整数没有出现过，01表示出现一次，11表示出现过多次，就可以找出重复的整数了，其需要的内存空间是正常BitMap的2倍，为：3亿*2/8/1024/1024=71.5MB。</p>
+<p><strong>具体的过程如下：</strong>扫描着3亿个整数，组BitMap，先查看BitMap中的对应位置，如果00则变成01，是01则变成11，是11则保持不变，当将3亿个整数扫描完之后也就是说整个BitMap已经组装完毕。最后查看BitMap将对应位为11的整数输出即可。</p>
+<blockquote>
+<p> 2、对没有重复元素的整数进行排序</p>
+</blockquote>
+<p>对于非重复的整数排序BitMap有着天然的优势，它只需要将给出的无重复整数扫描完毕，组装成为BitMap之后，那么直接遍历一遍Bit区域就可以达到排序效果了。</p>
+<p>举个例子：对整数4、3、1、7、6进行排序：</p>
+<p><img src="/gallery/bitmap/37237-20160302215109220-1394239868.png" alt=""></p>
+<p>直接按Bit位输出就可以得到排序结果了。</p>
+<blockquote>
+<p> 3、已知某个文件内包含一些电话号码，每个号码为8位数字，统计不同号码的个数</p>
+</blockquote>
+<p>8位最多99 999 999，大概需要99m个bit，大概10几m字节的内存即可。可以理解为从0-99 999 999的数字，每个数字对应一个Bit位，所以只需要99M个Bit==1.2MBytes，这样，就用了小小的1.2M左右的内存表示了所有的8位数的电话。</p>
+<blockquote>
+<p> 4、2.5亿个整数中找出不重复的整数的个数，内存空间不足以容纳这2.5亿个整数</p>
+</blockquote>
+<p>将bit-map扩展一下，用2bit表示一个数即可：0表示未出现；1表示出现一次；2表示出现2次及以上，即重复，在遍历这些数的时候，如果对应位置的值是0，则将其置为1；如果是1，将其置为2；如果是2，则保持不变。或者我们不用2bit来进行表示，我们用两个bit-map即可模拟实现这个2bit-map，都是一样的道理。</p>
+<p>最后放一个使用Byte[]数组存储、读取bit位的示例代码，来自<a href="http://yacare.iteye.com/blog/1969931" target="_blank" rel="noopener">利用位映射原理对大数据排重</a>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BitmapTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CAPACITY = <span class="number">1000000000</span>;<span class="comment">//数据容量</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 定义一个byte数组缓存所有的数据</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">byte</span>[] dataBytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1</span> &lt;&lt; <span class="number">29</span>];</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        BitmapTest ms = <span class="keyword">new</span> BitmapTest();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">byte</span>[] bytes = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        Random random = <span class="keyword">new</span> Random();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; CAPACITY; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> num = random.nextInt();</span><br><span class="line">            System.out.println(<span class="string">"读取了第 "</span> + (i + <span class="number">1</span>) + <span class="string">"\t个数: "</span> + num);</span><br><span class="line">            bytes = ms.splitBigData(num);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">""</span>);</span><br><span class="line">        ms.output(bytes);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 读取数据，并将对应数数据的 到对应的bit中，并返回byte数组</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> num 读取的数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> byte数组  dataBytes</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">byte</span>[] splitBigData(<span class="keyword">int</span> num) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">long</span> bitIndex = num + (<span class="number">1l</span> &lt;&lt; <span class="number">31</span>);         <span class="comment">//获取num数据对应bit数组（虚拟）的索引</span></span><br><span class="line">        <span class="keyword">int</span> index = (<span class="keyword">int</span>) (bitIndex / <span class="number">8</span>);         <span class="comment">//bit数组（虚拟）在byte数组中的索引</span></span><br><span class="line">        <span class="keyword">int</span> innerIndex = (<span class="keyword">int</span>) (bitIndex % <span class="number">8</span>);    <span class="comment">//bitIndex 在byte[]数组索引index 中的具体位置</span></span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"byte["</span> + index + <span class="string">"] 中的索引："</span> + innerIndex);</span><br><span class="line"></span><br><span class="line">        dataBytes[index] = (<span class="keyword">byte</span>) (dataBytes[index] | (<span class="number">1</span> &lt;&lt; innerIndex));</span><br><span class="line">        <span class="keyword">return</span> dataBytes;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 输出数组中的数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> bytes byte数组</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">output</span><span class="params">(<span class="keyword">byte</span>[] bytes)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; bytes.length; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">8</span>; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (!(((bytes[i]) &amp; (<span class="number">1</span> &lt;&lt; j)) == <span class="number">0</span>)) &#123;</span><br><span class="line">                    count++;</span><br><span class="line">                    <span class="keyword">int</span> number = (<span class="keyword">int</span>) ((((<span class="keyword">long</span>) i * <span class="number">8</span> + j) - (<span class="number">1l</span> &lt;&lt; <span class="number">31</span>)));</span><br><span class="line">                    System.out.println(<span class="string">"取出的第  "</span> + count + <span class="string">"\t个数: "</span> +  number);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2、分治法"><a href="#2、分治法" class="headerlink" title="2、分治法"></a>2、分治法</h3><p>分治法目前看到的解决方案有<strong>哈希分桶（Hash Buckets）</strong>和<strong>归并排序</strong>两种方案。</p>
+<p>哈希分桶的思想是先遍历一遍，按照hash分N桶（比如1000桶），映射到不同的文件中。这样平均每个文件就10MB，然后分别处理这1000个文件，找出没有重复的即可。一个相同的数字，绝对不会夸文件，<a href="https://maimai.cn/web/gossip_detail?src=app&amp;webid=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1IjozNDM5ODY0MiwiaWQiOjgzODU0NDR9.zf_21BO_wwAo0t1D8UdKAC9tKXv2TuphOhGnKtCq51E" target="_blank" rel="noopener">有hash做保证</a>。因为算法具体还不甚了解，这里先不做详细介绍。</p>
+<p>归并排序的思想可以参考这篇文章：<a href="http://www.cnblogs.com/cnyao/archive/2009/11/09/interview7.html" target="_blank" rel="noopener">面试题之10亿正整数问题续–关于多通道排序的问题</a></p>
+<hr>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a href="http://blog.csdn.net/v_july_v/article/details/6451990" target="_blank" rel="noopener">程序员编程艺术：第十章、如何给10^7个数据量的磁盘文件排序</a></li>
+<li><a href="http://www.cnblogs.com/cnyao/archive/2009/11/09/interview7.html" target="_blank" rel="noopener">面试题之10亿正整数问题续–关于多通道排序的问题</a></li>
+<li><a href="http://yacare.iteye.com/blog/1969931" target="_blank" rel="noopener">利用位映射原理对大数据排重</a></li>
+<li><a href="http://blog.csdn.net/v_july_v/article/details/6279498" target="_blank" rel="noopener">十道海量数据处理面试题与十个方法大总结</a></li>
+<li><a href="http://www.cnblogs.com/moonandstar08/p/5236539.html" target="_blank" rel="noopener">海量数据处理之BitMap</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="../../../../js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Algorithm/">Algorithm</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../18/八大排序算法总结与java实现/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          八大排序算法总结与java实现
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../11/遗传算法的基本概念和Java实现/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">遗传算法的基本概念和Java实现</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、位图法（Bitmap）"><span class="nav-number">2.1.</span> <span class="nav-text">1、位图法（Bitmap）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#具体方案"><span class="nav-number">2.1.1.</span> <span class="nav-text">具体方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bitmap拓展"><span class="nav-number">2.1.2.</span> <span class="nav-text">Bitmap拓展</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、分治法"><span class="nav-number">2.2.</span> <span class="nav-text">2、分治法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2018 iTimeTraveler All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="../../../../categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="../../../../tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="../../../../funnysite" class="mobile-nav-link">酷站</a>
+  
+    <a href="../../../../collection" class="mobile-nav-link">收藏</a>
+  
+    <a href="../../../../about" class="mobile-nav-link">About</a>
+  
+    <a href="../../../../mybooks" class="mobile-nav-link">🎁</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.css">
+  <script src="../../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="../../../../js/scripts.js"></script>
+
+
+
+
+  <script src="../../../../js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            iTimeTraveler
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Mr.Seven All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

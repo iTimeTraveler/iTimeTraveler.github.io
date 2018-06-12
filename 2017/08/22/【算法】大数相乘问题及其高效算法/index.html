@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>【算法】大数乘法问题及其高效算法 | iTimeTraveler</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Algorithm" />
+  
+  
+  
+  
+  <meta name="description" content="题目编写两个任意位数的大数相乘的程序，给出计算结果。比如：  题目描述：    输出两个不超过100位的大整数的乘积。输入：    输入两个大整数，如1234567 和 123输出：    输出乘积，如：151851741  或者 1求 1234567891011121314151617181920 * 2019181716151413121110987654321 的乘积结果 分析所谓大数相乘（">
+<meta name="keywords" content="Algorithm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【算法】大数乘法问题及其高效算法">
+<meta property="og:url" content="http://github.com/2017/08/22/【算法】大数相乘问题及其高效算法/index.html">
+<meta property="og:site_name" content="iTimeTraveler">
+<meta property="og:description" content="题目编写两个任意位数的大数相乘的程序，给出计算结果。比如：  题目描述：    输出两个不超过100位的大整数的乘积。输入：    输入两个大整数，如1234567 和 123输出：    输出乘积，如：151851741  或者 1求 1234567891011121314151617181920 * 2019181716151413121110987654321 的乘积结果 分析所谓大数相乘（">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://github.com/gallery/android_common/big-Multiplication.png">
+<meta property="og:updated_time" content="2018-03-14T08:13:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【算法】大数乘法问题及其高效算法">
+<meta name="twitter:description" content="题目编写两个任意位数的大数相乘的程序，给出计算结果。比如：  题目描述：    输出两个不超过100位的大整数的乘积。输入：    输入两个大整数，如1234567 和 123输出：    输出乘积，如：151851741  或者 1求 1234567891011121314151617181920 * 2019181716151413121110987654321 的乘积结果 分析所谓大数相乘（">
+<meta name="twitter:image" content="http://github.com/gallery/android_common/big-Multiplication.png">
+  
+    <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/gallery/avatar/0.jpg">
+  <link rel="apple-touch-icon" href="/gallery/avatar/0.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="../../../../css/style.css">
+
+  <script src="../../../../js/jquery-3.1.1.min.js"></script>
+  <script src="../../../../js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="../../../../css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 8px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="62px" height="75px" alt="Hike News" src="/gallery/avatar/0.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="../../../../index.html">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../funnysite">酷站</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../collection">收藏</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../mybooks">🎁</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '../../../../content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="../../../../js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-【算法】大数相乘问题及其高效算法" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" href="../../../../gallery/android_common/big-Multiplication.png" rel="gallery_cjiblctk2009opzs65opjaei0">
+        <img src="../../../../gallery/android_common/big-Multiplication.png" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      【算法】大数乘法问题及其高效算法
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="" class="article-date">
+	  <time datetime="2017-08-22T14:20:55.000Z" itemprop="datePublished">2017-08-22</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../../../categories/Algorithm/">Algorithm</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>编写两个任意位数的大数相乘的程序，给出计算结果。比如：</p>
+<blockquote>
+<p>题目描述：    输出两个不超过100位的大整数的乘积。<br>输入：    输入两个大整数，如1234567 和 123<br>输出：    输出乘积，如：151851741</p>
+</blockquote>
+<p>或者</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">求 <span class="number">1234567891011121314151617181920</span> * <span class="number">2019181716151413121110987654321</span> 的乘积结果</span><br></pre></td></tr></table></figure>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>所谓大数相乘（Multiplication algorithm），就是指数字比较大，相乘的结果超出了基本类型的表示范围，所以这样的数不能够直接做乘法运算。</p>
+<p>参考了很多资料，包括维基百科词条<a href="https://en.wikipedia.org/wiki/Multiplication_algorithm" target="_blank" rel="noopener">Multiplication algorithm</a>，才知道目前大数乘法算法主要有以下几种思路：</p>
+<ol>
+<li><strong>模拟小学乘法</strong>：最简单的乘法竖式手算的累加型；</li>
+<li><strong>分治乘法</strong>：最简单的是Karatsuba乘法，一般化以后有Toom-Cook乘法；</li>
+<li><strong>快速傅里叶变换FFT</strong>：（为了避免精度问题，可以改用快速数论变换FNTT），时间复杂度O(N lgN lglgN)。具体可参照<a href="https://en.wikipedia.org/wiki/Sch%C3%B6nhage%E2%80%93Strassen_algorithm" target="_blank" rel="noopener">Schönhage–Strassen algorithm</a>；</li>
+<li><strong>中国剩余定理</strong>：把每个数分解到一些互素的模上，然后每个同余方程对应乘起来就行；</li>
+<li><strong>Furer’s algorithm</strong>：在渐进意义上FNTT还快的算法。不过好像不太实用，本文就不作介绍了。大家可以参考维基百科<a href="https://en.wikipedia.org/wiki/F%C3%BCrer%27s_algorithm" target="_blank" rel="noopener">Fürer’s algorithm</a></li>
+</ol>
+<a id="more"></a>
+<h2 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h2><p>我们分别实现一下以上算法，既然不能直接使用乘法做运算，最简单最容易想到的办法就是模拟乘法运算。</p>
+<h3 id="1、模拟乘法手算累加"><a href="#1、模拟乘法手算累加" class="headerlink" title="1、模拟乘法手算累加"></a>1、模拟乘法手算累加</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">      7 8 9 6 5 2</span><br><span class="line">×         3 2 1 1</span><br><span class="line">-----------------</span><br><span class="line">      7 8 9 6 5 2   &lt;---- 第1趟 </span><br><span class="line">    7 8 9 6 5 2     &lt;---- 第2趟 </span><br><span class="line">   ..........       &lt;---- 第n趟 </span><br><span class="line">-----------------</span><br><span class="line">  ? ? ? ? ? ? ? ?   &lt;---- 最后的值用另一个数组表示</span><br></pre></td></tr></table></figure>
+<p>如上所示，乘法运算可以分拆为两步：</p>
+<ul>
+<li>第一步，是将乘数与被乘数逐位相乘；</li>
+<li>第二步，将逐位相乘得到的结果，对应相加起来。</li>
+</ul>
+<p>这有点类似小学数学中，计算乘法时通常采用的“竖式运算”。用Java简单实现了这个算法，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 大数相乘 - 模拟乘法手算累加</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Integer[] bigNumberMultiply(<span class="keyword">int</span>[] arr1， <span class="keyword">int</span>[] arr2)&#123;</span><br><span class="line">    ArrayList&lt;Integer&gt; result = <span class="keyword">new</span> ArrayList&lt;&gt;();  <span class="comment">//中间求和的结果</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//arr2 逐位与arr1相乘</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = arr2.length - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)&#123;</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        ArrayList&lt;Integer&gt; singleList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//arr2 逐位单次乘法的结果</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = arr1.length - <span class="number">1</span>; j &gt;= <span class="number">0</span>; j--)&#123;</span><br><span class="line">            <span class="keyword">int</span> r = arr2[i] * arr1[j] + carry;</span><br><span class="line">            <span class="keyword">int</span> digit = r % <span class="number">10</span>;</span><br><span class="line">            carry = r / <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">            singleList.add(digit);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry != <span class="number">0</span>)&#123;</span><br><span class="line">            singleList.add(carry);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> resultCarry = <span class="number">0</span>, count = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> k = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> l = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> offset = arr2.length - <span class="number">1</span> - i;       <span class="comment">//加法的偏移位</span></span><br><span class="line">        ArrayList&lt;Integer&gt; middleResult = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//arr2每位乘法的结果与上一轮的求和结果相加，从右向左做加法并进位</span></span><br><span class="line">        <span class="keyword">while</span> (k &lt; singleList.size() || l &lt; result.size()) &#123;</span><br><span class="line">            <span class="keyword">int</span> kv = <span class="number">0</span>, lv = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">if</span> (k &lt; singleList.size() &amp;&amp; count &gt;= offset) &#123;</span><br><span class="line">                kv = singleList.get(k++);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (l &lt; result.size()) &#123;</span><br><span class="line">                lv = result.get(l++);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">int</span> sum = resultCarry + kv + lv;</span><br><span class="line">            middleResult.add(sum % <span class="number">10</span>);     <span class="comment">//相加结果从右向左（高位到低位）暂时存储，最后需要逆向输出</span></span><br><span class="line">            resultCarry = sum / <span class="number">10</span>;</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(resultCarry != <span class="number">0</span>)&#123;</span><br><span class="line">            middleResult.add(resultCarry);</span><br><span class="line">        &#125;</span><br><span class="line">        result.clear();</span><br><span class="line">        result = middleResult;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Collections.reverse(result);    <span class="comment">//逆向输出结果</span></span><br><span class="line">    <span class="keyword">return</span> result.toArray(<span class="keyword">new</span> Integer[result.size()]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看了以上的代码，感觉思路虽然很简单，但是实现起来却很麻烦，那么我们有没有别的方法来实现这个程序呢？答案是有的，接下来我来介绍第二种方法。</p>
+<h3 id="2、模拟乘法累加-改进"><a href="#2、模拟乘法累加-改进" class="headerlink" title="2、模拟乘法累加 - 改进"></a>2、模拟乘法累加 - 改进</h3><p>简单来说，方法二就是先不算任何的进位，也就是说，<strong>将每一位相乘，相加的结果保存到同一个位置，到最后才计算进位</strong>。</p>
+<p>例如：计算98×21,步骤如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">        9  8</span><br><span class="line">×       2  1</span><br><span class="line">-------------</span><br><span class="line">       (9)(8)  &lt;---- 第1趟: 98×1的每一位结果 </span><br><span class="line">  (18)(16)     &lt;---- 第2趟: 98×2的每一位结果 </span><br><span class="line">-------------</span><br><span class="line">  (18)(25)(8)  &lt;---- 这里就是相对位的和，还没有累加进位</span><br></pre></td></tr></table></figure>
+<p>这里唯一要注意的便是进位问题，我们可以先不考虑进位，当所有位对应相加，产生结果之后，再考虑。从右向左依次累加，如果该位的数字大于10，那么我们用取余运算，在该位上只保留取余后的个位数，而将十位数进位（通过模运算得到）累加到高位便可，循环直到累加完毕。</p>
+<p>核心代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 大数相乘方法二</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] bigNumberMultiply2(<span class="keyword">int</span>[] num1, <span class="keyword">int</span>[] num2)&#123;</span><br><span class="line">    <span class="comment">// 分配一个空间，用来存储运算的结果，num1长的数 * num2长的数，结果不会超过num1+num2长</span></span><br><span class="line">    <span class="keyword">int</span>[] result = <span class="keyword">new</span> <span class="keyword">int</span>[num1.length + num2.length];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 先不考虑进位问题，根据竖式的乘法运算，num1的第i位与num2的第j位相乘，结果应该存放在结果的第i+j位上</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; num1.length; i++)&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; num2.length; j++)&#123;</span><br><span class="line">            result[i + j + <span class="number">1</span>] += num1[i] * num2[j];	 <span class="comment">// (因为进位的问题，最终放置到第i+j+1位)</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//单独处理进位</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> k = result.length-<span class="number">1</span>; k &gt; <span class="number">0</span>; k--)&#123;</span><br><span class="line">        <span class="keyword">if</span>(result[k] &gt; <span class="number">10</span>)&#123;</span><br><span class="line">            result[k - <span class="number">1</span>] += result[k] / <span class="number">10</span>;</span><br><span class="line">            result[k] %= <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>！！注意：</strong>这里的进位有个大坑，因为<code>result[]</code>数组是从左到右记录相对位的和（还没有进位），而最后的进位是从右向左累加进位，这样的话，如果最高位，也就是最左侧那一位的累加结果需要进位的话，<code>result[]</code>数组就没有空间存放了。</p>
+</blockquote>
+<p>而正好<code>result[]</code>数组的最后一位空置，不可能被占用，我们就响应地把<strong>num1的第i位与num2的第j位相乘，结果应该存放在结果的第i+j位上</strong>的这个结果往后顺移一位（<code>放到第i+j+1位</code>），最后从右向左累加时就多了一个空间。</p>
+<h3 id="3、分治-Karatsuba算法"><a href="#3、分治-Karatsuba算法" class="headerlink" title="3、分治 - Karatsuba算法"></a>3、分治 - Karatsuba算法</h3><p>以上两种模拟乘法的手算累加型算法，他们都是模拟普通乘法的计算方式，时间复杂度都是O(n^2)，而这个Karatsuba算法，时间复杂度仅有 $O(n^{\log _{2}3})$ 。下面，我就来介绍一下这个算法。</p>
+<p>Karatsuba于1960年发明在 $O(n^{\log _{2}3})$ 步骤内将两个n位数相乘的Karatsuba算法。它反证了安德雷·柯尔莫哥洛夫于1956年认为这个乘法需要  $ \Omega (n^{2})$ 步骤的猜想。</p>
+<p>首先来看看这个算法是怎么进行计算的，见下图：</p>
+<hr>
+<p><img src="/gallery/bignumber-multi/20160910133150980.png" alt="Karatsuba Multiplication Algorithm步骤"></p>
+<hr>
+<p>图中显示了计算<code>5678 * 1234</code>的过程，首先是拆分成abcd四个部分，然后分别计算<code>ac</code>, <code>bd</code>, <code>(a+b)*(c+d)</code>，最后再用第三个算式的结果减去前面两个（其实得到的就是<code>bc+ad</code>，但是减少了乘法步骤），然后，计算式1后面加4个0，计算式2后面不加，计算式3后面加2个0，再把这三者相加，就是正确结果。</p>
+<p>接下来，就来证明一下这个算法的正确性。这是一幅来自<a href="https://pythonandr.com/2015/10/13/karatsuba-multiplication-algorithm-python-code/" target="_blank" rel="noopener">Karatsuba Multiplication Algorithm – Python Code</a>的图，我们来看看：</p>
+<hr>
+<p><img src="/gallery/bignumber-multi/QQ截图20170823144857.png" alt="Karatsuba算法证明"></p>
+<hr>
+<p>我们假设要相乘的两个数是x * y。我们可以把x，y写成：<br>
+$$
+x = a * 10^{n/2} + b
+$$
+</p>
+
+$$
+y = c * 10^{n/2} + d
+$$
+
+<p>这里的n是数字的位数。如果是偶数，则a和b都是<code>n/2</code>位的。如果n是奇数，则你可以让a是<code>n/2+1</code>位，b是<code>n/2</code>位。（例如a = 12，b = 34；a = 123，b = 45），那么<code>x*y</code>就可以换算为：</p>
+
+$$
+\begin{eqnarray*}
+&&x * y\\
+&=&(a * 10^{n/2}+b) * (c * 10^{n/2}+d)\\
+&=&ac * 10^n + (ad + bc) * 10^{n/2} + bd\\
+&=&ac * 10^n + [(a+b)*(c+d)-ac-bd] * 10^{n/2} + bd
+\end{eqnarray*}
+$$
+
+<p>注意最后一步，这个式子倒数第二步中的<code>(ad + bc)</code>，没必要另外进行两次乘法，可以使用<code>((a+b)*(c+d) - ac - bd)</code>来重复利用前面的两次乘积结果<code>ac</code>和<code>bd</code>。</p>
+<p>也就是说，我们发现最终只需要计算三次乘法 <code>a*c</code>， <code>b*d</code>， <code>(a+b)*(c+d)</code>  以及六次加法。因此这样复杂度就变为</p>
+
+$$ T(n) = 3T(\frac{n}{2}) + 6n = O(n^{\log_23}) $$
+
+<p>对比之前的计算过程，结果已经呼之欲出了。这里唯一需要注意的两点就是：</p>
+<blockquote>
+<ol>
+<li><code>(a*d + b*c)</code>的计算为了防止两次乘法，应该使用之前的计算也就是第一幅图第四步的<code>③-②-①</code></li>
+<li>这些乘法在算法里应该是递归实现的，数字很大时，先拆分，然后拆分出来的数字还是很大的话，就继续拆分，直到a * b已经是一个非常简单的小问题为之。这也是分治的思想。</li>
+</ol>
+</blockquote>
+<hr>
+<p>我们举例来尝试一下这种算法，比如计算<code>12345 * 6789</code>，我们让<code>a = 12</code>，<code>b = 345</code>。同时<code>c = 6</code>，<code>d = 789</code>。也就是：</p>
+
+$$
+12345 = 12 · 1000 + 345\\
+6789 = 6 · 1000 + 789
+$$
+
+<p>那么<code>a*c</code>，<code>b*d</code>的结果如下：<br>
+$$
+\begin{align*}
+ z_2 &= a*c = 12 × 6 = 72\\
+ z_0 &= b*d = 345 × 789 = 272205 \\
+ z_1 &= ((a+b)*(c+d) - a*c - b*d)\\
+     &= (12 + 345) × (6 + 789) − z_2 − z_0 = 283815 − 72 − 272205 = 11538
+
+\end{align*}
+$$
+</p>
+<p>最终结果就是：</p>
+
+$$
+\begin{align*}
+& result = z_2 · 10^{2*3} + z_1 · 10^3 + z_0 \\
+& result = 72 · 10^6 + 11538 · 10^3 + 272205 = 83810205. \\
+\end{align*}
+$$
+
+<p>以上就是使用分治的方式计算乘法的原理。上面这个算法，由 Anatolii Alexeevitch Karatsuba 于1960年提出并于1962年发表，所以也被称为 Karatsuba 乘法。</p>
+<p>根据上面的思路，实现的Karatsuba乘法代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Karatsuba乘法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">karatsuba</span><span class="params">(<span class="keyword">long</span> num1, <span class="keyword">long</span> num2)</span></span>&#123;</span><br><span class="line">    <span class="comment">//递归终止条件</span></span><br><span class="line">    <span class="keyword">if</span>(num1 &lt; <span class="number">10</span> || num2 &lt; <span class="number">10</span>) <span class="keyword">return</span> num1 * num2;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 计算拆分长度</span></span><br><span class="line">    <span class="keyword">int</span> size1 = String.valueOf(num1).length();</span><br><span class="line">    <span class="keyword">int</span> size2 = String.valueOf(num2).length();</span><br><span class="line">    <span class="keyword">int</span> halfN = Math.max(size1, size2) / <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 拆分为a, b, c, d */</span></span><br><span class="line">    <span class="keyword">long</span> a = Long.valueOf(String.valueOf(num1).substring(<span class="number">0</span>, size1 - halfN));</span><br><span class="line">    <span class="keyword">long</span> b = Long.valueOf(String.valueOf(num1).substring(size1 - halfN));</span><br><span class="line">    <span class="keyword">long</span> c = Long.valueOf(String.valueOf(num2).substring(<span class="number">0</span>, size2 - halfN));</span><br><span class="line">    <span class="keyword">long</span> d = Long.valueOf(String.valueOf(num2).substring(size2 - halfN));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 计算z2, z0, z1, 此处的乘法使用递归</span></span><br><span class="line">    <span class="keyword">long</span> z2 = karatsuba(a, c);</span><br><span class="line">    <span class="keyword">long</span> z0 = karatsuba(b, d);</span><br><span class="line">    <span class="keyword">long</span> z1 = karatsuba((a + b), (c + d)) - z0 - z2;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (<span class="keyword">long</span>)(z2 * Math.pow(<span class="number">10</span>, (<span class="number">2</span>*halfN)) + z1 * Math.pow(<span class="number">10</span>, halfN) + z0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>总结：</strong></p>
+<p>Karatsuba 算法是比较简单的递归乘法，把输入拆分成 2 部分，不过对于更大的数，可以把输入拆分成 3 部分甚至 4 部分。拆分为 3 部分时，可以使用下面的<code>Toom-Cook 3-way</code> 乘法，复杂度降低到 O(n^1.465)。拆分为 4 部分时，使用<code>Toom-Cook 4-way</code> 乘法，复杂度进一步下降到 O(n^1.404)。对于更大的数字，可以拆成 100 段，使用<code>快速傅里叶变换FFT</code>，复杂度接近线性，大约是 O(n^1.149)。可以看出，分割越大，时间复杂度就越低，但是所要计算的中间项以及合并最终结果的过程就会越复杂，开销会增加，因此分割点上升，对于公钥加密，暂时用不到太大的整数，所以使用 Karatsuba 就合适了，不用再去弄更复杂的递归乘法。</p>
+<!--
+### 4、分治 - Toom-Cook算法
+
+
+### 5、快速傅里叶变换FFT
+
+
+### 6、快速数论变换FNTT
+
+
+### 7、中国剩余定理
+
+-->
+<h2 id="测试程序"><a href="#测试程序" class="headerlink" title="测试程序"></a>测试程序</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LeetcodeTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"><span class="comment">//        String a = "1234567891011121314151617181920";</span></span><br><span class="line"><span class="comment">//        String b = "2019181716151413121110987654321";</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//        String a = "999999999999";</span></span><br><span class="line"><span class="comment">//        String b = "999999999999";</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//        String a = "24566";</span></span><br><span class="line"><span class="comment">//        String b = "452053";</span></span><br><span class="line"></span><br><span class="line">        String a = <span class="string">"98"</span>;</span><br><span class="line">        String b = <span class="string">"21"</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">char</span>[] charArr1 = a.trim().toCharArray();</span><br><span class="line">        <span class="keyword">char</span>[] charArr2 = b.trim().toCharArray();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 字符数组转换为int[]数组</span></span><br><span class="line">        <span class="keyword">int</span>[] arr1 = <span class="keyword">new</span> <span class="keyword">int</span>[charArr1.length];</span><br><span class="line">        <span class="keyword">int</span>[] arr2 = <span class="keyword">new</span> <span class="keyword">int</span>[charArr2.length];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; charArr1.length; i++)&#123;</span><br><span class="line">            arr1[i] = charArr1[i] - <span class="string">'0'</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; charArr2.length; i++)&#123;</span><br><span class="line">            arr2[i] = charArr2[i] - <span class="string">'0'</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 开始计算</span></span><br><span class="line">        <span class="keyword">int</span>[] result = LeetcodeTest.bigNumberMultiply2(arr1, arr2);</span><br><span class="line">        System.out.println(a + <span class="string">" * "</span> + b + <span class="string">" = "</span> + Arrays.toString(result).replace(<span class="string">", "</span>, <span class="string">""</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后，是测试用例输出结果：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1234567891011121314151617181920</span> * <span class="number">2019181716151413121110987654321</span> = [<span class="number">02492816912877266687794240983772975935013386905490061131076320</span>]</span><br><span class="line"></span><br><span class="line"><span class="number">999999999999</span> * <span class="number">999999999999</span> = [<span class="number">999999999998000000000001</span>]</span><br><span class="line"></span><br><span class="line"><span class="number">24566</span> * <span class="number">452053</span> = [<span class="number">11105133998</span>]</span><br><span class="line"></span><br><span class="line"><span class="number">98</span> * <span class="number">21</span> = [<span class="number">2058</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="Java中BigInteger的乘法实现"><a href="#Java中BigInteger的乘法实现" class="headerlink" title="Java中BigInteger的乘法实现"></a>Java中BigInteger的乘法实现</h2><p>目前最著名的高精度整数运算库是<a href="https://gmplib.org/" target="_blank" rel="noopener"><strong>GNU的GMP</strong></a>，GMP是The GNU MP Bignum Library，是一个开源的数学运算库，它可以用于任意精度的数学运算，包括有符号整数、有理数和浮点数。它本身并没有精度限制，只取决于机器的硬件情况。许多著名的计算机代数系统如Axiom, Maple, Mathematica, Maxima等的底层高精度整数运算都是基于GMP实现的。</p>
+<p>设n 为乘数的位数, 就目前已知的情况而言, 不同乘法算法的时间复杂度可以从平凡的$O(n^2)$(普通乘法), $O(n^{log_2 3})$(Karatsuba 乘法)， $O(n^{log_3 5})$ (Toom-3 乘法)，$O(n {\log^* n})$ (复数域上的FFT)，其中</p>
+
+$$ log^* n = log n(log log n)(log log log n) ··· , $$
+
+<p>和$O(n(log n)(log log n))$(有限域上的FFT), 其中<strong>“有限域上的FFT”</strong>的时间复杂度已经相当接近线性了。 </p>
+<p>但是这些乘法算法中复杂度较低的算法往往有较大的常数因子, 因此如果乘数的位数较少,普通乘法反而是最快的, 所以实用中常常将这些不同的乘法算法结合起来使用, 每次做乘法时都根据相乘两数的大小动态地选择具体采用哪一种算法, 而每种算法的最佳适用范围往往依赖于具体实现和硬件环境, 因此一般直接通过实验来确定。</p>
+<h3 id="Java中的实现"><a href="#Java中的实现" class="headerlink" title="Java中的实现"></a>Java中的实现</h3><ol>
+<li><p>在 Java 7 里面，就是用二重循环直接乘的。源代码：<a href="http://hg.openjdk.java.net/jdk7/jdk7/jdk/file/00cd9dc3c2b5/src/share/classes/java/math/BigInteger.java#l1165" target="_blank" rel="noopener">[BigInteger  - Java7]</a> （见1165行）</p>
+</li>
+<li><p>在 Java 8 里面，根据两个因数的大小，有三种乘法。源代码：<a href="http://hg.openjdk.java.net/jdk8/jdk8/jdk/file/tip/src/share/classes/java/math/BigInteger.java#l1464" target="_blank" rel="noopener">[BigInteger  - Java8]</a> （见1464行）：</p>
+<ul>
+<li>当两个因数均小于 $2^{32\times 80}$ 时，用二重循环直接相乘，复杂度为$O(n^2) $，n为因数位数（下同）；</li>
+<li>否则，当两个因数均小于$2^{32\times 240} $时，采用 Karatsuba algorithm，其复杂度为$O(n^{\log_2 3}) \approx O(n^{1.585})$；</li>
+<li>否则，采用 Toom-Cook multiplication，其复杂度为$O(n^{\log_3 5}) \approx O(n^{1.465})$。</li>
+</ul>
+</li>
+</ol>
+<p>其中，Java8中的源代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MULTIPLY_SQUARE_THRESHOLD = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> KARATSUBA_THRESHOLD = <span class="number">80</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TOOM_COOK_THRESHOLD = <span class="number">240</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> BigInteger <span class="title">multiply</span><span class="params">(BigInteger val)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (val.signum == <span class="number">0</span> || signum == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> ZERO;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> xlen = mag.length;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (val == <span class="keyword">this</span> &amp;&amp; xlen &gt; MULTIPLY_SQUARE_THRESHOLD) &#123;</span><br><span class="line">        <span class="keyword">return</span> square();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> ylen = val.mag.length;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ((xlen &lt; KARATSUBA_THRESHOLD) || (ylen &lt; KARATSUBA_THRESHOLD)) &#123;</span><br><span class="line">        <span class="keyword">int</span> resultSign = signum == val.signum ? <span class="number">1</span> : -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (val.mag.length == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> multiplyByInt(mag,val.mag[<span class="number">0</span>], resultSign);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (mag.length == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> multiplyByInt(val.mag,mag[<span class="number">0</span>], resultSign);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span>[] result = multiplyToLen(mag, xlen,</span><br><span class="line">                                     val.mag, ylen, <span class="keyword">null</span>);</span><br><span class="line">        result = trustedStripLeadingZeroInts(result);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> BigInteger(result, resultSign);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> ((xlen &lt; TOOM_COOK_THRESHOLD) &amp;&amp; (ylen &lt; TOOM_COOK_THRESHOLD)) &#123;</span><br><span class="line">            <span class="comment">// 采用 Karatsuba algorithm 算法</span></span><br><span class="line">            <span class="keyword">return</span> multiplyKaratsuba(<span class="keyword">this</span>, val);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 采用 Toom-Cook multiplication 3路乘法</span></span><br><span class="line">            <span class="keyword">return</span> multiplyToomCook3(<span class="keyword">this</span>, val);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以看到，Java8依据两个因数的量级分别使用Karatsuba algorithm 和 Toom-Cook multiplication 算法计算大数乘积。</p>
+<h3 id="Karatsuba-algorithm"><a href="#Karatsuba-algorithm" class="headerlink" title="Karatsuba algorithm"></a>Karatsuba algorithm</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Java8中的 Karatsuba algorithm 算法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> BigInteger <span class="title">multiplyKaratsuba</span><span class="params">(BigInteger x, BigInteger y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> xlen = x.mag.length;</span><br><span class="line">    <span class="keyword">int</span> ylen = y.mag.length;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// The number of ints in each half of the number.</span></span><br><span class="line">    <span class="keyword">int</span> half = (Math.max(xlen, ylen)+<span class="number">1</span>) / <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// xl and yl are the lower halves of x and y respectively,</span></span><br><span class="line">    <span class="comment">// xh and yh are the upper halves.</span></span><br><span class="line">    BigInteger xl = x.getLower(half);</span><br><span class="line">    BigInteger xh = x.getUpper(half);</span><br><span class="line">    BigInteger yl = y.getLower(half);</span><br><span class="line">    BigInteger yh = y.getUpper(half);</span><br><span class="line"></span><br><span class="line">    BigInteger p1 = xh.multiply(yh);  <span class="comment">// p1 = xh*yh</span></span><br><span class="line">    BigInteger p2 = xl.multiply(yl);  <span class="comment">// p2 = xl*yl</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// p3=(xh+xl)*(yh+yl)</span></span><br><span class="line">    BigInteger p3 = xh.add(xl).multiply(yh.add(yl));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// result = p1 * 2^(32*2*half) + (p3 - p1 - p2) * 2^(32*half) + p2</span></span><br><span class="line">    BigInteger result = p1.shiftLeft(<span class="number">32</span>*half).add(p3.subtract(p1).subtract(p2)).shiftLeft(<span class="number">32</span>*half).add(p2);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (x.signum != y.signum) &#123;</span><br><span class="line">        <span class="keyword">return</span> result.negate();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Toom-Cook-multiplication"><a href="#Toom-Cook-multiplication" class="headerlink" title="Toom-Cook multiplication"></a>Toom-Cook multiplication</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Java8中的 Toom-Cook multiplication 3路乘法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> BigInteger <span class="title">multiplyToomCook3</span><span class="params">(BigInteger a, BigInteger b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> alen = a.mag.length;</span><br><span class="line">    <span class="keyword">int</span> blen = b.mag.length;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> largest = Math.max(alen, blen);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// k is the size (in ints) of the lower-order slices.</span></span><br><span class="line">    <span class="keyword">int</span> k = (largest+<span class="number">2</span>)/<span class="number">3</span>;   <span class="comment">// Equal to ceil(largest/3)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// r is the size (in ints) of the highest-order slice.</span></span><br><span class="line">    <span class="keyword">int</span> r = largest - <span class="number">2</span>*k;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Obtain slices of the numbers. a2 and b2 are the most significant</span></span><br><span class="line">    <span class="comment">// bits of the numbers a and b, and a0 and b0 the least significant.</span></span><br><span class="line">    BigInteger a0, a1, a2, b0, b1, b2;</span><br><span class="line">    a2 = a.getToomSlice(k, r, <span class="number">0</span>, largest);</span><br><span class="line">    a1 = a.getToomSlice(k, r, <span class="number">1</span>, largest);</span><br><span class="line">    a0 = a.getToomSlice(k, r, <span class="number">2</span>, largest);</span><br><span class="line">    b2 = b.getToomSlice(k, r, <span class="number">0</span>, largest);</span><br><span class="line">    b1 = b.getToomSlice(k, r, <span class="number">1</span>, largest);</span><br><span class="line">    b0 = b.getToomSlice(k, r, <span class="number">2</span>, largest);</span><br><span class="line"></span><br><span class="line">    BigInteger v0, v1, v2, vm1, vinf, t1, t2, tm1, da1, db1;</span><br><span class="line"></span><br><span class="line">    v0 = a0.multiply(b0);</span><br><span class="line">    da1 = a2.add(a0);</span><br><span class="line">    db1 = b2.add(b0);</span><br><span class="line">    vm1 = da1.subtract(a1).multiply(db1.subtract(b1));</span><br><span class="line">    da1 = da1.add(a1);</span><br><span class="line">    db1 = db1.add(b1);</span><br><span class="line">    v1 = da1.multiply(db1);</span><br><span class="line">    v2 = da1.add(a2).shiftLeft(<span class="number">1</span>).subtract(a0).multiply(</span><br><span class="line">         db1.add(b2).shiftLeft(<span class="number">1</span>).subtract(b0));</span><br><span class="line">    vinf = a2.multiply(b2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// The algorithm requires two divisions by 2 and one by 3.</span></span><br><span class="line">    <span class="comment">// All divisions are known to be exact, that is, they do not produce</span></span><br><span class="line">    <span class="comment">// remainders, and all results are positive.  The divisions by 2 are</span></span><br><span class="line">    <span class="comment">// implemented as right shifts which are relatively efficient, leaving</span></span><br><span class="line">    <span class="comment">// only an exact division by 3, which is done by a specialized</span></span><br><span class="line">    <span class="comment">// linear-time algorithm.</span></span><br><span class="line">    t2 = v2.subtract(vm1).exactDivideBy3();</span><br><span class="line">    tm1 = v1.subtract(vm1).shiftRight(<span class="number">1</span>);</span><br><span class="line">    t1 = v1.subtract(v0);</span><br><span class="line">    t2 = t2.subtract(t1).shiftRight(<span class="number">1</span>);</span><br><span class="line">    t1 = t1.subtract(tm1).subtract(vinf);</span><br><span class="line">    t2 = t2.subtract(vinf.shiftLeft(<span class="number">1</span>));</span><br><span class="line">    tm1 = tm1.subtract(t2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Number of bits to shift left.</span></span><br><span class="line">    <span class="keyword">int</span> ss = k*<span class="number">32</span>;</span><br><span class="line"></span><br><span class="line">    BigInteger result = vinf.shiftLeft(ss).add(t2).shiftLeft(ss).add(t1).shiftLeft(ss).add(tm1).shiftLeft(ss).add(v0);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (a.signum != b.signum) &#123;</span><br><span class="line">        <span class="keyword">return</span> result.negate();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://www.cnblogs.com/king-ding/p/bigIntegerMul.html" target="_blank" rel="noopener">华为OJ机试题目：两个大整数相乘(纯C语言实现两个大整数相乘，两种方法实现大数相乘)</a></li>
+<li><a href="https://www.zhihu.com/question/36725424" target="_blank" rel="noopener">java的BigInteger的乘法运算是用什么算法实现的？</a></li>
+<li><a href="https://www.zhihu.com/question/19678341" target="_blank" rel="noopener">大数乘法，在算法上，主要有几种思路？</a></li>
+<li><a href="http://blog.csdn.net/jinyongqing/article/details/13508577" target="_blank" rel="noopener">算法理解 — 大数相乘问题</a></li>
+<li><a href="http://blog.csdn.net/qj30212/article/details/52494556" target="_blank" rel="noopener">KaraTsuba乘法 — 高效的大数乘法</a></li>
+<li><a href="http://taptree.lofter.com/post/6cb74_f626a" target="_blank" rel="noopener">大数相乘(from滴答滴答百度空间)</a></li>
+<li><a href="https://github.com/bhuztez/oj-solutions/blob/master/topics/bignum/bigint.rst">大整数运算</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Multiplication_algorithm" target="_blank" rel="noopener">维基百科：Multiplication algorithm</a></li>
+<li><a href="https://pythonandr.com/2015/10/13/karatsuba-multiplication-algorithm-python-code/" target="_blank" rel="noopener">Karatsuba Multiplication Algorithm – Python Code</a></li>
+<li><a href="https://gmplib.org/manual/Toom-3_002dWay-Multiplication.html" target="_blank" rel="noopener">Toom-Cook 3-Way Multiplication - GMP Documentations</a></li>
+<li><a href="http://blog.miskcoo.com/2014/09/chinese-remainder-theorem" target="_blank" rel="noopener">扩展欧几里得算法与中国剩余定理</a></li>
+</ul>
+<p><img src="/gallery/bignumber-multi/1320989430_PEhXSo.png" alt=""></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="../../../../js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Algorithm/">Algorithm</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../../09/08/【算法】从多项式乘法到快速傅里叶变换/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          【算法】从多项式乘法到快速傅里叶变换
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../05/【算法】反转字符串/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">【算法】反转字符串</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解法"><span class="nav-number">3.</span> <span class="nav-text">解法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、模拟乘法手算累加"><span class="nav-number">3.1.</span> <span class="nav-text">1、模拟乘法手算累加</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、模拟乘法累加-改进"><span class="nav-number">3.2.</span> <span class="nav-text">2、模拟乘法累加 - 改进</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、分治-Karatsuba算法"><span class="nav-number">3.3.</span> <span class="nav-text">3、分治 - Karatsuba算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试程序"><span class="nav-number">4.</span> <span class="nav-text">测试程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java中BigInteger的乘法实现"><span class="nav-number">5.</span> <span class="nav-text">Java中BigInteger的乘法实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java中的实现"><span class="nav-number">5.1.</span> <span class="nav-text">Java中的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Karatsuba-algorithm"><span class="nav-number">5.2.</span> <span class="nav-text">Karatsuba algorithm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Toom-Cook-multiplication"><span class="nav-number">5.3.</span> <span class="nav-text">Toom-Cook multiplication</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2018 iTimeTraveler All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="../../../../categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="../../../../tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="../../../../funnysite" class="mobile-nav-link">酷站</a>
+  
+    <a href="../../../../collection" class="mobile-nav-link">收藏</a>
+  
+    <a href="../../../../about" class="mobile-nav-link">About</a>
+  
+    <a href="../../../../mybooks" class="mobile-nav-link">🎁</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.css">
+  <script src="../../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="../../../../js/scripts.js"></script>
+
+
+
+
+  <script src="../../../../js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            iTimeTraveler
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Mr.Seven All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

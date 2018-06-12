@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>如何判断cpu是大端还是小端模式 | iTimeTraveler</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="大端小端" />
+  
+  
+  
+  
+  <meta name="description" content="一、概念及详解在各种体系的计算机中通常采用的字节存储机制主要有两种： Big-Endian和Little-Endian，即大端模式和小端模式。 Big-Endian和Little-Endian的定义如下： 1) Little-Endian：就是低位字节排放在内存的低地址端，高位字节排放在内存的高地址端。2) Big-Endian：就是高位字节排放在内存的低地址端，低位字节排放在内存的高地址端。">
+<meta name="keywords" content="大端小端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何判断CPU是大端还是小端模式">
+<meta property="og:url" content="http://github.com/2018/01/18/如何判断CPU是大端还是小端模式/index.html">
+<meta property="og:site_name" content="iTimeTraveler">
+<meta property="og:description" content="一、概念及详解在各种体系的计算机中通常采用的字节存储机制主要有两种： Big-Endian和Little-Endian，即大端模式和小端模式。 Big-Endian和Little-Endian的定义如下： 1) Little-Endian：就是低位字节排放在内存的低地址端，高位字节排放在内存的高地址端。2) Big-Endian：就是高位字节排放在内存的低地址端，低位字节排放在内存的高地址端。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://github.com/gallery/java-common/7573c9484d9ec5897a715&690.png">
+<meta property="og:updated_time" content="2018-03-14T08:13:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何判断CPU是大端还是小端模式">
+<meta name="twitter:description" content="一、概念及详解在各种体系的计算机中通常采用的字节存储机制主要有两种： Big-Endian和Little-Endian，即大端模式和小端模式。 Big-Endian和Little-Endian的定义如下： 1) Little-Endian：就是低位字节排放在内存的低地址端，高位字节排放在内存的高地址端。2) Big-Endian：就是高位字节排放在内存的低地址端，低位字节排放在内存的高地址端。">
+<meta name="twitter:image" content="http://github.com/gallery/java-common/7573c9484d9ec5897a715&690.png">
+  
+    <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/gallery/avatar/0.jpg">
+  <link rel="apple-touch-icon" href="/gallery/avatar/0.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="../../../../css/style.css">
+
+  <script src="../../../../js/jquery-3.1.1.min.js"></script>
+  <script src="../../../../js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="../../../../css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 8px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="62px" height="75px" alt="Hike News" src="/gallery/avatar/0.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="../../../../index.html">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../funnysite">酷站</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../collection">收藏</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../mybooks">🎁</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '../../../../content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="../../../../js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-如何判断CPU是大端还是小端模式" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" href="../../../../gallery/java-common/7573c9484d9ec5897a715&690.png" rel="gallery_cjiblctkh00aupzs6grqaqdlq">
+        <img src="../../../../gallery/java-common/7573c9484d9ec5897a715&690.png" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      如何判断CPU是大端还是小端模式
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="" class="article-date">
+	  <time datetime="2018-01-18T14:20:55.000Z" itemprop="datePublished">2018-01-18</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../../../categories/C语言/">C语言</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="一、概念及详解"><a href="#一、概念及详解" class="headerlink" title="一、概念及详解"></a><strong>一、概念及详解</strong></h3><p>在各种体系的计算机中通常采用的字节存储机制主要有两种： <strong>Big-Endian</strong>和<strong>Little-Endian</strong>，即大端模式和小端模式。</p>
+<p>Big-Endian和Little-Endian的定义如下：</p>
+<p>1) Little-Endian：就是低位字节排放在内存的低地址端，高位字节排放在内存的高地址端。<br>2) Big-Endian：就是高位字节排放在内存的低地址端，低位字节排放在内存的高地址端。</p>
+<p><img src="/gallery/java-common/20171225094704165.png" alt=""></p>
+<p>举一个例子，比如16进制数字<code>0x12345678</code>在内存中的表示形式为：</p>
+<p><img src="/gallery/java-common/20160905174029957.jpg" alt=""></p>
+<p><strong>大端小端没有谁优谁劣，各自优势便是对方劣势：</strong></p>
+<p>小端模式 ：强制转换数据不需要调整字节内容，1、2、4字节的存储方式一样。<br>大端模式 ：符号位的判定固定为第一个字节，容易判断正负。</p>
+<a id="more"></a>
+<h3 id="为什么会有大小端模式之分呢？"><a href="#为什么会有大小端模式之分呢？" class="headerlink" title="为什么会有大小端模式之分呢？"></a>为什么会有大小端模式之分呢？</h3><p>这是因为在计算机系统中，我们是以字节为单位的，每个地址单元都对应着一个字节，一个字节为8bit。但是在C语言中除了8bit的char之外，还有16bit的short型，32bit的long型（要看具体的编译器），另外，对于位数大于8位的处理器，例如16位或者32位的处理器，由于寄存器宽度大于一个字节，那么必然存在着一个如何将多个字节安排的问题。因此就导致了大端存储模式和小端存储模式。</p>
+<p>例如一个16bit的short型x，在内存中的地址为<strong>0x0010</strong>，x的值为<code>0x1122</code>，那么<code>0x11</code>为高字节，<code>0x22</code>为低字节。对于大端模式，就将<code>0x11</code>放在低地址中，即0x0010中，0x22放在高地址中，即<strong>0x0011</strong>中。小端模式，刚好相反。我们常用的x86结构是小端模式，而KEIL C51则为大端模式。很多的ARM，DSP都为小端模式。有些ARM处理器还可以由硬件来选择是大端模式还是小端模式。</p>
+<h3 id="如何判断机器的字节序"><a href="#如何判断机器的字节序" class="headerlink" title="如何判断机器的字节序"></a>如何判断机器的字节序</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i=<span class="number">1</span>;   </span><br><span class="line"><span class="keyword">char</span> *p=(<span class="keyword">char</span> *)&amp;i;   </span><br><span class="line"><span class="keyword">if</span>(*p == <span class="number">1</span>)     </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"小端模式"</span>); </span><br><span class="line"><span class="keyword">else</span> <span class="comment">// (*p == 0)</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"大端模式"</span>);</span><br></pre></td></tr></table></figure>
+<p>或者使用联合体union：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//return 1 : little-endian</span></span><br><span class="line"><span class="comment">//       0 : big-endian</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">checkCPUendian</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">union</span> &#123;</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> a;</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">char</span> b; </span><br><span class="line">    &#125; c;</span><br><span class="line">  </span><br><span class="line">    c.a = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> (c.b == <span class="number">1</span>); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为<strong>联合体union的存放顺序是所有成员都从低地址开始存放</strong>，利用该特性就可以轻松地获得了CPU对内存采用Little-endian还是Big-endian模式读写。</p>
+<h3 id="常见的字节序"><a href="#常见的字节序" class="headerlink" title="常见的字节序"></a>常见的字节序</h3><p>一般操作系统都是小端，而通讯协议是大端的。</p>
+<h4 id="常见CPU的字节序"><a href="#常见CPU的字节序" class="headerlink" title="常见CPU的字节序"></a>常见CPU的字节序</h4><table>
+<thead>
+<tr>
+<th>大小端</th>
+<th>CPU</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Big Endian</td>
+<td>PowerPC、IBM、Sun</td>
+</tr>
+<tr>
+<td>Little Endian</td>
+<td>x86、DEC</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ARM既可以工作在大端模式，也可以工作在小端模式。</strong></p>
+<h4 id="常见文件的字节序"><a href="#常见文件的字节序" class="headerlink" title="常见文件的字节序"></a>常见文件的字节序</h4><table>
+<thead>
+<tr>
+<th>文件格式</th>
+<th>大小端</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Adobe PS</td>
+<td>Big Endian</td>
+</tr>
+<tr>
+<td>BMP</td>
+<td>Little Endian</td>
+</tr>
+<tr>
+<td>DXF(AutoCAD)</td>
+<td>Variable</td>
+</tr>
+<tr>
+<td>GIF</td>
+<td>Little Endian</td>
+</tr>
+<tr>
+<td>JPEG</td>
+<td>Big Endian</td>
+</tr>
+<tr>
+<td>MacPaint</td>
+<td>Big Endian</td>
+</tr>
+<tr>
+<td>RTF</td>
+<td>Little Endian</td>
+</tr>
+</tbody>
+</table>
+<p>另外，Java和所有的网络通讯协议都是使用Big-Endian的编码。</p>
+<h3 id="大端小端的转换方法"><a href="#大端小端的转换方法" class="headerlink" title="大端小端的转换方法"></a><strong>大端小端的转换方法</strong></h3><p><img src="/gallery/java-common/20171225094704164.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#define BigtoLittle16(A)                 ((((uint16)(A) &amp; 0xff00) &gt;&gt; 8) | \</span><br><span class="line">                                         (((uint16)(A) &amp; 0x00ff) &lt;&lt; 8))</span><br><span class="line">  </span><br><span class="line"> </span><br><span class="line">#define BigtoLittle32(A)                 ((((uint32)(A) &amp; 0xff000000) &gt;&gt; 24) | \</span><br><span class="line">                                         (((uint32)(A) &amp; 0x00ff0000) &gt;&gt; 8) | \</span><br><span class="line">                                         (((uint32)(A) &amp; 0x0000ff00) &lt;&lt; 8) | \</span><br><span class="line">                                         (((uint32)(A) &amp; 0x000000ff) &lt;&lt; 24))</span><br></pre></td></tr></table></figure>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a href="http://blog.csdn.net/ce123_zhouwei/article/details/6971544" target="_blank" rel="noopener">详解大端模式和小端模式</a></li>
+<li><a href="http://blog.163.com/shengrui_step/blog/static/20870918720139103944374/" target="_blank" rel="noopener">计算机中的小端模式和大端模式 </a></li>
+<li><a href="https://www.2cto.com/kf/201712/707634.html" target="_blank" rel="noopener">数值存储：CPU大端和小端模式详解</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="../../../../js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/C语言/">C语言</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../22/用Java实现断点续传 (HTTP)/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          用Java实现断点续传 (HTTP)
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../12/【Android】源码分析 - LRUCache缓存实现原理/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">【Android】源码分析 - LRUCache缓存实现原理</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、概念及详解"><span class="nav-number">1.</span> <span class="nav-text">一、概念及详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么会有大小端模式之分呢？"><span class="nav-number">2.</span> <span class="nav-text">为什么会有大小端模式之分呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何判断机器的字节序"><span class="nav-number">3.</span> <span class="nav-text">如何判断机器的字节序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见的字节序"><span class="nav-number">4.</span> <span class="nav-text">常见的字节序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#常见CPU的字节序"><span class="nav-number">4.1.</span> <span class="nav-text">常见CPU的字节序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常见文件的字节序"><span class="nav-number">4.2.</span> <span class="nav-text">常见文件的字节序</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#大端小端的转换方法"><span class="nav-number">5.</span> <span class="nav-text">大端小端的转换方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2018 iTimeTraveler All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="../../../../categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="../../../../tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="../../../../funnysite" class="mobile-nav-link">酷站</a>
+  
+    <a href="../../../../collection" class="mobile-nav-link">收藏</a>
+  
+    <a href="../../../../about" class="mobile-nav-link">About</a>
+  
+    <a href="../../../../mybooks" class="mobile-nav-link">🎁</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.css">
+  <script src="../../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="../../../../js/scripts.js"></script>
+
+
+
+
+  <script src="../../../../js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            iTimeTraveler
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Mr.Seven All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>
