@@ -350,6 +350,56 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Android 】硬件加速原理与实现简介"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/03/30/【Android 】硬件加速原理与实现简介/">【Android 】硬件加速原理与实现简介</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/03/30/【Android 】硬件加速原理与实现简介/" class="article-date">
+	  <time datetime="2017-03-30T07:29:55.000Z" itemprop="datePublished">2017-03-30</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Android/">Android</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在手机客户端尤其是Android应用的开发过程中，我们经常会接触到“硬件加速”这个词。由于操作系统对底层软硬件封装非常完善，上层软件开发者往往对硬件加速的底层原理了解很少，也不清楚了解底层原理的意义，因此常会有一些误解，如硬件加速是不是通过特殊算法实现页面渲染加速，或是通过硬件提高CPU/GPU运算速率实现渲染加速。</p>
+<p>本文尝试从底层硬件原理，一直到上层代码实现，对硬件加速技术进行简单介绍，其中上层实现基于Android 6.0。</p>
+        <!-- 在手机客户端尤其是Android应用的开发过程中，我们经常会接触到“硬件加速”这个词。由于操作系统对底层软硬件封装非常完善，上层软件开发者往往对硬件加速的底层原理了解很少，也不清楚了解底层原理的意义，因此常会有一些误解，如硬件加速是不是通过特殊算法实现页面渲染加速，或是通过硬件提高CPU/GPU运算速率实现渲染加速。
+本文尝试从底层硬件原理，一直到上层代码实现，对硬件加速技术进行简单介绍，其......  -->
+        <p class="article-more-link">
+          <a href="../../2017/03/30/【Android 】硬件加速原理与实现简介/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/GPU/">GPU</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【Gradle】Android Studio中Gradle重复依赖的问题"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -874,61 +924,6 @@ AbsoluteSizeSpan(int......  -->
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/RxJava/">RxJava</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【Android】APK瘦身记，实现将近一半的压缩效果"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/11/30/【Android】APK瘦身记，实现将近一半的压缩效果/">【Android】APK瘦身记，实现将近一半的压缩效果</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2016/11/30/【Android】APK瘦身记，实现将近一半的压缩效果/" class="article-date">
-	  <time datetime="2016-11-30T02:31:55.000Z" itemprop="datePublished">2016-11-30</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Android/">Android</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>本文转载自知乎： <a href="https://zhuanlan.zhihu.com/p/23882195" target="_blank" rel="noopener"><strong>APK瘦身记，如何实现高达53%的压缩效果</strong></a> —— by <a href="https://www.zhihu.com/org/a-li-ju-an-quan-60" target="_blank" rel="noopener">阿里聚安全</a></p>
-</blockquote>
-<h2 id="一、我是怎么思考这件事情的"><a href="#一、我是怎么思考这件事情的" class="headerlink" title="一、我是怎么思考这件事情的"></a><strong>一、我是怎么思考这件事情的</strong></h2><p>APK是Android系统安装包的文件格式，关于这个话题其实是一个老生常谈的题目，不论是公司内部，还是外部网络，前人前辈已经总结出很多方法和规律。不过随着移动端技术近两年的飞速发展，一些新的思维方式和优化方法也逐渐涌现和成熟起来。笔者在实践过程中踩过一些坑，收获了一些经验，在这里做个思考和总结，所以随笔给大家，希望对大家从事相关工作的时候有所帮助和参考，同时也是抛砖引玉，希望大家共同探讨这个开放性的话题。</p>
-<p>关于为什么APK要瘦身，这个不多说，只从三个方面唠叨一下，对于用户（或者客户）来说，APK越大，在下载安装过程中，他们耗费的流量会越多，安装等待时间也会越长；对于产品本身，意味着下载转化率会越低（因为竞品中，用户有更多机会选择那个体验最好，功能最多，性能最好，包最小的）；对于研发来说，是一种优化改进技术的机会。</p>
-        <!-- 
-本文转载自知乎： APK瘦身记，如何实现高达53%的压缩效果 —— by 阿里聚安全
-
-一、我是怎么思考这件事情的APK是Android系统安装包的文件格式，关于这个话题其实是一个老生常谈的题目，不论是公司内部，还是外部网络，前人前辈已经总结出很多方法和规律。不过随着移动端技术近两年的飞速发展，一些新的思维方式和优化方法也逐渐涌现和成熟起来。笔者在实践过程中踩过一些坑，收获了一些经验，在这......  -->
-        <p class="article-more-link">
-          <a href="../../2016/11/30/【Android】APK瘦身记，实现将近一半的压缩效果/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/APK/">APK</a></li></ul>
 
     </footer>
   </div>

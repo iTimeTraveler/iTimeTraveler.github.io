@@ -350,6 +350,61 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Android】动态链接库so的加载原理"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="2018/07/03/【Android】动态链接库so的加载原理/">【Android】动态链接库so的加载原理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="2018/07/03/【Android】动态链接库so的加载原理/" class="article-date">
+	  <time datetime="2018-07-03T03:51:55.000Z" itemprop="datePublished">2018-07-03</time>
+	</a>
+
+      
+    <a class="article-category-link" href="categories/Android/">Android</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近开发的组件时常出现了运行时加载so库失败问题，每天都会有<code>java.lang.UnsatisfiedLinkError</code>的错误爆出来，而且线上总是偶然复现，很疑惑。所以本文将从AOSP源码简单跟踪Android中的动态链接库so的加载原理，试图找出一丝线索。</p>
+<h2 id="加载入口"><a href="#加载入口" class="headerlink" title="加载入口"></a>加载入口</h2><p>首先我们知道在Android(Java)中加载一个动态链接库非常简单。就是我们日常调用的 <code>System.load(Sring filename)</code> 或者<code>System.loadLibrary(String libname)</code>开始。 看过<a href="http://47.98.205.211/2017/05/17/jni/" target="_blank" rel="noopener">《理解JNI技术》</a>的应该知道上述代码执行过程中会调用native层的<code>JNI_OnLoad()</code>方法，一般用于动态注册native方法。</p>
+<h2 id="System-loadLibrary"><a href="#System-loadLibrary" class="headerlink" title="# System.loadLibrary"></a># System.loadLibrary</h2><p>[System.java]</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">loadLibrary</span><span class="params">(String libname)</span> </span>&#123;</span><br><span class="line">    Runtime.getRuntime().loadLibrary0(VMStack.getCallingClassLoader(), libname);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此处<code>VMStack.getCallingClassLoader()</code>拿到的是调用者的ClassLoader，一般情况下是<strong>PathClassLoader</strong>。我们进入Runtime类的<code>loadLibrary0()</code>方法看看。</p>
+<p>[Runtime.java]</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">loadLibrary0</span><span class="params">(ClassLoader loader, String libname)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (libname.indexOf((<span class="keyword">int</span>)File.separatorChar) != -<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnsatisfiedLinkError(<span class="string">"Directory separator should not appear in library name: "</span> + libname);</span><br><span class="line">    &#125;</span><br><span class="line">    String libraryName = libname;</span><br><span class="line">    <span class="comment">// 1. 如果classloder存在，通过loader.findLibrary()查找到so路径</span></span><br><span class="line">    <span class="keyword">if</span> (loader != <span class="keyword">null</span>) &#123;</span><br><span class="line">        String filename = loader.findLibrary(libraryName);</span><br><span class="line">        <span class="keyword">if</span> (filename == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// It's not necessarily true that the ClassLoader used</span></span><br><span class="line">            <span class="comment">// System.mapLibraryName, but the default setup does, and it's</span></span><br><span class="line">            <span class="comment">// misleading to say we didn't find "libMyLibrary.so" when we</span></span><br><span class="line">            <span class="comment">// actually searched for "liblibMyLibrary.so.so".</span></span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UnsatisfiedLinkError(loader + <span class="string">" couldn't find \""</span> +</span><br><span class="line">                                           System.mapLibraryName(libraryName) + <span class="string">"\""</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        String error = doLoad(filename, loader);</span><br><span class="line">        <span class="keyword">if</span> (error != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UnsatisfiedLinkError(error);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 如果classloder不存在，通过loader.findLibrary()查找到so路径</span></span><br><span class="line">    String filename = System.mapLibraryName(libraryName);</span><br><span class="line">    List&lt;String&gt; candidates = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">    String lastError = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">for</span> (String directory : getLibPaths()) &#123;	<span class="comment">// getLibPaths()代码在最下方</span></span><br><span class="line">        String candidate = directory + filename;</span><br><span class="line">        candidates.add(candidate);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (IoUtils.canOpenReadOnly(candidate)) &#123;</span><br><span class="line">            String error = doLoad(candidate, loader);</span><br><span class="line">            <span class="keyword">if</span> (error == <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span>; <span class="comment">// We successfully loaded the library. Job done.</span></span><br><span class="line">            &#125;</span><br><span class="line">            lastError = error;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 都没找到，抛出 UnsatisfiedLinkError 异常</span></span><br><span class="line">    <span class="keyword">if</span> (lastError != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnsatisfiedLinkError(lastError);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> UnsatisfiedLinkError(<span class="string">"Library "</span> + libraryName + <span class="string">" not found; tried "</span> + candidates);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <!-- 前言最近开发的组件时常出现了运行时加载so库失败问题，每天都会有java.lang.UnsatisfiedLinkError的错误爆出来，而且线上总是偶然复现，很疑惑。所以本文将从AOSP源码简单跟踪Android中的动态链接库so的加载原理，试图找出一丝线索。
+加载入口首先我们知道在Android(Java)中加载一个动态链接库非常简单。就是我们日常调用的 System.load(Srin......  -->
+        <p class="article-more-link">
+          <a href="2018/07/03/【Android】动态链接库so的加载原理/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/Android/">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【Java】使用Atomic实现锁"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -872,68 +927,6 @@ Big-Endian和Little-Endian的定义如下：
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/C语言/">C语言</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【Android】源码分析 - LRUCache缓存实现原理"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="2018/01/12/【Android】源码分析 - LRUCache缓存实现原理/">【Android】源码分析 - LRUCache缓存实现原理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="2018/01/12/【Android】源码分析 - LRUCache缓存实现原理/" class="article-date">
-	  <time datetime="2018-01-12T14:20:55.000Z" itemprop="datePublished">2018-01-12</time>
-	</a>
-
-      
-    <a class="article-category-link" href="categories/Android/">Android</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="一、Android中的缓存策略"><a href="#一、Android中的缓存策略" class="headerlink" title="一、Android中的缓存策略"></a>一、Android中的缓存策略</h3><p>一般来说，缓存策略主要包含缓存的添加、获取和删除这三类操作。如何添加和获取缓存这个比较好理解，那么为什么还要删除缓存呢？这是因为不管是内存缓存还是硬盘缓存，它们的缓存大小都是有限的。当缓存满了之后，再想其添加缓存，这个时候就需要删除一些旧的缓存并添加新的缓存。</p>
-<p>因此LRU(<strong>Least Recently Used</strong>)缓存算法便应运而生，LRU是近期最少使用的算法，它的核心思想是当缓存满时，会优先淘汰那些近期最少使用的缓存对象，有效的避免了OOM的出现。在Android中采用LRU算法的常用缓存有两种：<a href="https://developer.android.com/reference/android/util/LruCache.html" target="_blank" rel="noopener">LruCache</a>和DisLruCache，分别用于实现内存缓存和硬盘缓存，其核心思想都是LRU缓存算法。</p>
-<p>其实LRU缓存的实现类似于一个特殊的栈，把访问过的元素放置到栈顶（若栈中存在，则更新至栈顶；若栈中不存在则直接入栈），然后如果栈中元素数量超过限定值，则删除栈底元素（即最近最少使用的元素）。详细算法实现如下图：</p>
-<p><img src="https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/master/gallery/algorithms/1337859321_3597.png" alt=""></p>
-<ol>
-<li>新数据压入到栈顶；</li>
-<li>每当缓存命中（即缓存数据被访问），则将数据移到栈顶；</li>
-<li>当栈满的时候，将栈底的数据丢弃。</li>
-</ol>
-<p>举个例子演示一下：</p>
-<p><img src="https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/master/gallery/algorithms/lru-timg.jpg" alt=""></p>
-<h3 id="二、LruCache的使用"><a href="#二、LruCache的使用" class="headerlink" title="二、LruCache的使用"></a>二、LruCache的使用</h3><p><code>LruCache</code>是Android 3.1所提供的一个缓存类，所以在Android中可以直接使用LruCache实现内存缓存。而DisLruCache目前在Android 还不是Android SDK的一部分，但Android官方文档推荐使用该算法来实现硬盘缓存。</p>
-<p>讲到<code>LruCache</code>不得不提一下<code>LinkedHashMap</code>，因为LruCache中Lru算法的实现就是通过<code>LinkedHashMap</code>来实现的。<code>LinkedHashMap</code>继承于<code>HashMap</code>，它使用了一个双向链表来存储Map中的Entry顺序关系，这种顺序有两种，一种是<strong>LRU顺序</strong>，一种是<strong>插入顺序</strong>，这可以由其构造函数<code>public LinkedHashMap(int initialCapacity,float loadFactor, boolean accessOrder)</code>的最后一个参数<code>accessOrder</code>来指定。所以，对于get、put、remove等操作，<code>LinkedHashMap</code>除了要做<code>HashMap</code>做的事情，还做些调整Entry顺序链表的工作。<code>LruCache</code>中将<code>LinkedHashMap</code>的顺序设置为LRU顺序来实现LRU缓存，每次调用get(也就是从内存缓存中取图片)，则将该对象移到链表的尾端。调用put插入新的对象也是存储在链表尾端，这样当内存缓存达到设定的最大值时，将链表头部的对象（近期最少用到的）移除。关于LinkedHashMap详解请前往：<a href="http://www.cnblogs.com/children/archive/2012/10/02/2710624.html" target="_blank" rel="noopener">理解LinkedHashMap</a></p>
-<p><img src="https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/master/gallery/algorithms/lru-cache.png" alt=""></p>
-        <!-- 一、Android中的缓存策略一般来说，缓存策略主要包含缓存的添加、获取和删除这三类操作。如何添加和获取缓存这个比较好理解，那么为什么还要删除缓存呢？这是因为不管是内存缓存还是硬盘缓存，它们的缓存大小都是有限的。当缓存满了之后，再想其添加缓存，这个时候就需要删除一些旧的缓存并添加新的缓存。
-因此LRU(Least Recently Used)缓存算法便应运而生，LRU是近期最少使用的算法，它......  -->
-        <p class="article-more-link">
-          <a href="2018/01/12/【Android】源码分析 - LRUCache缓存实现原理/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/Android/">Android</a></li></ul>
 
     </footer>
   </div>

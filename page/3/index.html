@@ -350,6 +350,68 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Android】源码分析 - IntentService机制"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/10/05/【Android】源码分析 - IntentService机制/">【Android】源码分析 - IntentService机制</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/10/05/【Android】源码分析 - IntentService机制/" class="article-date">
+	  <time datetime="2017-10-05T08:03:00.000Z" itemprop="datePublished">2017-10-05</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Android/">Android</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>提到Android的多线程机制，除了我们常用的Thread来实现异步任务之外，还有</p>
+<ol>
+<li><strong>AsyncTask</strong>：封装了线程池和Handler，主要为了子线程更新UI；</li>
+<li><strong>HandlerThread</strong>：一个已经拥有了Looper的线程类，内部可以直接使用Handler；</li>
+<li><strong>IntentService</strong>：一个内部采用HandlerThread来执行任务的Service服务，任务执行完毕后会自动退出；</li>
+</ol>
+<p>今天我们来根据平时的使用方式来分析一下第三个IntentSevice到底是什么怎么实现的？</p>
+<h3 id="IntentService的使用"><a href="#IntentService的使用" class="headerlink" title="IntentService的使用"></a>IntentService的使用</h3><p>IntentService继承了Service并且它本身是一个<strong>抽象类</strong>，因此使用它必须创建它的子类才能使用。所以这里我们自定义一个MyIntentService，来处理异步任务：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyIntentService</span> <span class="keyword">extends</span> <span class="title">IntentService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"MyIntentService"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> isRunning = <span class="keyword">true</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyIntentService</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(<span class="string">"MyIntentService"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onHandleIntent</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">	        <span class="comment">//查看线程id</span></span><br><span class="line">	        Log.i(TAG, intent.getStringExtra(<span class="string">"params"</span>) + <span class="string">", 线程id:"</span> + Thread.currentThread().getId());</span><br><span class="line">            Thread.sleep(<span class="number">1000</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//从0-100渐增</span></span><br><span class="line">            isRunning = <span class="keyword">true</span>;</span><br><span class="line">            count = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">while</span> (isRunning) &#123;</span><br><span class="line">                count++;</span><br><span class="line">                Log.i(TAG, <span class="string">"MyIntentService 线程运行中..."</span> + count);</span><br><span class="line">                <span class="keyword">if</span> (count &gt;= <span class="number">100</span>) &#123;</span><br><span class="line">                    isRunning = <span class="keyword">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                Thread.sleep(<span class="number">50</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onDestroy();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <!-- 前言提到Android的多线程机制，除了我们常用的Thread来实现异步任务之外，还有
+
+AsyncTask：封装了线程池和Handler，主要为了子线程更新UI；
+HandlerThread：一个已经拥有了Looper的线程类，内部可以直接使用Handler；
+IntentService：一个内部采用HandlerThread来执行任务的Service服务，任务执行完毕后会自动退出；
+
+今......  -->
+        <p class="article-more-link">
+          <a href="../../2017/10/05/【Android】源码分析 - IntentService机制/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/源码分析/">源码分析</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【Android】EventBus 3.0源码分析"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -874,65 +936,6 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【算法】10亿int型数，统计只出现一次的数"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/07/13/【算法】10亿int型数，统计只出现一次的数/">【算法】10亿int型数，统计只出现一次的数</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/07/13/【算法】10亿int型数，统计只出现一次的数/" class="article-date">
-	  <time datetime="2017-07-13T10:30:55.000Z" itemprop="datePublished">2017-07-13</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a><strong>题目</strong></h2><p>10亿int整型数，以及一台可用内存为1GB的机器，时间复杂度要求O(n)，统计只出现一次的数？</p>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>首先分析多大的内存能够表示10亿的数呢？一个int型占4字节，10亿就是40亿字节（很明显就是4GB），也就是如果完全读入内存需要占用4GB，而题目只给1GB内存，显然不可能将所有数据读入内存。</p>
-<p>我们先不考虑时间复杂度，仅考虑解决问题。那么接下来的思路一般有两种。</p>
-<ol>
-<li><strong>位图法</strong>：用一个bit位来标识一个int整数。</li>
-<li><strong>分治法</strong>：分批处理这10亿的数。</li>
-</ol>
-<p>一种是位图法，如果各位老司机有经验的话很快会想到int整型数是4字节（Byte），也就是32位（bit），如果能用一个bit位来标识一个int整数那么存储空间将大大减少。另一种是分治法，内存有限，我想办法分批读取处理。下面大致分析一下两种思路。</p>
-        <!-- 题目10亿int整型数，以及一台可用内存为1GB的机器，时间复杂度要求O(n)，统计只出现一次的数？
-分析首先分析多大的内存能够表示10亿的数呢？一个int型占4字节，10亿就是40亿字节（很明显就是4GB），也就是如果完全读入内存需要占用4GB，而题目只给1GB内存，显然不可能将所有数据读入内存。
-我们先不考虑时间复杂度，仅考虑解决问题。那么接下来的思路一般有两种。
-
-位图法：用一个bit......  -->
-        <p class="article-more-link">
-          <a href="../../2017/07/13/【算法】10亿int型数，统计只出现一次的数/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
 
     </footer>
   </div>
