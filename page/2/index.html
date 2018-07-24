@@ -350,6 +350,63 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-如何判断CPU是大端还是小端模式"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2018/01/18/如何判断CPU是大端还是小端模式/">如何判断CPU是大端还是小端模式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2018/01/18/如何判断CPU是大端还是小端模式/" class="article-date">
+	  <time datetime="2018-01-18T14:20:55.000Z" itemprop="datePublished">2018-01-18</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/C语言/">C语言</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="一、概念及详解"><a href="#一、概念及详解" class="headerlink" title="一、概念及详解"></a><strong>一、概念及详解</strong></h3><p>在各种体系的计算机中通常采用的字节存储机制主要有两种： <strong>Big-Endian</strong>和<strong>Little-Endian</strong>，即大端模式和小端模式。</p>
+<p>Big-Endian和Little-Endian的定义如下：</p>
+<p>1) Little-Endian：就是低位字节排放在内存的低地址端，高位字节排放在内存的高地址端。<br>2) Big-Endian：就是高位字节排放在内存的低地址端，低位字节排放在内存的高地址端。</p>
+<p><img src="/gallery/java-common/20171225094704165.png" alt=""></p>
+<p>举一个例子，比如16进制数字<code>0x12345678</code>在内存中的表示形式为：</p>
+<p><img src="/gallery/java-common/20160905174029957.jpg" alt=""></p>
+<p><strong>大端小端没有谁优谁劣，各自优势便是对方劣势：</strong></p>
+<p>小端模式 ：强制转换数据不需要调整字节内容，1、2、4字节的存储方式一样。<br>大端模式 ：符号位的判定固定为第一个字节，容易判断正负。</p>
+        <!-- 一、概念及详解在各种体系的计算机中通常采用的字节存储机制主要有两种： Big-Endian和Little-Endian，即大端模式和小端模式。
+Big-Endian和Little-Endian的定义如下：
+1) Little-Endian：就是低位字节排放在内存的低地址端，高位字节排放在内存的高地址端。2) Big-Endian：就是高位字节排放在内存的低地址端，低位字节排放在内存的高地址端......  -->
+        <p class="article-more-link">
+          <a href="../../2018/01/18/如何判断CPU是大端还是小端模式/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/C语言/">C语言</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【Android】源码分析 - LRUCache缓存实现原理"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -898,74 +955,6 @@ String 1: ABCDEFGHLMNOPQRSString 2: DCGSRQPO
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【Android】源码分析 - AsyncTask异步任务机制"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/10/09/【Android】源码分析 - AsyncTask异步任务机制/">【Android】源码分析 - AsyncTask异步任务机制</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/10/09/【Android】源码分析 - AsyncTask异步任务机制/" class="article-date">
-	  <time datetime="2017-10-09T12:03:00.000Z" itemprop="datePublished">2017-10-09</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Android/">Android</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>提到Android的多线程机制，常用的有如下几种方式：</p>
-<ul>
-<li><strong>AsyncTask:</strong> 封装了线程池和Handler，为 UI 线程与工作线程之间进行快速切换提供一种便捷机制。适用于当下立即需要启动，但是异步执行的生命周期短暂的使用场景。</li>
-<li><strong>HandlerThread:</strong> 一个已经拥有了Looper的线程类，内部可以直接使用Handler。为某些回调方法或者等待某些任务的执行设置一个专属的线程，并提供线程任务的调度机制。</li>
-<li><strong>ThreadPool:</strong> 把任务分解成不同的单元，分发到各个不同的线程上，进行同时并发处理。</li>
-<li><strong>IntentService:</strong> 适合于执行由 UI 触发的后台 Service 任务，并可以把后台任务执行的情况通过一定的机制反馈给 UI。</li>
-</ul>
-<p>尽管Android已经设计了基本的Handler异步消息机制提供给我们进行线程间通信，不过对于频繁得UI更新操作Handler用起来确实有点细碎，为了更加方便我们在子线程中更新UI元素，Android从1.5版本就引入了一个AsyncTask类，使用它我们可以非常灵活方便地从子线程切换到UI线程。</p>
-<p><img src="http://itimetraveler.github.io/gallery/android-asynctask/worker_thread.png" alt=""></p>
-<p>我们就从AsyncTask的基本用法开始，一起分析下AsyncTask源码，看看它是如何实现的。</p>
-<h3 id="使用AsyncTask"><a href="#使用AsyncTask" class="headerlink" title="使用AsyncTask"></a>使用AsyncTask</h3><p>由于AsyncTask是一个抽象类，所以如果我们想使用它，就必须要创建一个子类去继承它。在继承时我们可以为AsyncTask类指定三个泛型参数，这三个参数的用途如下：</p>
-<ol>
-<li><strong>Params</strong>：在执行AsyncTask时需要传入的参数，可用于在后台任务中使用。</li>
-<li><strong>Progress</strong>：后台任务执行时，如果需要在界面上显示当前的进度，则使用这里指定的泛型作为进度单位。</li>
-<li><strong>Result</strong>：当任务执行完毕后，如果需要对结果进行返回，则使用这里指定的泛型作为返回值类型。</li>
-</ol>
-<p>一个最简单的自定义AsyncTask就可以写成如下方式：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">MyTask</span> <span class="keyword">extends</span> <span class="title">AsyncTask</span>&lt;<span class="title">Void</span>, <span class="title">Void</span>, <span class="title">Void</span>&gt; </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure>
-        <!-- 前言提到Android的多线程机制，常用的有如下几种方式：
-
-AsyncTask: 封装了线程池和Handler，为 UI 线程与工作线程之间进行快速切换提供一种便捷机制。适用于当下立即需要启动，但是异步执行的生命周期短暂的使用场景。
-HandlerThread: 一个已经拥有了Looper的线程类，内部可以直接使用Handler。为某些回调方法或者等待某些任务的执行设置一个专属的线程，并提......  -->
-        <p class="article-more-link">
-          <a href="../../2017/10/09/【Android】源码分析 - AsyncTask异步任务机制/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/源码分析/">源码分析</a></li></ul>
 
     </footer>
   </div>

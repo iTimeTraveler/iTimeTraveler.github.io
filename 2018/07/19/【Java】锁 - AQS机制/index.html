@@ -3,28 +3,28 @@
 <head>
   <meta charset="utf-8">
   
-  <title>如何判断cpu是大端还是小端模式 | iTimeTraveler</title>
+  <title>【java】j.u.c包aqs机制 | iTimeTraveler</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-    <meta name="keywords" content="大端小端" />
+    <meta name="keywords" content="Thread" />
   
   
   
   
-  <meta name="description" content="一、概念及详解在各种体系的计算机中通常采用的字节存储机制主要有两种： Big-Endian和Little-Endian，即大端模式和小端模式。 Big-Endian和Little-Endian的定义如下： 1) Little-Endian：就是低位字节排放在内存的低地址端，高位字节排放在内存的高地址端。2) Big-Endian：就是高位字节排放在内存的低地址端，低位字节排放在内存的高地址端。">
-<meta name="keywords" content="大端小端">
+  <meta name="description" content="简介Java并发包（java.util.concurrent）中提供了很多并发工具，这其中，很多我们耳熟能详的并发工具，譬如ReentrantLock、Semaphore，CountDownLatch，CyclicBarrier，它们的实现都用到了一个共同的基类 - AbstractQueuedSynchronizer，简称AQS。AQS提供了一种原子式管理同步状态、阻塞和唤醒线程功能以及队列模型">
+<meta name="keywords" content="Thread">
 <meta property="og:type" content="article">
-<meta property="og:title" content="如何判断CPU是大端还是小端模式">
-<meta property="og:url" content="http://github.com/2018/01/18/如何判断CPU是大端还是小端模式/index.html">
+<meta property="og:title" content="【Java】J.U.C包AQS机制">
+<meta property="og:url" content="http://github.com/2018/07/19/【Java】锁 - AQS机制/index.html">
 <meta property="og:site_name" content="iTimeTraveler">
-<meta property="og:description" content="一、概念及详解在各种体系的计算机中通常采用的字节存储机制主要有两种： Big-Endian和Little-Endian，即大端模式和小端模式。 Big-Endian和Little-Endian的定义如下： 1) Little-Endian：就是低位字节排放在内存的低地址端，高位字节排放在内存的高地址端。2) Big-Endian：就是高位字节排放在内存的低地址端，低位字节排放在内存的高地址端。">
+<meta property="og:description" content="简介Java并发包（java.util.concurrent）中提供了很多并发工具，这其中，很多我们耳熟能详的并发工具，譬如ReentrantLock、Semaphore，CountDownLatch，CyclicBarrier，它们的实现都用到了一个共同的基类 - AbstractQueuedSynchronizer，简称AQS。AQS提供了一种原子式管理同步状态、阻塞和唤醒线程功能以及队列模型">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://github.com/gallery/java-common/7573c9484d9ec5897a715&690.png">
-<meta property="og:updated_time" content="2018-03-14T08:13:59.000Z">
+<meta property="og:image" content="http://github.com/gallery/java-common/20170531150958304.jpeg">
+<meta property="og:updated_time" content="2018-07-20T09:26:22.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="如何判断CPU是大端还是小端模式">
-<meta name="twitter:description" content="一、概念及详解在各种体系的计算机中通常采用的字节存储机制主要有两种： Big-Endian和Little-Endian，即大端模式和小端模式。 Big-Endian和Little-Endian的定义如下： 1) Little-Endian：就是低位字节排放在内存的低地址端，高位字节排放在内存的高地址端。2) Big-Endian：就是高位字节排放在内存的低地址端，低位字节排放在内存的高地址端。">
-<meta name="twitter:image" content="http://github.com/gallery/java-common/7573c9484d9ec5897a715&690.png">
+<meta name="twitter:title" content="【Java】J.U.C包AQS机制">
+<meta name="twitter:description" content="简介Java并发包（java.util.concurrent）中提供了很多并发工具，这其中，很多我们耳熟能详的并发工具，譬如ReentrantLock、Semaphore，CountDownLatch，CyclicBarrier，它们的实现都用到了一个共同的基类 - AbstractQueuedSynchronizer，简称AQS。AQS提供了一种原子式管理同步状态、阻塞和唤醒线程功能以及队列模型">
+<meta name="twitter:image" content="http://github.com/gallery/java-common/20170531150958304.jpeg">
   
     <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
   
@@ -170,14 +170,14 @@
             
       <div id="content" class="outer">
         
-          <section id="main" style="float:none;"><article id="post-如何判断CPU是大端还是小端模式" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+          <section id="main" style="float:none;"><article id="post-【Java】锁 - AQS机制" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
 <div class="article-gallery">
   <div class="article-gallery-photos">
     
-      <a class="article-gallery-img fancybox" href="../../../../gallery/java-common/7573c9484d9ec5897a715&690.png" rel="gallery_cjjz8q7cr00b0vos6das06fce">
-        <img src="../../../../gallery/java-common/7573c9484d9ec5897a715&690.png" itemprop="image">
+      <a class="article-gallery-img fancybox" href="../../../../gallery/java-common/20170531150958304.jpeg" rel="gallery_cjjz8q7bx008nvos6vwess1dk">
+        <img src="../../../../gallery/java-common/20170531150958304.jpeg" itemprop="image">
       </a>
     
   </div>
@@ -188,7 +188,7 @@
         
   
     <h1 class="thumb" class="article-title" itemprop="name">
-      如何判断CPU是大端还是小端模式
+      【Java】J.U.C包AQS机制
     </h1>
   
 
@@ -197,11 +197,11 @@
     <div class="article-meta">
       
 	<a href="" class="article-date">
-	  <time datetime="2018-01-18T14:20:55.000Z" itemprop="datePublished">2018-01-18</time>
+	  <time datetime="2018-07-19T14:20:55.000Z" itemprop="datePublished">2018-07-19</time>
 	</a>
 
       
-    <a class="article-category-link" href="../../../../categories/C语言/">C语言</a>
+    <a class="article-category-link" href="../../../../categories/Java/">Java</a><a class="article-category-link" href="../../../../categories/Java/源码分析/">源码分析</a>
 
       
 	<a class="article-views">
@@ -213,86 +213,41 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="一、概念及详解"><a href="#一、概念及详解" class="headerlink" title="一、概念及详解"></a><strong>一、概念及详解</strong></h3><p>在各种体系的计算机中通常采用的字节存储机制主要有两种： <strong>Big-Endian</strong>和<strong>Little-Endian</strong>，即大端模式和小端模式。</p>
-<p>Big-Endian和Little-Endian的定义如下：</p>
-<p>1) Little-Endian：就是低位字节排放在内存的低地址端，高位字节排放在内存的高地址端。<br>2) Big-Endian：就是高位字节排放在内存的低地址端，低位字节排放在内存的高地址端。</p>
-<p><img src="/gallery/java-common/20171225094704165.png" alt=""></p>
-<p>举一个例子，比如16进制数字<code>0x12345678</code>在内存中的表示形式为：</p>
-<p><img src="/gallery/java-common/20160905174029957.jpg" alt=""></p>
-<p><strong>大端小端没有谁优谁劣，各自优势便是对方劣势：</strong></p>
-<p>小端模式 ：强制转换数据不需要调整字节内容，1、2、4字节的存储方式一样。<br>大端模式 ：符号位的判定固定为第一个字节，容易判断正负。</p>
-<a id="more"></a>
-<h3 id="为什么会有大小端模式之分呢？"><a href="#为什么会有大小端模式之分呢？" class="headerlink" title="为什么会有大小端模式之分呢？"></a>为什么会有大小端模式之分呢？</h3><p>这是因为在计算机系统中，我们是以字节为单位的，每个地址单元都对应着一个字节，一个字节为8bit。但是在C语言中除了8bit的char之外，还有16bit的short型，32bit的long型（要看具体的编译器），另外，对于位数大于8位的处理器，例如16位或者32位的处理器，由于寄存器宽度大于一个字节，那么必然存在着一个如何将多个字节安排的问题。因此就导致了大端存储模式和小端存储模式。</p>
-<p>例如一个16bit的short型x，在内存中的地址为<strong>0x0010</strong>，x的值为<code>0x1122</code>，那么<code>0x11</code>为高字节，<code>0x22</code>为低字节。对于大端模式，就将<code>0x11</code>放在低地址中，即0x0010中，0x22放在高地址中，即<strong>0x0011</strong>中。小端模式，刚好相反。我们常用的x86结构是小端模式，而KEIL C51则为大端模式。很多的ARM，DSP都为小端模式。有些ARM处理器还可以由硬件来选择是大端模式还是小端模式。</p>
-<h3 id="如何判断机器的字节序"><a href="#如何判断机器的字节序" class="headerlink" title="如何判断机器的字节序"></a>如何判断机器的字节序</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i=<span class="number">1</span>;   </span><br><span class="line"><span class="keyword">char</span> *p=(<span class="keyword">char</span> *)&amp;i;   </span><br><span class="line"><span class="keyword">if</span>(*p == <span class="number">1</span>)     </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"小端模式"</span>); </span><br><span class="line"><span class="keyword">else</span> <span class="comment">// (*p == 0)</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"大端模式"</span>);</span><br></pre></td></tr></table></figure>
-<p>或者使用联合体union：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//return 1 : little-endian</span></span><br><span class="line"><span class="comment">//       0 : big-endian</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">checkCPUendian</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">union</span> &#123;</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> a;</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">char</span> b; </span><br><span class="line">    &#125; c;</span><br><span class="line">  </span><br><span class="line">    c.a = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> (c.b == <span class="number">1</span>); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>因为<strong>联合体union的存放顺序是所有成员都从低地址开始存放</strong>，利用该特性就可以轻松地获得了CPU对内存采用Little-endian还是Big-endian模式读写。</p>
-<h3 id="常见的字节序"><a href="#常见的字节序" class="headerlink" title="常见的字节序"></a>常见的字节序</h3><p>一般操作系统都是小端，而通讯协议是大端的。</p>
-<h4 id="常见CPU的字节序"><a href="#常见CPU的字节序" class="headerlink" title="常见CPU的字节序"></a>常见CPU的字节序</h4><table>
-<thead>
-<tr>
-<th>大小端</th>
-<th>CPU</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Big Endian</td>
-<td>PowerPC、IBM、Sun</td>
-</tr>
-<tr>
-<td>Little Endian</td>
-<td>x86、DEC</td>
-</tr>
-</tbody>
-</table>
-<p><strong>ARM既可以工作在大端模式，也可以工作在小端模式。</strong></p>
-<h4 id="常见文件的字节序"><a href="#常见文件的字节序" class="headerlink" title="常见文件的字节序"></a>常见文件的字节序</h4><table>
-<thead>
-<tr>
-<th>文件格式</th>
-<th>大小端</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Adobe PS</td>
-<td>Big Endian</td>
-</tr>
-<tr>
-<td>BMP</td>
-<td>Little Endian</td>
-</tr>
-<tr>
-<td>DXF(AutoCAD)</td>
-<td>Variable</td>
-</tr>
-<tr>
-<td>GIF</td>
-<td>Little Endian</td>
-</tr>
-<tr>
-<td>JPEG</td>
-<td>Big Endian</td>
-</tr>
-<tr>
-<td>MacPaint</td>
-<td>Big Endian</td>
-</tr>
-<tr>
-<td>RTF</td>
-<td>Little Endian</td>
-</tr>
-</tbody>
-</table>
-<p>另外，Java和所有的网络通讯协议都是使用Big-Endian的编码。</p>
-<h3 id="大端小端的转换方法"><a href="#大端小端的转换方法" class="headerlink" title="大端小端的转换方法"></a><strong>大端小端的转换方法</strong></h3><p><img src="/gallery/java-common/20171225094704164.png" alt=""></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#define BigtoLittle16(A)                 ((((uint16)(A) &amp; 0xff00) &gt;&gt; 8) | \</span><br><span class="line">                                         (((uint16)(A) &amp; 0x00ff) &lt;&lt; 8))</span><br><span class="line">  </span><br><span class="line"> </span><br><span class="line">#define BigtoLittle32(A)                 ((((uint32)(A) &amp; 0xff000000) &gt;&gt; 24) | \</span><br><span class="line">                                         (((uint32)(A) &amp; 0x00ff0000) &gt;&gt; 8) | \</span><br><span class="line">                                         (((uint32)(A) &amp; 0x0000ff00) &lt;&lt; 8) | \</span><br><span class="line">                                         (((uint32)(A) &amp; 0x000000ff) &lt;&lt; 24))</span><br></pre></td></tr></table></figure>
-<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
-<li><a href="http://blog.csdn.net/ce123_zhouwei/article/details/6971544" target="_blank" rel="noopener">详解大端模式和小端模式</a></li>
-<li><a href="http://blog.163.com/shengrui_step/blog/static/20870918720139103944374/" target="_blank" rel="noopener">计算机中的小端模式和大端模式 </a></li>
-<li><a href="https://www.2cto.com/kf/201712/707634.html" target="_blank" rel="noopener">数值存储：CPU大端和小端模式详解</a></li>
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Java并发包（java.util.concurrent）中提供了很多并发工具，这其中，很多我们耳熟能详的并发工具，譬如ReentrantLock、Semaphore，CountDownLatch，CyclicBarrier，它们的实现都用到了一个共同的基类 - <strong>AbstractQueuedSynchronizer</strong>，简称AQS。AQS提供了一种原子式管理同步状态、阻塞和唤醒线程功能以及队列模型的简单框架。是一个用来构建锁和同步器的框架，使用AQS能简单且高效地构造出应用广泛的大量的同步器，比如我们提到的ReentrantLock，Semaphore，其他的诸如ReentrantReadWriteLock，SynchronousQueue，FutureTask等等皆是基于AQS的。</p>
+<h2 id="设计思想"><a href="#设计思想" class="headerlink" title="设计思想"></a>设计思想</h2><p>同步器背后的基本思想非常简单，可以参考AQS作者 Doug Lea 的论文：<a href="http://gee.cs.oswego.edu/dl/papers/aqs.pdf" target="_blank" rel="noopener">The java.util.concurrent Synchronizer Framework</a>。同步器一般包含两种方法，一种是acquire，另一种是release。</p>
+<ul>
+<li>acquire操作阻塞调用的线程，直到同步状态允许其继续执行。</li>
+<li>release操作则是改变同步状态，使得一或多个被acquire阻塞的线程继续执行。</li>
+</ul>
+<p>其中acquire操作伪代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (synchronization state does not allow acquire) &#123;</span><br><span class="line">	enqueue current thread <span class="keyword">if</span> not already queued;</span><br><span class="line">	possibly block current thread;</span><br><span class="line">&#125;</span><br><span class="line">dequeue current thread <span class="keyword">if</span> it was queued;</span><br></pre></td></tr></table></figure>
+<p>release操作伪代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">update synchronization state;</span><br><span class="line"><span class="keyword">if</span> (state may permit a blocked thread to acquire)</span><br><span class="line">	unblock one or more queued threads;</span><br></pre></td></tr></table></figure>
+<p>为了实现上述操作，需要下面三个基本组件的相互协作：</p>
+<ul>
+<li>同步状态的原子性管理；</li>
+<li>线程的阻塞与解除阻塞；</li>
+<li>队列的管理；</li>
+</ul>
+<p>AQS框架借助于两个类：<strong>Unsafe</strong>(提供CAS操作) 和 <strong>LockSupport</strong>(提供park/unpark操作)。</p>
+<h2 id="1-同步状态的原子性管理"><a href="#1-同步状态的原子性管理" class="headerlink" title="1. 同步状态的原子性管理"></a>1. 同步状态的原子性管理</h2><p>AQS类使用单个<code>int</code>（32位）来保存同步状态，并暴露出<code>getState</code>、<code>setState</code>以及<code>compareAndSet</code>操作来读取和更新这个状态。该整数可以表现任何状态。比如， <code>Semaphore</code> 用它来表现剩余的许可数，<code>ReentrantLock</code> 用它来表现拥有它的线程已经请求了多少次锁；<code>FutureTask</code> 用它来表现任务的状态(尚未开始、运行、完成和取消)。</p>
+<p>如JDK的文档中所说，使用AQS来实现一个同步器需要覆盖实现如下几个方法，并且使用<code>getState</code>，<code>setState</code>，<code>compareAndSetState</code>这几个方法来设置或者获取状态。</p>
+<ul>
+<li><p><code>boolean tryAcquire(int arg)</code> </p>
+</li>
+<li><p><code>boolean tryRelease(int arg)</code> </p>
+</li>
+<li><p><code>int tryAcquireShared(int arg)</code> </p>
+</li>
+<li><p><code>boolean tryReleaseShared(int arg)</code> </p>
+</li>
+<li><code>boolean isHeldExclusively()</code></li>
+</ul>
+<p>以上方法不需要全部实现，根据获取的锁的种类可以选择实现不同的方法，支持独占(排他)获取锁的同步器应该实现<code>tryAcquire</code>、 <code>tryRelease</code>、<code>isHeldExclusively</code>而支持共享获取的同步器应该实现<code>tryAcquireShared</code>、<code>tryReleaseShared</code>、<code>isHeldExclusively</code>。下面以 <code>CountDownLatch</code> 举例说明基于AQS实现同步器, <code>CountDownLatch</code> 用同步状态持有当前计数，<code>countDown</code>方法调用 release从而导致计数器递减；当计数器为0时，解除所有线程的等待；<code>await</code>调用acquire，如果计数器为0，<code>acquire</code> 会立即返回，否则阻塞。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://gee.cs.oswego.edu/dl/papers/aqs.pdf" target="_blank" rel="noopener">The java.util.concurrent Synchronizer Framework - AQS框架作者Doug Lea的论文</a></li>
+<li><a href="http://ifeve.com/aqs-2/" target="_blank" rel="noopener">The j.u.c Synchronizer Framework翻译(二)设计与实现</a></li>
+<li><a href="https://blog.csdn.net/vernonzheng/article/details/8288251" target="_blank" rel="noopener">Java多线程（九）之ReentrantLock与Condition</a></li>
 </ul>
 
       
@@ -339,7 +294,7 @@ var a = new Donate({
 
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/C语言/">C语言</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/源码分析/">源码分析</a></li></ul>
 
     </footer>
   </div>
@@ -347,19 +302,10 @@ var a = new Donate({
     
 <nav id="article-nav">
   
-    <a href="../../22/用Java实现断点续传 (HTTP)/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">
-        
-          用Java实现断点续传 (HTTP)
-        
-      </div>
-    </a>
   
-  
-    <a href="../../12/【Android】源码分析 - LRUCache缓存实现原理/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="../../03/【Android】动态链接库so的加载原理/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">【Android】源码分析 - LRUCache缓存实现原理</div>
+      <div class="article-nav-title">【Android】动态链接库so的加载原理</div>
     </a>
   
 </nav>
@@ -373,7 +319,7 @@ var a = new Donate({
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
     
-        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、概念及详解"><span class="nav-number">1.</span> <span class="nav-text">一、概念及详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么会有大小端模式之分呢？"><span class="nav-number">2.</span> <span class="nav-text">为什么会有大小端模式之分呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何判断机器的字节序"><span class="nav-number">3.</span> <span class="nav-text">如何判断机器的字节序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见的字节序"><span class="nav-number">4.</span> <span class="nav-text">常见的字节序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#常见CPU的字节序"><span class="nav-number">4.1.</span> <span class="nav-text">常见CPU的字节序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常见文件的字节序"><span class="nav-number">4.2.</span> <span class="nav-text">常见文件的字节序</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#大端小端的转换方法"><span class="nav-number">5.</span> <span class="nav-text">大端小端的转换方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设计思想"><span class="nav-number">2.</span> <span class="nav-text">设计思想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-同步状态的原子性管理"><span class="nav-number">3.</span> <span class="nav-text">1. 同步状态的原子性管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol>
     
     </div>
   </aside>

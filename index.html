@@ -350,6 +350,86 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Java】锁 - AQS机制"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="2018/07/19/【Java】锁 - AQS机制/">【Java】J.U.C包AQS机制</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="2018/07/19/【Java】锁 - AQS机制/" class="article-date">
+	  <time datetime="2018-07-19T14:20:55.000Z" itemprop="datePublished">2018-07-19</time>
+	</a>
+
+      
+    <a class="article-category-link" href="categories/Java/">Java</a><a class="article-category-link" href="categories/Java/源码分析/">源码分析</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Java并发包（java.util.concurrent）中提供了很多并发工具，这其中，很多我们耳熟能详的并发工具，譬如ReentrantLock、Semaphore，CountDownLatch，CyclicBarrier，它们的实现都用到了一个共同的基类 - <strong>AbstractQueuedSynchronizer</strong>，简称AQS。AQS提供了一种原子式管理同步状态、阻塞和唤醒线程功能以及队列模型的简单框架。是一个用来构建锁和同步器的框架，使用AQS能简单且高效地构造出应用广泛的大量的同步器，比如我们提到的ReentrantLock，Semaphore，其他的诸如ReentrantReadWriteLock，SynchronousQueue，FutureTask等等皆是基于AQS的。</p>
+<h2 id="设计思想"><a href="#设计思想" class="headerlink" title="设计思想"></a>设计思想</h2><p>同步器背后的基本思想非常简单，可以参考AQS作者 Doug Lea 的论文：<a href="http://gee.cs.oswego.edu/dl/papers/aqs.pdf" target="_blank" rel="noopener">The java.util.concurrent Synchronizer Framework</a>。同步器一般包含两种方法，一种是acquire，另一种是release。</p>
+<ul>
+<li>acquire操作阻塞调用的线程，直到同步状态允许其继续执行。</li>
+<li>release操作则是改变同步状态，使得一或多个被acquire阻塞的线程继续执行。</li>
+</ul>
+<p>其中acquire操作伪代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (synchronization state does not allow acquire) &#123;</span><br><span class="line">	enqueue current thread <span class="keyword">if</span> not already queued;</span><br><span class="line">	possibly block current thread;</span><br><span class="line">&#125;</span><br><span class="line">dequeue current thread <span class="keyword">if</span> it was queued;</span><br></pre></td></tr></table></figure>
+<p>release操作伪代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">update synchronization state;</span><br><span class="line"><span class="keyword">if</span> (state may permit a blocked thread to acquire)</span><br><span class="line">	unblock one or more queued threads;</span><br></pre></td></tr></table></figure>
+<p>为了实现上述操作，需要下面三个基本组件的相互协作：</p>
+<ul>
+<li>同步状态的原子性管理；</li>
+<li>线程的阻塞与解除阻塞；</li>
+<li>队列的管理；</li>
+</ul>
+<p>AQS框架借助于两个类：<strong>Unsafe</strong>(提供CAS操作) 和 <strong>LockSupport</strong>(提供park/unpark操作)。</p>
+<h2 id="1-同步状态的原子性管理"><a href="#1-同步状态的原子性管理" class="headerlink" title="1. 同步状态的原子性管理"></a>1. 同步状态的原子性管理</h2><p>AQS类使用单个<code>int</code>（32位）来保存同步状态，并暴露出<code>getState</code>、<code>setState</code>以及<code>compareAndSet</code>操作来读取和更新这个状态。该整数可以表现任何状态。比如， <code>Semaphore</code> 用它来表现剩余的许可数，<code>ReentrantLock</code> 用它来表现拥有它的线程已经请求了多少次锁；<code>FutureTask</code> 用它来表现任务的状态(尚未开始、运行、完成和取消)。</p>
+<p>如JDK的文档中所说，使用AQS来实现一个同步器需要覆盖实现如下几个方法，并且使用<code>getState</code>，<code>setState</code>，<code>compareAndSetState</code>这几个方法来设置或者获取状态。</p>
+<ul>
+<li><p><code>boolean tryAcquire(int arg)</code> </p>
+</li>
+<li><p><code>boolean tryRelease(int arg)</code> </p>
+</li>
+<li><p><code>int tryAcquireShared(int arg)</code> </p>
+</li>
+<li><p><code>boolean tryReleaseShared(int arg)</code> </p>
+</li>
+<li><code>boolean isHeldExclusively()</code></li>
+</ul>
+<p>以上方法不需要全部实现，根据获取的锁的种类可以选择实现不同的方法，支持独占(排他)获取锁的同步器应该实现<code>tryAcquire</code>、 <code>tryRelease</code>、<code>isHeldExclusively</code>而支持共享获取的同步器应该实现<code>tryAcquireShared</code>、<code>tryReleaseShared</code>、<code>isHeldExclusively</code>。下面以 <code>CountDownLatch</code> 举例说明基于AQS实现同步器, <code>CountDownLatch</code> 用同步状态持有当前计数，<code>countDown</code>方法调用 release从而导致计数器递减；当计数器为0时，解除所有线程的等待；<code>await</code>调用acquire，如果计数器为0，<code>acquire</code> 会立即返回，否则阻塞。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://gee.cs.oswego.edu/dl/papers/aqs.pdf" target="_blank" rel="noopener">The java.util.concurrent Synchronizer Framework - AQS框架作者Doug Lea的论文</a></li>
+<li><a href="http://ifeve.com/aqs-2/" target="_blank" rel="noopener">The j.u.c Synchronizer Framework翻译(二)设计与实现</a></li>
+<li><a href="https://blog.csdn.net/vernonzheng/article/details/8288251" target="_blank" rel="noopener">Java多线程（九）之ReentrantLock与Condition</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/源码分析/">源码分析</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【Android】动态链接库so的加载原理"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -870,63 +950,6 @@ A.onPause()......  -->
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/Java/">Java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-如何判断CPU是大端还是小端模式"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="2018/01/18/如何判断CPU是大端还是小端模式/">如何判断CPU是大端还是小端模式</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="2018/01/18/如何判断CPU是大端还是小端模式/" class="article-date">
-	  <time datetime="2018-01-18T14:20:55.000Z" itemprop="datePublished">2018-01-18</time>
-	</a>
-
-      
-    <a class="article-category-link" href="categories/C语言/">C语言</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="一、概念及详解"><a href="#一、概念及详解" class="headerlink" title="一、概念及详解"></a><strong>一、概念及详解</strong></h3><p>在各种体系的计算机中通常采用的字节存储机制主要有两种： <strong>Big-Endian</strong>和<strong>Little-Endian</strong>，即大端模式和小端模式。</p>
-<p>Big-Endian和Little-Endian的定义如下：</p>
-<p>1) Little-Endian：就是低位字节排放在内存的低地址端，高位字节排放在内存的高地址端。<br>2) Big-Endian：就是高位字节排放在内存的低地址端，低位字节排放在内存的高地址端。</p>
-<p><img src="/gallery/java-common/20171225094704165.png" alt=""></p>
-<p>举一个例子，比如16进制数字<code>0x12345678</code>在内存中的表示形式为：</p>
-<p><img src="/gallery/java-common/20160905174029957.jpg" alt=""></p>
-<p><strong>大端小端没有谁优谁劣，各自优势便是对方劣势：</strong></p>
-<p>小端模式 ：强制转换数据不需要调整字节内容，1、2、4字节的存储方式一样。<br>大端模式 ：符号位的判定固定为第一个字节，容易判断正负。</p>
-        <!-- 一、概念及详解在各种体系的计算机中通常采用的字节存储机制主要有两种： Big-Endian和Little-Endian，即大端模式和小端模式。
-Big-Endian和Little-Endian的定义如下：
-1) Little-Endian：就是低位字节排放在内存的低地址端，高位字节排放在内存的高地址端。2) Big-Endian：就是高位字节排放在内存的低地址端，低位字节排放在内存的高地址端......  -->
-        <p class="article-more-link">
-          <a href="2018/01/18/如何判断CPU是大端还是小端模式/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/C语言/">C语言</a></li></ul>
 
     </footer>
   </div>

@@ -350,6 +350,74 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Android】源码分析 - AsyncTask异步任务机制"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/10/09/【Android】源码分析 - AsyncTask异步任务机制/">【Android】源码分析 - AsyncTask异步任务机制</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/10/09/【Android】源码分析 - AsyncTask异步任务机制/" class="article-date">
+	  <time datetime="2017-10-09T12:03:00.000Z" itemprop="datePublished">2017-10-09</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Android/">Android</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>提到Android的多线程机制，常用的有如下几种方式：</p>
+<ul>
+<li><strong>AsyncTask:</strong> 封装了线程池和Handler，为 UI 线程与工作线程之间进行快速切换提供一种便捷机制。适用于当下立即需要启动，但是异步执行的生命周期短暂的使用场景。</li>
+<li><strong>HandlerThread:</strong> 一个已经拥有了Looper的线程类，内部可以直接使用Handler。为某些回调方法或者等待某些任务的执行设置一个专属的线程，并提供线程任务的调度机制。</li>
+<li><strong>ThreadPool:</strong> 把任务分解成不同的单元，分发到各个不同的线程上，进行同时并发处理。</li>
+<li><strong>IntentService:</strong> 适合于执行由 UI 触发的后台 Service 任务，并可以把后台任务执行的情况通过一定的机制反馈给 UI。</li>
+</ul>
+<p>尽管Android已经设计了基本的Handler异步消息机制提供给我们进行线程间通信，不过对于频繁得UI更新操作Handler用起来确实有点细碎，为了更加方便我们在子线程中更新UI元素，Android从1.5版本就引入了一个AsyncTask类，使用它我们可以非常灵活方便地从子线程切换到UI线程。</p>
+<p><img src="http://itimetraveler.github.io/gallery/android-asynctask/worker_thread.png" alt=""></p>
+<p>我们就从AsyncTask的基本用法开始，一起分析下AsyncTask源码，看看它是如何实现的。</p>
+<h3 id="使用AsyncTask"><a href="#使用AsyncTask" class="headerlink" title="使用AsyncTask"></a>使用AsyncTask</h3><p>由于AsyncTask是一个抽象类，所以如果我们想使用它，就必须要创建一个子类去继承它。在继承时我们可以为AsyncTask类指定三个泛型参数，这三个参数的用途如下：</p>
+<ol>
+<li><strong>Params</strong>：在执行AsyncTask时需要传入的参数，可用于在后台任务中使用。</li>
+<li><strong>Progress</strong>：后台任务执行时，如果需要在界面上显示当前的进度，则使用这里指定的泛型作为进度单位。</li>
+<li><strong>Result</strong>：当任务执行完毕后，如果需要对结果进行返回，则使用这里指定的泛型作为返回值类型。</li>
+</ol>
+<p>一个最简单的自定义AsyncTask就可以写成如下方式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">MyTask</span> <span class="keyword">extends</span> <span class="title">AsyncTask</span>&lt;<span class="title">Void</span>, <span class="title">Void</span>, <span class="title">Void</span>&gt; </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure>
+        <!-- 前言提到Android的多线程机制，常用的有如下几种方式：
+
+AsyncTask: 封装了线程池和Handler，为 UI 线程与工作线程之间进行快速切换提供一种便捷机制。适用于当下立即需要启动，但是异步执行的生命周期短暂的使用场景。
+HandlerThread: 一个已经拥有了Looper的线程类，内部可以直接使用Handler。为某些回调方法或者等待某些任务的执行设置一个专属的线程，并提......  -->
+        <p class="article-more-link">
+          <a href="../../2017/10/09/【Android】源码分析 - AsyncTask异步任务机制/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/源码分析/">源码分析</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【Android】源码分析 - IntentService机制"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -864,78 +932,6 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Google/">Google</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-八大排序算法总结与java实现"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/07/18/八大排序算法总结与java实现/">八大排序算法总结与java实现</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/07/18/八大排序算法总结与java实现/" class="article-date">
-	  <time datetime="2017-07-18T04:30:55.000Z" itemprop="datePublished">2017-07-18</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>因为健忘，加上对各种排序算法理解不深刻，过段时间面对排序就蒙了。所以决定对我们常见的这几种排序算法进行统一总结，强行学习。首先罗列一下常见的十大排序算法：</p>
-<p><img src="/gallery/sort-algorithms/big-o.png" alt=""></p>
-<ul>
-<li>直接插入排序</li>
-<li>希尔排序</li>
-<li>简单选择排序</li>
-<li>堆排序</li>
-<li>冒泡排序</li>
-<li>快速排序</li>
-<li>归并排序</li>
-<li>基数排序</li>
-</ul>
-        <!-- 概述因为健忘，加上对各种排序算法理解不深刻，过段时间面对排序就蒙了。所以决定对我们常见的这几种排序算法进行统一总结，强行学习。首先罗列一下常见的十大排序算法：
-
-
-直接插入排序
-希尔排序
-简单选择排序
-堆排序
-冒泡排序
-快速排序
-归并排序
-基数排序
-
-
-我们讨论的这八大排序算法的实现可以参考我的Github：SortAlgorithms，其中也包括了排序测试模块[Test.java]和排序算......  -->
-        <p class="article-more-link">
-          <a href="../../2017/07/18/八大排序算法总结与java实现/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
 
     </footer>
   </div>
