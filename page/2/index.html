@@ -350,6 +350,57 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-用Java实现断点续传 (HTTP)"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2018/01/22/用Java实现断点续传 (HTTP)/">用Java实现断点续传 (HTTP)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2018/01/22/用Java实现断点续传 (HTTP)/" class="article-date">
+	  <time datetime="2018-01-22T04:30:55.000Z" itemprop="datePublished">2018-01-22</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Java/">Java</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="断点续传的原理"><a href="#断点续传的原理" class="headerlink" title="断点续传的原理"></a>断点续传的原理</h3><p>其实断点续传的原理很简单，就是在 Http 的请求上和一般的下载有所不同而已。<br>打个比方，浏览器请求服务器上的一个文时，所发出的请求如下：<br>假设服务器域名为 <a href="www.sjtu.edu.cn">www.sjtu.edu.cn</a>，文件名为 down.zip。 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">GET /down.zip HTTP/1.1 </span><br><span class="line">Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/vnd.ms- </span><br><span class="line">excel, application/msword, application/vnd.ms-powerpoint, */* </span><br><span class="line">Accept-Language: zh-cn </span><br><span class="line">Accept-Encoding: gzip, deflate </span><br><span class="line">User-Agent: Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0) </span><br><span class="line">Connection: Keep-Alive</span><br></pre></td></tr></table></figure>
+<p>服务器收到请求后，按要求寻找请求的文件，提取文件的信息，然后返回给浏览器，返回信息如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">200 </span><br><span class="line">Content-Length=106786028 </span><br><span class="line">Accept-Ranges=bytes </span><br><span class="line">Date=Mon, 30 Apr 2001 12:56:11 GMT </span><br><span class="line">ETag=W/&quot;02ca57e173c11:95b&quot; </span><br><span class="line">Content-Type=application/octet-stream </span><br><span class="line">Server=Microsoft-IIS/5.0 </span><br><span class="line">Last-Modified=Mon, 30 Apr 2001 12:56:11 GMT</span><br></pre></td></tr></table></figure></p>
+        <!-- 断点续传的原理其实断点续传的原理很简单，就是在 Http 的请求上和一般的下载有所不同而已。打个比方，浏览器请求服务器上的一个文时，所发出的请求如下：假设服务器域名为 www.sjtu.edu.cn，文件名为 down.zip。 
+1234567GET /down.zip HTTP/1.1 Accept: image/gif, image/x-xbitmap, image/jpeg, ima......  -->
+        <p class="article-more-link">
+          <a href="../../2018/01/22/用Java实现断点续传 (HTTP)/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-如何判断CPU是大端还是小端模式"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -901,74 +952,11 @@ wait/notify方法首先，我们搞清楚Thread.sleep()方法和Object.wait()、
 <!-- Table of Contents -->
 
   
-    <article id="post-【算法】字符串是否包含问题"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/10/18/【算法】字符串是否包含问题/">【算法】字符串是否包含问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/10/18/【算法】字符串是否包含问题/" class="article-date">
-	  <time datetime="2017-10-18T14:20:55.000Z" itemprop="datePublished">2017-10-18</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在网上看到这篇文章：<a href="http://www.vaikan.com/google-interviewing-story/" target="_blank" rel="noopener">一次谷歌面试趣事</a>。觉得其中的算法题以及作者的解决思路很有趣，就拿来分享一下吧。</p>
-<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>假设这有一个各种字母组成的字符串，假设这还有另外一个字符串，而且这个字符串里的字母数相对少一些。从算法是讲，什么方法能最快的查出所有小字符串里的字母在大字符串里都有？</p>
-<p>比如，如果是下面两个字符串：</p>
-<blockquote>
-<p>String 1: ABCDEFGHLMNOPQRS<br>String 2: DCGSRQPO</p>
-</blockquote>
-<p>答案是true，所有在String2里的字母String1也都有。如果是下面两个字符串：</p>
-<blockquote>
-<p>String 1: ABCDEFGHLMNOPQRS<br>String 2: DCGSRQPZ</p>
-</blockquote>
-<p>答案是false，因为第二个字符串里的Z字母不在第一个字符串里。</p>
-        <!-- 在网上看到这篇文章：一次谷歌面试趣事。觉得其中的算法题以及作者的解决思路很有趣，就拿来分享一下吧。
-问题假设这有一个各种字母组成的字符串，假设这还有另外一个字符串，而且这个字符串里的字母数相对少一些。从算法是讲，什么方法能最快的查出所有小字符串里的字母在大字符串里都有？
-比如，如果是下面两个字符串：
-
-String 1: ABCDEFGHLMNOPQRSString 2: DCGSRQPO
-......  -->
-        <p class="article-more-link">
-          <a href="../../2017/10/18/【算法】字符串是否包含问题/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="../../">&laquo; 上一页</a><a class="page-number" href="../../">1</a><span class="page-number current">2</span><a class="page-number" href="../3/">3</a><a class="page-number" href="../4/">4</a><span class="space">&hellip;</span><a class="page-number" href="../11/">11</a><a class="extend next" rel="next" href="../3/">下一页 &raquo;</a>
+    <a class="extend prev" rel="prev" href="../../">&laquo; 上一页</a><a class="page-number" href="../../">1</a><span class="page-number current">2</span><a class="page-number" href="../3/">3</a><a class="page-number" href="../4/">4</a><span class="space">&hellip;</span><a class="page-number" href="../12/">12</a><a class="extend next" rel="next" href="../3/">下一页 &raquo;</a>
   </nav>
 
 </section>

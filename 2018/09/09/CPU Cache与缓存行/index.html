@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>cpu cache与缓存行 | iTimeTraveler</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Thread" />
+  
+  
+  
+  
+  <meta name="description" content="引言先看下面这两个循环遍历哪个快？ 1234567891011int[][] array = new int[64 * 1024][1024];// 横向遍历for(int i = 0; i &amp;lt; 64 * 1024; i ++)    for(int j = 0; j &amp;lt; 1024; j ++)        array[i][j] ++;// 纵向遍历for(int i = 0; i">
+<meta name="keywords" content="Thread">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CPU Cache与缓存行">
+<meta property="og:url" content="http://github.com/2018/09/09/CPU Cache与缓存行/index.html">
+<meta property="og:site_name" content="iTimeTraveler">
+<meta property="og:description" content="引言先看下面这两个循环遍历哪个快？ 1234567891011int[][] array = new int[64 * 1024][1024];// 横向遍历for(int i = 0; i &amp;lt; 64 * 1024; i ++)    for(int j = 0; j &amp;lt; 1024; j ++)        array[i][j] ++;// 纵向遍历for(int i = 0; i">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://github.com/gallery/java-common/cpu-cache-and-memory-ordering-9-638.jpg">
+<meta property="og:updated_time" content="2018-09-14T07:57:43.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CPU Cache与缓存行">
+<meta name="twitter:description" content="引言先看下面这两个循环遍历哪个快？ 1234567891011int[][] array = new int[64 * 1024][1024];// 横向遍历for(int i = 0; i &amp;lt; 64 * 1024; i ++)    for(int j = 0; j &amp;lt; 1024; j ++)        array[i][j] ++;// 纵向遍历for(int i = 0; i">
+<meta name="twitter:image" content="http://github.com/gallery/java-common/cpu-cache-and-memory-ordering-9-638.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/gallery/avatar/0.jpg">
+  <link rel="apple-touch-icon" href="/gallery/avatar/0.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="../../../../css/style.css">
+
+  <script src="../../../../js/jquery-3.1.1.min.js"></script>
+  <script src="../../../../js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="../../../../css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 8px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="62px" height="75px" alt="Hike News" src="/gallery/avatar/0.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="../../../../index.html">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../funnysite">酷站</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../collection">收藏</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../mybooks">🎁</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '../../../../content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="../../../../js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-CPU Cache与缓存行" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" href="../../../../gallery/java-common/cpu-cache-and-memory-ordering-9-638.jpg" rel="gallery_cjm1pp2jv0026mys6u3upmqtx">
+        <img src="../../../../gallery/java-common/cpu-cache-and-memory-ordering-9-638.jpg" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      CPU Cache与缓存行
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="" class="article-date">
+	  <time datetime="2018-09-09T14:20:55.000Z" itemprop="datePublished">2018-09-09</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../../../categories/Java/">Java</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>先看下面这两个循环遍历哪个快？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[][] array = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">64</span> * <span class="number">1024</span>][<span class="number">1024</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 横向遍历</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">64</span> * <span class="number">1024</span>; i ++)</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">1024</span>; j ++)</span><br><span class="line">        array[i][j] ++;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 纵向遍历</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1024</span>; i ++)</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">64</span> * <span class="number">1024</span>; j ++)</span><br><span class="line">        array[j][i] ++;</span><br></pre></td></tr></table></figure>
+<p>在CPU处理器参数为 2.3 GHz Intel Core i5 的Mac上的结果是：</p>
+<blockquote>
+<p>横向遍历:    80ms<br>纵向遍历:    2139ms</p>
+</blockquote>
+<p>横向遍历的 CPU cache 命中率高，所以它比纵向遍历约快这么多倍！</p>
+<p><a href="http://igoro.com/archive/gallery-of-processor-cache-effects/" target="_blank" rel="noopener">Gallery of Processor Cache Effects</a> 用 7 个源码示例生动的介绍 cache 原理，深入浅出！但是可能因操作系统的差异、编译器是否优化，以及近些年 cache 性能的提升，有些样例在 Mac 的效果与原文相差较大。</p>
+<a id="more"></a>
+<h2 id="CPU-Cache"><a href="#CPU-Cache" class="headerlink" title="CPU Cache"></a>CPU Cache</h2><p>CPU 访问内存时，首先查询 cache 是否已缓存该数据。如果有，则返回数据，无需访问内存；如果不存在，则需把数据从内存中载入 cache，最后返回给理器。在处理器看来，缓存是一个透明部件，旨在提高处理器访问内存的速率，所以从逻辑的角度而言，编程时无需关注它，但是从性能的角度而言，理解其原理和机制有助于写出性能更好的程序。Cache 之所以有效，是因为程序对内存的访问存在一种概率上的局部特征：</p>
+<ul>
+<li>Spatial Locality：对于刚被访问的数据，其相邻的数据在将来被访问的概率高。</li>
+<li>Temporal Locality：对于刚被访问的数据，其本身在将来被访问的概率高。</li>
+</ul>
+<p>比 mac OS 为例，可用 命令 <code>sysctl -a</code> 查询 cache 信息，单位是字节Byte。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ sysctl -a</span><br><span class="line"></span><br><span class="line">hw.cachelinesize: <span class="number">64</span></span><br><span class="line">hw.l1icachesize: <span class="number">32768</span></span><br><span class="line">hw.l1dcachesize: <span class="number">32768</span></span><br><span class="line">hw.l2cachesize: <span class="number">262144</span></span><br><span class="line">hw.l3cachesize: <span class="number">4194304</span></span><br><span class="line">machdep.cpu.cache.L2_associativity: <span class="number">4</span></span><br><span class="line">machdep.cpu.core_count: <span class="number">2</span></span><br><span class="line">machdep.cpu.thread_count: <span class="number">4</span></span><br><span class="line">machdep.cpu.tlb.inst.large: <span class="number">8</span></span><br><span class="line">machdep.cpu.tlb.data.small: <span class="number">64</span></span><br><span class="line">machdep.cpu.tlb.data.small_level1: <span class="number">64</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>CacheLine size：64 Byte</li>
+<li>L1 Data Cache：32KB</li>
+<li>L1 Instruction Cache：32KB</li>
+<li>L2 Cache：256KB</li>
+<li>L3 Cache：4MB</li>
+</ul>
+<p>Mac下也可以点击坐上角关于本机 -&gt; 概览 -&gt; 系统报告来查看硬件信息：</p>
+<p><img src="/gallery/java-common/mac_hw_info.png" alt=""></p>
+<p>下图是计算机存储的基本结构。L1、L2、L3分别表示一级缓存、二级缓存、三级缓存。越靠近CPU的缓存，速度越快，容量也越小。L1缓存小但很快，并且紧靠着在使用它的CPU内核。分为指令缓存和数据缓存；L2大一些，也慢一些，并仍然只能被一个单独的CPU核使用；L3更大、更慢，并且被单个插槽上的所有CPU核共享；最后是主存，由全部插槽上的所有CPU核共享。</p>
+<p><img src="/gallery/java-common/mac_cpu_cache_info.png" alt="计算机CPU与缓存示意图"></p>
+<p>当CPU执行运算的时候，它先去L1查找所需的数据、再去L2、然后是L3，如果最后这些缓存中都没有，所需的数据就要去主内存拿。走得越远，运算耗费的时间就越长。所以要尽量确保数据在L1缓存中。</p>
+<p>Martin和Mike的 <a href="http://www.infoq.com/presentations/LMAX" target="_blank" rel="noopener">QCon presentation</a> 演讲中给出了一些缓存未命中的消耗数据，也就是从CPU访问不同层级数据的时间概念:</p>
+<table>
+<thead>
+<tr>
+<th>从CPU到</th>
+<th>大约需要的CPU时钟周期</th>
+<th>大约需要的时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主存</td>
+<td></td>
+<td>约60-80ns</td>
+</tr>
+<tr>
+<td>QPI 总线传输(between sockets, not drawn)</td>
+<td></td>
+<td>约20ns</td>
+</tr>
+<tr>
+<td>L3 cache</td>
+<td>约40-45 cycles</td>
+<td>约15ns</td>
+</tr>
+<tr>
+<td>L2 cache</td>
+<td>约10 cycles</td>
+<td>约3ns</td>
+</tr>
+<tr>
+<td>L1 cache</td>
+<td>约3-4 cycles</td>
+<td>约1ns</td>
+</tr>
+<tr>
+<td>寄存器</td>
+<td>1 cycle</td>
+</tr>
+</tbody>
+</table>
+<p>可见CPU读取主存中的数据会比从L1中读取慢了近2个数量级。</p>
+<p>我们在每隔 64 Byte (cache line size) 访问 array 一次，访问固定次数。随着array的增大，看看能不能测试出 L1, L2 和 L3 cache size 的大小：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 每隔64Byte访问数组固定次数，看Array大小对耗时的影响</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> ARRAY_SIZE = <span class="number">512</span>; ARRAY_SIZE &lt;= <span class="number">128</span> * <span class="number">1024</span> * <span class="number">1024</span>; ARRAY_SIZE &lt;&lt;= <span class="number">1</span>) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">int</span> steps = <span class="number">640</span> * <span class="number">1024</span> * <span class="number">1024</span>; <span class="comment">// Arbitrary number of steps</span></span><br><span class="line">            <span class="keyword">int</span> length_mod = ARRAY_SIZE - <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">char</span>[] arr = <span class="keyword">new</span> <span class="keyword">char</span>[ARRAY_SIZE];</span><br><span class="line"></span><br><span class="line">            marked = System.currentTimeMillis();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; steps; i += <span class="number">64</span>) &#123;</span><br><span class="line">                arr[i &amp; length_mod]++; <span class="comment">// (i &amp; length_mod) is equal to (i % length_mod)</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">long</span> used = (System.currentTimeMillis() - marked);</span><br><span class="line">            System.out.println(formatSize(ARRAY_SIZE) + <span class="string">"\t"</span> + used);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 把size单位转化为KB, MB, GB</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">formatSize</span><span class="params">(<span class="keyword">long</span> size)</span> </span>&#123;</span><br><span class="line">        String hrSize = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">double</span> b = size;</span><br><span class="line">        <span class="keyword">double</span> k = size/<span class="number">1024.0</span>;</span><br><span class="line">        <span class="keyword">double</span> m = ((size/<span class="number">1024.0</span>)/<span class="number">1024.0</span>);</span><br><span class="line">        <span class="keyword">double</span> g = (((size/<span class="number">1024.0</span>)/<span class="number">1024.0</span>)/<span class="number">1024.0</span>);</span><br><span class="line">        <span class="keyword">double</span> t = ((((size/<span class="number">1024.0</span>)/<span class="number">1024.0</span>)/<span class="number">1024.0</span>)/<span class="number">1024.0</span>);</span><br><span class="line"></span><br><span class="line">        DecimalFormat dec = <span class="keyword">new</span> DecimalFormat(<span class="string">"0"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> ( t&gt;<span class="number">1</span> ) &#123;</span><br><span class="line">            hrSize = dec.format(t).concat(<span class="string">" TB"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> ( g&gt;<span class="number">1</span> ) &#123;</span><br><span class="line">            hrSize = dec.format(g).concat(<span class="string">" GB"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> ( m&gt;<span class="number">1</span> ) &#123;</span><br><span class="line">            hrSize = dec.format(m).concat(<span class="string">" MB"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> ( k&gt;<span class="number">1</span> ) &#123;</span><br><span class="line">            hrSize = dec.format(k).concat(<span class="string">" KB"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            hrSize = dec.format(b).concat(<span class="string">" Bytes"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> hrSize;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行的结果如下：</p>
+<p><img src="/gallery/java-common/array-access-demo.png" alt="每隔64Byte访问数组固定次数，看Array大小对耗时的影响"></p>
+<p>可以看到32KB，256KB，4MB之后耗时均有明显上升。</p>
+<h2 id="缓存行Cache-Line"><a href="#缓存行Cache-Line" class="headerlink" title="缓存行Cache Line"></a>缓存行Cache Line</h2><p>Cache是由很多个 Cache line 组成的。Cache line 是 cache 和 RAM 交换数据的最小单位，通常为 64 Byte。当 CPU 把内存的数据载入 cache 时，会把临近的共 64 Byte 的数据一同放入同一个Cache line，因为空间局部性：临近的数据在将来被访问的可能性大。</p>
+<p>以大小为 32 KB，cache line 的大小为 64 Byte 的L1级缓存为例，对于不同存放规则，其硬件设计也不同，下图简单表示一种设计：</p>
+<p><img src="/gallery/java-common/cpu_cache_direct_mapping.png" alt=""></p>
+<h3 id="伪共享False-Sharing"><a href="#伪共享False-Sharing" class="headerlink" title="伪共享False Sharing"></a>伪共享False Sharing</h3><p>当多线程修改互相独立的变量时，如果这些变量共享同一个缓存行，就会无意中影响彼此的性能，这就是伪共享。缓存行上的写竞争是运行在SMP系统中并行线程实现可伸缩性最重要的限制因素。有人将伪共享描述成无声的性能杀手，因为从代码中很难看清楚是否会出现伪共享。</p>
+<p><img src="/gallery/java-common/20161111081903485.png" alt=""></p>
+<p>下面我们通过一段代码，看看伪共享对性能的影响。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">FalseSharingNo</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">long</span> ITERATIONS = <span class="number">500L</span> * <span class="number">1000L</span> * <span class="number">100L</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> arrayIndex = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ValuePadding[] longs;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">FalseSharingNo</span><span class="params">(<span class="keyword">final</span> <span class="keyword">int</span> arrayIndex)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.arrayIndex = arrayIndex;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">final</span> String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; <span class="number">10</span>; i++)&#123;</span><br><span class="line">            System.gc();</span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">            runTest(i);</span><br><span class="line">            System.out.println(i + <span class="string">" Threads, duration = "</span> + (System.currentTimeMillis() - start));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">runTest</span><span class="params">(<span class="keyword">int</span> NUM_THREADS)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        Thread[] threads = <span class="keyword">new</span> Thread[NUM_THREADS];</span><br><span class="line">        longs = <span class="keyword">new</span> ValuePadding[NUM_THREADS];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; longs.length; i++) &#123;</span><br><span class="line">            longs[i] = <span class="keyword">new</span> ValuePadding();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; threads.length; i++) &#123;</span><br><span class="line">            threads[i] = <span class="keyword">new</span> Thread(<span class="keyword">new</span> FalseSharingNo(i));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (Thread t : threads) &#123;</span><br><span class="line">            t.start();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (Thread t : threads) &#123;</span><br><span class="line">            t.join();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> i = ITERATIONS + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (<span class="number">0</span> != --i) &#123;</span><br><span class="line">            longs[arrayIndex].value = <span class="number">0L</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ValuePadding</span> </span>&#123;</span><br><span class="line">        <span class="keyword">protected</span> <span class="keyword">long</span> p1, p2, p3, p4, p5, p6, p7;</span><br><span class="line">        <span class="keyword">protected</span> <span class="keyword">volatile</span> <span class="keyword">long</span> value = <span class="number">0L</span>;</span><br><span class="line">        <span class="keyword">protected</span> <span class="keyword">long</span> p9, p10, p11, p12, p13, p14;</span><br><span class="line">        <span class="keyword">protected</span> <span class="keyword">long</span> p15;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ValueNoPadding</span> </span>&#123;</span><br><span class="line">        <span class="comment">// protected long p1, p2, p3, p4, p5, p6, p7;</span></span><br><span class="line">        <span class="keyword">protected</span> <span class="keyword">volatile</span> <span class="keyword">long</span> value = <span class="number">0L</span>;</span><br><span class="line">        <span class="comment">// protected long p9, p10, p11, p12, p13, p14, p15;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在分别使用 ValuePadding  和 ValueNoPadding 两种对象，让多线程分别访问数组中相邻的对象，试图构建一个伪共享的场景。在有Padding填充的情况下，看看运行结果：</p>
+<blockquote>
+<p>1 Threads, duration = 398<br>2 Threads, duration = 645<br>3 Threads, duration = 537<br>4 Threads, duration = 638<br>5 Threads, duration = 786<br>6 Threads, duration = 954<br>7 Threads, duration = 1133<br>8 Threads, duration = 1286<br>9 Threads, duration = 1432</p>
+</blockquote>
+<p>把代码中 ValuePadding 都替换为 ValueNoPadding 后的结果：</p>
+<blockquote>
+<p>1 Threads, duration = 404<br>2 Threads, duration = 1250<br>3 Threads, duration = 1283<br>4 Threads, duration = 1179<br>5 Threads, duration = 2510<br>6 Threads, duration = 2733<br>7 Threads, duration = 2451<br>8 Threads, duration = 2652<br>9 Threads, duration = 2189</p>
+</blockquote>
+<h3 id="Cache-Line伪共享解决方案"><a href="#Cache-Line伪共享解决方案" class="headerlink" title="Cache Line伪共享解决方案"></a>Cache Line伪共享解决方案</h3><p>处理伪共享的两种方式：</p>
+<ol>
+<li>字节填充：增大元素的间隔，使得不同线程存取的元素位于不同的cache line上，典型的空间换时间。</li>
+<li>在每个线程中创建对应元素的本地拷贝，结束后再写回全局数组。</li>
+</ol>
+<p>我们这里只看第一种字节填充。保证不同线程的变量存在于不同的 CacheLine 即可，这样就不会出现伪共享问题。在代码层面如何实现图中的字节填充呢？</p>
+<h4 id="Java6-中实现字节填充"><a href="#Java6-中实现字节填充" class="headerlink" title="Java6 中实现字节填充"></a><strong>Java6 中实现字节填充</strong></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PaddingObject</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">volatile</span> <span class="keyword">long</span> value = <span class="number">0L</span>;    <span class="comment">// 实际数据</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">long</span> p1, p2, p3, p4, p5, p6; <span class="comment">// 填充</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>PaddingObject 类中需要保存一个 long 类型的 value 值，如果多线程操作同一个 CacheLine 中的 PaddingObject 对象，便无法完全发挥出 CPU Cache 的优势（想象一下你定义了一个 PaddingObject[] 数组，数组元素在内存中连续，却由于伪共享导致无法使用 CPU Cache 带来的沮丧）。</p>
+<p>不知道你注意到没有，实际数据 value + 用于填充的 p1~p6 总共只占据了 7 * 8 = 56 个字节，而 Cache Line 的大小应当是 64 字节，这是有意而为之，在 Java 中，<strong>对象头还占据了 8 个字节</strong>，所以一个 PaddingObject 对象可以恰好占据一个 Cache Line。</p>
+<h4 id="Java7-中实现字节填充"><a href="#Java7-中实现字节填充" class="headerlink" title="Java7 中实现字节填充"></a><strong>Java7 中实现字节填充</strong></h4><p>在 Java7 之后，一个 JVM 的优化给字节填充造成了一些影响，上面的代码片段 <code>public long p1, p2, p3, p4, p5, p6;</code> 会被认为是无效代码被优化掉，有回归到了伪共享的窘境之中。</p>
+<p>为了避免 JVM 的自动优化，需要使用继承的方式来填充。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractPaddingObject</span></span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">long</span> p1, p2, p3, p4, p5, p6;<span class="comment">// 填充</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PaddingObject</span> <span class="keyword">extends</span> <span class="title">AbstractPaddingObject</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">volatile</span> <span class="keyword">long</span> value = <span class="number">0L</span>;    <span class="comment">// 实际数据</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Tips:实际上我在本地 mac 下测试过 jdk1.8 下的字节填充，并不会出现无效代码的优化，个人猜测和 jdk 版本有关，不过为了保险起见，还是使用相对稳妥的方式去填充较为合适。</p>
+</blockquote>
+<h4 id="Java8-中实现字节填充"><a href="#Java8-中实现字节填充" class="headerlink" title="Java8 中实现字节填充"></a><strong>Java8 中实现字节填充</strong></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//JDK 8中提供的注解</span></span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="meta">@Target</span>(&#123;ElementType.FIELD, ElementType.TYPE&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Contended &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The (optional) contention group tag.</span></span><br><span class="line"><span class="comment">     * This tag is only meaningful for field level annotations.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> contention group tag.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function">String <span class="title">value</span><span class="params">()</span> <span class="keyword">default</span> ""</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 JDK 8 里提供了一个新注解<code>@Contended</code>，可以用来减少false sharing的情况。JVM在计算对象布局的时候就会自动把标注的字段拿出来并且插入合适的大小padding。</p>
+<p>因为这个功能暂时还是实验性功能，暂时还没到默认普及给用户代码用的程度。要在用户代码（非bootstrap class loader或extension class loader所加载的类）中使用@Contended注解的话，需要使用 -XX:-RestrictContended 参数。</p>
+<p>比如在JDK 8的 <strong>ConcurrentHashMap</strong> 源码中，使用 <a href="mailto:`@sun.misc.Contended" target="_blank" rel="noopener">`@sun.misc.Contended</a> `对静态内部类 CounterCell 进行了修饰。 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* ---------------- Counter support -------------- */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * A padded cell for distributing counts.  Adapted from LongAdder</span></span><br><span class="line"><span class="comment"> * and Striped64.  See their internal docs for explanation.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@sun</span>.misc.Contended </span><br><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">CounterCell</span> </span>&#123;</span><br><span class="line">        <span class="keyword">volatile</span> <span class="keyword">long</span> value;</span><br><span class="line">        CounterCell(<span class="keyword">long</span> x) &#123; value = x; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Thread</strong></p>
+<p>Thread 线程类的源码中，使用 @sun.misc.Contended 对成员变量进行修饰。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// The following three initially uninitialized fields are exclusively</span></span><br><span class="line"><span class="comment">// managed by class java.util.concurrent.ThreadLocalRandom. These</span></span><br><span class="line"><span class="comment">// fields are used to build the high-performance PRNGs in the</span></span><br><span class="line"><span class="comment">// concurrent code, and we can not risk accidental false sharing.</span></span><br><span class="line"><span class="comment">// Hence, the fields are isolated with @Contended.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** The current seed for a ThreadLocalRandom */</span></span><br><span class="line"><span class="meta">@sun</span>.misc.Contended(<span class="string">"tlr"</span>)</span><br><span class="line"><span class="keyword">long</span> threadLocalRandomSeed;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Probe hash value; nonzero if threadLocalRandomSeed initialized */</span></span><br><span class="line"><span class="meta">@sun</span>.misc.Contended(<span class="string">"tlr"</span>)</span><br><span class="line"><span class="keyword">int</span> threadLocalRandomProbe;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Secondary seed isolated from public ThreadLocalRandom sequence */</span></span><br><span class="line"><span class="meta">@sun</span>.misc.Contended(<span class="string">"tlr"</span>)</span><br><span class="line"><span class="keyword">int</span> threadLocalRandomSecondarySeed;</span><br></pre></td></tr></table></figure>
+<p><strong>RingBuffer</strong></p>
+<p>来源于一款优秀的开源框架 Disruptor 中的一个数据结构 <strong>RingBuffer ，</strong>我后续会专门花一篇文章的篇幅来介绍这个数据结构</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">RingBufferPad</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">long</span> p1, p2, p3, p4, p5, p6, p7;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">RingBufferFields</span>&lt;<span class="title">E</span>&gt; <span class="keyword">extends</span> <span class="title">RingBufferPad</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>使用字节填充和继承的方式来避免伪共享。</p>
+<h3 id="面试题扩展"><a href="#面试题扩展" class="headerlink" title="面试题扩展"></a>面试题扩展</h3><p>问：说说数组和链表这两种数据结构有什么区别？</p>
+<p>问：快速排序和堆排序两种排序算法各自的优缺点是什么？</p>
+<p>了解了 CPU Cache 和 Cache Line 之后想想可不可以有一些特殊的回答技巧呢？</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://coolshell.cn/articles/10249.html" target="_blank" rel="noopener">7个示例科普CPU CACHE</a>：<a href="http://igoro.com/archive/gallery-of-processor-cache-effects/" target="_blank" rel="noopener">Gallery of Processor Cache Effects</a></li>
+<li><a href="http://wsfdl.com/linux/2016/06/11/%E7%90%86%E8%A7%A3CPU%E7%9A%84cache.html" target="_blank" rel="noopener">理解 CPU Cache</a></li>
+<li><a href="https://tech.meituan.com/disruptor.html" target="_blank" rel="noopener">高性能队列——Disruptor</a> — 美团点评技术团队</li>
+<li><a href="https://cloud.tencent.com/developer/article/1164096" target="_blank" rel="noopener">JAVA 拾遗 — CPU Cache 与缓存行</a></li>
+<li><a href="https://www.cnblogs.com/techyc/p/3607085.html" target="_blank" rel="noopener">写Java也得了解CPU–CPU缓存</a></li>
+<li><a href="http://cenalulu.github.io/linux/all-about-cpu-cache/" target="_blank" rel="noopener">关于CPU Cache – 程序猿需要知道的那些事</a></li>
+<li><a href="https://blog.csdn.net/karamos/article/details/80126704" target="_blank" rel="noopener"> Java专家系列：CPU Cache与高性能编程</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="../../../../js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="../../../07/19/【Java】J.U.C并发包 - AQS机制/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">【Java】J.U.C并发包 - AQS机制</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU-Cache"><span class="nav-number">2.</span> <span class="nav-text">CPU Cache</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存行Cache-Line"><span class="nav-number">3.</span> <span class="nav-text">缓存行Cache Line</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#伪共享False-Sharing"><span class="nav-number">3.1.</span> <span class="nav-text">伪共享False Sharing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cache-Line伪共享解决方案"><span class="nav-number">3.2.</span> <span class="nav-text">Cache Line伪共享解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Java6-中实现字节填充"><span class="nav-number">3.2.1.</span> <span class="nav-text">Java6 中实现字节填充</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java7-中实现字节填充"><span class="nav-number">3.2.2.</span> <span class="nav-text">Java7 中实现字节填充</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java8-中实现字节填充"><span class="nav-number">3.2.3.</span> <span class="nav-text">Java8 中实现字节填充</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#面试题扩展"><span class="nav-number">3.3.</span> <span class="nav-text">面试题扩展</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2018 iTimeTraveler All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="../../../../categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="../../../../tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="../../../../funnysite" class="mobile-nav-link">酷站</a>
+  
+    <a href="../../../../collection" class="mobile-nav-link">收藏</a>
+  
+    <a href="../../../../about" class="mobile-nav-link">About</a>
+  
+    <a href="../../../../mybooks" class="mobile-nav-link">🎁</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.css">
+  <script src="../../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="../../../../js/scripts.js"></script>
+
+
+
+
+  <script src="../../../../js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            iTimeTraveler
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Mr.Seven All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

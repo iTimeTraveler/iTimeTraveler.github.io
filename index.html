@@ -350,6 +350,62 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-CPU Cache与缓存行"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="2018/09/09/CPU Cache与缓存行/">CPU Cache与缓存行</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="2018/09/09/CPU Cache与缓存行/" class="article-date">
+	  <time datetime="2018-09-09T14:20:55.000Z" itemprop="datePublished">2018-09-09</time>
+	</a>
+
+      
+    <a class="article-category-link" href="categories/Java/">Java</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>先看下面这两个循环遍历哪个快？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[][] array = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">64</span> * <span class="number">1024</span>][<span class="number">1024</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 横向遍历</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">64</span> * <span class="number">1024</span>; i ++)</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">1024</span>; j ++)</span><br><span class="line">        array[i][j] ++;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 纵向遍历</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1024</span>; i ++)</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">64</span> * <span class="number">1024</span>; j ++)</span><br><span class="line">        array[j][i] ++;</span><br></pre></td></tr></table></figure>
+<p>在CPU处理器参数为 2.3 GHz Intel Core i5 的Mac上的结果是：</p>
+<blockquote>
+<p>横向遍历:    80ms<br>纵向遍历:    2139ms</p>
+</blockquote>
+<p>横向遍历的 CPU cache 命中率高，所以它比纵向遍历约快这么多倍！</p>
+<p><a href="http://igoro.com/archive/gallery-of-processor-cache-effects/" target="_blank" rel="noopener">Gallery of Processor Cache Effects</a> 用 7 个源码示例生动的介绍 cache 原理，深入浅出！但是可能因操作系统的差异、编译器是否优化，以及近些年 cache 性能的提升，有些样例在 Mac 的效果与原文相差较大。</p>
+        <!-- 引言先看下面这两个循环遍历哪个快？
+1234567891011int[][] array = new int[64 * 1024][1024];// 横向遍历for(int i = 0; i &lt; 64 * 1024; i ++)    for(int j = 0; j &lt; 1024; j ++)        array[i][j] ++;// 纵向遍历for(int i = 0......  -->
+        <p class="article-more-link">
+          <a href="2018/09/09/CPU Cache与缓存行/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【Java】J.U.C并发包 - AQS机制"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -908,62 +964,11 @@ A.onPause()......  -->
 <!-- Table of Contents -->
 
   
-    <article id="post-用Java实现断点续传 (HTTP)"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="2018/01/22/用Java实现断点续传 (HTTP)/">用Java实现断点续传 (HTTP)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="2018/01/22/用Java实现断点续传 (HTTP)/" class="article-date">
-	  <time datetime="2018-01-22T04:30:55.000Z" itemprop="datePublished">2018-01-22</time>
-	</a>
-
-      
-    <a class="article-category-link" href="categories/Java/">Java</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="断点续传的原理"><a href="#断点续传的原理" class="headerlink" title="断点续传的原理"></a>断点续传的原理</h3><p>其实断点续传的原理很简单，就是在 Http 的请求上和一般的下载有所不同而已。<br>打个比方，浏览器请求服务器上的一个文时，所发出的请求如下：<br>假设服务器域名为 <a href="www.sjtu.edu.cn">www.sjtu.edu.cn</a>，文件名为 down.zip。 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">GET /down.zip HTTP/1.1 </span><br><span class="line">Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/vnd.ms- </span><br><span class="line">excel, application/msword, application/vnd.ms-powerpoint, */* </span><br><span class="line">Accept-Language: zh-cn </span><br><span class="line">Accept-Encoding: gzip, deflate </span><br><span class="line">User-Agent: Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0) </span><br><span class="line">Connection: Keep-Alive</span><br></pre></td></tr></table></figure>
-<p>服务器收到请求后，按要求寻找请求的文件，提取文件的信息，然后返回给浏览器，返回信息如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">200 </span><br><span class="line">Content-Length=106786028 </span><br><span class="line">Accept-Ranges=bytes </span><br><span class="line">Date=Mon, 30 Apr 2001 12:56:11 GMT </span><br><span class="line">ETag=W/&quot;02ca57e173c11:95b&quot; </span><br><span class="line">Content-Type=application/octet-stream </span><br><span class="line">Server=Microsoft-IIS/5.0 </span><br><span class="line">Last-Modified=Mon, 30 Apr 2001 12:56:11 GMT</span><br></pre></td></tr></table></figure></p>
-        <!-- 断点续传的原理其实断点续传的原理很简单，就是在 Http 的请求上和一般的下载有所不同而已。打个比方，浏览器请求服务器上的一个文时，所发出的请求如下：假设服务器域名为 www.sjtu.edu.cn，文件名为 down.zip。 
-1234567GET /down.zip HTTP/1.1 Accept: image/gif, image/x-xbitmap, image/jpeg, ima......  -->
-        <p class="article-more-link">
-          <a href="2018/01/22/用Java实现断点续传 (HTTP)/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/Java/">Java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="page/2/">2</a><a class="page-number" href="page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="page/11/">11</a><a class="extend next" rel="next" href="page/2/">下一页 &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="page/2/">2</a><a class="page-number" href="page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="page/12/">12</a><a class="extend next" rel="next" href="page/2/">下一页 &raquo;</a>
   </nav>
 
 </section>

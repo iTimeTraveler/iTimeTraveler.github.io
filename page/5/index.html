@@ -350,6 +350,56 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Android】判断应用Application、Activity是否处于活动状态"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/05/03/【Android】判断应用Application、Activity是否处于活动状态/">【Android】判断应用Application、Activity是否处于活动状态</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/05/03/【Android】判断应用Application、Activity是否处于活动状态/" class="article-date">
+	  <time datetime="2017-05-03T07:03:00.000Z" itemprop="datePublished">2017-05-03</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Android/">Android</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>通过<strong><code>ActivityManager</code></strong>我们可以获得系统里正在运行的activities，包括进程(Process)等、应用程序/包、服务(Service)、任务(Task)信息。</p>
+<h2 id="1、判断应用App是否活动"><a href="#1、判断应用App是否活动" class="headerlink" title="1、判断应用App是否活动"></a><strong>1、判断应用App是否活动</strong></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 判断应用是否已经启动</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> context 一个context</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> packageName 要判断应用的包名</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> boolean</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isAppAlive</span><span class="params">(Context context, String packageName)</span></span>&#123;</span><br><span class="line">   ActivityManager activityManager =</span><br><span class="line">           (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);</span><br><span class="line">   List&lt;ActivityManager.RunningAppProcessInfo&gt; processInfos</span><br><span class="line">           = activityManager.getRunningAppProcesses();</span><br><span class="line">   <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; processInfos.size(); i++)&#123;</span><br><span class="line">       <span class="keyword">if</span>(processInfos.get(i).processName.equals(packageName))&#123;</span><br><span class="line">           Log.i(<span class="string">"NotificationLaunch"</span>,</span><br><span class="line">                   String.format(<span class="string">"the %s is running, isAppAlive return true"</span>, packageName));</span><br><span class="line">           <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   Log.i(<span class="string">"NotificationLaunch"</span>,</span><br><span class="line">           String.format(<span class="string">"the %s is not running, isAppAlive return false"</span>, packageName));</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <!-- 通过ActivityManager我们可以获得系统里正在运行的activities，包括进程(Process)等、应用程序/包、服务(Service)、任务(Task)信息。
+1、判断应用App是否活动12345678910111213141516171819202122/** * 判断应用是否已经启动 * @param context 一个context * @param packageN......  -->
+        <p class="article-more-link">
+          <a href="../../2017/05/03/【Android】判断应用Application、Activity是否处于活动状态/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【Android】使用UncaughtExceptionHandler捕获全局异常"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -866,65 +916,11 @@ AbsoluteSizeSpan(int......  -->
 <!-- Table of Contents -->
 
   
-    <article id="post-数学之美番外篇：平凡而又神奇的贝叶斯方法"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/12/22/数学之美番外篇：平凡而又神奇的贝叶斯方法/">数学之美番外篇：平凡而又神奇的贝叶斯方法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2016/12/22/数学之美番外篇：平凡而又神奇的贝叶斯方法/" class="article-date">
-	  <time datetime="2016-12-22T03:08:00.000Z" itemprop="datePublished">2016-12-22</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote class="pullquote right"><p>Probability is nothing but common sense reduced to calculation.（概率论只不过是把常识用数学公式表达了出来。）<br> —— <a href="https://zh.wikipedia.org/wiki/%E7%9A%AE%E5%9F%83%E5%B0%94-%E8%A5%BF%E8%92%99%C2%B7%E6%8B%89%E6%99%AE%E6%8B%89%E6%96%AF" target="_blank" rel="noopener">Pierre-Simon Laplace</a></p>
-</blockquote>
-<p>记得读本科的时候，最喜欢到城里的计算机书店里面去闲逛，一逛就是好几个小时；有一次，在书店看到一本书，名叫贝叶斯方法。当时数学系的课程还没有学到概率统计。我心想，一个方法能够专门写出一本书来，肯定很牛逼。后来，我发现当初的那个朴素归纳推理成立了 —— 这果然是个牛逼的方法。</p>
-<p>——题记</p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h2><p>这是一篇关于贝叶斯方法的科普文，我会尽量少用公式，多用平白的语言叙述，多举实际例子。更严格的公式和计算我会在相应的地方注明参考资料。贝叶斯方法被证明是非常 general 且强大的推理框架，文中你会看到很多有趣的应用。</p>
-        <!-- Probability is nothing but common sense reduced to calculation.（概率论只不过是把常识用数学公式表达了出来。） —— Pierre-Simon Laplace
-
-记得读本科的时候，最喜欢到城里的计算机书店里面去闲逛，一逛就是好几个小时；有一次，在书店看到一本书，名叫贝叶斯方法。当时数学系的课程还没有学到概率统计。我心想，一个方法能......  -->
-        <p class="article-more-link">
-          <a href="../../2016/12/22/数学之美番外篇：平凡而又神奇的贝叶斯方法/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Bayesian/">Bayesian</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="../4/">&laquo; 上一页</a><a class="page-number" href="../../">1</a><span class="space">&hellip;</span><a class="page-number" href="../3/">3</a><a class="page-number" href="../4/">4</a><span class="page-number current">5</span><a class="page-number" href="../6/">6</a><a class="page-number" href="../7/">7</a><span class="space">&hellip;</span><a class="page-number" href="../11/">11</a><a class="extend next" rel="next" href="../6/">下一页 &raquo;</a>
+    <a class="extend prev" rel="prev" href="../4/">&laquo; 上一页</a><a class="page-number" href="../../">1</a><span class="space">&hellip;</span><a class="page-number" href="../3/">3</a><a class="page-number" href="../4/">4</a><span class="page-number current">5</span><a class="page-number" href="../6/">6</a><a class="page-number" href="../7/">7</a><span class="space">&hellip;</span><a class="page-number" href="../12/">12</a><a class="extend next" rel="next" href="../6/">下一页 &raquo;</a>
   </nav>
 
 </section>

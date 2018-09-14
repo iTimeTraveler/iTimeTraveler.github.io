@@ -350,6 +350,60 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-数学之美番外篇：平凡而又神奇的贝叶斯方法"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2016/12/22/数学之美番外篇：平凡而又神奇的贝叶斯方法/">数学之美番外篇：平凡而又神奇的贝叶斯方法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2016/12/22/数学之美番外篇：平凡而又神奇的贝叶斯方法/" class="article-date">
+	  <time datetime="2016-12-22T03:08:00.000Z" itemprop="datePublished">2016-12-22</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote class="pullquote right"><p>Probability is nothing but common sense reduced to calculation.（概率论只不过是把常识用数学公式表达了出来。）<br> —— <a href="https://zh.wikipedia.org/wiki/%E7%9A%AE%E5%9F%83%E5%B0%94-%E8%A5%BF%E8%92%99%C2%B7%E6%8B%89%E6%99%AE%E6%8B%89%E6%96%AF" target="_blank" rel="noopener">Pierre-Simon Laplace</a></p>
+</blockquote>
+<p>记得读本科的时候，最喜欢到城里的计算机书店里面去闲逛，一逛就是好几个小时；有一次，在书店看到一本书，名叫贝叶斯方法。当时数学系的课程还没有学到概率统计。我心想，一个方法能够专门写出一本书来，肯定很牛逼。后来，我发现当初的那个朴素归纳推理成立了 —— 这果然是个牛逼的方法。</p>
+<p>——题记</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h2><p>这是一篇关于贝叶斯方法的科普文，我会尽量少用公式，多用平白的语言叙述，多举实际例子。更严格的公式和计算我会在相应的地方注明参考资料。贝叶斯方法被证明是非常 general 且强大的推理框架，文中你会看到很多有趣的应用。</p>
+        <!-- Probability is nothing but common sense reduced to calculation.（概率论只不过是把常识用数学公式表达了出来。） —— Pierre-Simon Laplace
+
+记得读本科的时候，最喜欢到城里的计算机书店里面去闲逛，一逛就是好几个小时；有一次，在书店看到一本书，名叫贝叶斯方法。当时数学系的课程还没有学到概率统计。我心想，一个方法能......  -->
+        <p class="article-more-link">
+          <a href="../../2016/12/22/数学之美番外篇：平凡而又神奇的贝叶斯方法/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Bayesian/">Bayesian</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【Android】RxJava 入门详解"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -854,82 +908,11 @@ Neo4j是一个图形数据库，这也就意味着它的数据并非保存在表
 <!-- Table of Contents -->
 
   
-    <article id="post-【Android】Broadcast广播机制总结"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/10/25/【Android】Broadcast广播机制总结/">【Android】Broadcast广播机制总结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2016/10/25/【Android】Broadcast广播机制总结/" class="article-date">
-	  <time datetime="2016-10-25T08:06:00.000Z" itemprop="datePublished">2016-10-25</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Android/">Android</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>原文链接： <a href="http://www.cnblogs.com/lwbqqyumidi/p/4168017.html" target="_blank" rel="noopener"><strong>Android总结篇系列：Android广播机制</strong></a></p>
-</blockquote>
-<h2 id="1-Android广播机制概述"><a href="#1-Android广播机制概述" class="headerlink" title="1. Android广播机制概述"></a><strong>1. Android广播机制概述</strong></h2><p>Android广播分为两个方面：广播发送者和广播接收者，通常情况下，BroadcastReceiver指的就是广播接收者（广播接收器）。广播作为Android组件间的通信方式，可以使用的场景如下：</p>
-<ol>
-<li><p>同一app内部的同一组件内的消息通信（单个或多个线程之间）；</p>
-</li>
-<li><p>同一app内部的不同组件之间的消息通信（单个进程）；</p>
-</li>
-<li><p>同一app具有多个进程的不同组件之间的消息通信；</p>
-</li>
-<li><p>不同app之间的组件之间消息通信；</p>
-</li>
-<li><p>Android系统在特定情况下与App之间的消息通信。</p>
-</li>
-</ol>
-<p>从实现原理看上，Android中的广播使用了观察者模式，基于消息的发布/订阅事件模型。因此，从实现的角度来看，Android中的广播将广播的发送者和接受者极大程度上解耦，使得系统能够方便集成，更易扩展。具体实现流程要点粗略概括如下：</p>
-        <!-- 
-原文链接： Android总结篇系列：Android广播机制
-
-1. Android广播机制概述Android广播分为两个方面：广播发送者和广播接收者，通常情况下，BroadcastReceiver指的就是广播接收者（广播接收器）。广播作为Android组件间的通信方式，可以使用的场景如下：
-
-同一app内部的同一组件内的消息通信（单个或多个线程之间）；
-
-同一app内部的不同组件之间的消......  -->
-        <p class="article-more-link">
-          <a href="../../2016/10/25/【Android】Broadcast广播机制总结/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Broadcast/">Broadcast</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="../5/">&laquo; 上一页</a><a class="page-number" href="../../">1</a><span class="space">&hellip;</span><a class="page-number" href="../4/">4</a><a class="page-number" href="../5/">5</a><span class="page-number current">6</span><a class="page-number" href="../7/">7</a><a class="page-number" href="../8/">8</a><span class="space">&hellip;</span><a class="page-number" href="../11/">11</a><a class="extend next" rel="next" href="../7/">下一页 &raquo;</a>
+    <a class="extend prev" rel="prev" href="../5/">&laquo; 上一页</a><a class="page-number" href="../../">1</a><span class="space">&hellip;</span><a class="page-number" href="../4/">4</a><a class="page-number" href="../5/">5</a><span class="page-number current">6</span><a class="page-number" href="../7/">7</a><a class="page-number" href="../8/">8</a><span class="space">&hellip;</span><a class="page-number" href="../12/">12</a><a class="extend next" rel="next" href="../7/">下一页 &raquo;</a>
   </nav>
 
 </section>

@@ -350,6 +350,77 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Android】Broadcast广播机制总结"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2016/10/25/【Android】Broadcast广播机制总结/">【Android】Broadcast广播机制总结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2016/10/25/【Android】Broadcast广播机制总结/" class="article-date">
+	  <time datetime="2016-10-25T08:06:00.000Z" itemprop="datePublished">2016-10-25</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Android/">Android</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>原文链接： <a href="http://www.cnblogs.com/lwbqqyumidi/p/4168017.html" target="_blank" rel="noopener"><strong>Android总结篇系列：Android广播机制</strong></a></p>
+</blockquote>
+<h2 id="1-Android广播机制概述"><a href="#1-Android广播机制概述" class="headerlink" title="1. Android广播机制概述"></a><strong>1. Android广播机制概述</strong></h2><p>Android广播分为两个方面：广播发送者和广播接收者，通常情况下，BroadcastReceiver指的就是广播接收者（广播接收器）。广播作为Android组件间的通信方式，可以使用的场景如下：</p>
+<ol>
+<li><p>同一app内部的同一组件内的消息通信（单个或多个线程之间）；</p>
+</li>
+<li><p>同一app内部的不同组件之间的消息通信（单个进程）；</p>
+</li>
+<li><p>同一app具有多个进程的不同组件之间的消息通信；</p>
+</li>
+<li><p>不同app之间的组件之间消息通信；</p>
+</li>
+<li><p>Android系统在特定情况下与App之间的消息通信。</p>
+</li>
+</ol>
+<p>从实现原理看上，Android中的广播使用了观察者模式，基于消息的发布/订阅事件模型。因此，从实现的角度来看，Android中的广播将广播的发送者和接受者极大程度上解耦，使得系统能够方便集成，更易扩展。具体实现流程要点粗略概括如下：</p>
+        <!-- 
+原文链接： Android总结篇系列：Android广播机制
+
+1. Android广播机制概述Android广播分为两个方面：广播发送者和广播接收者，通常情况下，BroadcastReceiver指的就是广播接收者（广播接收器）。广播作为Android组件间的通信方式，可以使用的场景如下：
+
+同一app内部的同一组件内的消息通信（单个或多个线程之间）；
+
+同一app内部的不同组件之间的消......  -->
+        <p class="article-more-link">
+          <a href="../../2016/10/25/【Android】Broadcast广播机制总结/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Broadcast/">Broadcast</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-谷歌整体战略：关于人工智能、云服务和登月计划的未来"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -870,63 +941,11 @@ Android中对View的截图也有以下两种方式，值得注意的是两个方
 <!-- Table of Contents -->
 
   
-    <article id="post-【Android】如何加速 AndroidStudio 的编译效率"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/08/26/【Android】如何加速 AndroidStudio 的编译效率/">【Android】如何加速 AndroidStudio 的编译效率</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2016/08/26/【Android】如何加速 AndroidStudio 的编译效率/" class="article-date">
-	  <time datetime="2016-08-26T07:20:00.000Z" itemprop="datePublished">2016-08-26</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Android/">Android</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a><strong>引言</strong></h3><p>如果你之前用eclipse开发过Android app的话，转到android studio的第一反应也许就是：”<strong>编译速度有点慢</strong>“，表现的最明显的一点就是，每次android studio使用gradle编译，即便是更改的代码量很少，也会按照预先设置的task的顺序，依次走完编译的各项流程。这时候如果电脑CPU配置不高的时候，就会超级卡界面，更别说改代码了。</p>
-<p>所以 这点就让人很痛苦， 然而问题总还是要被解决的，作者曾经亲眼看到过使用android studio仅仅用了2.5秒就编译完毕(在代码更改很少的情况下)。 现在把如何优化gradle编译速度的方法记录在此，希望可以 帮助到广大的同行们。</p>
-<h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a><strong>准备工作</strong></h3><p>首先，保证项目使用的Gradle是最新的，我这里用的是2.10版本。因为Gradle 2.4之后在编译效率上面有了一个非常大的提高，看下图官方的速度对比。</p>
-<p><img src="http://img.blog.csdn.net/20160826151929475" alt="这是官方的速度对比，下一代编译速度更快"></p>
-        <!-- 引言如果你之前用eclipse开发过Android app的话，转到android studio的第一反应也许就是：”编译速度有点慢“，表现的最明显的一点就是，每次android studio使用gradle编译，即便是更改的代码量很少，也会按照预先设置的task的顺序，依次走完编译的各项流程。这时候如果电脑CPU配置不高的时候，就会超级卡界面，更别说改代码了。
-所以 这点就让人很痛苦， 然......  -->
-        <p class="article-more-link">
-          <a href="../../2016/08/26/【Android】如何加速 AndroidStudio 的编译效率/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="../6/">&laquo; 上一页</a><a class="page-number" href="../../">1</a><span class="space">&hellip;</span><a class="page-number" href="../5/">5</a><a class="page-number" href="../6/">6</a><span class="page-number current">7</span><a class="page-number" href="../8/">8</a><a class="page-number" href="../9/">9</a><span class="space">&hellip;</span><a class="page-number" href="../11/">11</a><a class="extend next" rel="next" href="../8/">下一页 &raquo;</a>
+    <a class="extend prev" rel="prev" href="../6/">&laquo; 上一页</a><a class="page-number" href="../../">1</a><span class="space">&hellip;</span><a class="page-number" href="../5/">5</a><a class="page-number" href="../6/">6</a><span class="page-number current">7</span><a class="page-number" href="../8/">8</a><a class="page-number" href="../9/">9</a><span class="space">&hellip;</span><a class="page-number" href="../12/">12</a><a class="extend next" rel="next" href="../8/">下一页 &raquo;</a>
   </nav>
 
 </section>
