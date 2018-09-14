@@ -20,7 +20,7 @@
 <meta property="og:description" content="引言先看下面这两个循环遍历哪个快？ 1234567891011int[][] array = new int[64 * 1024][1024];// 横向遍历for(int i = 0; i &amp;lt; 64 * 1024; i ++)    for(int j = 0; j &amp;lt; 1024; j ++)        array[i][j] ++;// 纵向遍历for(int i = 0; i">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://github.com/gallery/java-common/cpu-cache-and-memory-ordering-9-638.jpg">
-<meta property="og:updated_time" content="2018-09-14T07:57:43.000Z">
+<meta property="og:updated_time" content="2018-09-14T08:03:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CPU Cache与缓存行">
 <meta name="twitter:description" content="引言先看下面这两个循环遍历哪个快？ 1234567891011int[][] array = new int[64 * 1024][1024];// 横向遍历for(int i = 0; i &amp;lt; 64 * 1024; i ++)    for(int j = 0; j &amp;lt; 1024; j ++)        array[i][j] ++;// 纵向遍历for(int i = 0; i">
@@ -176,7 +176,7 @@
 <div class="article-gallery">
   <div class="article-gallery-photos">
     
-      <a class="article-gallery-img fancybox" href="../../../../gallery/java-common/cpu-cache-and-memory-ordering-9-638.jpg" rel="gallery_cjm1pp2jv0026mys6u3upmqtx">
+      <a class="article-gallery-img fancybox" href="../../../../gallery/java-common/cpu-cache-and-memory-ordering-9-638.jpg" rel="gallery_cjm1px6mu0008qrs6saj6h1qt">
         <img src="../../../../gallery/java-common/cpu-cache-and-memory-ordering-9-638.jpg" itemprop="image">
       </a>
     
@@ -237,7 +237,7 @@
 <li>L3 Cache：4MB</li>
 </ul>
 <p>Mac下也可以点击坐上角关于本机 -&gt; 概览 -&gt; 系统报告来查看硬件信息：</p>
-<p><img src="/gallery/java-common/mac_hw_info.png" alt=""></p>
+<p><img src="/gallery/java-common/mac-hw-info.png" alt=""></p>
 <p>下图是计算机存储的基本结构。L1、L2、L3分别表示一级缓存、二级缓存、三级缓存。越靠近CPU的缓存，速度越快，容量也越小。L1缓存小但很快，并且紧靠着在使用它的CPU内核。分为指令缓存和数据缓存；L2大一些，也慢一些，并仍然只能被一个单独的CPU核使用；L3更大、更慢，并且被单个插槽上的所有CPU核共享；最后是主存，由全部插槽上的所有CPU核共享。</p>
 <p><img src="/gallery/java-common/mac_cpu_cache_info.png" alt="计算机CPU与缓存示意图"></p>
 <p>当CPU执行运算的时候，它先去L1查找所需的数据、再去L2、然后是L3，如果最后这些缓存中都没有，所需的数据就要去主内存拿。走得越远，运算耗费的时间就越长。所以要尽量确保数据在L1缓存中。</p>
