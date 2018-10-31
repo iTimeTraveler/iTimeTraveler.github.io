@@ -350,6 +350,128 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Java】泛型中 extends 和 super 的区别？"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2016/12/27/【Java】泛型中 extends 和 super 的区别？/">【Java】泛型中 extends 和 super 的区别？</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2016/12/27/【Java】泛型中 extends 和 super 的区别？/" class="article-date">
+	  <time datetime="2016-12-27T06:46:00.000Z" itemprop="datePublished">2016-12-27</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Java/">Java</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/gallery/java-genericity/example.png" alt=""></p>
+<p><code>&lt;? extends T&gt;</code>和<code>&lt;? super T&gt;</code>是Java泛型中的<strong>“通配符（Wildcards）”</strong>和<strong>“边界（Bounds）”</strong>的概念。</p>
+<ul>
+<li><code>&lt;? extends T&gt;</code>：是指 <strong>“上界通配符（Upper Bounds Wildcards）”</strong></li>
+<li><code>&lt;? super T&gt;</code>：是指 <strong>“下界通配符（Lower Bounds Wildcards）”</strong></li>
+</ul>
+<h2 id="为什么要用通配符和边界？"><a href="#为什么要用通配符和边界？" class="headerlink" title="为什么要用通配符和边界？"></a><strong>为什么要用通配符和边界？</strong></h2><p>使用泛型的过程中，经常出现一种很别扭的情况。比如按照题主的例子，我们有Fruit类，和它的派生类Apple类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fruit</span> </span>&#123;&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Apple</span> <span class="keyword">extends</span> <span class="title">Fruit</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>然后有一个最简单的容器：Plate类。盘子里可以放一个泛型的“东西”。我们可以对这个东西做最简单的“放”和“取”的动作：<code>set( )</code>和<code>get( )</code>方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Plate</span>&lt;<span class="title">T</span>&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> T item;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Plate</span><span class="params">(T t)</span></span>&#123;item=t;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(T t)</span></span>&#123;item=t;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> item;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <!-- 
+&lt;? extends T&gt;和&lt;? super T&gt;是Java泛型中的“通配符（Wildcards）”和“边界（Bounds）”的概念。
+
+&lt;? extends T&gt;：是指 “上界通配符（Upper Bounds Wildcards）”
+&lt;? super T&gt;：是指 “下界通配符（Lower Bounds Wildcards）”
+
+为什么要用通......  -->
+        <p class="article-more-link">
+          <a href="../../2016/12/27/【Java】泛型中 extends 和 super 的区别？/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java-Generics/">Java Generics</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-【Java】泛型详解"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2016/12/27/【Java】泛型详解/">【Java】泛型详解</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2016/12/27/【Java】泛型详解/" class="article-date">
+	  <time datetime="2016-12-27T04:30:55.000Z" itemprop="datePublished">2016-12-27</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Java/">Java</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一-为什么需要泛型？"><a href="#一-为什么需要泛型？" class="headerlink" title="一. 为什么需要泛型？"></a><strong>一. 为什么需要泛型？</strong></h2><p>首先，我们看下下面这段简短的代码:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List list = <span class="keyword">new</span> ArrayList();</span><br><span class="line">        list.add(<span class="string">"qqyumidi"</span>);</span><br><span class="line">        list.add(<span class="string">"corn"</span>);</span><br><span class="line">        list.add(<span class="number">100</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; list.size(); i++) &#123;</span><br><span class="line">            String name = (String) list.get(i);  <span class="comment">// ① 错误</span></span><br><span class="line">            System.out.println(<span class="string">"name:"</span> + name);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>定义了一个List类型的集合，先向其中加入了两个字符串类型的值，随后加入一个Integer类型的值。这是完全允许的，因为此时list默认的类型为Object类型。在之后的循环中，由于忘记了之前在list中也加入了Integer类型的值或其他编码原因，很容易出现类似于<code>//①</code>中的错误。因为编译阶段正常，而运行时会出现<strong>“java.lang.ClassCastException”异常</strong>。因此，导致此类错误编码过程中不易发现。</p>
+<p> 在如上的编码过程中，我们发现主要存在两个问题：</p>
+<ol>
+<li><p>当我们将一个对象放入集合中，集合不会记住此对象的类型，当再次从集合中取出此对象时，改对象的编译类型变成了Object类型，但其运行时类型任然为其本身类型。</p>
+</li>
+<li><p>因此，//① 处取出集合元素时需要人为的强制类型转化到具体的目标类型，且很容易出现“java.lang.ClassCastException”异常。</p>
+</li>
+</ol>
+<p>那么有没有什么办法可以使集合能够记住集合内元素各类型，且能够达到只要编译时不出现问题，运行时就不会出现“java.lang.ClassCastException”异常呢？答案就是使用<strong>泛型</strong>。</p>
+        <!-- 一. 为什么需要泛型？首先，我们看下下面这段简短的代码:
+1234567891011121314public class GenericTest &#123;    public static void main(String[] args) &#123;        List list = new ArrayList();        list.add("qqyumidi");    ......  -->
+        <p class="article-more-link">
+          <a href="../../2016/12/27/【Java】泛型详解/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-数学之美番外篇：平凡而又神奇的贝叶斯方法"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -790,115 +912,6 @@ This example shows how to link nodes in a force-directed graph using a named ide
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/hotfix/">hotfix</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-使用Neo4j进行全栈Web开发"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/11/10/使用Neo4j进行全栈Web开发/">使用Neo4j进行全栈Web开发</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2016/11/10/使用Neo4j进行全栈Web开发/" class="article-date">
-	  <time datetime="2016-11-10T03:08:00.000Z" itemprop="datePublished">2016-11-10</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Web/">Web</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在开发一个全栈web应用时，作为整个栈的底层，你可以在多种数据库之间进行选择。作为事实的数据源，你当然希望选择一种可靠的数据库，但同时也希望它能够允许你以良好的方式进行数据建模。在本文中，我将为你介绍Neo4j，当你的数据模型包含大量关联数据以及关系时，它可以成为你的web应用栈的基础的一个良好选择。</p>
-<h2 id="Neo4j是什么？"><a href="#Neo4j是什么？" class="headerlink" title="Neo4j是什么？"></a>Neo4j是什么？</h2><p><img src="http://img.blog.csdn.net/20161110104435615" alt="图1. Neo4j Web控制台"></p>
-<p>Neo4j是一个图形数据库，这也就意味着它的数据并非保存在表或集合中，而是保存为节点以及节点之间的关系。在Neo4j中，节点以及关系都能够包含保存值的属性，此外：</p>
-<ul>
-<li>可以为节点设置零或多个<strong>标签</strong>（例如Author或Book）</li>
-<li>每个关系都对应一种<strong>类型</strong>（例如WROTE或FRIEND_OF）</li>
-<li>关系总是从一个节点指向另一个节点（但可以在不考虑指向性的情况下进行查询）</li>
-</ul>
-        <!-- 在开发一个全栈web应用时，作为整个栈的底层，你可以在多种数据库之间进行选择。作为事实的数据源，你当然希望选择一种可靠的数据库，但同时也希望它能够允许你以良好的方式进行数据建模。在本文中，我将为你介绍Neo4j，当你的数据模型包含大量关联数据以及关系时，它可以成为你的web应用栈的基础的一个良好选择。
-Neo4j是什么？
-Neo4j是一个图形数据库，这也就意味着它的数据并非保存在表或集合中，......  -->
-        <p class="article-more-link">
-          <a href="../../2016/11/10/使用Neo4j进行全栈Web开发/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Neo4j/">Neo4j</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-D3.js加载本地json文件的问题"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/11/09/D3.js加载本地json文件的问题/">D3.js加载本地json文件的问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2016/11/09/D3.js加载本地json文件的问题/" class="article-date">
-	  <time datetime="2016-11-09T13:13:20.000Z" itemprop="datePublished">2016-11-09</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/D3-js/">D3.js</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>打开本地html文件时，报错如下</p>
-<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">XMLHttpRequest cannot load file:/cities.csv. Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, https, chrome-extension-resource.</span><br><span class="line"></span><br><span class="line">Uncaught NetworkError: Failed to execute 'send' on 'XMLHttpRequest': Failed to load</span><br></pre></td></tr></table></figure>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>原因是因为浏览器为了安全性考虑，默认对跨域访问禁止，不允许直接读取本地文件。</p>
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>给浏览器传入启动参数（allow-file-access-from-files），允许跨域访问。<br>Windows下，运行（CMD+R）或<code>右键桌面快捷方式-&gt;属性-&gt;目标</code>：</p>
-        <!-- 问题打开本地html文件时，报错如下
-123XMLHttpRequest cannot load file:/cities.csv. Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, https, chrome-extension-resou......  -->
-        <p class="article-more-link">
-          <a href="../../2016/11/09/D3.js加载本地json文件的问题/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/D3/">D3</a></li></ul>
 
     </footer>
   </div>

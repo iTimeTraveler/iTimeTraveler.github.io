@@ -350,6 +350,124 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Android】源码分析 - Handler消息机制再梳理"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/08/03/【Android】源码分析 - Handler消息机制再梳理/">【Android】源码分析 - Handler消息机制再梳理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/08/03/【Android】源码分析 - Handler消息机制再梳理/" class="article-date">
+	  <time datetime="2017-08-03T08:03:00.000Z" itemprop="datePublished">2017-08-03</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Android/">Android</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>多线程的消息传递处理，从初学Android时的Handler，懵懵懂懂地照猫画虎，到后来一头雾水的疑惑它为什么这么复杂，再到熟悉之后的叹为观止，一步步地都是自己踩过的足迹，都是成长啊哈哈哈。虽然离出神入化的境界还远十万八千里呢，但Android中的Handler多线程消息传递机制，的确是研发技术学习中不可多得的一个宝藏。本来我以为自己之前的学习以及比较了解 Handler，在印象中 Android 消息机制无非就是：</p>
+<ol>
+<li>Handler 给 MessageQueue 添加消息</li>
+<li>然后 Looper 无限循环读取消息</li>
+<li>再调用 Handler 处理消息</li>
+</ol>
+<p>但是只知道整体流程，细节还不是特别透彻。最近不甚忙碌，回头看到这块又有些许收获，我们来记录一下吧。</p>
+<p>在整个Android的源码世界里，有两大利剑，其一是<strong>Binder IPC机制</strong>，另一个便是<strong>消息机制</strong>。Android有大量的消息驱动方式来进行交互，比如Android的四剑客<code>Activity</code>, <code>Service</code>, <code>Broadcast</code>, <code>ContentProvider</code>的启动过程的交互，都离不开消息机制，Android某种意义上也可以说成是一个以消息驱动的系统。而Android 消息机制主要涉及 4 个类：</p>
+<ul>
+<li>Handler</li>
+<li>Message</li>
+<li>MessageQueue</li>
+<li>Looper</li>
+</ul>
+<p>我们依次结合源码分析一下。</p>
+        <!-- 前言多线程的消息传递处理，从初学Android时的Handler，懵懵懂懂地照猫画虎，到后来一头雾水的疑惑它为什么这么复杂，再到熟悉之后的叹为观止，一步步地都是自己踩过的足迹，都是成长啊哈哈哈。虽然离出神入化的境界还远十万八千里呢，但Android中的Handler多线程消息传递机制，的确是研发技术学习中不可多得的一个宝藏。本来我以为自己之前的学习以及比较了解 Handler，在印象中 An......  -->
+        <p class="article-more-link">
+          <a href="../../2017/08/03/【Android】源码分析 - Handler消息机制再梳理/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/源码分析/">源码分析</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-【Android】Binder - 如何使用AIDL"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/08/02/【Android】Binder - 如何使用AIDL/">【Android】Binder - 如何使用AIDL</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/08/02/【Android】Binder - 如何使用AIDL/" class="article-date">
+	  <time datetime="2017-08-02T14:20:55.000Z" itemprop="datePublished">2017-08-02</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Android/">Android</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="一、跨进程通信"><a href="#一、跨进程通信" class="headerlink" title="一、跨进程通信"></a>一、跨进程通信</h3><p>为了演示方便，将Service与Activity处于不同的进程，可以在AndroidManifest.xml中，把service配置成<code>android:process=&quot;:remote&quot;</code> ，也可以命名成其他的。</p>
+<h4 id="AIDL"><a href="#AIDL" class="headerlink" title="AIDL"></a>AIDL</h4><p>（1） IRemoteService.aidl：定义Server端提供的服务接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// IRemoteService.aidl</span></span><br><span class="line"><span class="keyword">package</span> com.cuc.myandroidtest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.cuc.myandroidtest.MyData;</span><br><span class="line"><span class="keyword">import</span> com.cuc.myandroidtest.IServiceCallback;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IRemoteService</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getPid</span><span class="params">()</span></span>;			<span class="comment">//获取服务端进程ID</span></span><br><span class="line">    <span class="function">MyData <span class="title">getMyData</span><span class="params">()</span></span>;		<span class="comment">//从服务端获取数据</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">registerCallback</span><span class="params">(IServiceCallback callback)</span></span>;		<span class="comment">//注册服务端回调</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">unregisterCallback</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>（2） IServiceCallBack.aidl：定义服务端回调接口，把Service的下载进度通知给客户端ClientActivity</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// IServiceCallBack.aidl</span></span><br><span class="line"><span class="keyword">package</span> com.cuc.myandroidtest;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IServiceCallback</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onDownloadProgress</span><span class="params">(<span class="keyword">double</span> progress)</span></span>;   <span class="comment">//服务端下载进度通知</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onDownloadCompleted</span><span class="params">()</span></span>;                 <span class="comment">//下载完成通知</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>（3） MyData.aidl：定义传输的Parcel数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MyData.aidl</span></span><br><span class="line"><span class="keyword">package</span> com.cuc.myandroidtest;</span><br><span class="line"></span><br><span class="line">parcelable MyData;</span><br></pre></td></tr></table></figure>
+        <!-- 一、跨进程通信为了演示方便，将Service与Activity处于不同的进程，可以在AndroidManifest.xml中，把service配置成android:process=&quot;:remote&quot; ，也可以命名成其他的。
+AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
+12345678910111213// IRemoteSer......  -->
+        <p class="article-more-link">
+          <a href="../../2017/08/02/【Android】Binder - 如何使用AIDL/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-Google 笔试题 - 连通图的最大生成树的权和"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -796,148 +914,6 @@
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【Android】Audio音频输出通道切换 - 蓝牙、外放"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/05/18/【Android】Audio音频输出通道切换 - 蓝牙、外放/">【Android】Audio音频输出通道切换 - 蓝牙、外放</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/05/18/【Android】Audio音频输出通道切换 - 蓝牙、外放/" class="article-date">
-	  <time datetime="2017-05-18T03:40:00.000Z" itemprop="datePublished">2017-05-18</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Android/">Android</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>手机音频的输出有外放（Speaker）、听筒（Telephone Receiver）、有线耳机（WiredHeadset）、蓝牙音箱（Bluetooth A2DP）等输出设备。在平时，电话免提、插拔耳机、连接断开蓝牙设备等操作系统都会自动切换Audio音频到相应的输出设备上。比如电话免提就是从听筒切换到外放扬声器，插入耳机就是从外放切换到耳机。</p>
-<h2 id="场景需求"><a href="#场景需求" class="headerlink" title="场景需求"></a><strong>场景需求</strong></h2><p>Android系统自动切换的这些策略，并不能全部满足我们的产品需求，比如音乐App需要对听歌时拔出耳机的操作进行阻止（暂停播放），防止突然切换到外放导致尴尬。</p>
-<p>最近项目需求希望<strong><code>即使在连接蓝牙音箱的情况下，仍旧使用手机外放播放音频</code></strong>。这就需要强制切换Audio输出通道，打破系统原有的策略。</p>
-<p>查阅资料，看到了Android中可以通过<code>AudioManager</code>查询、切换当前Audio输出通道，并且在Audio输出发生变化时，捕获并处理这种变化。</p>
-        <!-- 手机音频的输出有外放（Speaker）、听筒（Telephone Receiver）、有线耳机（WiredHeadset）、蓝牙音箱（Bluetooth A2DP）等输出设备。在平时，电话免提、插拔耳机、连接断开蓝牙设备等操作系统都会自动切换Audio音频到相应的输出设备上。比如电话免提就是从听筒切换到外放扬声器，插入耳机就是从外放切换到耳机。
-场景需求Android系统自动切换的这些策略，......  -->
-        <p class="article-more-link">
-          <a href="../../2017/05/18/【Android】Audio音频输出通道切换 - 蓝牙、外放/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Audio/">Audio</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Google 面试题 - 判断字符串是否可由重复子字符串组成"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/05/05/Google 面试题 - 判断字符串是否可由重复子字符串组成/">Google 面试题 | 判断字符串是否可由重复子字符串组成</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/05/05/Google 面试题 - 判断字符串是否可由重复子字符串组成/" class="article-date">
-	  <time datetime="2017-05-05T09:20:55.000Z" itemprop="datePublished">2017-05-05</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><strong>题目描述</strong></h2><p>对于一个非空字符串，判断其是否可由一个子字符串重复多次组成。字符串只包含小写字母且长度不超过10000。</p>
-<h3 id="样例1"><a href="#样例1" class="headerlink" title="样例1"></a>样例1</h3><blockquote>
-<ul>
-<li><strong>输入</strong>： “abab”</li>
-<li><strong>输出</strong>： True</li>
-<li><strong>样例解释</strong>： 输入可由”ab”重复两次组成</li>
-</ul>
-</blockquote>
-<h3 id="样例-2"><a href="#样例-2" class="headerlink" title="样例 2"></a>样例 2</h3><blockquote>
-<ul>
-<li><strong>输入</strong>： “aba”</li>
-<li><strong>输出</strong>： False</li>
-</ul>
-</blockquote>
-<h3 id="样例-3"><a href="#样例-3" class="headerlink" title="样例 3"></a>样例 3</h3><blockquote>
-<ul>
-<li><strong>输入</strong>： “abcabcabcabc”</li>
-<li><strong>输出</strong>： True</li>
-<li><strong>样例解释</strong>：输入可由”abc”重复四次组成</li>
-</ul>
-</blockquote>
-        <!-- 题目描述对于一个非空字符串，判断其是否可由一个子字符串重复多次组成。字符串只包含小写字母且长度不超过10000。
-样例1
-
-输入： “abab”
-输出： True
-样例解释： 输入可由”ab”重复两次组成
-
-
-样例 2
-
-输入： “aba”
-输出： False
-
-
-样例 3
-
-输入： “abcabcabcabc”
-输出： True
-样例解释：输入可由”abc”重复四次组成
-
-
-
-解题思路1.......  -->
-        <p class="article-more-link">
-          <a href="../../2017/05/05/Google 面试题 - 判断字符串是否可由重复子字符串组成/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Google/">Google</a></li></ul>
 
     </footer>
   </div>

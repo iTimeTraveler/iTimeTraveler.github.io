@@ -350,6 +350,130 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Java】生产者消费者模式的实现"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/11/10/【Java】生产者消费者模式的实现/">【Java】生产者消费者模式的实现</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/11/10/【Java】生产者消费者模式的实现/" class="article-date">
+	  <time datetime="2017-11-10T14:20:55.000Z" itemprop="datePublished">2017-11-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Java/">Java</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>生产者消费者问题是线程模型中的经典问题：生产者和消费者在同一时间段内共用同一存储空间，生产者向空间里生产数据，而消费者取走数据。</p>
+<p>阻塞队列就相当于一个缓冲区，平衡了生产者和消费者的处理能力。这个阻塞队列就是用来给生产者和消费者解耦的。</p>
+<h3 id="wait-notify方法"><a href="#wait-notify方法" class="headerlink" title="wait/notify方法"></a>wait/notify方法</h3><p>首先，我们搞清楚Thread.sleep()方法和Object.wait()、Object.notify()方法的区别。根据这篇文章<a href="https://www.zhihu.com/question/23328075" target="_blank" rel="noopener">java sleep和wait的区别的疑惑?</a></p>
+<ol>
+<li><code>sleep()</code>是Thread类的方法；而<code>wait()</code>，<code>notify()</code>，<code>notifyAll()</code>是Object类中定义的方法；尽管这两个方法都会影响线程的执行行为，但是本质上是有区别的。</li>
+<li><code>Thread.sleep()</code>不会导致锁行为的改变，如果当前线程是拥有锁的，那么<code>Thread.sleep()</code>不会让线程释放锁。如果能够帮助你记忆的话，可以简单认为和锁相关的方法都定义在Object类中，因此调用<code>Thread.sleep()</code>是不会影响锁的相关行为。</li>
+<li><code>Thread.sleep</code>和<code>Object.wait</code>都会暂停当前的线程，对于CPU资源来说，不管是哪种方式暂停的线程，都表示它暂时不再需要CPU的执行时间。OS会将执行时间分配给其它线程。区别是调用wait后，需要别的线程执行notify/notifyAll才能够重新获得CPU执行时间。</li>
+</ol>
+        <!-- 前言生产者消费者问题是线程模型中的经典问题：生产者和消费者在同一时间段内共用同一存储空间，生产者向空间里生产数据，而消费者取走数据。
+阻塞队列就相当于一个缓冲区，平衡了生产者和消费者的处理能力。这个阻塞队列就是用来给生产者和消费者解耦的。
+wait/notify方法首先，我们搞清楚Thread.sleep()方法和Object.wait()、Object.notify()方法的区别。根据这篇......  -->
+        <p class="article-more-link">
+          <a href="../../2017/11/10/【Java】生产者消费者模式的实现/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-【Android】Dialog异常CalledFromWrongThreadException深入分析"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/10/26/【Android】Dialog异常CalledFromWrongThreadException深入分析/">【Android】Dialog异常CalledFromWrongThreadException深入分析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/10/26/【Android】Dialog异常CalledFromWrongThreadException深入分析/" class="article-date">
+	  <time datetime="2017-10-26T14:20:55.000Z" itemprop="datePublished">2017-10-26</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Android/">Android</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>在使用Dialog时，因为线程问题，在调用dismiss方法时出现了CalledFromWrongThreadException的Crash，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views.</span><br></pre></td></tr></table></figure>
+<p>抛出异常为<code>CalledFromWrongThreadException</code>，很明显第一反应就是出现了非ui线程进行了ui操作造成了此异常。通过分析工程代码，发现本质上是因为在非ui线程中创建了Dialog，而在主线程（即ui线程）中调用了<code>show()</code>以及<code>dismiss()</code>方法，我把问题模型写成测试代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">BaseActivity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"MainActivity test"</span>;</span><br><span class="line">    <span class="keyword">private</span> ProgressDialog dialog;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        EventBus.getDefault().register(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                Looper.prepare();</span><br><span class="line"></span><br><span class="line">                <span class="comment">//子线程中创建Dialog</span></span><br><span class="line">                dialog = <span class="keyword">new</span> ProgressDialog(MainActivity.<span class="keyword">this</span>);</span><br><span class="line">                dialog.setCanceledOnTouchOutside(<span class="keyword">true</span>);</span><br><span class="line">                dialog.setOnCancelListener(<span class="keyword">new</span> DialogInterface.OnCancelListener() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCancel</span><span class="params">(DialogInterface dialog)</span> </span>&#123;</span><br><span class="line">                        Log.d(TAG, <span class="string">"Dialog onCancel thread: "</span> + getThreadInfo());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">                dialog.setOnDismissListener(<span class="keyword">new</span> DialogInterface.OnDismissListener() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDismiss</span><span class="params">(DialogInterface dialog)</span> </span>&#123;</span><br><span class="line">                        Log.d(TAG, <span class="string">"Dialog onDismiss thread: "</span> + getThreadInfo());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">                dialog.setMessage(<span class="string">"正在加载..."</span>);</span><br><span class="line">                Log.d(TAG, <span class="string">"Dialog create thread: "</span> + getThreadInfo());</span><br><span class="line"></span><br><span class="line">                Looper.loop();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        Button btn = (Button) findViewById(R.id.btn_helloworld);</span><br><span class="line">        btn.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">                <span class="comment">//UI主线程中show，然后点击空白区域dismiss</span></span><br><span class="line">                dialog.show();</span><br><span class="line">                Log.d(TAG, <span class="string">"Dialog show thread: "</span> + getThreadInfo());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 输出线程信息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getThreadInfo</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"["</span> + Thread.currentThread().getId() + <span class="string">"]"</span> +</span><br><span class="line">                ((Looper.myLooper() == Looper.getMainLooper())? <span class="string">" is UI-Thread"</span> : <span class="string">""</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>就是Activity打开的时候，使用work子线程创建了一个Dialog，然后手动点击按钮的时候，显示Dialog。再点击空白处，dialog本应该dismiss的，但是直接crash了。抛出了<code>CalledFromWrongThreadException</code>的异常。</p>
+<p>在上面的代码中，我顺便输出了Dialog每个操作的线程ID，同时会判定是不是ui主线程。我们来看看log：</p>
+<blockquote>
+<p>10-26 16:11:07.836 7405-7652/com.cuc.myandroidtest D/MainActivity test: Dialog create thread: [3953]<br>10-26 16:11:27.763 7405-7405/com.cuc.myandroidtest D/MainActivity test: Dialog show thread: [1] is UI-Thread<br>10-26 16:11:35.642 7405-7652/com.cuc.myandroidtest D/MainActivity test: Dialog onCancel thread: [3953]</p>
+<p>——– beginning of crash</p>
+</blockquote>
+<p>可以看到，以上出现的问题中执行Dialog操作的线程信息如下：</p>
+<ul>
+<li>创建Dialog：work子线程</li>
+<li>show()：ui主线程</li>
+<li>cancel()：work子线程</li>
+<li>dismiss()：因为crash没有执行到，未知</li>
+</ul>
+<p>如果说<strong>只有创建这个控件的线程才能去更新该控件的内容</strong>。那么在调用show方法的时候为什么不会crash，然后dismiss的时候才会崩溃？</p>
+<p>另外，到底是不是所有的操作都必须放到ui线程中执行才对？带着疑问我们深入Dialog源码一看究竟。</p>
+        <!-- 问题在使用Dialog时，因为线程问题，在调用dismiss方法时出现了CalledFromWrongThreadException的Crash，如下：
+1android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy can to......  -->
+        <p class="article-more-link">
+          <a href="../../2017/10/26/【Android】Dialog异常CalledFromWrongThreadException深入分析/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-【算法】字符串是否包含问题"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -821,124 +945,6 @@ IntentService：一个内部采用HandlerThread来执行任务的Service服务�
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【Android】源码分析 - Handler消息机制再梳理"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/08/03/【Android】源码分析 - Handler消息机制再梳理/">【Android】源码分析 - Handler消息机制再梳理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/08/03/【Android】源码分析 - Handler消息机制再梳理/" class="article-date">
-	  <time datetime="2017-08-03T08:03:00.000Z" itemprop="datePublished">2017-08-03</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Android/">Android</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>多线程的消息传递处理，从初学Android时的Handler，懵懵懂懂地照猫画虎，到后来一头雾水的疑惑它为什么这么复杂，再到熟悉之后的叹为观止，一步步地都是自己踩过的足迹，都是成长啊哈哈哈。虽然离出神入化的境界还远十万八千里呢，但Android中的Handler多线程消息传递机制，的确是研发技术学习中不可多得的一个宝藏。本来我以为自己之前的学习以及比较了解 Handler，在印象中 Android 消息机制无非就是：</p>
-<ol>
-<li>Handler 给 MessageQueue 添加消息</li>
-<li>然后 Looper 无限循环读取消息</li>
-<li>再调用 Handler 处理消息</li>
-</ol>
-<p>但是只知道整体流程，细节还不是特别透彻。最近不甚忙碌，回头看到这块又有些许收获，我们来记录一下吧。</p>
-<p>在整个Android的源码世界里，有两大利剑，其一是<strong>Binder IPC机制</strong>，另一个便是<strong>消息机制</strong>。Android有大量的消息驱动方式来进行交互，比如Android的四剑客<code>Activity</code>, <code>Service</code>, <code>Broadcast</code>, <code>ContentProvider</code>的启动过程的交互，都离不开消息机制，Android某种意义上也可以说成是一个以消息驱动的系统。而Android 消息机制主要涉及 4 个类：</p>
-<ul>
-<li>Handler</li>
-<li>Message</li>
-<li>MessageQueue</li>
-<li>Looper</li>
-</ul>
-<p>我们依次结合源码分析一下。</p>
-        <!-- 前言多线程的消息传递处理，从初学Android时的Handler，懵懵懂懂地照猫画虎，到后来一头雾水的疑惑它为什么这么复杂，再到熟悉之后的叹为观止，一步步地都是自己踩过的足迹，都是成长啊哈哈哈。虽然离出神入化的境界还远十万八千里呢，但Android中的Handler多线程消息传递机制，的确是研发技术学习中不可多得的一个宝藏。本来我以为自己之前的学习以及比较了解 Handler，在印象中 An......  -->
-        <p class="article-more-link">
-          <a href="../../2017/08/03/【Android】源码分析 - Handler消息机制再梳理/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/源码分析/">源码分析</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【Android】Binder - 如何使用AIDL"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/08/02/【Android】Binder - 如何使用AIDL/">【Android】Binder - 如何使用AIDL</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/08/02/【Android】Binder - 如何使用AIDL/" class="article-date">
-	  <time datetime="2017-08-02T14:20:55.000Z" itemprop="datePublished">2017-08-02</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Android/">Android</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="一、跨进程通信"><a href="#一、跨进程通信" class="headerlink" title="一、跨进程通信"></a>一、跨进程通信</h3><p>为了演示方便，将Service与Activity处于不同的进程，可以在AndroidManifest.xml中，把service配置成<code>android:process=&quot;:remote&quot;</code> ，也可以命名成其他的。</p>
-<h4 id="AIDL"><a href="#AIDL" class="headerlink" title="AIDL"></a>AIDL</h4><p>（1） IRemoteService.aidl：定义Server端提供的服务接口</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// IRemoteService.aidl</span></span><br><span class="line"><span class="keyword">package</span> com.cuc.myandroidtest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.cuc.myandroidtest.MyData;</span><br><span class="line"><span class="keyword">import</span> com.cuc.myandroidtest.IServiceCallback;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IRemoteService</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getPid</span><span class="params">()</span></span>;			<span class="comment">//获取服务端进程ID</span></span><br><span class="line">    <span class="function">MyData <span class="title">getMyData</span><span class="params">()</span></span>;		<span class="comment">//从服务端获取数据</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">registerCallback</span><span class="params">(IServiceCallback callback)</span></span>;		<span class="comment">//注册服务端回调</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">unregisterCallback</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>（2） IServiceCallBack.aidl：定义服务端回调接口，把Service的下载进度通知给客户端ClientActivity</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// IServiceCallBack.aidl</span></span><br><span class="line"><span class="keyword">package</span> com.cuc.myandroidtest;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IServiceCallback</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onDownloadProgress</span><span class="params">(<span class="keyword">double</span> progress)</span></span>;   <span class="comment">//服务端下载进度通知</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onDownloadCompleted</span><span class="params">()</span></span>;                 <span class="comment">//下载完成通知</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>（3） MyData.aidl：定义传输的Parcel数据</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MyData.aidl</span></span><br><span class="line"><span class="keyword">package</span> com.cuc.myandroidtest;</span><br><span class="line"></span><br><span class="line">parcelable MyData;</span><br></pre></td></tr></table></figure>
-        <!-- 一、跨进程通信为了演示方便，将Service与Activity处于不同的进程，可以在AndroidManifest.xml中，把service配置成android:process=&quot;:remote&quot; ，也可以命名成其他的。
-AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
-12345678910111213// IRemoteSer......  -->
-        <p class="article-more-link">
-          <a href="../../2017/08/02/【Android】Binder - 如何使用AIDL/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
 
     </footer>
   </div>

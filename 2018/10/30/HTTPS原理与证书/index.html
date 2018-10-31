@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>https原理与证书生成 | iTimeTraveler</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="HTTPS" />
+  
+  
+  
+  
+  <meta name="description" content="HTTPSHTTPS与HTTP是什么关系呢？我们可以对比下HTTP与HTTPS的请求过程：  HTTPS 在 TCP 和 HTTP 之间增加了 TLS（Transport Layer Security，传输层安全），提供了内容加密、身份认证和数据完整性三大功能。">
+<meta name="keywords" content="HTTPS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTPS原理与证书生成">
+<meta property="og:url" content="http://github.com/2018/10/30/HTTPS原理与证书/index.html">
+<meta property="og:site_name" content="iTimeTraveler">
+<meta property="og:description" content="HTTPSHTTPS与HTTP是什么关系呢？我们可以对比下HTTP与HTTPS的请求过程：  HTTPS 在 TCP 和 HTTP 之间增加了 TLS（Transport Layer Security，传输层安全），提供了内容加密、身份认证和数据完整性三大功能。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://github.com/gallery/common/https-banner.png">
+<meta property="og:updated_time" content="2018-10-31T10:02:47.308Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HTTPS原理与证书生成">
+<meta name="twitter:description" content="HTTPSHTTPS与HTTP是什么关系呢？我们可以对比下HTTP与HTTPS的请求过程：  HTTPS 在 TCP 和 HTTP 之间增加了 TLS（Transport Layer Security，传输层安全），提供了内容加密、身份认证和数据完整性三大功能。">
+<meta name="twitter:image" content="http://github.com/gallery/common/https-banner.png">
+  
+    <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/gallery/avatar/0.jpg">
+  <link rel="apple-touch-icon" href="/gallery/avatar/0.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="../../../../css/style.css">
+
+  <script src="../../../../js/jquery-3.1.1.min.js"></script>
+  <script src="../../../../js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="../../../../css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 8px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="62px" height="75px" alt="Hike News" src="/gallery/avatar/0.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="../../../../index.html">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../funnysite">酷站</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../collection">收藏</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../mybooks">🎁</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '../../../../content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="../../../../js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-HTTPS原理与证书" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" href="../../../../gallery/common/https-banner.png" rel="gallery_cjnwzz1sf000nj9fypjbezr7e">
+        <img src="../../../../gallery/common/https-banner.png" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      HTTPS原理与证书生成
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="" class="article-date">
+	  <time datetime="2018-10-30T03:08:00.000Z" itemprop="datePublished">2018-10-30</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../../../categories/Web/">Web</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h2><p>HTTPS与HTTP是什么关系呢？我们可以对比下HTTP与HTTPS的请求过程：</p>
+<p><img src="/gallery/common/http-state.png" alt="HTTP请求过程"></p>
+<p>HTTPS 在 TCP 和 HTTP 之间增加了 TLS（Transport Layer Security，传输层安全），提供了<strong>内容加密</strong>、<strong>身份认证</strong>和<strong>数据完整性</strong>三大功能。</p>
+<p><img src="/gallery/common/https-state.png" alt="HTTPS请求过程"></p>
+<a id="more"></a>
+<p>HTTPS也就是HTTP over SSL/TLS，所有的http数据都是在SSL/TLS协议封装之上传输的。Https协议在Http协议的基础上，添加了SSL/TLS握手以及数据加密传输，也属于应用层协议。所以，研究Https协议原理，最终其实是研究SSL/TLS协议。</p>
+<p><img src="/gallery/common/diagram5-session-resumption.png" alt=""></p>
+<p>可以看到，假设服务端和客户端之间单次传输耗时 28ms，那么客户端需要等到 168ms 之后才能开始发送 HTTP 请求报文，这还没把客户端和服务端处理时间算进去。光是 TLS 握手就需要消耗两个 RTT（Round-Trip Time，往返时间），这就是造成 HTTPS 更慢的主要原因。当然，HTTPS 要求数据加密传输，加解密相比 HTTP 也会带来额外的开销，不过对称加密本来就很快，加上硬件性能越来越好，所以这部分开销还好。</p>
+<h3 id="TLS历史"><a href="#TLS历史" class="headerlink" title="TLS历史"></a>TLS历史</h3><p>传输层安全协议（Transport Layer Security，缩写：TLS），及其前身安全套接层（Secure Sockets Layer，缩写：SSL）是一种安全协议，目的是为互联网通信提供安全及数据完整性保障。</p>
+<p><img src="/gallery/common/hpbn_0401.png" alt=""></p>
+<p>SSL包含记录层（Record Layer）和传输层，记录层协议确定了传输层数据的封装格式。传输层安全协议使用X.509认证，之后利用非对称加密演算来对通信方做身份认证，之后交换对称密钥作为会谈密钥（Session key）。这个会谈密钥是用来将通信两方交换的数据做加密，保证两个应用间通信的保密性和可靠性，使客户与服务器应用之间的通信不被攻击者窃听。</p>
+<blockquote>
+<p>1994年早期，NetScape公司设计了SSL协议（Secure Sockets Layer）的1.0版，但是未发布。<br>1994年11月，NetScape公司发布SSL 2.0版，很快发现有严重漏洞。<br>1996年11月，SSL 3.0版问世，得到大规模应用。<br>1999年1月，互联网标准化组织ISOC接替NetScape公司，发布了SSL的升级版<a href="https://www.ietf.org/rfc/rfc2246.txt" target="_blank" rel="noopener">TLS 1.0版</a>。<br>2006年4月和2008年8月，TLS进行了两次升级，分别为<a href="https://tools.ietf.org/html/rfc4346" target="_blank" rel="noopener">TLS 1.1</a>版和<a href="https://tools.ietf.org/html/rfc5246" target="_blank" rel="noopener">TLS 1.2</a>版。最新的变动是2011年TLS 1.2的修订版。<br>现在正在制定 <a href="https://github.com/tlswg/tls13-spec">tls 1.3</a>。</p>
+</blockquote>
+<h2 id="TLS握手过程"><a href="#TLS握手过程" class="headerlink" title="TLS握手过程"></a>TLS握手过程</h2><p>TLS的握手阶段是发生在TCP握手之后。握手实际上是一种协商的过程，对协议所必需的一些参数进行协商。TLS握手过程如下：</p>
+<p><img src="/gallery/common/TLS-handshake-protocol.png" alt=""></p>
+<p>如上图所示，简述如下：</p>
+<ul>
+<li>ClientHello：客户端生成一个随机数 <code>random-client</code>，传到服务器端（Say Hello)</li>
+<li>ServerHello：服务器端生成一个随机数 <code>random-server</code>，和着公钥，一起回馈给客户端（I got it)</li>
+<li>客户端收到的东西原封不动，加上 <code>premaster secret</code>（通过 <code>random-client</code>、<code>random-server</code> 经过一定算法生成的东西），再一次送给服务器端，这次传过去的东西会使用公钥加密</li>
+<li>服务器端先使用私钥解密，拿到 <code>premaster secret</code>，此时客户端和服务器端都拥有了三个要素：<code>random-client</code>、<code>random-server</code> 和 <code>premaster secret</code></li>
+<li>此时安全通道已经建立，以后的交流都会校检上面的三个要素通过算法算出的 <code>session key</code></li>
+</ul>
+<h3 id="Client-Hello-gt"><a href="#Client-Hello-gt" class="headerlink" title="Client Hello =&gt;"></a>Client Hello =&gt;</h3><p>在TLS握手阶段，客户端首先要告知服务端，自己支持哪些加密算法，所以客户端需要将本地支持的加密套件(Cipher Suite)的列表传送给服务端。除此之外，客户端还要产生一个随机数，传送给服务端，客户端的随机数需要跟服务端产生的随机数结合起来产生后面要讲到的Master Secret。即ClientHello主要包含以下信息：</p>
+<blockquote>
+<ol>
+<li>支持的协议版本，比如 TLS 1.2</li>
+<li>一个客户端⽣成的随机数，稍后用于生成”对话密钥”</li>
+<li>支持的加密方法，⽐如 RSA 公钥加密。</li>
+<li>支持的压缩方法。</li>
+</ol>
+</blockquote>
+<h3 id="Server-Hello-lt"><a href="#Server-Hello-lt" class="headerlink" title="Server Hello &lt;="></a>Server Hello &lt;=</h3><p>上图中，从Server Hello到Server Done，有些服务端的实现是每条单独发送，有服务端实现是合并到一起发送。Sever Hello和Server Done都是只有头没有内容的数据。</p>
+<p>服务端在接收到客户端的Client Hello之后，服务端需要将自己的证书发送给客户端。证书是需要申请，并由专门的数字证书认证机构(CA)通过非常严格的审核之后颁发的电子证书。颁发证书的同时会产生一个私钥和公钥。私钥由服务端自己保存，不可泄漏。公钥则是附带在证书的信息中，可以公开。证书本身也附带一个证书电子签名，这个签名用来验证证书的完整性和真实性，可以防止证书被篡改。另外，证书还有有效期。</p>
+<p>在服务端向客户端发送的证书中没有提供足够的信息的时候，还可以向客户端发送一个Server Key Exchange。</p>
+<p>此外，对于非常重要的保密数据，服务端还需要对客户端进行验证，以保证数据传送给了安全的合法的客户端。服务端可以向客户端发出Cerficate Request消息，要求客户端发送证书对客户端的合法性进行验证。</p>
+<p>跟客户端一样，服务端也需要产生一个随机数发送给客户端。客户端和服务端都需要使用这两个随机数来产生Master Secret。最后服务端会发送一个Server Hello Done消息给客户端，表示Server Hello消息结束了。</p>
+<blockquote>
+<ol>
+<li>确认使⽤的加密通信协议版本，⽐如 TLS 1.0 版本。如果浏览器与服务器⽀持的版本不一致，服务器关闭加密通信。</li>
+<li>一个服务器⽣成的随机数，稍后用于生成”对话密钥”。</li>
+<li>确认使用的加密方法，⽐如 RSA 公钥加密。</li>
+<li>服务器证书</li>
+</ol>
+</blockquote>
+<h3 id="Client-Key-Exchange-gt"><a href="#Client-Key-Exchange-gt" class="headerlink" title="Client Key Exchange =&gt;"></a>Client Key Exchange =&gt;</h3><p>如果服务端需要对客户端进行验证，在客户端收到服务端的Server Hello消息之后，首先需要向服务端发送客户端的证书，让服务端来验证客户端的合法性。</p>
+<p>在此之前的所有TLS握手信息都是明文传送的。在收到服务端的证书等信息之后，客户端会使用一些加密算法(例如：RSA, Diffie-Hellman)产生一个48个字节的随机数Key，这个Key叫PreMaster Secret，很多材料上也被称作<code>PreMaster Key</code>。这是整个TLS握手期间的第三个随机数。最终通过<code>Master secret</code>生成<code>session secret</code>， <code>session secret</code>就是用来对应用数据进行加解密的会话秘钥。为什么需要<code>PreMaster secret</code>这第三个随机数的Key呢？因为前两个随机数Client Random和Server Random都是明文传输的。中间人可能早已监听到了。如果只使用这两个随机数计算最终的会话秘钥中间人也可以生成。所以<code>PreMaster secret</code>使用RSA非对称加密的方式，使用服务端传过来的公钥进行加密，然后传给服务端。</p>
+<p>接着，客户端需要对服务端的证书进行检查，检查证书的完整性以及证书跟服务端域名是否吻合。</p>
+<p>ChangeCipherSpec是一个独立的协议，体现在数据包中就是一个字节的数据，用于告知服务端，客户端已经切换到之前协商好的加密套件的状态，准备使用之前协商好的加密套件加密数据并传输了。</p>
+<p>在ChangecipherSpec传输完毕之后，客户端会使用之前协商好的加密套件和session secret加密一段Finish的数据传送给服务端，此数据是为了在正式传输应用数据之前对刚刚握手建立起来的加解密通道进行验证。</p>
+<blockquote>
+<ol>
+<li>一个随机数<code>PreMaster Key</code>。该随机数用服务器公钥加密，防⽌被窃听。</li>
+<li>编码改变通知，表示随后的信息都将⽤双⽅商定的加密⽅法和密钥发送。</li>
+<li>客户端握⼿结束通知，表示客户端的握⼿阶段已经结束。这⼀项同时也是前⾯发送的所有内容的 hash 值，⽤来供服务器校验。</li>
+</ol>
+</blockquote>
+<h3 id="Server-Finish-lt"><a href="#Server-Finish-lt" class="headerlink" title="Server Finish &lt;="></a>Server Finish &lt;=</h3><p>服务端在接收到客户端传过来的PreMaster加密数据之后，使用私钥对这段加密数据进行解密，并对数据进行验证，也会使用跟客户端同样的方式生成<code>session secret</code>，一切准备好之后，会给客户端发送一个ChangeCipherSpec，告知客户端已经切换到协商过的加密套件状态，准备使用加密套件和<code>session secret</code>加密数据了。之后，服务端也会使用<code>session secret</code>加密后一段Finish消息发送给客户端，以验证之前通过握手建立起来的加解密通道是否成功。</p>
+<blockquote>
+<ol>
+<li>编码改变通知，表示随后的信息都将⽤双方商定的加密⽅法和密钥发送。</li>
+<li>服务器握⼿结束通知，表示服务器的握⼿阶段已经结束。这⼀项同时也是前⾯发送的所有内容的 hash 值，⽤来供客户端校验。</li>
+</ol>
+</blockquote>
+<h3 id="应用数据传输"><a href="#应用数据传输" class="headerlink" title="应用数据传输"></a>应用数据传输</h3><p>在所有的握手阶段都完成之后，就可以开始传送应用数据了。应用数据在传输之前，首先要附加上MAC secret，然后再对这个数据包使用write encryption key进行加密。在服务端收到密文之后，使用Client write encryption key进行解密，客户端收到服务端的数据之后使用Server write encryption key进行解密，然后使用各自的write MAC key对数据的完整性包括是否被串改进行验证。</p>
+<h2 id="几个名词"><a href="#几个名词" class="headerlink" title="几个名词"></a>几个名词</h2><p>在详述过程之前，我们需要了解一下，在过程中会出现的内容。</p>
+<ul>
+<li><code>session key</code>: 这是 TLS/SSL 最后协商的结果，用来进行对称加密。</li>
+<li><code>client random</code>: 是一个 32B 的序列值，每次连接来时，都会动态生成，即，每次连接生成的值都不会一样。因为，他包含了 4B 的时间戳和 28B 的随机数。</li>
+<li><code>server random</code>: 和 <code>client random</code> 一样，只是由 server 端生成。</li>
+<li><code>premaster secret</code>: 这是 48B 的 blob 数据。它能和 client &amp; server random 通过 <code>pseudorandom</code> (PRF) 一起生成 session key。</li>
+<li><code>cipher suite</code>: 用来定义 TLS 连接用到的算法。通常有 4 部分：<ul>
+<li>非对称加密 (ECDH 或 RSA)</li>
+<li>证书验证 (证书的类型)</li>
+<li>保密性 (对称加密算法)</li>
+<li>数据完整性 (产生 hash 的函数) 比如<code>AES128-SHA</code>代表着：<ul>
+<li>RSA 算法进行非对称加密</li>
+<li>RSA 进行证书验证</li>
+<li>128bit AES 对称加密</li>
+<li>160bit SHA 数据加密算法</li>
+</ul>
+</li>
+<li>比如<code>ECDHE-ECDSA-AES256-GCM-SHA384</code>代表着<ul>
+<li>ECDHE 算法进行非对称加密</li>
+<li>ECDSA 进行证书验证</li>
+<li>265bit AES 对称加密</li>
+<li>384bit SHA 数据加密算法</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>上面主要是根据 RSA 加密方式来讲解的。因为 RSA 才会在 TLS/SSL 过程中，将 pre-master secret 显示的进行传输，这样的结果有可能造成，hacker 拿到了 private key 那么他也可以生成一模一样的 sessionKey。即，该次连接的安全性就没了。</p>
+<p>接下来，我们主要讲解一下另外一种加密方式 DH。它和 RSA 的主要区别就是，到底传不传 pre-master secret。RSA 传而 DH 不传。根据 <a href="https://blog.cloudflare.com/keyless-ssl-the-nitty-gritty-technical-details/nwmm4058zw/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-10-16%2022.38.38.png" target="_blank" rel="noopener">cloudflare</a> 的讲解可以清楚的了解到两者的区别：</p>
+<p>这是 RSA 的传输方式，基本过程如上述。</p>
+<p><img src="/gallery/common/https_handshake.png" alt="使用RSA加密算法的TLS握手过程"></p>
+<p>而 DH 具体区别在下图：</p>
+<p><img src="/gallery/common/ssl_handshake_diffie_hellman.jpg" alt="使用DH加密算法的TLS握手过程"></p>
+<p>这里先补充一下 DH 算法的知识。因为，PreMaster secret 就是根据这个生成的。DH 基本过程也不算太难，详情可以参考 <a href="https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange#Description" target="_blank" rel="noopener">wiki</a>。 它主要运用到的公式就是:</p>
+<p><img src="/gallery/common/7b09ebb75344061a3bd483c1369b31a45adad94f.svg" alt=""></p>
+<p>为了防止在 DH 参数交换时，数据过大，DH 使用的是取模数的方式，这样就能限制传输的值永远在 [1,p-1]。这里，先说明一下 DH 算法的基本条件：</p>
+<ul>
+<li>公共条件： p 和 g 都是已知，并且公开。即，第三方也可以随便获取到。</li>
+<li>私有条件： a 和 b 是两端自己生成的，第三方获取不到。</li>
+</ul>
+<p>基本流程就是：</p>
+<p><img src="/gallery/common/屏幕快照 2016-10-17 11.24.41.png" alt="DH算法流程"></p>
+<p>我们只要把上图的 DH parameter 替换为相对应的 X/Y 即可。而最后的 Z 就是我们想要的 Premaster secret。 之后，就和 RSA 加密算法一致，加上两边的 random-num 生成 sessionKey。通过，我们常常称 DH 也叫作 <code>Ephemeral Diffie-Hellman handshake</code>。 因为，他每次一的 sessionKey 都是不同的。</p>
+<p>而 RSA 和 DH 两者之间的具体的区别就在于：RSA 会将 premaster secret 显示的传输，这样有可能会造成私钥泄露引起的安全问题。而 DH 不会将 premaster secret 显示的传输。</p>
+<h2 id="实际抓包"><a href="#实际抓包" class="headerlink" title="实际抓包"></a>实际抓包</h2><p>通过 Wireshark 抓包可以清楚地看到完整 TLS 握手过程所需的两个 RTT，如下图（来自：<a href="https://imququ.com/post/optimize-tls-handshake.html" target="_blank" rel="noopener">TLS 握手优化详解</a>）：</p>
+<p><img src="/gallery/common/wireshake-tls-full-handshake.png" alt=""></p>
+<h2 id="私钥的作用"><a href="#私钥的作用" class="headerlink" title="私钥的作用"></a>私钥的作用</h2><p>握手阶段有三点需要注意。</p>
+<blockquote>
+<p>（1）生成对话密钥一共需要三个随机数。</p>
+<p>（2）握手之后的对话使用”对话密钥”加密（对称加密），服务器的公钥和私钥只用于加密和解密”对话密钥”（非对称加密），无其他作用。</p>
+<p>（3）服务器公钥放在服务器的数字证书之中。</p>
+</blockquote>
+<p>从上面第二点可知，整个对话过程中（握手阶段和其后的对话），服务器的公钥和私钥只需要用到一次。这就是CloudFlare能够提供Keyless服务的根本原因。</p>
+<p>某些客户（比如银行）想要使用外部CDN，加快自家网站的访问速度，但是出于安全考虑，不能把私钥交给CDN服务商。这时，完全可以把私钥留在自家服务器，只用来解密对话密钥，其他步骤都让CDN服务商去完成。</p>
+<p><img src="/gallery/common/bg2014092006.png" alt=""></p>
+<p>上图中，银行的服务器只参与第四步，后面的对话都不再会用到私钥了。</p>
+<h2 id="自签名证书"><a href="#自签名证书" class="headerlink" title="自签名证书"></a>自签名证书</h2><p>什么叫自签名呢？就是自己通过keytool去生成一个证书，然后使用，并不是CA机构去颁发的。使用自签名证书的网站，大家在使用浏览器访问的时候，一般都是报风险警告，比如之前的12306就是这么干的，<a href="https://kyfw.12306.cn/otn/" target="_blank" rel="noopener">https://kyfw.12306.cn/otn/</a> ，点击进入12306的购票页面就能看到了。当然现在我重新试了一下已经不是这样了。</p>
+<p><img src="/gallery/common/1440987432776078.png" alt=""></p>
+<h3 id="服务端证书生成"><a href="#服务端证书生成" class="headerlink" title="服务端证书生成"></a>服务端证书生成</h3><p>Golang服务端可以参考这里：<a href="https://gist.github.com/denji/12b3a568f092ab951456" target="_blank" rel="noopener">https://gist.github.com/denji/12b3a568f092ab951456</a></p>
+<h4 id="生成服务端私钥-Generate-private-key-key"><a href="#生成服务端私钥-Generate-private-key-key" class="headerlink" title="生成服务端私钥 Generate private key (.key)"></a>生成服务端私钥 Generate private key (.key)</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Key considerations for algorithm "RSA" ≥ 2048-bit</span></span><br><span class="line">openssl genrsa -out server.key 2048</span><br><span class="line"></span><br><span class="line"><span class="comment"># Key considerations for algorithm "ECDSA" ≥ secp384r1</span></span><br><span class="line"><span class="comment"># List ECDSA the supported curves (openssl ecparam -list_curves)</span></span><br><span class="line">openssl ecparam -genkey -name secp384r1 -out server.key</span><br></pre></td></tr></table></figure>
+<h4 id="生成服务端自签名证书-Generation-of-self-signed-x509-public-key-PEM-encodings-pem-crt-based-on-the-private-key"><a href="#生成服务端自签名证书-Generation-of-self-signed-x509-public-key-PEM-encodings-pem-crt-based-on-the-private-key" class="headerlink" title="生成服务端自签名证书 Generation of self-signed(x509) public key (PEM-encodings .pem|.crt) based on the private (.key)"></a>生成服务端自签名证书 Generation of self-signed(x509) public key (PEM-encodings <code>.pem</code>|<code>.crt</code>) based on the private (<code>.key</code>)</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl req -new -x509 -sha256 -key server.key -out server.crt -days 3650</span><br></pre></td></tr></table></figure>
+<p>在这里需要大家填写资料（有些地方可以空着）</p>
+<blockquote>
+<p> Country Name (2 letter code) [AU]:CN<br> State or Province Name (full name) [Some-State]:Guangdong<br> Locality Name (eg, city) []:FoShan<br> Organization Name (eg, company) [Internet Widgits Pty Ltd]:TestCA<br> Organizational Unit Name (eg, section) []:<br> Common Name (e.g. server FQDN or YOUR name) []:localhost<br> Email Address []:</p>
+</blockquote>
+<p>这里有点要注意， <code>Common Name (e.g. server FQDN or YOUR name) []:</code> 这一项，是最后可以访问的域名，我这里为了方便测试，写成 localhost ，如果是为了给网站生成证书，需要写成 xxxx.com 。</p>
+<h4 id="Simple-Golang-HTTPS-TLS-Server"><a href="#Simple-Golang-HTTPS-TLS-Server" class="headerlink" title="Simple Golang HTTPS/TLS Server"></a>Simple Golang HTTPS/TLS Server</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="comment">// "fmt"</span></span><br><span class="line">    <span class="comment">// "io"</span></span><br><span class="line">    <span class="string">"net/http"</span></span><br><span class="line">    <span class="string">"log"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">HelloServer</span><span class="params">(w http.ResponseWriter, req *http.Request)</span></span> &#123;</span><br><span class="line">    w.Header().Set(<span class="string">"Content-Type"</span>, <span class="string">"text/plain"</span>)</span><br><span class="line">    w.Write([]<span class="keyword">byte</span>(<span class="string">"This is an example server.\n"</span>))</span><br><span class="line">    <span class="comment">// fmt.Fprintf(w, "This is an example server.\n")</span></span><br><span class="line">    <span class="comment">// io.WriteString(w, "This is an example server.\n")</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    http.HandleFunc(<span class="string">"/hello"</span>, HelloServer)</span><br><span class="line">    err := http.ListenAndServeTLS(<span class="string">":443"</span>, <span class="string">"server.crt"</span>, <span class="string">"server.key"</span>, <span class="literal">nil</span>)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(<span class="string">"ListenAndServe: "</span>, err)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="客户端访问（Android）"><a href="#客户端访问（Android）" class="headerlink" title="客户端访问（Android）"></a>客户端访问（Android）</h3><p>当大家使用Android 中的OkHttp访问一个使用自签名的HTTPS的站点，它会抛出一个<code>SSLHandshakeException</code>的异常。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor <span class="keyword">for</span> certification path not found.</span><br><span class="line">    at com.android.org.conscrypt.OpenSSLSocketImpl.startHandshake(OpenSSLSocketImpl.java:<span class="number">322</span>)</span><br><span class="line">    at com.android.okhttp.Connection.upgradeToTls(Connection.java:<span class="number">201</span>)</span><br><span class="line">    at com.android.okhttp.Connection.connect(Connection.java:<span class="number">155</span>)</span><br><span class="line">    at com.android.okhttp.internal.http.HttpEngine.connect(HttpEngine.java:<span class="number">276</span>)</span><br><span class="line">    at com.android.okhttp.internal.http.HttpEngine.sendRequest(HttpEngine.java:<span class="number">211</span>)</span><br><span class="line">    at com.android.okhttp.internal.http.HttpURLConnectionImpl.execute(HttpURLConnectionImpl.java:<span class="number">382</span>)</span><br><span class="line">    at com.android.okhttp.internal.http.HttpURLConnectionImpl.getResponse(HttpURLConnectionImpl.java:<span class="number">332</span>)</span><br><span class="line">    at com.android.okhttp.internal.http.HttpURLConnectionImpl.getInputStream(HttpURLConnectionImpl.java:<span class="number">199</span>)</span><br><span class="line">    at com.android.okhttp.internal.http.DelegatingHttpsURLConnection.getInputStream(DelegatingHttpsURLConnection.java:<span class="number">210</span>)</span><br><span class="line">    at com.android.okhttp.internal.http.HttpsURLConnectionImpl.getInputStream(HttpsURLConnectionImpl.java:<span class="number">25</span>)</span><br><span class="line">    at me.longerian.abcandroid.datetimepicker.TestDateTimePickerActivity$<span class="number">1</span>.run(TestDateTimePickerActivity.java:<span class="number">236</span>)</span><br><span class="line">Caused by: java.security.cert.CertificateException: java.security.cert.CertPathValidatorException: Trust anchor <span class="keyword">for</span> certification path not found.</span><br><span class="line">    at com.android.org.conscrypt.TrustManagerImpl.checkTrusted(TrustManagerImpl.java:<span class="number">318</span>)</span><br><span class="line">    at com.android.org.conscrypt.TrustManagerImpl.checkServerTrusted(TrustManagerImpl.java:<span class="number">219</span>)</span><br><span class="line">    at com.android.org.conscrypt.Platform.checkServerTrusted(Platform.java:<span class="number">114</span>)</span><br><span class="line">    at com.android.org.conscrypt.OpenSSLSocketImpl.verifyCertificateChain(OpenSSLSocketImpl.java:<span class="number">550</span>)</span><br><span class="line">    at com.android.org.conscrypt.NativeCrypto.SSL_do_handshake(Native Method)</span><br><span class="line">    at com.android.org.conscrypt.OpenSSLSocketImpl.startHandshake(OpenSSLSocketImpl.java:<span class="number">318</span>)</span><br><span class="line"> ... <span class="number">10</span> more</span><br><span class="line">Caused by: java.security.cert.CertPathValidatorException: Trust anchor <span class="keyword">for</span> certification path not found.</span><br><span class="line"> ... <span class="number">16</span> more</span><br></pre></td></tr></table></figure>
+<p>这是因为Android 手机有一套共享证书的机制，如果目标 URL 服务器下发的证书不在已信任的证书列表里，或者该证书是自签名的，不是由权威机构颁发，那么会出异常。我们可以通过自定义的验证机制让证书通过验证。解决方案大家可以移步这里：<a href="http://pingguohe.net/2016/02/26/Android-App-secure-ssl.html" target="_blank" rel="noopener">Android App 安全的HTTPS 通信</a></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html" target="_blank" rel="noopener">SSL/TLS协议运行机制的概述</a> - 阮一峰</li>
+<li><a href="https://www.barretlee.com/blog/2015/10/05/how-to-build-a-https-server/" target="_blank" rel="noopener">HTTPS证书生成原理和部署细节</a></li>
+<li><a href="https://imququ.com/post/optimize-tls-handshake.html" target="_blank" rel="noopener">TLS 握手优化详解</a></li>
+<li><a href="https://www.villainhr.com/page/2016/10/26/TLS%20&amp;%20SSL%20%E5%BF%AB%E9%80%9F%E8%BF%9B%E9%98%B6" target="_blank" rel="noopener">TLS &amp; SSL 快速进阶</a></li>
+<li><a href="http://pingguohe.net/2016/02/26/Android-App-secure-ssl.html" target="_blank" rel="noopener">Android App 安全的HTTPS 通信</a></li>
+<li><a href="https://colobu.com/2016/06/07/simple-golang-tls-examples/" target="_blank" rel="noopener">使用Go实现TLS 服务器和客户端</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="../../../../js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/HTTPS/">HTTPS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="../../27/WebSocket协议浅析/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">WebSocket协议浅析</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTPS"><span class="nav-number">1.</span> <span class="nav-text">HTTPS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TLS历史"><span class="nav-number">1.1.</span> <span class="nav-text">TLS历史</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TLS握手过程"><span class="nav-number">2.</span> <span class="nav-text">TLS握手过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Client-Hello-gt"><span class="nav-number">2.1.</span> <span class="nav-text">Client Hello =&gt;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Server-Hello-lt"><span class="nav-number">2.2.</span> <span class="nav-text">Server Hello &lt;=</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Client-Key-Exchange-gt"><span class="nav-number">2.3.</span> <span class="nav-text">Client Key Exchange =&gt;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Server-Finish-lt"><span class="nav-number">2.4.</span> <span class="nav-text">Server Finish &lt;=</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用数据传输"><span class="nav-number">2.5.</span> <span class="nav-text">应用数据传输</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#几个名词"><span class="nav-number">3.</span> <span class="nav-text">几个名词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实际抓包"><span class="nav-number">4.</span> <span class="nav-text">实际抓包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#私钥的作用"><span class="nav-number">5.</span> <span class="nav-text">私钥的作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自签名证书"><span class="nav-number">6.</span> <span class="nav-text">自签名证书</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#服务端证书生成"><span class="nav-number">6.1.</span> <span class="nav-text">服务端证书生成</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#生成服务端私钥-Generate-private-key-key"><span class="nav-number">6.1.1.</span> <span class="nav-text">生成服务端私钥 Generate private key (.key)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成服务端自签名证书-Generation-of-self-signed-x509-public-key-PEM-encodings-pem-crt-based-on-the-private-key"><span class="nav-number">6.1.2.</span> <span class="nav-text">生成服务端自签名证书 Generation of self-signed(x509) public key (PEM-encodings .pem|.crt) based on the private (.key)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Simple-Golang-HTTPS-TLS-Server"><span class="nav-number">6.1.3.</span> <span class="nav-text">Simple Golang HTTPS/TLS Server</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端访问（Android）"><span class="nav-number">6.2.</span> <span class="nav-text">客户端访问（Android）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">7.</span> <span class="nav-text">参考资料</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2018 iTimeTraveler All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="../../../../categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="../../../../tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="../../../../funnysite" class="mobile-nav-link">酷站</a>
+  
+    <a href="../../../../collection" class="mobile-nav-link">收藏</a>
+  
+    <a href="../../../../about" class="mobile-nav-link">About</a>
+  
+    <a href="../../../../mybooks" class="mobile-nav-link">🎁</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.css">
+  <script src="../../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="../../../../js/scripts.js"></script>
+
+
+
+
+  <script src="../../../../js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            iTimeTraveler
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Mr.Seven All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

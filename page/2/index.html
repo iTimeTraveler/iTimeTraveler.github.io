@@ -350,6 +350,127 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Java】线程池ThreadPoolExecutor实现原理"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2018/02/13/【Java】线程池ThreadPoolExecutor实现原理/">【Java】线程池ThreadPoolExecutor实现原理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2018/02/13/【Java】线程池ThreadPoolExecutor实现原理/" class="article-date">
+	  <time datetime="2018-02-13T14:20:55.000Z" itemprop="datePublished">2018-02-13</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Android/">Android</a><a class="article-category-link" href="../../categories/Android/源码分析/">源码分析</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>线程池：可以理解为缓冲区，由于频繁的创建销毁线程会带来一定的成本，可以预先创建但不立即销毁，以共享方式为别人提供服务，一来可以提供效率，再者可以控制线程无线扩张。合理利用线程池能够带来三个好处：</p>
+<ol>
+<li>降低资源消耗。通过重复利用已创建的线程降低线程创建和销毁造成的消耗。</li>
+<li>提高响应速度。当任务到达时，任务可以不需要等到线程创建就能立即执行。</li>
+<li>提高线程的可管理性。线程是稀缺资源，如果无限制的创建，不仅会消耗系统资源，还会降低系统的稳定性，使用线程池可以进行统一的分配，调优和监控。</li>
+</ol>
+<p>但是要做到合理的利用线程池，必须对其原理了如指掌。</p>
+<h2 id="线程的几种状态"><a href="#线程的几种状态" class="headerlink" title="线程的几种状态"></a><strong>线程的几种状态</strong></h2><p>线程在一定条件下，状态会发生变化。根据<a href="https://my.oschina.net/cctester/blog/991744" target="_blank" rel="noopener">线程的几种状态</a>这篇文章，线程一共有以下几种状态：</p>
+<p><strong>1、新建状态(New)</strong>：新创建了一个线程对象。<br><strong>2、就绪状态(Runnable)</strong>：线程对象创建后，其他线程调用了该对象的<code>start()</code>方法。该状态的线程位于“可运行线程池”中，变得可运行，只等待获取CPU的使用权，即<strong>在就绪状态的线程除CPU之外，其它的运行所需资源都已全部获得。</strong><br><strong>3、运行状态(Running)</strong>：就绪状态的线程获取了CPU，执行程序代码。<br><strong>4、阻塞状态(Blocked)</strong>：阻塞状态是线程因为某种原因放弃CPU使用权，暂时停止运行。直到线程进入就绪状态，才有机会转到运行状态。阻塞的情况分三种：</p>
+<ul>
+<li>①. 等待阻塞：运行的线程执行<code>wait()</code>方法，该线程会释放占用的所有资源，JVM会把该线程放入“等待池”中。进入这个状态后，是不能自动唤醒的必须依靠其他线程调用<code>notify()</code>或<code>notifyAll()</code>方法才能被唤醒。</li>
+<li>②. 同步阻塞：运行的线程在获取对象的同步锁时，若该同步锁被别的线程占用，则JVM会把该线程放入“锁池”中。</li>
+<li>③. 其他阻塞：运行的线程执行<code>sleep()</code>或<code>join()</code>方法，或者发出了I/O请求时，JVM会把该线程置为阻塞状态。当<code>sleep()</code>状态超时、<code>join()</code>等待线程终止或者超时，或者I/O处理完毕时，线程重新转入就绪状态。</li>
+</ul>
+<p><strong>5、死亡状态(Dead)</strong>：线程执行完了或者因异常退出了<code>run()</code>方法，该线程结束生命周期。</p>
+        <!-- 引言线程池：可以理解为缓冲区，由于频繁的创建销毁线程会带来一定的成本，可以预先创建但不立即销毁，以共享方式为别人提供服务，一来可以提供效率，再者可以控制线程无线扩张。合理利用线程池能够带来三个好处：
+
+降低资源消耗。通过重复利用已创建的线程降低线程创建和销毁造成的消耗。
+提高响应速度。当任务到达时，任务可以不需要等到线程创建就能立即执行。
+提高线程的可管理性。线程是稀缺资源，如果无限制的创建......  -->
+        <p class="article-more-link">
+          <a href="../../2018/02/13/【Java】线程池ThreadPoolExecutor实现原理/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/源码分析/">源码分析</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-【Android】OkHttp源码分析"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2018/01/25/【Android】OkHttp源码分析/">【Android】OkHttp源码分析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2018/01/25/【Android】OkHttp源码分析/" class="article-date">
+	  <time datetime="2018-01-25T14:20:55.000Z" itemprop="datePublished">2018-01-25</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Android/">Android</a><a class="article-category-link" href="../../categories/Android/源码分析/">源码分析</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Android为我们提供了两种HTTP交互的方式：<a href="https://developer.android.com/reference/java/net/HttpURLConnection.html" target="_blank" rel="noopener">HttpURLConnection</a> 和 Apache HttpClient，虽然两者都支持HTTPS，流的上传和下载，配置超时，IPv6和连接池，已足够满足我们各种HTTP请求的需求。但更高效的使用HTTP 可以让您的应用运行更快、更节省流量。而<a href="https://github.com/square/okhttp">OkHttp</a>库就是为此而生。在开始分析OkHttp之前我们先了解一下 HttpURLConnection 和 HttpClient 两者之间关系，以及它们和 OkHttp 之间的关系。</p>
+<h2 id="HttpClient-vs-HttpURLConnection"><a href="#HttpClient-vs-HttpURLConnection" class="headerlink" title="HttpClient vs HttpURLConnection"></a>HttpClient vs HttpURLConnection</h2><p>在Android API Level 9（Android 2.2）之前只能使用<code>HttpClient</code>类发送http请求。<code>HttpClient</code>是Apache用于发送http请求的客户端，其提供了强大的API支持，而且基本没有什么bug，但是由于其太过复杂，Android团队在保持向后兼容的情况下，很难对<code>DefaultHttpClient</code>进行增强。为此，Android团队从Android API Level 9开始自己实现了一个发送http请求的客户端类 —— <code>HttpURLConnection</code>。</p>
+<p>相比于<code>DefaultHttpClient</code>，<code>HttpURLConnection</code>比较轻量级，虽然功能没有<code>DefaultHttpClient</code>那么强大，但是能够满足大部分的需求，所以Android推荐使用<code>HttpURLConnection</code>代替<code>DefaultHttpClient</code>，并不强制使用<code>HttpURLConnection</code>。</p>
+<p><strong>但从Android API Level 23（Android 6.0）开始，不能再在Android中使用<code>HttpClient</code></strong>，强制使用<code>HttpURLConnection</code>。参考官网：<a href="https://developer.android.com/about/versions/marshmallow/android-6.0-changes.html" target="_blank" rel="noopener">Android 6.0 Changes - Google Developer</a></p>
+<blockquote>
+<p>Android 6.0 版移除了对 Apache HTTP client的支持。如果您的应用使用该客户端，并以 Android 2.3（API level 9）或更高版本为目标平台，请改用 <code>HttpURLConnection</code> 类。此 API 效率更高，因为它可以通过透明压缩和响应缓存减少网络使用，并可最大限度降低耗电量。要继续使用 Apache HTTP API，您必须先在 <code>build.gradle</code> 文件中声明以下编译时依赖项：</p>
+</blockquote>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    useLibrary <span class="string">'org.apache.http.legacy'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <!-- Android为我们提供了两种HTTP交互的方式：HttpURLConnection 和 Apache HttpClient，虽然两者都支持HTTPS，流的上传和下载，配置超时，IPv6和连接池，已足够满足我们各种HTTP请求的需求。但更高效的使用HTTP 可以让您的应用运行更快、更节省流量。而OkHttp库就是为此而生。在开始分析OkHttp之前我们先了解一下 HttpURLConnect......  -->
+        <p class="article-more-link">
+          <a href="../../2018/01/25/【Android】OkHttp源码分析/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/源码分析/">源码分析</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-用Java实现断点续传 (HTTP)"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -811,130 +932,6 @@ Big-Endian和Little-Endian的定义如下：
 （2）事件类型分为 ACTION_DOWN， ACTION_UP，ACTION_MOVE，ACTION_POINTER_DOWN，ACTION_POINTER_UP， ACTION_CANCEL，每个事件都是以 ACTION_DOWN 开......  -->
         <p class="article-more-link">
           <a href="../../2017/11/18/【Android】源码分析 - View事件分发机制/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【Java】生产者消费者模式的实现"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/11/10/【Java】生产者消费者模式的实现/">【Java】生产者消费者模式的实现</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/11/10/【Java】生产者消费者模式的实现/" class="article-date">
-	  <time datetime="2017-11-10T14:20:55.000Z" itemprop="datePublished">2017-11-10</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Java/">Java</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>生产者消费者问题是线程模型中的经典问题：生产者和消费者在同一时间段内共用同一存储空间，生产者向空间里生产数据，而消费者取走数据。</p>
-<p>阻塞队列就相当于一个缓冲区，平衡了生产者和消费者的处理能力。这个阻塞队列就是用来给生产者和消费者解耦的。</p>
-<h3 id="wait-notify方法"><a href="#wait-notify方法" class="headerlink" title="wait/notify方法"></a>wait/notify方法</h3><p>首先，我们搞清楚Thread.sleep()方法和Object.wait()、Object.notify()方法的区别。根据这篇文章<a href="https://www.zhihu.com/question/23328075" target="_blank" rel="noopener">java sleep和wait的区别的疑惑?</a></p>
-<ol>
-<li><code>sleep()</code>是Thread类的方法；而<code>wait()</code>，<code>notify()</code>，<code>notifyAll()</code>是Object类中定义的方法；尽管这两个方法都会影响线程的执行行为，但是本质上是有区别的。</li>
-<li><code>Thread.sleep()</code>不会导致锁行为的改变，如果当前线程是拥有锁的，那么<code>Thread.sleep()</code>不会让线程释放锁。如果能够帮助你记忆的话，可以简单认为和锁相关的方法都定义在Object类中，因此调用<code>Thread.sleep()</code>是不会影响锁的相关行为。</li>
-<li><code>Thread.sleep</code>和<code>Object.wait</code>都会暂停当前的线程，对于CPU资源来说，不管是哪种方式暂停的线程，都表示它暂时不再需要CPU的执行时间。OS会将执行时间分配给其它线程。区别是调用wait后，需要别的线程执行notify/notifyAll才能够重新获得CPU执行时间。</li>
-</ol>
-        <!-- 前言生产者消费者问题是线程模型中的经典问题：生产者和消费者在同一时间段内共用同一存储空间，生产者向空间里生产数据，而消费者取走数据。
-阻塞队列就相当于一个缓冲区，平衡了生产者和消费者的处理能力。这个阻塞队列就是用来给生产者和消费者解耦的。
-wait/notify方法首先，我们搞清楚Thread.sleep()方法和Object.wait()、Object.notify()方法的区别。根据这篇......  -->
-        <p class="article-more-link">
-          <a href="../../2017/11/10/【Java】生产者消费者模式的实现/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【Android】Dialog异常CalledFromWrongThreadException深入分析"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/10/26/【Android】Dialog异常CalledFromWrongThreadException深入分析/">【Android】Dialog异常CalledFromWrongThreadException深入分析</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/10/26/【Android】Dialog异常CalledFromWrongThreadException深入分析/" class="article-date">
-	  <time datetime="2017-10-26T14:20:55.000Z" itemprop="datePublished">2017-10-26</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Android/">Android</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>在使用Dialog时，因为线程问题，在调用dismiss方法时出现了CalledFromWrongThreadException的Crash，如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views.</span><br></pre></td></tr></table></figure>
-<p>抛出异常为<code>CalledFromWrongThreadException</code>，很明显第一反应就是出现了非ui线程进行了ui操作造成了此异常。通过分析工程代码，发现本质上是因为在非ui线程中创建了Dialog，而在主线程（即ui线程）中调用了<code>show()</code>以及<code>dismiss()</code>方法，我把问题模型写成测试代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">BaseActivity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"MainActivity test"</span>;</span><br><span class="line">    <span class="keyword">private</span> ProgressDialog dialog;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        EventBus.getDefault().register(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                Looper.prepare();</span><br><span class="line"></span><br><span class="line">                <span class="comment">//子线程中创建Dialog</span></span><br><span class="line">                dialog = <span class="keyword">new</span> ProgressDialog(MainActivity.<span class="keyword">this</span>);</span><br><span class="line">                dialog.setCanceledOnTouchOutside(<span class="keyword">true</span>);</span><br><span class="line">                dialog.setOnCancelListener(<span class="keyword">new</span> DialogInterface.OnCancelListener() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCancel</span><span class="params">(DialogInterface dialog)</span> </span>&#123;</span><br><span class="line">                        Log.d(TAG, <span class="string">"Dialog onCancel thread: "</span> + getThreadInfo());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">                dialog.setOnDismissListener(<span class="keyword">new</span> DialogInterface.OnDismissListener() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDismiss</span><span class="params">(DialogInterface dialog)</span> </span>&#123;</span><br><span class="line">                        Log.d(TAG, <span class="string">"Dialog onDismiss thread: "</span> + getThreadInfo());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">                dialog.setMessage(<span class="string">"正在加载..."</span>);</span><br><span class="line">                Log.d(TAG, <span class="string">"Dialog create thread: "</span> + getThreadInfo());</span><br><span class="line"></span><br><span class="line">                Looper.loop();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        Button btn = (Button) findViewById(R.id.btn_helloworld);</span><br><span class="line">        btn.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">                <span class="comment">//UI主线程中show，然后点击空白区域dismiss</span></span><br><span class="line">                dialog.show();</span><br><span class="line">                Log.d(TAG, <span class="string">"Dialog show thread: "</span> + getThreadInfo());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 输出线程信息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getThreadInfo</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"["</span> + Thread.currentThread().getId() + <span class="string">"]"</span> +</span><br><span class="line">                ((Looper.myLooper() == Looper.getMainLooper())? <span class="string">" is UI-Thread"</span> : <span class="string">""</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>就是Activity打开的时候，使用work子线程创建了一个Dialog，然后手动点击按钮的时候，显示Dialog。再点击空白处，dialog本应该dismiss的，但是直接crash了。抛出了<code>CalledFromWrongThreadException</code>的异常。</p>
-<p>在上面的代码中，我顺便输出了Dialog每个操作的线程ID，同时会判定是不是ui主线程。我们来看看log：</p>
-<blockquote>
-<p>10-26 16:11:07.836 7405-7652/com.cuc.myandroidtest D/MainActivity test: Dialog create thread: [3953]<br>10-26 16:11:27.763 7405-7405/com.cuc.myandroidtest D/MainActivity test: Dialog show thread: [1] is UI-Thread<br>10-26 16:11:35.642 7405-7652/com.cuc.myandroidtest D/MainActivity test: Dialog onCancel thread: [3953]</p>
-<p>——– beginning of crash</p>
-</blockquote>
-<p>可以看到，以上出现的问题中执行Dialog操作的线程信息如下：</p>
-<ul>
-<li>创建Dialog：work子线程</li>
-<li>show()：ui主线程</li>
-<li>cancel()：work子线程</li>
-<li>dismiss()：因为crash没有执行到，未知</li>
-</ul>
-<p>如果说<strong>只有创建这个控件的线程才能去更新该控件的内容</strong>。那么在调用show方法的时候为什么不会crash，然后dismiss的时候才会崩溃？</p>
-<p>另外，到底是不是所有的操作都必须放到ui线程中执行才对？带着疑问我们深入Dialog源码一看究竟。</p>
-        <!-- 问题在使用Dialog时，因为线程问题，在调用dismiss方法时出现了CalledFromWrongThreadException的Crash，如下：
-1android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy can to......  -->
-        <p class="article-more-link">
-          <a href="../../2017/10/26/【Android】Dialog异常CalledFromWrongThreadException深入分析/#more">阅读全文</a>
         </p>
       
     </div>

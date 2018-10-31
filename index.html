@@ -350,6 +350,126 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-HTTPS原理与证书"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="2018/10/30/HTTPS原理与证书/">HTTPS原理与证书生成</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="2018/10/30/HTTPS原理与证书/" class="article-date">
+	  <time datetime="2018-10-30T03:08:00.000Z" itemprop="datePublished">2018-10-30</time>
+	</a>
+
+      
+    <a class="article-category-link" href="categories/Web/">Web</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h2><p>HTTPS与HTTP是什么关系呢？我们可以对比下HTTP与HTTPS的请求过程：</p>
+<p><img src="/gallery/common/http-state.png" alt="HTTP请求过程"></p>
+<p>HTTPS 在 TCP 和 HTTP 之间增加了 TLS（Transport Layer Security，传输层安全），提供了<strong>内容加密</strong>、<strong>身份认证</strong>和<strong>数据完整性</strong>三大功能。</p>
+<p><img src="/gallery/common/https-state.png" alt="HTTPS请求过程"></p>
+        <!-- HTTPSHTTPS与HTTP是什么关系呢？我们可以对比下HTTP与HTTPS的请求过程：
+
+HTTPS 在 TCP 和 HTTP 之间增加了 TLS（Transport Layer Security，传输层安全），提供了内容加密、身份认证和数据完整性三大功能。
+
+
+HTTPS也就是HTTP over SSL/TLS，所有的http数据都是在SSL/TLS协议封装之上传输的。Https协议在......  -->
+        <p class="article-more-link">
+          <a href="2018/10/30/HTTPS原理与证书/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/HTTPS/">HTTPS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-WebSocket协议浅析"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="2018/10/27/WebSocket协议浅析/">WebSocket协议浅析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="2018/10/27/WebSocket协议浅析/" class="article-date">
+	  <time datetime="2018-10-27T03:08:00.000Z" itemprop="datePublished">2018-10-27</time>
+	</a>
+
+      
+    <a class="article-category-link" href="categories/Web/">Web</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="HTTP协议的缺点"><a href="#HTTP协议的缺点" class="headerlink" title="HTTP协议的缺点"></a>HTTP协议的缺点</h2><p><img src="/gallery/common/http-protocol-drawback.jpg" alt="HTTP协议的缺点"></p>
+<ol>
+<li>单向请求：只能是客户端发起，服务端处理并响应</li>
+<li>请求/响应模式</li>
+<li>无状态协议</li>
+<li>半双工协议</li>
+</ol>
+<p>这种单向请求的特点，注定了如果服务器有连续的状态变化，客户端要获知就非常麻烦。我们只能使用轮询：每隔一段时候，就发出一个询问，了解服务器有没有新的信息。轮询的效率低，非常浪费资源。WebSocket就可以解决这些问题。</p>
+        <!-- HTTP协议的缺点
+
+单向请求：只能是客户端发起，服务端处理并响应
+请求/响应模式
+无状态协议
+半双工协议
+
+这种单向请求的特点，注定了如果服务器有连续的状态变化，客户端要获知就非常麻烦。我们只能使用轮询：每隔一段时候，就发出一个询问，了解服务器有没有新的信息。轮询的效率低，非常浪费资源。WebSocket就可以解决这些问题。
+
+WebSocket是什么WebSocket是HTML5新增的协......  -->
+        <p class="article-more-link">
+          <a href="2018/10/27/WebSocket协议浅析/#more">阅读全文</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/WebSocket/">WebSocket</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-CPU Cache与缓存行"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -834,127 +954,6 @@ A.onPause()......  -->
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/Android/">Android</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【Java】线程池ThreadPoolExecutor实现原理"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="2018/02/13/【Java】线程池ThreadPoolExecutor实现原理/">【Java】线程池ThreadPoolExecutor实现原理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="2018/02/13/【Java】线程池ThreadPoolExecutor实现原理/" class="article-date">
-	  <time datetime="2018-02-13T14:20:55.000Z" itemprop="datePublished">2018-02-13</time>
-	</a>
-
-      
-    <a class="article-category-link" href="categories/Android/">Android</a><a class="article-category-link" href="categories/Android/源码分析/">源码分析</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>线程池：可以理解为缓冲区，由于频繁的创建销毁线程会带来一定的成本，可以预先创建但不立即销毁，以共享方式为别人提供服务，一来可以提供效率，再者可以控制线程无线扩张。合理利用线程池能够带来三个好处：</p>
-<ol>
-<li>降低资源消耗。通过重复利用已创建的线程降低线程创建和销毁造成的消耗。</li>
-<li>提高响应速度。当任务到达时，任务可以不需要等到线程创建就能立即执行。</li>
-<li>提高线程的可管理性。线程是稀缺资源，如果无限制的创建，不仅会消耗系统资源，还会降低系统的稳定性，使用线程池可以进行统一的分配，调优和监控。</li>
-</ol>
-<p>但是要做到合理的利用线程池，必须对其原理了如指掌。</p>
-<h2 id="线程的几种状态"><a href="#线程的几种状态" class="headerlink" title="线程的几种状态"></a><strong>线程的几种状态</strong></h2><p>线程在一定条件下，状态会发生变化。根据<a href="https://my.oschina.net/cctester/blog/991744" target="_blank" rel="noopener">线程的几种状态</a>这篇文章，线程一共有以下几种状态：</p>
-<p><strong>1、新建状态(New)</strong>：新创建了一个线程对象。<br><strong>2、就绪状态(Runnable)</strong>：线程对象创建后，其他线程调用了该对象的<code>start()</code>方法。该状态的线程位于“可运行线程池”中，变得可运行，只等待获取CPU的使用权，即<strong>在就绪状态的线程除CPU之外，其它的运行所需资源都已全部获得。</strong><br><strong>3、运行状态(Running)</strong>：就绪状态的线程获取了CPU，执行程序代码。<br><strong>4、阻塞状态(Blocked)</strong>：阻塞状态是线程因为某种原因放弃CPU使用权，暂时停止运行。直到线程进入就绪状态，才有机会转到运行状态。阻塞的情况分三种：</p>
-<ul>
-<li>①. 等待阻塞：运行的线程执行<code>wait()</code>方法，该线程会释放占用的所有资源，JVM会把该线程放入“等待池”中。进入这个状态后，是不能自动唤醒的必须依靠其他线程调用<code>notify()</code>或<code>notifyAll()</code>方法才能被唤醒。</li>
-<li>②. 同步阻塞：运行的线程在获取对象的同步锁时，若该同步锁被别的线程占用，则JVM会把该线程放入“锁池”中。</li>
-<li>③. 其他阻塞：运行的线程执行<code>sleep()</code>或<code>join()</code>方法，或者发出了I/O请求时，JVM会把该线程置为阻塞状态。当<code>sleep()</code>状态超时、<code>join()</code>等待线程终止或者超时，或者I/O处理完毕时，线程重新转入就绪状态。</li>
-</ul>
-<p><strong>5、死亡状态(Dead)</strong>：线程执行完了或者因异常退出了<code>run()</code>方法，该线程结束生命周期。</p>
-        <!-- 引言线程池：可以理解为缓冲区，由于频繁的创建销毁线程会带来一定的成本，可以预先创建但不立即销毁，以共享方式为别人提供服务，一来可以提供效率，再者可以控制线程无线扩张。合理利用线程池能够带来三个好处：
-
-降低资源消耗。通过重复利用已创建的线程降低线程创建和销毁造成的消耗。
-提高响应速度。当任务到达时，任务可以不需要等到线程创建就能立即执行。
-提高线程的可管理性。线程是稀缺资源，如果无限制的创建......  -->
-        <p class="article-more-link">
-          <a href="2018/02/13/【Java】线程池ThreadPoolExecutor实现原理/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/源码分析/">源码分析</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【Android】OkHttp源码分析"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="2018/01/25/【Android】OkHttp源码分析/">【Android】OkHttp源码分析</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="2018/01/25/【Android】OkHttp源码分析/" class="article-date">
-	  <time datetime="2018-01-25T14:20:55.000Z" itemprop="datePublished">2018-01-25</time>
-	</a>
-
-      
-    <a class="article-category-link" href="categories/Android/">Android</a><a class="article-category-link" href="categories/Android/源码分析/">源码分析</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Android为我们提供了两种HTTP交互的方式：<a href="https://developer.android.com/reference/java/net/HttpURLConnection.html" target="_blank" rel="noopener">HttpURLConnection</a> 和 Apache HttpClient，虽然两者都支持HTTPS，流的上传和下载，配置超时，IPv6和连接池，已足够满足我们各种HTTP请求的需求。但更高效的使用HTTP 可以让您的应用运行更快、更节省流量。而<a href="https://github.com/square/okhttp">OkHttp</a>库就是为此而生。在开始分析OkHttp之前我们先了解一下 HttpURLConnection 和 HttpClient 两者之间关系，以及它们和 OkHttp 之间的关系。</p>
-<h2 id="HttpClient-vs-HttpURLConnection"><a href="#HttpClient-vs-HttpURLConnection" class="headerlink" title="HttpClient vs HttpURLConnection"></a>HttpClient vs HttpURLConnection</h2><p>在Android API Level 9（Android 2.2）之前只能使用<code>HttpClient</code>类发送http请求。<code>HttpClient</code>是Apache用于发送http请求的客户端，其提供了强大的API支持，而且基本没有什么bug，但是由于其太过复杂，Android团队在保持向后兼容的情况下，很难对<code>DefaultHttpClient</code>进行增强。为此，Android团队从Android API Level 9开始自己实现了一个发送http请求的客户端类 —— <code>HttpURLConnection</code>。</p>
-<p>相比于<code>DefaultHttpClient</code>，<code>HttpURLConnection</code>比较轻量级，虽然功能没有<code>DefaultHttpClient</code>那么强大，但是能够满足大部分的需求，所以Android推荐使用<code>HttpURLConnection</code>代替<code>DefaultHttpClient</code>，并不强制使用<code>HttpURLConnection</code>。</p>
-<p><strong>但从Android API Level 23（Android 6.0）开始，不能再在Android中使用<code>HttpClient</code></strong>，强制使用<code>HttpURLConnection</code>。参考官网：<a href="https://developer.android.com/about/versions/marshmallow/android-6.0-changes.html" target="_blank" rel="noopener">Android 6.0 Changes - Google Developer</a></p>
-<blockquote>
-<p>Android 6.0 版移除了对 Apache HTTP client的支持。如果您的应用使用该客户端，并以 Android 2.3（API level 9）或更高版本为目标平台，请改用 <code>HttpURLConnection</code> 类。此 API 效率更高，因为它可以通过透明压缩和响应缓存减少网络使用，并可最大限度降低耗电量。要继续使用 Apache HTTP API，您必须先在 <code>build.gradle</code> 文件中声明以下编译时依赖项：</p>
-</blockquote>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    useLibrary <span class="string">'org.apache.http.legacy'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-        <!-- Android为我们提供了两种HTTP交互的方式：HttpURLConnection 和 Apache HttpClient，虽然两者都支持HTTPS，流的上传和下载，配置超时，IPv6和连接池，已足够满足我们各种HTTP请求的需求。但更高效的使用HTTP 可以让您的应用运行更快、更节省流量。而OkHttp库就是为此而生。在开始分析OkHttp之前我们先了解一下 HttpURLConnect......  -->
-        <p class="article-more-link">
-          <a href="2018/01/25/【Android】OkHttp源码分析/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/源码分析/">源码分析</a></li></ul>
 
     </footer>
   </div>
