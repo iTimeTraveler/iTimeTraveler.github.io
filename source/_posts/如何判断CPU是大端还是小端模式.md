@@ -75,6 +75,47 @@ int checkCPUendian()
 
 因为**联合体union的存放顺序是所有成员都从低地址开始存放**，利用该特性就可以轻松地获得了CPU对内存采用Little-endian还是Big-endian模式读写。
 
+顺便可以看下Java中如何判断字节序。Java NIO中的ByteBuffer类使用了`Bits.byteOrder()`来判断字节序，源代码如下：
+
+```java
+class Bits { 
+
+    private static final ByteOrder byteOrder;
+    private static final Unsafe unsafe = Unsafe.getUnsafe();
+
+    // 类加载的时候使用unsafe操作
+    static {
+        long a = unsafe.allocateMemory(8);
+        try {
+            unsafe.putLong(a, 0x0102030405060708L);
+            byte b = unsafe.getByte(a);
+            switch (b) {
+            case 0x01: byteOrder = ByteOrder.BIG_ENDIAN;     break;
+            case 0x08: byteOrder = ByteOrder.LITTLE_ENDIAN;  break;
+            default:
+                assert false;
+                byteOrder = null;
+            }
+        } finally {
+            unsafe.freeMemory(a);
+        }
+    }
+
+
+    static ByteOrder byteOrder() {
+        if (byteOrder == null)
+            throw new Error("Unknown byte order");
+        return byteOrder;
+    }
+    
+    // ...省略其他代码...
+}
+```
+
+
+
+
+
 ### 常见的字节序
 
 一般操作系统都是小端，而通讯协议是大端的。

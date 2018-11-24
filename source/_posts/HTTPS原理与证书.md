@@ -195,15 +195,21 @@ ChangeCipherSpec是一个独立的协议，体现在数据包中就是一个字�
 
 
 
-## 自签名证书
+## 证书生成
 
-什么叫自签名呢？就是自己通过keytool去生成一个证书，然后使用，并不是CA机构去颁发的。使用自签名证书的网站，大家在使用浏览器访问的时候，一般都是报风险警告，比如之前的12306就是这么干的，https://kyfw.12306.cn/otn/ ，点击进入12306的购票页面就能看到了。当然现在我重新试了一下已经不是这样了。
+证书是HTTPS实现加密的必要途径，一般的HTTPS服务都是单向认证的过程，单向认证就是对服务器的认证，保证服务器的可靠性，正确的生成证书的方式是服务器（也就是https服务的提供者）产生私钥和公钥对，然后将公钥交给CA（就是证书颁发结构）,CA会给用户的公钥进行签名生成证书，然后将证书颁发给服务端，这样用户访问https服务的时候，就能获得服务端的证书，由于是第三方可靠的CA进行签名过的证书，客户端就会信任HTTPS网站，并且不做安全提醒，如果证书不是由第三方受信任的CA机构颁发，客户端就会提示服务器危险信息。
+
+HTTPS也有双向认证，双向认证需要客户端也生成证书，客户端检查服务器的证书，服务器检查客户端的证书，一般都不做客户端的检查认证，所以基本都是单向认证。
+
+### 自签名证书
+
+什么叫自签名呢？就是自己通过keytool去生成一个证书，然后使用，并不是CA机构去颁发的。生成的思路是先生成CA证书，在用生成的CA证书签发自己的证书。使用自签名证书的网站，大家在使用浏览器访问的时候，一般都是报风险警告，比如之前的12306就是这么干的，https://kyfw.12306.cn/otn/ ，点击进入12306的购票页面就能看到了。当然现在我重新试了一下已经不是这样了。
 
 ![](/gallery/common/1440987432776078.png)
 
-### 服务端证书生成
+### 服务端生成自签证书
 
-Golang服务端可以参考这里：https://gist.github.com/denji/12b3a568f092ab951456
+Golang服务端可以参考这里：https://gist.github.com/denji/12b3a568f092ab951456 和 [Generate ssl certificates with Subject Alt Names on OSX](https://gist.github.com/croxton/ebfb5f3ac143cd86542788f972434c96)
 
 #### 生成服务端私钥 Generate private key (.key)
 
@@ -301,3 +307,4 @@ Caused by: java.security.cert.CertPathValidatorException: Trust anchor for certi
 - [TLS & SSL 快速进阶](https://www.villainhr.com/page/2016/10/26/TLS%20&%20SSL%20%E5%BF%AB%E9%80%9F%E8%BF%9B%E9%98%B6)
 - [Android App 安全的HTTPS 通信](http://pingguohe.net/2016/02/26/Android-App-secure-ssl.html)
 - [使用Go实现TLS 服务器和客户端](https://colobu.com/2016/06/07/simple-golang-tls-examples/)
+- [Generate ssl certificates with Subject Alt Names on OSX](https://gist.github.com/croxton/ebfb5f3ac143cd86542788f972434c96)
