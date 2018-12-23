@@ -10,14 +10,18 @@
       <%- partial('post/date', {class_name: 'article-date', date_format: null}) %>
       <%- partial('post/category') %>
       <%- partial('post/busuanzi-analytics',{index: index, class_name: 'article-views'}) %>
+      <%- partial('post/edit', {index: index, class_name: 'article-edit'}) %>
     </div>
     <div class="article-entry" itemprop="articleBody">
-      <% if (post.excerpt && index){ %>
-        <%- post.excerpt %>
-        <!-- <%- truncate(strip_html(post.content), {length: 200, omission: '...'}) %>...  -->
+      <% if (theme.post_excerpt && index){ %>
+        <p class="article-excerpt-content">
+          <%- truncate(strip_html(post.content), {length: 250, omission: '...'}) %>
+        </p>
         <p class="article-more-link">
           <a href="<%- url_for(post.path) %>#more"><%= __('read_more') %></a>
         </p>
+      <% } else if (post.excerpt && index){ %>
+        <%- post.excerpt %>
       <% } else { %>
         <%- post.content %>
       <% } %>
@@ -26,10 +30,16 @@
       <% if (!index && theme.donate.enable){ %>
         <%- partial('donate') %>
       <% } %>
+      <% if (!index && theme.copyright.enable){ %>
+      <%- partial('copyright') %>
+      <% } %>
       <% if (!index && post.comments && (theme.gentie_productKey || theme.duoshuo_shortname || theme.disqus_shortname || theme.uyan_uid || theme.wumii || theme.livere_shortname)){ %>
         <%- partial('comment') %>
       <% } %>
-      <%- partial('post/tag') %>
+      <% if (!theme.post_excerpt){ %>
+        <%- partial('post/tag') %>
+      <% } %>
+
     </footer>
   </div>
   <% if (!index){ %>

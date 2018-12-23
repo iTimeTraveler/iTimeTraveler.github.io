@@ -89,9 +89,24 @@
 .article-views:hover
   color: color-theme
 
+.article-edit
+  @extend $block-caption
+  text-align: center
+  font-weight: normal
+
+.article-edit:before
+  font-family: "FontAwesome";
+  content: "\f044";
+  @media mq-mobile
+    display: none
+
+.article-edit:hover
+  color: color-theme
+
 .article-date,
 .article-category-link,
 .article-views,
+.article-edit
 .archive-year,
 .archive-tag,
 .archive-category,
@@ -247,6 +262,10 @@
       width: 100%
       height: 100%
       margin-top: 0
+
+.article-excerpt-content
+  margin 1.6em 0
+  line-height 2em !important
 
 .article-more-link a
   display: inline-block
@@ -533,6 +552,7 @@ $article-gallery-ctrl
   z-index: 1;
 
 .nav
+  max-height: -webkit-fill-available
   padding 0
   margin 1em
   line-height 1.8em
@@ -552,3 +572,16 @@ $article-gallery-ctrl
 
 .nav-child 
   margin-left 1.0em
+  
+
+.post-copyright {
+    margin: 2em 0 0;
+    padding: 0.5em 1em;
+    border-left: 3px solid #FF1700;
+    background-color: #F9F9F9;
+    list-style: none;
+}
+
+.post-copyright li {
+    line-height: 30px;
+}  
