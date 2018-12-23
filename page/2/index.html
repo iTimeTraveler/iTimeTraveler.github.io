@@ -374,6 +374,8 @@
     <a class="article-category-link" href="../../categories/Android/">Android</a><a class="article-category-link" href="../../categories/Android/源码分析/">源码分析</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -392,21 +394,17 @@
 <li>③. 其他阻塞：运行的线程执行<code>sleep()</code>或<code>join()</code>方法，或者发出了I/O请求时，JVM会把该线程置为阻塞状态。当<code>sleep()</code>状态超时、<code>join()</code>等待线程终止或者超时，或者I/O处理完毕时，线程重新转入就绪状态。</li>
 </ul>
 <p><strong>5、死亡状态(Dead)</strong>：线程执行完了或者因异常退出了<code>run()</code>方法，该线程结束生命周期。</p>
-        <!-- 引言线程池：可以理解为缓冲区，由于频繁的创建销毁线程会带来一定的成本，可以预先创建但不立即销毁，以共享方式为别人提供服务，一来可以提供效率，再者可以控制线程无线扩张。合理利用线程池能够带来三个好处：
-
-降低资源消耗。通过重复利用已创建的线程降低线程创建和销毁造成的消耗。
-提高响应速度。当任务到达时，任务可以不需要等到线程创建就能立即执行。
-提高线程的可管理性。线程是稀缺资源，如果无限制的创建......  -->
-        <p class="article-more-link">
-          <a href="../../2018/02/13/【Java】线程池ThreadPoolExecutor实现原理/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/源码分析/">源码分析</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -414,6 +412,7 @@
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android】OkHttp源码分析"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -440,6 +439,8 @@
     <a class="article-category-link" href="../../categories/Android/">Android</a><a class="article-category-link" href="../../categories/Android/源码分析/">源码分析</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -451,17 +452,17 @@
 <p>Android 6.0 版移除了对 Apache HTTP client的支持。如果您的应用使用该客户端，并以 Android 2.3（API level 9）或更高版本为目标平台，请改用 <code>HttpURLConnection</code> 类。此 API 效率更高，因为它可以通过透明压缩和响应缓存减少网络使用，并可最大限度降低耗电量。要继续使用 Apache HTTP API，您必须先在 <code>build.gradle</code> 文件中声明以下编译时依赖项：</p>
 </blockquote>
 <figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    useLibrary <span class="string">'org.apache.http.legacy'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-        <!-- Android为我们提供了两种HTTP交互的方式：HttpURLConnection 和 Apache HttpClient，虽然两者都支持HTTPS，流的上传和下载，配置超时，IPv6和连接池，已足够满足我们各种HTTP请求的需求。但更高效的使用HTTP 可以让您的应用运行更快、更节省流量。而OkHttp库就是为此而生。在开始分析OkHttp之前我们先了解一下 HttpURLConnect......  -->
-        <p class="article-more-link">
-          <a href="../../2018/01/25/【Android】OkHttp源码分析/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/源码分析/">源码分析</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -469,6 +470,7 @@
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-用Java实现断点续传 (HTTP)"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -495,24 +497,25 @@
     <a class="article-category-link" href="../../categories/Java/">Java</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
         <h3 id="断点续传的原理"><a href="#断点续传的原理" class="headerlink" title="断点续传的原理"></a>断点续传的原理</h3><p>其实断点续传的原理很简单，就是在 Http 的请求上和一般的下载有所不同而已。<br>打个比方，浏览器请求服务器上的一个文时，所发出的请求如下：<br>假设服务器域名为 <a href="www.sjtu.edu.cn">www.sjtu.edu.cn</a>，文件名为 down.zip。 </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">GET /down.zip HTTP/1.1 </span><br><span class="line">Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/vnd.ms- </span><br><span class="line">excel, application/msword, application/vnd.ms-powerpoint, */* </span><br><span class="line">Accept-Language: zh-cn </span><br><span class="line">Accept-Encoding: gzip, deflate </span><br><span class="line">User-Agent: Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0) </span><br><span class="line">Connection: Keep-Alive</span><br></pre></td></tr></table></figure>
 <p>服务器收到请求后，按要求寻找请求的文件，提取文件的信息，然后返回给浏览器，返回信息如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">200 </span><br><span class="line">Content-Length=106786028 </span><br><span class="line">Accept-Ranges=bytes </span><br><span class="line">Date=Mon, 30 Apr 2001 12:56:11 GMT </span><br><span class="line">ETag=W/&quot;02ca57e173c11:95b&quot; </span><br><span class="line">Content-Type=application/octet-stream </span><br><span class="line">Server=Microsoft-IIS/5.0 </span><br><span class="line">Last-Modified=Mon, 30 Apr 2001 12:56:11 GMT</span><br></pre></td></tr></table></figure></p>
-        <!-- 断点续传的原理其实断点续传的原理很简单，就是在 Http 的请求上和一般的下载有所不同而已。打个比方，浏览器请求服务器上的一个文时，所发出的请求如下：假设服务器域名为 www.sjtu.edu.cn，文件名为 down.zip。 
-1234567GET /down.zip HTTP/1.1 Accept: image/gif, image/x-xbitmap, image/jpeg, ima......  -->
-        <p class="article-more-link">
-          <a href="../../2018/01/22/用Java实现断点续传 (HTTP)/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -520,6 +523,7 @@
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-如何判断CPU是大端还是小端模式"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -546,6 +550,8 @@
     <a class="article-category-link" href="../../categories/C语言/">C语言</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -557,19 +563,17 @@
 <p><img src="/gallery/java-common/20160905174029957.jpg" alt=""></p>
 <p><strong>大端小端没有谁优谁劣，各自优势便是对方劣势：</strong></p>
 <p>小端模式 ：强制转换数据不需要调整字节内容，1、2、4字节的存储方式一样。<br>大端模式 ：符号位的判定固定为第一个字节，容易判断正负。</p>
-        <!-- 一、概念及详解在各种体系的计算机中通常采用的字节存储机制主要有两种： Big-Endian和Little-Endian，即大端模式和小端模式。
-Big-Endian和Little-Endian的定义如下：
-1) Little-Endian：就是低位字节排放在内存的低地址端，高位字节排放在内存的高地址端。2) Big-Endian：就是高位字节排放在内存的低地址端，低位字节排放在内存的高地址端......  -->
-        <p class="article-more-link">
-          <a href="../../2018/01/18/如何判断CPU是大端还是小端模式/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/C语言/">C语言</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -577,6 +581,7 @@ Big-Endian和Little-Endian的定义如下：
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android】源码分析 - LRUCache缓存实现原理"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -603,6 +608,8 @@ Big-Endian和Little-Endian的定义如下：
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -620,18 +627,17 @@ Big-Endian和Little-Endian的定义如下：
 <h3 id="二、LruCache的使用"><a href="#二、LruCache的使用" class="headerlink" title="二、LruCache的使用"></a>二、LruCache的使用</h3><p><code>LruCache</code>是Android 3.1所提供的一个缓存类，所以在Android中可以直接使用LruCache实现内存缓存。而DisLruCache目前在Android 还不是Android SDK的一部分，但Android官方文档推荐使用该算法来实现硬盘缓存。</p>
 <p>讲到<code>LruCache</code>不得不提一下<code>LinkedHashMap</code>，因为LruCache中Lru算法的实现就是通过<code>LinkedHashMap</code>来实现的。<code>LinkedHashMap</code>继承于<code>HashMap</code>，它使用了一个双向链表来存储Map中的Entry顺序关系，这种顺序有两种，一种是<strong>LRU顺序</strong>，一种是<strong>插入顺序</strong>，这可以由其构造函数<code>public LinkedHashMap(int initialCapacity,float loadFactor, boolean accessOrder)</code>的最后一个参数<code>accessOrder</code>来指定。所以，对于get、put、remove等操作，<code>LinkedHashMap</code>除了要做<code>HashMap</code>做的事情，还做些调整Entry顺序链表的工作。<code>LruCache</code>中将<code>LinkedHashMap</code>的顺序设置为LRU顺序来实现LRU缓存，每次调用get(也就是从内存缓存中取图片)，则将该对象移到链表的尾端。调用put插入新的对象也是存储在链表尾端，这样当内存缓存达到设定的最大值时，将链表头部的对象（近期最少用到的）移除。关于LinkedHashMap详解请前往：<a href="http://www.cnblogs.com/children/archive/2012/10/02/2710624.html" target="_blank" rel="noopener">理解LinkedHashMap</a></p>
 <p><img src="https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/master/gallery/algorithms/lru-cache.png" alt=""></p>
-        <!-- 一、Android中的缓存策略一般来说，缓存策略主要包含缓存的添加、获取和删除这三类操作。如何添加和获取缓存这个比较好理解，那么为什么还要删除缓存呢？这是因为不管是内存缓存还是硬盘缓存，它们的缓存大小都是有限的。当缓存满了之后，再想其添加缓存，这个时候就需要删除一些旧的缓存并添加新的缓存。
-因此LRU(Least Recently Used)缓存算法便应运而生，LRU是近期最少使用的算法，它......  -->
-        <p class="article-more-link">
-          <a href="../../2018/01/12/【Android】源码分析 - LRUCache缓存实现原理/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -639,6 +645,7 @@ Big-Endian和Little-Endian的定义如下：
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【算法】字符串循环移位后是否可包含"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -665,6 +672,8 @@ Big-Endian和Little-Endian的定义如下：
     <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -682,20 +691,17 @@ Big-Endian和Little-Endian的定义如下：
 <p>ABCD—&gt;ABCDA—-&gt;ABCDAB—-&gt;ABCDABC—-&gt;ABCDABCD……</p>
 </blockquote>
 <p>因此，可以看出对s1做循环移位所得到的字符串都将是字符串s1s1的子字符串。如果s2可以由s1循环移位得到，那么s2一定在s1s1上，这样时间复杂度就降低了。</p>
-        <!-- 问题
-给定两个字符串s1和s2，要求判断s2是否能够被通过s1做循环移位（rotate）得到的字符串包含。例如，s1=AABCD和s2=CDAA，返回true；给定s1=ABCD和s2=ACBD，返回false。
-
-解法一最直接最笨的方法就对s1进行循环移动，再进行字符串包含的判断，从而遍历其所有的可能性。字符串循环移动，时间复杂度为O（n），字符串包含判断，采用普通的方法，时间复杂度为O（......  -->
-        <p class="article-more-link">
-          <a href="../../2017/12/31/【算法】字符串循环移位后是否可包含/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -703,6 +709,7 @@ Big-Endian和Little-Endian的定义如下：
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【算法】如何判断链表有环"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -729,6 +736,8 @@ Big-Endian和Little-Endian的定义如下：
     <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -742,24 +751,17 @@ Big-Endian和Little-Endian的定义如下：
 <h4 id="方法一、穷举遍历"><a href="#方法一、穷举遍历" class="headerlink" title="方法一、穷举遍历"></a>方法一、穷举遍历</h4><p>方法一：首先从头节点开始，依次遍历单链表的每一个节点。每遍历到一个新节点，就从头节点重新遍历新节点之前的所有节点，用新节点ID和此节点之前所有节点ID依次作比较。如果发现新节点之前的所有节点当中存在相同节点ID，则说明该节点被遍历过两次，链表有环；如果之前的所有节点当中不存在相同的节点，就继续遍历下一个新节点，继续重复刚才的操作。</p>
 <p>例如这样的链表：A-&gt;B-&gt;C-&gt;D-&gt;B-&gt;C-&gt;D， 当遍历到节点D的时候，我们需要比较的是之前的节点A、B、C，不存在相同节点。这时候要遍历的下一个新节点是B，B之前的节点A、B、C、D中恰好也存在B，因此B出现了两次，判断出链表有环。</p>
 <p>假设从链表头节点到入环点的距离是D，链表的环长是S。那么算法的时间复杂度是0+1+2+3+….+(D+S-1) = (D+S-1)*(D+S)/2 ， 可以简单地理解成 O(N*N)。而此算法没有创建额外存储空间，空间复杂度可以简单地理解成为O(1)。</p>
-        <!-- 如何判断单链表是否存在环
-有一个单向链表，链表当中有可能出现“环”，就像题图这样。如何用程序判断出这个链表是有环链表？
-
-不允许修改链表结构。
-时间复杂度O(n)，空间复杂度O(1)。
-
-
-方法一、穷举遍历方法一：首先从头节点开始，依次遍历单链表的每一个节点。每遍历到一个新节点，就从头节点重新遍历新节点之前的所有节点，用新节点ID和此节点之前所有节点ID依次作比较。如果发现新节点之前的所有节......  -->
-        <p class="article-more-link">
-          <a href="../../2017/12/24/【算法】如何判断链表有环/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -767,6 +769,7 @@ Big-Endian和Little-Endian的定义如下：
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android】源码分析 - Activity启动流程"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -793,25 +796,25 @@ Big-Endian和Little-Endian的定义如下：
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
         <h3 id="启动Activity的方式"><a href="#启动Activity的方式" class="headerlink" title="启动Activity的方式"></a>启动Activity的方式</h3><p>Activity有2种启动的方式，一种是在Launcher界面点击应用的图标、另一种是在应用中通过Intent进行跳转。我们主要介绍与后者相关的启动流程。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent(<span class="keyword">this</span>, TestActivity.class);</span><br><span class="line">startActivity(intent);</span><br></pre></td></tr></table></figure>
 <h3 id="从Activity入手"><a href="#从Activity入手" class="headerlink" title="从Activity入手"></a>从Activity入手</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startActivity</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.startActivity(intent, <span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startActivity</span><span class="params">(Intent intent, @Nullable Bundle options)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (options != <span class="keyword">null</span>) &#123;</span><br><span class="line">        startActivityForResult(intent, -<span class="number">1</span>, options);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// Note we want to go through this call for compatibility with</span></span><br><span class="line">        <span class="comment">// applications that may have overridden the method.</span></span><br><span class="line">        startActivityForResult(intent, -<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-        <!-- 启动Activity的方式Activity有2种启动的方式，一种是在Launcher界面点击应用的图标、另一种是在应用中通过Intent进行跳转。我们主要介绍与后者相关的启动流程。
-12Intent intent = new Intent(this, TestActivity.class);startActivity(intent);
-从Activity入手12345678910111213......  -->
-        <p class="article-more-link">
-          <a href="../../2017/12/18/【Android】源码分析 - Activity启动流程/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -819,6 +822,7 @@ Big-Endian和Little-Endian的定义如下：
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Java】HashMap源码分析（JDK1.8）"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -845,6 +849,8 @@ Big-Endian和Little-Endian的定义如下：
     <a class="article-category-link" href="../../categories/Java/">Java</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -857,20 +863,17 @@ Big-Endian和Little-Endian的定义如下：
 <p>(4) <strong>TreeMap</strong>：TreeMap实现SortedMap接口，能够把它保存的记录根据键排序，默认是按键值的升序排序，也可以指定排序的比较器，当用Iterator遍历TreeMap时，得到的记录是排过序的。如果使用排序的映射，建议使用TreeMap。在使用TreeMap时，key必须实现Comparable接口或者在构造TreeMap传入自定义的Comparator，否则会在运行时抛出java.lang.ClassCastException类型的异常。</p>
 <p>对于上述四种Map类型的类，要求映射中的key是不可变对象。不可变对象是该对象在创建后它的哈希值不会被改变。如果对象的哈希值发生变化，Map对象很可能就定位不到映射的位置了。</p>
 <p>通过上面的比较，我们知道了HashMap是Java的Map家族中一个普通成员，鉴于它可以满足大多数场景的使用条件，所以是使用频度最高的一个。下文我们主要结合源码，从存储结构、常用方法分析、扩容以及安全性等方面深入讲解HashMap的工作原理。</p>
-        <!-- 前言Java为数据结构中的映射定义了一个接口java.util.Map，此接口主要有四个常用的实现类，分别是HashMap、Hashtable、LinkedHashMap和TreeMap，类继承关系如下图所示：
-
-下面针对各个实现类的特点做一些说明：
-(1) HashMap：它根据键的hashCode值存储数据，大多数情况下可以直接定位到它的值，因而具有很快的访问速度，但遍历顺序却是不确定的......  -->
-        <p class="article-more-link">
-          <a href="../../2017/11/25/【Java】HashMap源码分析（JDK1.8）/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -878,6 +881,7 @@ Big-Endian和Little-Endian的定义如下：
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android】源码分析 - View事件分发机制"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -904,6 +908,8 @@ Big-Endian和Little-Endian的定义如下：
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -928,18 +934,17 @@ Big-Endian和Little-Endian的定义如下：
 <li><p>消费——onTouchEvent()函数和 OnTouchListener</p>
 </li>
 </ul>
-        <!-- 事件分发对象（1）所有 Touch 事件都被封装成了 MotionEvent 对象，包括 Touch 的位置、时间、历史记录以及第几个手指(多指触摸)等。
-（2）事件类型分为 ACTION_DOWN， ACTION_UP，ACTION_MOVE，ACTION_POINTER_DOWN，ACTION_POINTER_UP， ACTION_CANCEL，每个事件都是以 ACTION_DOWN 开......  -->
-        <p class="article-more-link">
-          <a href="../../2017/11/18/【Android】源码分析 - View事件分发机制/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -947,6 +952,7 @@ Big-Endian和Little-Endian的定义如下：
 </article>
 
 <!-- Table of Contents -->
+
 
   
 
@@ -1047,7 +1053,7 @@ Big-Endian和Little-Endian的定义如下：
     });
 </script>
 
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
 
@@ -1075,7 +1081,7 @@ Big-Endian和Little-Endian的定义如下：
 
 
 
-	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
 	</script>
 
 

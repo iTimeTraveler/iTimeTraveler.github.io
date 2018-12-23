@@ -374,6 +374,8 @@
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -383,22 +385,17 @@
 <h3 id="一、需求效果"><a href="#一、需求效果" class="headerlink" title="一、需求效果"></a><strong>一、需求效果</strong></h3><p><img src="http://img.blog.csdn.net/20161009150647271" alt="比如这个"></p>
 <h3 id="二、解决方案"><a href="#二、解决方案" class="headerlink" title="二、解决方案"></a><strong>二、解决方案</strong></h3><p>针对这类问题，Android提供了 <a href="https://developer.android.com/reference/android/text/SpannableStringBuilder.html" target="_blank" rel="noopener"><strong><code>SpannableStringBuilder</code></strong></a>，方便我们自定义富文本的实现。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">textView = (TextView) findViewById(R.id.textview);</span><br><span class="line">SpannableStringBuilder builder = <span class="keyword">new</span> SpannableStringBuilder(textView.getText().toString());</span><br><span class="line"></span><br><span class="line"><span class="comment">//ForegroundColorSpan 为文字前景色，BackgroundColorSpan为文字背景色</span></span><br><span class="line">ForegroundColorSpan redSpan = <span class="keyword">new</span> ForegroundColorSpan(Color.RED);</span><br><span class="line">ForegroundColorSpan whiteSpan = <span class="keyword">new</span> ForegroundColorSpan(Color.WHITE);</span><br><span class="line">ForegroundColorSpan blueSpan = <span class="keyword">new</span> ForegroundColorSpan(Color.BLUE);</span><br><span class="line">ForegroundColorSpan greenSpan = <span class="keyword">new</span> ForegroundColorSpan(Color.GREEN);</span><br><span class="line">ForegroundColorSpan yellowSpan = <span class="keyword">new</span> ForegroundColorSpan(Color.YELLOW);</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">builder.setSpan(redSpan, <span class="number">0</span>, <span class="number">1</span>, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);</span><br><span class="line">builder.setSpan(whiteSpan, <span class="number">1</span>, <span class="number">2</span>, Spannable.SPAN_INCLUSIVE_INCLUSIVE);</span><br><span class="line">builder.setSpan(blueSpan, <span class="number">2</span>, <span class="number">3</span>, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);</span><br><span class="line">builder.setSpan(greenSpan, <span class="number">3</span>, <span class="number">4</span>, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);</span><br><span class="line">builder.setSpan(yellowSpan, <span class="number">4</span>,<span class="number">5</span>, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);</span><br><span class="line"></span><br><span class="line">textView.setText(builder);</span><br></pre></td></tr></table></figure>
-        <!-- 
-TextView 对于富文本效果的实现支持不支持呢？比如“局部文字颜色的变动”，“局部字体的变动”
-
-一、需求效果
-二、解决方案针对这类问题，Android提供了 SpannableStringBuilder，方便我们自定义富文本的实现。
-123456789101112131415161718textView = (TextView) findViewById(R.id.textview)......  -->
-        <p class="article-more-link">
-          <a href="../../2016/09/07/【Android 】TextView 局部文字变色/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -406,6 +403,7 @@ TextView 对于富文本效果的实现支持不支持呢？比如“局部文�
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android】获取View的截图"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -432,6 +430,8 @@ TextView 对于富文本效果的实现支持不支持呢？比如“局部文�
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -439,19 +439,17 @@ TextView 对于富文本效果的实现支持不支持呢？比如“局部文�
 <p>Android中对View的截图也有以下两种方式，值得注意的是<strong>两个方法都不适用于<code>SurfaceView</code></strong>：</p>
 <h3 id="使用DrawingCache"><a href="#使用DrawingCache" class="headerlink" title="使用DrawingCache"></a><strong>使用DrawingCache</strong></h3><p>如果使用DrawingCache，则对要截图的View有一个要求：View本身已经显示在界面上。如果View没有添加到界面上或者没有显示（绘制）过，则buildDrawingCache会失败。这种方式比较适合对应用界面或者某一部分的截图。步骤很简单：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">view.setDrawingCacheEnabled(<span class="keyword">true</span>);  </span><br><span class="line">view.buildDrawingCache();  		<span class="comment">//启用DrawingCache并创建位图  </span></span><br><span class="line"></span><br><span class="line"><span class="comment">//创建一个DrawingCache的拷贝，因为DrawingCache得到的位图在禁用后会被回收  </span></span><br><span class="line">Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache()); </span><br><span class="line">view.setDrawingCacheEnabled(<span class="keyword">false</span>);  	<span class="comment">//禁用DrawingCahce否则会影响性能</span></span><br></pre></td></tr></table></figure>
-        <!-- 引言 在Android应用开发过程中，可能会遇到需要对整个界面或者某一部分进行截图的需求。
-Android中对View的截图也有以下两种方式，值得注意的是两个方法都不适用于SurfaceView：
-使用DrawingCache如果使用DrawingCache，则对要截图的View有一个要求：View本身已经显示在界面上。如果View没有添加到界面上或者没有显示（绘制）过，则buildDraw......  -->
-        <p class="article-more-link">
-          <a href="../../2016/08/30/【Android】获取View的截图/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -459,6 +457,7 @@ Android中对View的截图也有以下两种方式，值得注意的是两个方
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android】如何加速 AndroidStudio 的编译效率"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -485,6 +484,8 @@ Android中对View的截图也有以下两种方式，值得注意的是两个方
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -492,18 +493,17 @@ Android中对View的截图也有以下两种方式，值得注意的是两个方
 <p>所以 这点就让人很痛苦， 然而问题总还是要被解决的，作者曾经亲眼看到过使用android studio仅仅用了2.5秒就编译完毕(在代码更改很少的情况下)。 现在把如何优化gradle编译速度的方法记录在此，希望可以 帮助到广大的同行们。</p>
 <h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a><strong>准备工作</strong></h3><p>首先，保证项目使用的Gradle是最新的，我这里用的是2.10版本。因为Gradle 2.4之后在编译效率上面有了一个非常大的提高，看下图官方的速度对比。</p>
 <p><img src="http://img.blog.csdn.net/20160826151929475" alt="这是官方的速度对比，下一代编译速度更快"></p>
-        <!-- 引言如果你之前用eclipse开发过Android app的话，转到android studio的第一反应也许就是：”编译速度有点慢“，表现的最明显的一点就是，每次android studio使用gradle编译，即便是更改的代码量很少，也会按照预先设置的task的顺序，依次走完编译的各项流程。这时候如果电脑CPU配置不高的时候，就会超级卡界面，更别说改代码了。
-所以 这点就让人很痛苦， 然......  -->
-        <p class="article-more-link">
-          <a href="../../2016/08/26/【Android】如何加速 AndroidStudio 的编译效率/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -511,6 +511,7 @@ Android中对View的截图也有以下两种方式，值得注意的是两个方
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Go】为什么 Go 语言把类型声明放在后面？"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -537,6 +538,8 @@ Android中对View的截图也有以下两种方式，值得注意的是两个方
     <a class="article-category-link" href="../../categories/Go语言/">Go语言</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -549,21 +552,17 @@ Android中对View的截图也有以下两种方式，值得注意的是两个方
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> x;</span><br></pre></td></tr></table></figure>
 <p>上面的代码声明了 <code>x</code> 变量，并且其类型为 <code>int</code>——即，表达式 <code>x</code> 为 <code>int</code> 类型。一般而言，为了指明新变量的类型，我们得写出一个表达式，其中含有我们要声明的变量，这个表达式运算的结果值属于某种基本类型，我们把这种基本类型写到表达式的左边。所以，下述声明：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p;</span><br><span class="line"><span class="keyword">int</span> a[<span class="number">3</span>];</span><br></pre></td></tr></table></figure>
-        <!-- 
-关于类型，官网上有一段仔细地介绍了一下函数指针的部分，现在的设计比起 C 的语法，清晰很多。
-
-也就是说，类型放在后面是为了更加清晰易懂。Rob Pike 曾经在 Go 官方博客解释过这个问题（查看原文：Go’s Declaration Syntax），简略翻译如下（水平有限翻译的不对的地方见谅）：
-引言Go语言新人常常会很疑惑为什么这门语言的声明语法（declaration syntax......  -->
-        <p class="article-more-link">
-          <a href="../../2016/08/18/【Go】为什么 Go 语言把类型声明放在后面？/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Go语言/">Go语言</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -571,6 +570,7 @@ Android中对View的截图也有以下两种方式，值得注意的是两个方
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Machine Learning】机器学习：简明入门指南"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -597,6 +597,8 @@ Android中对View的截图也有以下两种方式，值得注意的是两个方
     <a class="article-category-link" href="../../categories/Machine-Learning/">Machine Learning</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -606,21 +608,17 @@ Android中对View的截图也有以下两种方式，值得注意的是两个方
 <p>在听到人们谈论机器学习的时候，你是不是对它的涵义只有几个模糊的认识呢？你是不是已经厌倦了在和同事交谈时只能一直点头？让我们改变一下吧！</p>
 <p>本指南的读者对象是所有对机器学习有求知欲但却不知道如何开头的朋友。我猜很多人已经读过了<a href="https://en.wikipedia.org/wiki/Machine_learning" target="_blank" rel="noopener">“机器学习” ——维基百科词条</a>，倍感挫折，以为没人能给出一个高层次的解释。本文就是你们想要的东西。</p>
 <p>本文目标在于平易近人，这意味着文中有大量的概括。但是谁在乎这些呢？只要能让读者对于ML更感兴趣，任务也就完成了。</p>
-        <!-- 
-本文是一篇转载自伯乐在线的译文，英文原文是这里：Machine Learning is Fun! — by Adam Geitgey
-
-在听到人们谈论机器学习的时候，你是不是对它的涵义只有几个模糊的认识呢？你是不是已经厌倦了在和同事交谈时只能一直点头？让我们改变一下吧！
-本指南的读者对象是所有对机器学习有求知欲但却不知道如何开头的朋友。我猜很多人已经读过了“机器学习” ——维基百科词条，倍......  -->
-        <p class="article-more-link">
-          <a href="../../2016/08/14/【Machine Learning】机器学习：简明入门指南/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Machine-Learning/">Machine Learning</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -628,6 +626,7 @@ Android中对View的截图也有以下两种方式，值得注意的是两个方
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Machine Learning】Github上关注最多的53个深度学习项目"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -654,37 +653,24 @@ Android中对View的截图也有以下两种方式，值得注意的是两个方
     <a class="article-category-link" href="../../categories/Machine-Learning/">Machine Learning</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="Top-Deep-Learning-Projects"><a href="#Top-Deep-Learning-Projects" class="headerlink" title="Top Deep Learning Projects"></a>Top Deep Learning Projects</h2><p>A list of popular github projects related to deep learning (ranked by stars).</p>
 <p>Last Update: 2016.08.09</p>
-        <!-- Top Deep Learning ProjectsA list of popular github projects related to deep learning (ranked by stars).
-Last Update: 2016.08.09
- 
-
-
-
-Project Name
-Stars
-Description
-
-
-
-
-TensorFlow
-29622
-Computation ......  -->
-        <p class="article-more-link">
-          <a href="../../2016/08/12/【Machine Learning】Github上关注最多的53个深度学习项目/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Machine-Learning/">Machine Learning</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -692,6 +678,7 @@ Computation ......  -->
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android】使用shape的同时，动态替换shape的颜色属性"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -718,6 +705,8 @@ Computation ......  -->
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -728,22 +717,17 @@ Computation ......  -->
 <p><img src="http://img.blog.csdn.net/20160808175543250" alt="三个样式相同的按钮"></p>
 <p>为第一个灰色按钮自定义背景如下：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">shape</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:shape</span>=<span class="string">"rectangle"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:color</span>=<span class="string">"@color/gray"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">corners</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:radius</span>=<span class="string">"60dip"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">stroke</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:width</span>=<span class="string">"0dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:color</span>=<span class="string">"@color/gray"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">solid</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:color</span>=<span class="string">"@color/gray"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">shape</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
 <p>然后，如果再为每个颜色的按钮都写一个shape背景也太麻烦，重用性太差。</p>
-        <!-- 
-在实现布局的时候，有些按钮形状相同，只是颜色有差异，如果使用自定义shape实现了其中一种按钮，有没有可能不需要再为其他每个颜色都写一个shape文件呢？
-
-一、问题比如以下这三个按钮：
-
-为第一个灰色按钮自定义背景如下：1234567891011121314&lt;?xml version="1.0" encoding="utf-8"?&gt;&lt;shape    xmlns:and......  -->
-        <p class="article-more-link">
-          <a href="../../2016/08/08/【Android】使用shape的同时，动态替换shape的颜色属性/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -751,6 +735,7 @@ Computation ......  -->
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-BAT人才体系的职位层级、薪酬、晋升标准大全"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -777,6 +762,8 @@ Computation ......  -->
     <a class="article-category-link" href="../../categories/BAT/">BAT</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -801,23 +788,17 @@ Computation ......  -->
 <li><p>T6：首席科学家</p>
 </li>
 </ul>
-        <!-- 
-
-互联网圈有这么一句话：百度的技术，阿里的运营，腾讯的产品。那么代表互联网三座大山的BAT，内部人才体系有什么区别呢？可以先看看这个话题百度、腾讯和阿里内部的级别和薪资待遇是什么样的？
-
-★ 腾讯 ★1、职级腾讯职级体系分6级，最低1级，最高6级。同时按照岗位又划分为四大通道，内部也叫“族”，比如：
-产品/项目通道，简称P族技术通道，简称T族市场通道，简称M族职能通道，简称S族
-以T族为例......  -->
-        <p class="article-more-link">
-          <a href="../../2016/08/02/BAT人才体系的职位层级、薪酬、晋升标准大全/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/BAT/">BAT</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -825,6 +806,7 @@ Computation ......  -->
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android】dip和px之间到底如何转换"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -851,6 +833,8 @@ Computation ......  -->
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -886,23 +870,17 @@ Computation ......  -->
 </li>
 </ul>
 <h4 id="3-sp-scaled-pixels，放大像素，它是安卓的字体单位"><a href="#3-sp-scaled-pixels，放大像素，它是安卓的字体单位" class="headerlink" title="3.  sp = scaled pixels，放大像素，它是安卓的字体单位"></a>3.  <strong>sp</strong> = scaled pixels，放大像素，它是安卓的字体单位</h4><p>主要用于字体显示best for textsize。根据 google 的建议，TextView 的字号最好使用 sp 做单位，而且查看TextView的源码可知 Android 默认使用 sp 作为字号单位。</p>
-        <!-- 
-在Android xml布局文件中，我们既可以设置px，也可以设置dp（或者dip）。一般情况下，我们都会选择使用dp，这样可以保证不同屏幕分辨率的机器上布局一致。
-
-
-但是在代码中，如何处理呢？很多控件的方法中都只提供了设置px的方法，例如setPadding，并没有提供设置dp的方法。这个时候，如果需要设置dp的话，就要将dp转换成px了。
-
-一、名词介绍1.  PPI = Pixel......  -->
-        <p class="article-more-link">
-          <a href="../../2016/07/22/【Android】dip和px之间到底如何转换/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -910,6 +888,7 @@ Computation ......  -->
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android】Monkey压力测试与停止"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -936,6 +915,8 @@ Computation ......  -->
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -955,18 +936,17 @@ Computation ......  -->
 </ul>
 </blockquote>
 <p>具体的命令解释可以看这里：<a href="http://www.jb51.net/article/48557.htm" target="_blank" rel="noopener">android 压力测试命令monkey详解</a></p>
-        <!-- 一、Monkey 是什么？Monkey测试是Android自动化测试的一种手段。该工具用于进行压力测试，就是模拟用户的按键输入，触摸屏输入，手势输入等，看设备多长时间会出异常。 然后开发人员结合monkey 打印的日志 和系统打印的日志，结局测试中出现的问题。
-二、Monkey命令1）. 标准的monkey 命令[adb shell] monkey [options] &lt; eventc......  -->
-        <p class="article-more-link">
-          <a href="../../2016/07/19/【Android】Monkey压力测试与停止/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -974,6 +954,7 @@ Computation ......  -->
 </article>
 
 <!-- Table of Contents -->
+
 
   
 
@@ -1074,7 +1055,7 @@ Computation ......  -->
     });
 </script>
 
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
 
@@ -1102,7 +1083,7 @@ Computation ......  -->
 
 
 
-	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
 	</script>
 
 

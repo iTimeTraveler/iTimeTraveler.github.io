@@ -132,6 +132,10 @@ body {
   background: #414141;
   color: #fff;
 }
+.MathJax_Display {
+  overflow: auto;
+  padding: 1em 0;
+}
 .article-entry h2,
 .article-entry h3,
 .article-entry h4,
@@ -314,6 +318,7 @@ body {
 .article-date,
 .article-category-link,
 .article-views,
+.article-edit,
 .archive-year,
 .archive-tag,
 .archive-category,
@@ -831,9 +836,26 @@ body {
 .article-views:hover {
   color: #414141;
 }
+.article-edit {
+  text-align: center;
+  font-weight: normal;
+}
+.article-edit:before {
+  font-family: "FontAwesome";
+  content: "\f044";
+}
+@media screen and (max-width: 479px) {
+  .article-edit:before {
+    display: none;
+  }
+}
+.article-edit:hover {
+  color: #414141;
+}
 .article-date,
 .article-category-link,
 .article-views,
+.article-edit,
 .archive-year,
 .archive-tag,
 .archive-category,
@@ -846,6 +868,7 @@ body {
   .article-date,
   .article-category-link,
   .article-views,
+  .article-edit,
   .archive-year,
   .archive-tag,
   .archive-category,
@@ -1056,6 +1079,10 @@ a.article-title:hover {
   width: 100%;
   height: 100%;
   margin-top: 0;
+}
+.article-excerpt-content {
+  margin: 1.6em 0;
+  line-height: 2em !important;
 }
 .article-more-link a {
   display: inline-block;
@@ -1401,6 +1428,7 @@ a.article-title:hover {
   z-index: 1;
 }
 .nav {
+  max-height: -webkit-fill-available;
   padding: 0;
   margin: 1em;
   line-height: 1.8em;
@@ -1422,6 +1450,16 @@ a.article-title:hover {
 }
 .nav-child {
   margin-left: 1em;
+}
+.post-copyright {
+  margin: 2em 0 0;
+  padding: 0.5em 1em;
+  border-left: 3px solid #ff1700;
+  background-color: #f9f9f9;
+  list-style: none;
+}
+.post-copyright li {
+  line-height: 30px;
 }
 #comments {
   padding: 20px;
@@ -1717,6 +1755,7 @@ figure.highlight::-webkit-scrollbar-track {
   font-family: "Source Code Pro", Consolas, Monaco, Menlo, Consolas, monospace;
 }
 .article-entry code {
+  white-space: normal;
   background: rgba(208,211,248,0.2);
   color: #444;
   padding: 0 0.3em;

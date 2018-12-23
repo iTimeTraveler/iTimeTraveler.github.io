@@ -374,6 +374,8 @@
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -381,18 +383,17 @@
 <h2 id="场景需求"><a href="#场景需求" class="headerlink" title="场景需求"></a><strong>场景需求</strong></h2><p>Android系统自动切换的这些策略，并不能全部满足我们的产品需求，比如音乐App需要对听歌时拔出耳机的操作进行阻止（暂停播放），防止突然切换到外放导致尴尬。</p>
 <p>最近项目需求希望<strong><code>即使在连接蓝牙音箱的情况下，仍旧使用手机外放播放音频</code></strong>。这就需要强制切换Audio输出通道，打破系统原有的策略。</p>
 <p>查阅资料，看到了Android中可以通过<code>AudioManager</code>查询、切换当前Audio输出通道，并且在Audio输出发生变化时，捕获并处理这种变化。</p>
-        <!-- 手机音频的输出有外放（Speaker）、听筒（Telephone Receiver）、有线耳机（WiredHeadset）、蓝牙音箱（Bluetooth A2DP）等输出设备。在平时，电话免提、插拔耳机、连接断开蓝牙设备等操作系统都会自动切换Audio音频到相应的输出设备上。比如电话免提就是从听筒切换到外放扬声器，插入耳机就是从外放切换到耳机。
-场景需求Android系统自动切换的这些策略，......  -->
-        <p class="article-more-link">
-          <a href="../../2017/05/18/【Android】Audio音频输出通道切换 - 蓝牙、外放/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Audio/">Audio</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -400,6 +401,7 @@
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-Google 面试题 - 判断字符串是否可由重复子字符串组成"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -426,6 +428,8 @@
     <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -450,39 +454,17 @@
 <li><strong>样例解释</strong>：输入可由”abc”重复四次组成</li>
 </ul>
 </blockquote>
-        <!-- 题目描述对于一个非空字符串，判断其是否可由一个子字符串重复多次组成。字符串只包含小写字母且长度不超过10000。
-样例1
-
-输入： “abab”
-输出： True
-样例解释： 输入可由”ab”重复两次组成
-
-
-样例 2
-
-输入： “aba”
-输出： False
-
-
-样例 3
-
-输入： “abcabcabcabc”
-输出： True
-样例解释：输入可由”abc”重复四次组成
-
-
-
-解题思路1.......  -->
-        <p class="article-more-link">
-          <a href="../../2017/05/05/Google 面试题 - 判断字符串是否可由重复子字符串组成/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Google/">Google</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -490,6 +472,7 @@
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android】判断应用Application、Activity是否处于活动状态"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -516,23 +499,24 @@
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
         <p>通过<strong><code>ActivityManager</code></strong>我们可以获得系统里正在运行的activities，包括进程(Process)等、应用程序/包、服务(Service)、任务(Task)信息。</p>
 <h2 id="1、判断应用App是否活动"><a href="#1、判断应用App是否活动" class="headerlink" title="1、判断应用App是否活动"></a><strong>1、判断应用App是否活动</strong></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 判断应用是否已经启动</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> context 一个context</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> packageName 要判断应用的包名</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> boolean</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isAppAlive</span><span class="params">(Context context, String packageName)</span></span>&#123;</span><br><span class="line">   ActivityManager activityManager =</span><br><span class="line">           (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);</span><br><span class="line">   List&lt;ActivityManager.RunningAppProcessInfo&gt; processInfos</span><br><span class="line">           = activityManager.getRunningAppProcesses();</span><br><span class="line">   <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; processInfos.size(); i++)&#123;</span><br><span class="line">       <span class="keyword">if</span>(processInfos.get(i).processName.equals(packageName))&#123;</span><br><span class="line">           Log.i(<span class="string">"NotificationLaunch"</span>,</span><br><span class="line">                   String.format(<span class="string">"the %s is running, isAppAlive return true"</span>, packageName));</span><br><span class="line">           <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   Log.i(<span class="string">"NotificationLaunch"</span>,</span><br><span class="line">           String.format(<span class="string">"the %s is not running, isAppAlive return false"</span>, packageName));</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-        <!-- 通过ActivityManager我们可以获得系统里正在运行的activities，包括进程(Process)等、应用程序/包、服务(Service)、任务(Task)信息。
-1、判断应用App是否活动12345678910111213141516171819202122/** * 判断应用是否已经启动 * @param context 一个context * @param packageN......  -->
-        <p class="article-more-link">
-          <a href="../../2017/05/03/【Android】判断应用Application、Activity是否处于活动状态/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -540,6 +524,7 @@
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android】使用UncaughtExceptionHandler捕获全局异常"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -566,23 +551,23 @@
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a><strong>简介</strong></h2><p>当程序崩溃（Crash）的时候，默认是不对异常信息做处理的。如果想要把异常信息保存到本地文件中，或上传的服务器。那么就要借助<strong><code>UncaughtExceptionHandler</code></strong>这个类。</p>
-        <!-- 简介当程序崩溃（Crash）的时候，默认是不对异常信息做处理的。如果想要把异常信息保存到本地文件中，或上传的服务器。那么就要借助UncaughtExceptionHandler这个类。
-
-使用方法一、实例化1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515......  -->
-        <p class="article-more-link">
-          <a href="../../2017/04/20/【Android】使用UncaughtExceptionHandler捕获全局异常/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Exception/">Exception</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -590,6 +575,7 @@
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android 】硬件加速原理与实现简介"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -616,23 +602,24 @@
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
         <p>在手机客户端尤其是Android应用的开发过程中，我们经常会接触到“硬件加速”这个词。由于操作系统对底层软硬件封装非常完善，上层软件开发者往往对硬件加速的底层原理了解很少，也不清楚了解底层原理的意义，因此常会有一些误解，如硬件加速是不是通过特殊算法实现页面渲染加速，或是通过硬件提高CPU/GPU运算速率实现渲染加速。</p>
 <p>本文尝试从底层硬件原理，一直到上层代码实现，对硬件加速技术进行简单介绍，其中上层实现基于Android 6.0。</p>
-        <!-- 在手机客户端尤其是Android应用的开发过程中，我们经常会接触到“硬件加速”这个词。由于操作系统对底层软硬件封装非常完善，上层软件开发者往往对硬件加速的底层原理了解很少，也不清楚了解底层原理的意义，因此常会有一些误解，如硬件加速是不是通过特殊算法实现页面渲染加速，或是通过硬件提高CPU/GPU运算速率实现渲染加速。
-本文尝试从底层硬件原理，一直到上层代码实现，对硬件加速技术进行简单介绍，其......  -->
-        <p class="article-more-link">
-          <a href="../../2017/03/30/【Android 】硬件加速原理与实现简介/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/GPU/">GPU</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -640,6 +627,7 @@
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Gradle】Android Studio中Gradle重复依赖的问题"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -666,6 +654,8 @@
     <a class="article-category-link" href="../../categories/Gradle/">Gradle</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -674,18 +664,17 @@
 <h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a><strong>分析</strong></h2><p>看到错误中的这个<strong>duplicate</strong>，第一反应和平常一样，难道是得先清理一下Clean project ? 反复试了几次都不行，上网查才发现是重复依赖Gson库的问题，导致项目中有了两个重复的<code>Expose.class</code> 类。</p>
 <p>使用快捷键（Shift + Ctrl + T）查看项目中的<code>Expose.class</code> 类，发现是和passport-1.4.2.jar这个本地jar包冲突了，它也依赖了gson库所以导致了重复依赖。</p>
 <p><img src="http://img.blog.csdn.net/20170223114733531" alt=""></p>
-        <!-- 问题项目中有个Module需要解析json所以选用了依赖Gson，但是编译时报错如下：
-12Error:Execution failed for task &apos;:app:transformClassesWithJarMergingForAutoioDebug&apos;.&gt; com.android.build.api.transform.TransformException: ......  -->
-        <p class="article-more-link">
-          <a href="../../2017/02/23/【Gradle】Android Studio中Gradle重复依赖的问题/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Gradle/">Gradle</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -693,6 +682,7 @@
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android】内存泄漏分析心得"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -719,6 +709,8 @@
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -736,24 +728,17 @@
 <li><p><strong>堆区</strong>：通常存放 new 出来的对象。由 Java 垃圾回收器回收。</p>
 </li>
 </ul>
-        <!-- 
-本文来源：QQ空间终端开发团队公众号
-
-前言对于C++来说，内存泄漏就是new出来的对象没有delete，俗称野指针；对于Java来说，就是new出来的Object 放在Heap上无法被GC回收；
-
-本文通过QQ和Qzone中内存泄漏实例来讲android中内存泄漏分析解法和编写代码应注意的事项。
-Java 中的内存分配
-静态储存区：编译时就分配好，在程序整个运行期间都存在。它主要存放静态......  -->
-        <p class="article-more-link">
-          <a href="../../2017/02/13/【Android】内存泄漏分析心得/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -761,6 +746,7 @@ Java 中的内存分配
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【算法】单链表反转，两两反转"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -787,6 +773,8 @@ Java 中的内存分配
     <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -794,22 +782,17 @@ Java 中的内存分配
 <p><img src="/gallery/reverse-linklist.jpg" alt=""></p>
 <p>链表结点定义如下，这里使用的是Java描述：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> val;</span><br><span class="line">    ListNode next;</span><br><span class="line">    ListNode(<span class="keyword">int</span> x) &#123; val = x; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-        <!-- 问题一、反转单链表题目：定义一个函数，输入一个链表的头结点，反转该链表并输出反转后链表的头结点。
-
-链表结点定义如下，这里使用的是Java描述：
-12345public class ListNode &#123;    int val;    ListNode next;    ListNode(int x) &#123; val = x; &#125;&#125;
-
-思路如何把一个单链表进......  -->
-        <p class="article-more-link">
-          <a href="../../2017/01/31/【算法】单链表反转，两两反转/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -817,6 +800,7 @@ Java 中的内存分配
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android】AlertDialog中的EditText不能弹出软键盘的问题"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -843,6 +827,8 @@ Java 中的内存分配
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -851,20 +837,17 @@ Java 中的内存分配
 <blockquote>
 <p><strong>Note:</strong> Activities provide a facility to manage the creation, saving and restoring of dialogs. See <a href="https://developer.android.com/reference/android/app/Activity.html#onCreateDialog%28int%29" target="_blank" rel="noopener">onCreateDialog(int)</a>, <a href="https://developer.android.com/reference/android/app/Activity.html#onPrepareDialog%28int,%20android.app.Dialog%29" target="_blank" rel="noopener">onPrepareDialog(int, Dialog)</a>, <a href="https://developer.android.com/reference/android/app/Activity.html#showDialog%28int%29" target="_blank" rel="noopener">showDialog(int)</a>, and <a href="https://developer.android.com/reference/android/app/Activity.html#dismissDialog%28int%29" target="_blank" rel="noopener">dismissDialog(int)</a>. If these methods are used, <a href="https://developer.android.com/reference/android/app/Dialog.html#getOwnerActivity%28%29" target="_blank" rel="noopener">getOwnerActivity()</a> will return the Activity that managed this dialog.</p>
 </blockquote>
-        <!-- 摘要AlertDialog中加入EditText但是不弹出软键盘等问题网上有很多不管用的解决方案，有的方案是强制弹出软键盘，然而即使弹出来，也是显示在AlertDialog的后面，被Dialog遮挡。
-解决方案Dialog的官方文档：http://developer.android.com/reference/android/app/Dialog.html ，其中有一段：
-
-Note: Ac......  -->
-        <p class="article-more-link">
-          <a href="../../2017/01/20/【Android】AlertDialog中的EditText不能弹出软键盘的问题/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -872,6 +855,7 @@ Note: Ac......  -->
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android】TextView中不同大小字体如何上下垂直居中？"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -898,6 +882,8 @@ Note: Ac......  -->
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -913,20 +899,17 @@ Note: Ac......  -->
 <li><p><strong>ForegroundColorSpan(int color)</strong> —— 前景着色，也就是字的着色，参数与背景着色一致</p>
 </li>
 </ul>
-        <!-- 前言在客户端开发中，我们往往需要对一个TextView的文字的部分内容进行特殊化处理，比如加粗、改变颜色、加链接、下划线等。iOS为我们提供了AttributedString，而Android则提供了SpannableString。
-在Android的android.text.style包下为我们提供了各种各样的span（可以参考这篇文章），例如：
-
-AbsoluteSizeSpan(int......  -->
-        <p class="article-more-link">
-          <a href="../../2017/01/03/【Android】TextView中不同大小字体如何上下垂直居中？/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -934,6 +917,7 @@ AbsoluteSizeSpan(int......  -->
 </article>
 
 <!-- Table of Contents -->
+
 
   
 
@@ -1034,7 +1018,7 @@ AbsoluteSizeSpan(int......  -->
     });
 </script>
 
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
 
@@ -1062,7 +1046,7 @@ AbsoluteSizeSpan(int......  -->
 
 
 
-	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
 	</script>
 
 

@@ -374,6 +374,8 @@
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -385,23 +387,17 @@
 </blockquote>
 <p>这篇教程我们将学到如何自动处理Exception，并且了解在App Crash以后如何自动重启。</p>
 <p>其实方法很简单，这里我们需要用到 <strong>Thread.setDefaultUncaughtExceptionHandler()</strong>，当应用崩溃的时候代码就会自动调用 <strong>uncaughtException()</strong> 这个方法。</p>
-        <!-- 
-英文原文： Auto Restart application after Crash/Force Close in Android.
-
-
-手机上的Android应用，经常会出现“Force Close”的错误，这种情况一般是因为代码中没有正确获取到Exceptions。那么如果想让App在出现这种错误崩溃Crash以后自动重启，我们该怎么办呢？
-
-这篇教程我们将学到如何自动处理Except......  -->
-        <p class="article-more-link">
-          <a href="../../2016/07/14/【Android】App应用崩溃(Crash-Force Close)之后如何让它自动重启？/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -409,6 +405,7 @@
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【SVN】使用patch命令保存更改"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -435,6 +432,8 @@
     <a class="article-category-link" href="../../categories/SVN/">SVN</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -443,75 +442,17 @@
 </blockquote>
 <h4 id="一、生成patch文件"><a href="#一、生成patch文件" class="headerlink" title="一、生成patch文件"></a><strong>一、生成patch文件</strong></h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">svn diff &gt; patchFile 			// 整个工程的变动生成patch</span><br><span class="line">svn diff FILE_NAME &gt; patchFile 	// 某个文件单独变动的patch</span><br></pre></td></tr></table></figure>
 <h4 id="二、svn回滚"><a href="#二、svn回滚" class="headerlink" title="二、svn回滚"></a><strong>二、svn回滚</strong></h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">svn revert FILE 				// 单个文件回滚</span><br><span class="line">svn revert DIR --depth=infinity // 整个目录进行递归回滚</span><br><span class="line">svn revert . --depth=infinity 	// 当前目录进行递归回滚</span><br></pre></td></tr></table></figure>
-        <!-- 
-使用svn管理工程代码时，有些时候的更改尚未整理好，需要暂时搁置，转而进行下一个任务，此时就需要将当前的更改（diff）暂时保存下来，忙完其他的任务之后再继续进行。但是如果不进行commit，怎么保存当前的更改呢？答案是使用 patch 命令！
-
-一、生成patch文件12svn diff &gt; patchFile 			// 整个工程的变动生成patchsvn diff FILE_N......  -->
-        <p class="article-more-link">
-          <a href="../../2016/06/12/【SVN】使用patch命令保存更改/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/SVN/">SVN</a></li></ul>
 
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-【Java】按位存储：使用int存储boolean数组"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/06/02/【Java】按位存储：使用int存储boolean数组/">【Java】按位存储：使用int存储boolean数组</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
       
-	<a href="../../2016/06/02/【Java】按位存储：使用int存储boolean数组/" class="article-date">
-	  <time datetime="2016-06-02T03:55:00.000Z" itemprop="datePublished">2016-06-02</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Java/">Java</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>有一种场景，比如App设置页中会有一组开关选项，这个时候保存这些开关的状态，如果每个按钮都对应一个boolean值的话，太大材小用显得鸡肋，频繁读取SharedPreferences 存取效率自然快不过一次读取。</p>
-</blockquote>
-<p>首先，敲定每个boolean值存储的位置<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> mBroadcastCustomValue = <span class="number">0</span>;   <span class="comment">//用来存储的int值</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BROADCAST_TYPE_CUSTOM_BASE = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BROADCAST_TYPE_CUSTOM_TRAFFIC = <span class="number">1</span> &lt;&lt; <span class="number">1</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BROADCAST_TYPE_CUSTOM_CAMERA = <span class="number">1</span> &lt;&lt; <span class="number">2</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BROADCAST_TYPE_CUSTOM_SAFE = <span class="number">1</span> &lt;&lt; <span class="number">3</span>;</span><br></pre></td></tr></table></figure></p>
-<h2 id="一、添加Add"><a href="#一、添加Add" class="headerlink" title="一、添加Add"></a><strong>一、添加Add</strong></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addLevel</span><span class="params">(<span class="keyword">int</span> level)</span></span>&#123;</span><br><span class="line">	mBroadcastCustomValue |= level;    <span class="comment">//add</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//调用方式如下</span></span><br><span class="line">addLevel(BROADCAST_TYPE_CUSTOM_BASE);</span><br></pre></td></tr></table></figure>
-        <!-- 
-有一种场景，比如App设置页中会有一组开关选项，这个时候保存这些开关的状态，如果每个按钮都对应一个boolean值的话，太大材小用显得鸡肋，频繁读取SharedPreferences 存取效率自然快不过一次读取。
-
-首先，敲定每个boolean值存储的位置12345private int mBroadcastCustomValue = 0;   //用来存储的int值public stat......  -->
-        <p class="article-more-link">
-          <a href="../../2016/06/02/【Java】按位存储：使用int存储boolean数组/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
 
     </footer>
   </div>
@@ -519,6 +460,7 @@
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android】技术调研：用代码模拟屏幕点击、触摸事件"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -545,6 +487,8 @@
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -554,21 +498,17 @@
 <p>经过调研发现，给系统模拟注入输入事件有如下几种方式：</p>
 <h2 id="一、使用shell命令"><a href="#一、使用shell命令" class="headerlink" title="一、使用shell命令"></a><strong>一、使用shell命令</strong></h2><p>使用android自带的adb shell，里面自带一个input工具，使用方法如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">adb shell <span class="comment">#进入系统</span></span><br><span class="line">input keyevent KEYCODE_BACK  <span class="comment">#模拟按返回键</span></span><br><span class="line">input keyevent KEYCODE_HOME  <span class="comment">#模拟按Home键</span></span><br></pre></td></tr></table></figure>
-        <!-- 
-在Android中，有些场景需要使用代码来模拟人的操作，比如微信自动抢红包、UI测试等都需要模拟实现点击事件（Click）、触摸事件（Touch）、键盘事件（KeyBoard）等。那么，有没有现成的方案可以实现呢？答案当然是肯定的啦，往下看。
-
-经过调研发现，给系统模拟注入输入事件有如下几种方式：
-一、使用shell命令使用android自带的adb shell，里面自带一个input工具......  -->
-        <p class="article-more-link">
-          <a href="../../2016/06/02/【Android】技术调研：用代码模拟屏幕点击、触摸事件/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -576,6 +516,62 @@
 </article>
 
 <!-- Table of Contents -->
+
+
+  
+    <article id="post-【Java】按位存储：使用int存储boolean数组"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2016/06/02/【Java】按位存储：使用int存储boolean数组/">【Java】按位存储：使用int存储boolean数组</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2016/06/02/【Java】按位存储：使用int存储boolean数组/" class="article-date">
+	  <time datetime="2016-06-02T03:55:00.000Z" itemprop="datePublished">2016-06-02</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Java/">Java</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>有一种场景，比如App设置页中会有一组开关选项，这个时候保存这些开关的状态，如果每个按钮都对应一个boolean值的话，太大材小用显得鸡肋，频繁读取SharedPreferences 存取效率自然快不过一次读取。</p>
+</blockquote>
+<p>首先，敲定每个boolean值存储的位置<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> mBroadcastCustomValue = <span class="number">0</span>;   <span class="comment">//用来存储的int值</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BROADCAST_TYPE_CUSTOM_BASE = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BROADCAST_TYPE_CUSTOM_TRAFFIC = <span class="number">1</span> &lt;&lt; <span class="number">1</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BROADCAST_TYPE_CUSTOM_CAMERA = <span class="number">1</span> &lt;&lt; <span class="number">2</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BROADCAST_TYPE_CUSTOM_SAFE = <span class="number">1</span> &lt;&lt; <span class="number">3</span>;</span><br></pre></td></tr></table></figure></p>
+<h2 id="一、添加Add"><a href="#一、添加Add" class="headerlink" title="一、添加Add"></a><strong>一、添加Add</strong></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addLevel</span><span class="params">(<span class="keyword">int</span> level)</span></span>&#123;</span><br><span class="line">	mBroadcastCustomValue |= level;    <span class="comment">//add</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//调用方式如下</span></span><br><span class="line">addLevel(BROADCAST_TYPE_CUSTOM_BASE);</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
 
   
     <article id="post-【MySQL】查询保持IN中的顺序"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -602,6 +598,8 @@
     <a class="article-category-link" href="../../categories/MySQL/">MySQL</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -609,22 +607,17 @@
 <p>select * from table_name where id in ()的时候，MySQL会自动按主键自增排序，要是按IN中给定的顺序来取，如何实现呢？</p>
 </blockquote>
 <p>比如下面这个查询结果，mysql会默认使用主键id的ASC自增排序结果集：<br><img src="http://img.blog.csdn.net/20160429152929904" alt=""></p>
-        <!-- 
-select * from table_name where id in ()的时候，MySQL会自动按主键自增排序，要是按IN中给定的顺序来取，如何实现呢？
-
-比如下面这个查询结果，mysql会默认使用主键id的ASC自增排序结果集：
-
-那么，如果我们想维持查询语句中IN(26613,26612,26611,26610,26609,26608,26607)的顺序可以么？当然可以，像下面这......  -->
-        <p class="article-more-link">
-          <a href="../../2016/04/29/【MySQL】查询保持IN中的顺序/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/MySQL/">MySQL</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -632,6 +625,7 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Linux】执行shell脚本出现异常：bad interpreter- No such file or directory如何解决"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -658,6 +652,8 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
     <a class="article-category-link" href="../../categories/Linux/">Linux</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -666,21 +662,17 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
 </blockquote>
 <h2 id="一、分析"><a href="#一、分析" class="headerlink" title="一、分析"></a><strong>一、分析</strong></h2><p>这是不同系统编码格式引起的：在windows系统中编辑的.sh文件可能有不可见字符，所以在Linux系统下执行会报以上异常信息。 </p>
 <h2 id="二、解决"><a href="#二、解决" class="headerlink" title="二、解决"></a><strong>二、解决</strong></h2><p>1）在windows下转换：<br>利用一些编辑器如UltraEdit或EditPlus等工具先将脚本编码转换，再放到Linux中执行。转换方式如下（UltraEdit）：File–&gt;Conversions–&gt;DOS-&gt;UNIX即可。 </p>
-        <!-- 
-在Linux中执行.sh脚本，异常/bin/bash^M: bad interpreter: No such file or directory.
-
-一、分析这是不同系统编码格式引起的：在windows系统中编辑的.sh文件可能有不可见字符，所以在Linux系统下执行会报以上异常信息。 
-二、解决1）在windows下转换：利用一些编辑器如UltraEdit或EditPlus等工具先将脚本......  -->
-        <p class="article-more-link">
-          <a href="../../2016/04/29/【Linux】执行shell脚本出现异常：bad interpreter- No such file or directory如何解决/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Linux/">Linux</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -688,6 +680,7 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-”二分查找“算法的时间复杂度"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -714,6 +707,8 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
     <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -721,22 +716,17 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
 <p>算法的时间复杂度无非就是for、while等包含起来的基本运算单元的循环次数</p>
 </blockquote>
 <h2 id="1、二分查找"><a href="#1、二分查找" class="headerlink" title="1、二分查找"></a><strong>1、二分查找</strong></h2><p>二分查找（binary search），也称作折半查找（half-interval search），每次划分一半进行下一步搜索，所以时间复杂度无非就是while循环的次数！</p>
-        <!-- 
-算法的时间复杂度无非就是for、while等包含起来的基本运算单元的循环次数
-
-1、二分查找二分查找（binary search），也称作折半查找（half-interval search），每次划分一半进行下一步搜索，所以时间复杂度无非就是while循环的次数！
-
-123456789101112131415161718//二分查找 Java 实现public static int bin......  -->
-        <p class="article-more-link">
-          <a href="../../2016/04/06/”二分查找“算法的时间复杂度/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -744,6 +734,7 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-给大家推荐一款Sublime Text的主题”brogrammer-theme“"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -768,34 +759,31 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
 
       
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
         <p>先给大家看一下这个主题的颜值：</p>
 <p><img src="http://img.blog.csdn.net/20160330165335855" alt=""></p>
 <p><img src="http://img.blog.csdn.net/20160330164049417" alt=""></p>
-        <!-- 先给大家看一下这个主题的颜值：
-
-
-
-
-快看安装方法：1、下载：https://github.com/kenwheeler/brogrammer-theme/archive/master.zip
-2、解压后将文件夹改名成Theme - Brogrammer，然后打开sublime text3，找到里面的 Preferences -&gt; Browse Packages，将改名后的文件夹co......  -->
-        <p class="article-more-link">
-          <a href="../../2016/03/30/给大家推荐一款Sublime Text的主题”brogrammer-theme“/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
+      
+
     </footer>
   </div>
   
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android】Picasso加载本地图片如何清理缓存cache？"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -822,6 +810,8 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -847,7 +837,11 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -855,6 +849,7 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-如何生成100个1-100以内的不重复的随机数"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -881,6 +876,8 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
     <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -891,26 +888,17 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
 <p>(2) 从上面的集合中随机抽取一个数放入int数组中.</p>
 <p>(3) 把取出的这个数从上面的集合中删除.</p>
 <p>(4) 循环 (2),(3) 步骤,直到int数组取满为止.</p>
-        <!-- 
-这是个经典的面试题目：生成长度为100的数组，插入1-100以内的但均不重复的随机数
-
-一、简单实现思路:(1) 把N个数放入Hashtable 或者arrayList 中.
-(2) 从上面的集合中随机抽取一个数放入int数组中.
-(3) 把取出的这个数从上面的集合中删除.
-(4) 循环 (2),(3) 步骤,直到int数组取满为止.
-
-这是一种比较简单的实现思路，实现代码如下：
-1234......  -->
-        <p class="article-more-link">
-          <a href="../../2016/01/22/如何生成100个1-100以内的不重复的随机数/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -918,6 +906,7 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
 </article>
 
 <!-- Table of Contents -->
+
 
   
 
@@ -1018,7 +1007,7 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
     });
 </script>
 
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
 
@@ -1046,7 +1035,7 @@ select * from table_name where id in ()的时候，MySQL会自动按主键自增
 
 
 
-	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
 	</script>
 
 

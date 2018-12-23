@@ -374,6 +374,8 @@
     <a class="article-category-link" href="../../categories/Java/">Java</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -387,23 +389,17 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fruit</span> </span>&#123;&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Apple</span> <span class="keyword">extends</span> <span class="title">Fruit</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
 <p>然后有一个最简单的容器：Plate类。盘子里可以放一个泛型的“东西”。我们可以对这个东西做最简单的“放”和“取”的动作：<code>set( )</code>和<code>get( )</code>方法。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Plate</span>&lt;<span class="title">T</span>&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> T item;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Plate</span><span class="params">(T t)</span></span>&#123;item=t;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(T t)</span></span>&#123;item=t;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> item;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-        <!-- 
-&lt;? extends T&gt;和&lt;? super T&gt;是Java泛型中的“通配符（Wildcards）”和“边界（Bounds）”的概念。
-
-&lt;? extends T&gt;：是指 “上界通配符（Upper Bounds Wildcards）”
-&lt;? super T&gt;：是指 “下界通配符（Lower Bounds Wildcards）”
-
-为什么要用通......  -->
-        <p class="article-more-link">
-          <a href="../../2016/12/27/【Java】泛型中 extends 和 super 的区别？/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java-Generics/">Java Generics</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -411,6 +407,7 @@
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Java】泛型详解"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -437,6 +434,8 @@
     <a class="article-category-link" href="../../categories/Java/">Java</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -451,18 +450,17 @@
 </li>
 </ol>
 <p>那么有没有什么办法可以使集合能够记住集合内元素各类型，且能够达到只要编译时不出现问题，运行时就不会出现“java.lang.ClassCastException”异常呢？答案就是使用<strong>泛型</strong>。</p>
-        <!-- 一. 为什么需要泛型？首先，我们看下下面这段简短的代码:
-1234567891011121314public class GenericTest &#123;    public static void main(String[] args) &#123;        List list = new ArrayList();        list.add("qqyumidi");    ......  -->
-        <p class="article-more-link">
-          <a href="../../2016/12/27/【Java】泛型详解/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -470,6 +468,7 @@
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-数学之美番外篇：平凡而又神奇的贝叶斯方法"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -496,6 +495,8 @@
     <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -504,19 +505,17 @@
 <p>记得读本科的时候，最喜欢到城里的计算机书店里面去闲逛，一逛就是好几个小时；有一次，在书店看到一本书，名叫贝叶斯方法。当时数学系的课程还没有学到概率统计。我心想，一个方法能够专门写出一本书来，肯定很牛逼。后来，我发现当初的那个朴素归纳推理成立了 —— 这果然是个牛逼的方法。</p>
 <p>——题记</p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h2><p>这是一篇关于贝叶斯方法的科普文，我会尽量少用公式，多用平白的语言叙述，多举实际例子。更严格的公式和计算我会在相应的地方注明参考资料。贝叶斯方法被证明是非常 general 且强大的推理框架，文中你会看到很多有趣的应用。</p>
-        <!-- Probability is nothing but common sense reduced to calculation.（概率论只不过是把常识用数学公式表达了出来。） —— Pierre-Simon Laplace
-
-记得读本科的时候，最喜欢到城里的计算机书店里面去闲逛，一逛就是好几个小时；有一次，在书店看到一本书，名叫贝叶斯方法。当时数学系的课程还没有学到概率统计。我心想，一个方法能......  -->
-        <p class="article-more-link">
-          <a href="../../2016/12/22/数学之美番外篇：平凡而又神奇的贝叶斯方法/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Bayesian/">Bayesian</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -524,6 +523,7 @@
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android】RxJava 入门详解"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -550,6 +550,8 @@
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -566,20 +568,17 @@
 <p>在正文开始之前的最后，放上 GitHub 链接和引入依赖的 gradle 代码：<br>RxJava ： <a href="https://github.com/ReactiveX/RxJava">https://github.com/ReactiveX/RxJava</a><br>RxAndroid： <a href="https://github.com/ReactiveX/RxAndroid">https://github.com/ReactiveX/RxAndroid</a> </p>
 <p>引入依赖： </p>
 <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//（版本号是文章发布时的最新稳定版）</span></span><br><span class="line">compile <span class="string">'io.reactivex:rxjava:1.0.14'</span> </span><br><span class="line">compile <span class="string">'io.reactivex:rxandroid:1.0.1'</span></span><br></pre></td></tr></table></figure>
-        <!-- 
-本文转载自 给 Android 开发者的 RxJava 详解 —— by 扔物线
-
-前言我从去年开始使用 RxJava ，到现在一年多了。今年加入了 Flipboard 后，看到 Flipboard 的 Android 项目也在使用 RxJava ，并且使用的场景越来越多 。而最近这几个月，我也发现国内越来越多的人开始提及 RxJava 。有人说『RxJava 真是太好用了』，有人说『Rx......  -->
-        <p class="article-more-link">
-          <a href="../../2016/12/19/【Android】RxJava 入门详解/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/RxJava/">RxJava</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -587,6 +586,7 @@
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android】APK瘦身记，实现将近一半的压缩效果"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -613,6 +613,8 @@
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -621,20 +623,17 @@
 </blockquote>
 <h2 id="一、我是怎么思考这件事情的"><a href="#一、我是怎么思考这件事情的" class="headerlink" title="一、我是怎么思考这件事情的"></a><strong>一、我是怎么思考这件事情的</strong></h2><p>APK是Android系统安装包的文件格式，关于这个话题其实是一个老生常谈的题目，不论是公司内部，还是外部网络，前人前辈已经总结出很多方法和规律。不过随着移动端技术近两年的飞速发展，一些新的思维方式和优化方法也逐渐涌现和成熟起来。笔者在实践过程中踩过一些坑，收获了一些经验，在这里做个思考和总结，所以随笔给大家，希望对大家从事相关工作的时候有所帮助和参考，同时也是抛砖引玉，希望大家共同探讨这个开放性的话题。</p>
 <p>关于为什么APK要瘦身，这个不多说，只从三个方面唠叨一下，对于用户（或者客户）来说，APK越大，在下载安装过程中，他们耗费的流量会越多，安装等待时间也会越长；对于产品本身，意味着下载转化率会越低（因为竞品中，用户有更多机会选择那个体验最好，功能最多，性能最好，包最小的）；对于研发来说，是一种优化改进技术的机会。</p>
-        <!-- 
-本文转载自知乎： APK瘦身记，如何实现高达53%的压缩效果 —— by 阿里聚安全
-
-一、我是怎么思考这件事情的APK是Android系统安装包的文件格式，关于这个话题其实是一个老生常谈的题目，不论是公司内部，还是外部网络，前人前辈已经总结出很多方法和规律。不过随着移动端技术近两年的飞速发展，一些新的思维方式和优化方法也逐渐涌现和成熟起来。笔者在实践过程中踩过一些坑，收获了一些经验，在这......  -->
-        <p class="article-more-link">
-          <a href="../../2016/11/30/【Android】APK瘦身记，实现将近一半的压缩效果/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/APK/">APK</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -642,6 +641,7 @@
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-基于社区发现算法和图分析Neo4j解读《权力的游戏》"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -668,6 +668,8 @@
     <a class="article-category-link" href="../../categories/Web/">Web</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -675,18 +677,17 @@
 <p>其中的分析和可视化是用Gephi做的，Gephi是非常流行的图分析工具。但作者觉得使用Neo4j来实现更有趣。</p>
 <h2 id="导入原始数据到Neo4j"><a href="#导入原始数据到Neo4j" class="headerlink" title="导入原始数据到Neo4j"></a>导入原始数据到Neo4j</h2><p>原始数据可<a href="https://www.macalester.edu/~abeverid/data/stormofswords.csv" target="_blank" rel="noopener">从网络上下载</a>，格式如下：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Source,Target,Weight</span><br><span class="line">Aemon,Grenn,5</span><br><span class="line">Aemon,Samwell,31</span><br><span class="line">Aerys,Jaime,18</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-        <!-- 导读几个月前，数学家 Andrew Beveridge 和Jie Shan在数学杂志上发表《权力的网络》，主要分析畅销小说《冰与火之歌》第三部《冰雨的风暴》中人物关系，其已经拍成电视剧《权力的游戏》系列。他们在论文中介绍了如何通过文本分析和实体提取构建人物关系的网络。紧接着，使用社交网络分析算法对人物关系网络分析找出最重要的角色；应用社区发现算法来找到人物聚类。
-其中的分析和可视化是用Gep......  -->
-        <p class="article-more-link">
-          <a href="../../2016/11/21/基于社区发现算法和图分析Neo4j解读《权力的游戏》/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Neo4j/">Neo4j</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -694,6 +695,7 @@
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【D3.js】力导向布局 + 圆形图片展示的人物关系"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -720,27 +722,25 @@
     <a class="article-category-link" href="../../categories/D3-js/">D3.js</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h2><p>使用d3的力学图（力导向图）与生活中常见的人物关系图结合，已经有了很好的例子： <a href="http://blog.csdn.net/lzhlzz/article/details/40450379" target="_blank" rel="noopener"><strong>【 D3.js 进阶系列 — 2.0 】 力学图 + 人物关系图</strong></a>，博主实现了下面这种样式，已经相当不错了。</p>
 <p><img src="http://img.blog.csdn.net/20161118161553200" alt=""></p>
 <p>但是对于想把节点的方形图片换成圆形头像，网上的资料却很少，本例子就在上面的实例的基础上实现圆形头像，让人物关系图看起来更漂亮了一个档次。两个主要文件如下：</p>
-        <!-- 前言使用d3的力学图（力导向图）与生活中常见的人物关系图结合，已经有了很好的例子： 【 D3.js 进阶系列 — 2.0 】 力学图 + 人物关系图，博主实现了下面这种样式，已经相当不错了。
-
-但是对于想把节点的方形图片换成圆形头像，网上的资料却很少，本例子就在上面的实例的基础上实现圆形头像，让人物关系图看起来更漂亮了一个档次。两个主要文件如下：
-
-# index.html123456789......  -->
-        <p class="article-more-link">
-          <a href="../../2016/11/18/【D3.js】力导向布局 + 圆形图片展示的人物关系/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/D3/">D3</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -748,6 +748,7 @@
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android】微信热修复 Tinker 的集成和使用"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -774,6 +775,8 @@
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -785,19 +788,17 @@
 <p>如果不是通过git clone方式下载的就可能出现这个错误，其实可以简单粗暴的方式解决，那就是在app/build.gradle中把tinker id写死：</p>
 <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> getTinkerIdValue() &#123;</span><br><span class="line">    <span class="keyword">return</span> hasProperty(<span class="string">"TINKER_ID"</span>) ? TINKER_ID : <span class="string">"tinker_id_2333"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>下面介绍一下如何一步步的把Tinker集成到自己的项目中，以及会遇到哪些问题该如何解决。</p>
-        <!-- 简介 Tinker： n.   〈英〉小炉匠，补锅匠，修补匠
-Tinker 是微信官方开源的 Android 热修复框架，支持在无需升级APK的前提下更新 dex, library and resources 文件。它也就是今年9月24才刚刚开源，几天功夫star数就超过3000，可见在开发者中的影响力有多大，也说明这是一个刚需。
-Tinker GitHub: https://github.......  -->
-        <p class="article-more-link">
-          <a href="../../2016/11/17/【Android】微信热修复 Tinker 的集成和使用/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Tinker/">Tinker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/hotfix/">hotfix</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -805,6 +806,7 @@ Tinker GitHub: https://github.......  -->
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【D3】Link Nodes by Name"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -831,25 +833,24 @@ Tinker GitHub: https://github.......  -->
     <a class="article-category-link" href="../../categories/D3-js/">D3.js</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
         <p>Source : <a href="http://bl.ocks.org/mbostock/533daf20348023dfdd76" target="_blank" rel="noopener">http://bl.ocks.org/mbostock/533daf20348023dfdd76</a></p>
 <p>This example shows how to link nodes in a <a href="http://bl.ocks.org/mbostock/4062045" target="_blank" rel="noopener"><strong>force-directed graph</strong></a> using a named identifier rather than a numeric index.</p>
-        <!-- Source : http://bl.ocks.org/mbostock/533daf20348023dfdd76
-This example shows how to link nodes in a force-directed graph using a named identifier rather than a numeric index.
-
-# index.html123456789......  -->
-        <p class="article-more-link">
-          <a href="../../2016/11/16/【D3】Link Nodes by Name/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/D3/">D3</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -857,6 +858,7 @@ This example shows how to link nodes in a force-directed graph using a named ide
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-Android 热修复原理和实现"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -883,6 +885,8 @@ This example shows how to link nodes in a force-directed graph using a named ide
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -893,25 +897,17 @@ This example shows how to link nodes in a force-directed graph using a named ide
 <p>《插件化从放弃到捡起》第一章，首先看一张图：</p>
 <p><img src="http://img.blog.csdn.net/20161110131925707" alt=""></p>
 <p>这张图是我所理解的 Android 插件化技术的三个技术点以及它们的应用场景。今天以 <a href="https://zhuanlan.zhihu.com/p/20308548" target="_blank" rel="noopener">【Qzone 热修复方案】</a>为例，跟大家讲一讲插件化中 <code>热修复方案</code> 的实现。</p>
-        <!-- 
-查看原文： Android 热修复，没你想的那么难 —— by kymjs张涛
-
-一种动态加载最简单的实现方式，代码实现起来非常简单，重要的是这种思路和原理 。
-《插件化从放弃到捡起》第一章，首先看一张图：
-
-这张图是我所理解的 Android 插件化技术的三个技术点以及它们的应用场景。今天以 【Qzone 热修复方案】为例，跟大家讲一讲插件化中 热修复方案 的实现。
-
-原理ClassLo......  -->
-        <p class="article-more-link">
-          <a href="../../2016/11/10/Android 热修复原理和实现/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/hotfix/">hotfix</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -919,6 +915,7 @@ This example shows how to link nodes in a force-directed graph using a named ide
 </article>
 
 <!-- Table of Contents -->
+
 
   
 
@@ -1019,7 +1016,7 @@ This example shows how to link nodes in a force-directed graph using a named ide
     });
 </script>
 
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
 
@@ -1047,7 +1044,7 @@ This example shows how to link nodes in a force-directed graph using a named ide
 
 
 
-	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
 	</script>
 
 

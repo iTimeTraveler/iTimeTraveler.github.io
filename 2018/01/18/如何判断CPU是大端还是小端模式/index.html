@@ -20,7 +20,7 @@
 <meta property="og:description" content="一、概念及详解在各种体系的计算机中通常采用的字节存储机制主要有两种： Big-Endian和Little-Endian，即大端模式和小端模式。 Big-Endian和Little-Endian的定义如下： 1) Little-Endian：就是低位字节排放在内存的低地址端，高位字节排放在内存的高地址端。2) Big-Endian：就是高位字节排放在内存的低地址端，低位字节排放在内存的高地址端。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://github.com/gallery/java-common/7573c9484d9ec5897a715&690.png">
-<meta property="og:updated_time" content="2018-03-14T08:13:59.000Z">
+<meta property="og:updated_time" content="2018-11-24T11:37:21.617Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何判断CPU是大端还是小端模式">
 <meta name="twitter:description" content="一、概念及详解在各种体系的计算机中通常采用的字节存储机制主要有两种： Big-Endian和Little-Endian，即大端模式和小端模式。 Big-Endian和Little-Endian的定义如下： 1) Little-Endian：就是低位字节排放在内存的低地址端，高位字节排放在内存的高地址端。2) Big-Endian：就是高位字节排放在内存的低地址端，低位字节排放在内存的高地址端。">
@@ -176,7 +176,7 @@
 <div class="article-gallery">
   <div class="article-gallery-photos">
     
-      <a class="article-gallery-img fancybox" href="../../../../gallery/java-common/7573c9484d9ec5897a715&690.png" rel="gallery_cjov964r000b94n45qatyqfqp">
+      <a class="article-gallery-img fancybox" href="../../../../gallery/java-common/7573c9484d9ec5897a715&690.png" rel="gallery_cjq0n1uam00bpx645w80xoz6n">
         <img src="../../../../gallery/java-common/7573c9484d9ec5897a715&690.png" itemprop="image">
       </a>
     
@@ -210,6 +210,8 @@
 	</span>
 	</a>
 
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -228,6 +230,8 @@
 <p>或者使用联合体union：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//return 1 : little-endian</span></span><br><span class="line"><span class="comment">//       0 : big-endian</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">checkCPUendian</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">union</span> &#123;</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> a;</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">char</span> b; </span><br><span class="line">    &#125; c;</span><br><span class="line">  </span><br><span class="line">    c.a = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> (c.b == <span class="number">1</span>); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>因为<strong>联合体union的存放顺序是所有成员都从低地址开始存放</strong>，利用该特性就可以轻松地获得了CPU对内存采用Little-endian还是Big-endian模式读写。</p>
+<p>顺便可以看下Java中如何判断字节序。Java NIO中的ByteBuffer类使用了<code>Bits.byteOrder()</code>来判断字节序，源代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bits</span> </span>&#123; </span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ByteOrder byteOrder;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Unsafe unsafe = Unsafe.getUnsafe();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 类加载的时候使用unsafe操作</span></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="keyword">long</span> a = unsafe.allocateMemory(<span class="number">8</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            unsafe.putLong(a, <span class="number">0x0102030405060708L</span>);</span><br><span class="line">            <span class="keyword">byte</span> b = unsafe.getByte(a);</span><br><span class="line">            <span class="keyword">switch</span> (b) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">0x01</span>: byteOrder = ByteOrder.BIG_ENDIAN;     <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">0x08</span>: byteOrder = ByteOrder.LITTLE_ENDIAN;  <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">assert</span> <span class="keyword">false</span>;</span><br><span class="line">                byteOrder = <span class="keyword">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            unsafe.freeMemory(a);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> ByteOrder <span class="title">byteOrder</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (byteOrder == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">"Unknown byte order"</span>);</span><br><span class="line">        <span class="keyword">return</span> byteOrder;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ...省略其他代码...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="常见的字节序"><a href="#常见的字节序" class="headerlink" title="常见的字节序"></a>常见的字节序</h3><p>一般操作系统都是小端，而通讯协议是大端的。</p>
 <h4 id="常见CPU的字节序"><a href="#常见CPU的字节序" class="headerlink" title="常见CPU的字节序"></a>常见CPU的字节序</h4><table>
 <thead>
@@ -313,6 +317,26 @@ var a = new Donate({
 </script>
       
       
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Mr.Seven</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/01/18/如何判断CPU是大端还是小端模式/" target="_blank" title="如何判断CPU是大端还是小端模式">http://github.com/2018/01/18/如何判断CPU是大端还是小端模式/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
         
 	<div id="comment">
 		<!-- 来必力City版安装代码 -->
@@ -339,7 +363,10 @@ var a = new Donate({
 
       
       
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/C语言/">C语言</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -377,6 +404,7 @@ var a = new Donate({
     
     </div>
   </aside>
+
 </section>
         
       </div>
@@ -466,7 +494,7 @@ var a = new Donate({
     });
 </script>
 
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
 
@@ -494,7 +522,7 @@ var a = new Donate({
 
 
 
-	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
 	</script>
 
 

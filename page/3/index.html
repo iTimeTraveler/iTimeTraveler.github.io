@@ -374,6 +374,8 @@
     <a class="article-category-link" href="../../categories/Java/">Java</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -385,19 +387,17 @@
 <li><code>Thread.sleep()</code>不会导致锁行为的改变，如果当前线程是拥有锁的，那么<code>Thread.sleep()</code>不会让线程释放锁。如果能够帮助你记忆的话，可以简单认为和锁相关的方法都定义在Object类中，因此调用<code>Thread.sleep()</code>是不会影响锁的相关行为。</li>
 <li><code>Thread.sleep</code>和<code>Object.wait</code>都会暂停当前的线程，对于CPU资源来说，不管是哪种方式暂停的线程，都表示它暂时不再需要CPU的执行时间。OS会将执行时间分配给其它线程。区别是调用wait后，需要别的线程执行notify/notifyAll才能够重新获得CPU执行时间。</li>
 </ol>
-        <!-- 前言生产者消费者问题是线程模型中的经典问题：生产者和消费者在同一时间段内共用同一存储空间，生产者向空间里生产数据，而消费者取走数据。
-阻塞队列就相当于一个缓冲区，平衡了生产者和消费者的处理能力。这个阻塞队列就是用来给生产者和消费者解耦的。
-wait/notify方法首先，我们搞清楚Thread.sleep()方法和Object.wait()、Object.notify()方法的区别。根据这篇......  -->
-        <p class="article-more-link">
-          <a href="../../2017/11/10/【Java】生产者消费者模式的实现/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -405,6 +405,7 @@ wait/notify方法首先，我们搞清楚Thread.sleep()方法和Object.wait()、
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android】Dialog异常CalledFromWrongThreadException深入分析"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -431,6 +432,8 @@ wait/notify方法首先，我们搞清楚Thread.sleep()方法和Object.wait()、
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -453,18 +456,17 @@ wait/notify方法首先，我们搞清楚Thread.sleep()方法和Object.wait()、
 </ul>
 <p>如果说<strong>只有创建这个控件的线程才能去更新该控件的内容</strong>。那么在调用show方法的时候为什么不会crash，然后dismiss的时候才会崩溃？</p>
 <p>另外，到底是不是所有的操作都必须放到ui线程中执行才对？带着疑问我们深入Dialog源码一看究竟。</p>
-        <!-- 问题在使用Dialog时，因为线程问题，在调用dismiss方法时出现了CalledFromWrongThreadException的Crash，如下：
-1android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy can to......  -->
-        <p class="article-more-link">
-          <a href="../../2017/10/26/【Android】Dialog异常CalledFromWrongThreadException深入分析/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -472,6 +474,7 @@ wait/notify方法首先，我们搞清楚Thread.sleep()方法和Object.wait()、
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【算法】字符串是否包含问题"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -498,6 +501,8 @@ wait/notify方法首先，我们搞清楚Thread.sleep()方法和Object.wait()、
     <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -512,22 +517,17 @@ wait/notify方法首先，我们搞清楚Thread.sleep()方法和Object.wait()、
 <p>String 1: ABCDEFGHLMNOPQRS<br>String 2: DCGSRQPZ</p>
 </blockquote>
 <p>答案是false，因为第二个字符串里的Z字母不在第一个字符串里。</p>
-        <!-- 在网上看到这篇文章：一次谷歌面试趣事。觉得其中的算法题以及作者的解决思路很有趣，就拿来分享一下吧。
-问题假设这有一个各种字母组成的字符串，假设这还有另外一个字符串，而且这个字符串里的字母数相对少一些。从算法是讲，什么方法能最快的查出所有小字符串里的字母在大字符串里都有？
-比如，如果是下面两个字符串：
-
-String 1: ABCDEFGHLMNOPQRSString 2: DCGSRQPO
-......  -->
-        <p class="article-more-link">
-          <a href="../../2017/10/18/【算法】字符串是否包含问题/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -535,6 +535,7 @@ String 1: ABCDEFGHLMNOPQRSString 2: DCGSRQPO
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android】源码分析 - AsyncTask异步任务机制"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -561,6 +562,8 @@ String 1: ABCDEFGHLMNOPQRSString 2: DCGSRQPO
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -582,20 +585,17 @@ String 1: ABCDEFGHLMNOPQRSString 2: DCGSRQPO
 </ol>
 <p>一个最简单的自定义AsyncTask就可以写成如下方式：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">MyTask</span> <span class="keyword">extends</span> <span class="title">AsyncTask</span>&lt;<span class="title">Void</span>, <span class="title">Void</span>, <span class="title">Void</span>&gt; </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure>
-        <!-- 前言提到Android的多线程机制，常用的有如下几种方式：
-
-AsyncTask: 封装了线程池和Handler，为 UI 线程与工作线程之间进行快速切换提供一种便捷机制。适用于当下立即需要启动，但是异步执行的生命周期短暂的使用场景。
-HandlerThread: 一个已经拥有了Looper的线程类，内部可以直接使用Handler。为某些回调方法或者等待某些任务的执行设置一个专属的线程，并提......  -->
-        <p class="article-more-link">
-          <a href="../../2017/10/09/【Android】源码分析 - AsyncTask异步任务机制/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/源码分析/">源码分析</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -603,6 +603,7 @@ HandlerThread: 一个已经拥有了Looper的线程类，内部可以直接使�
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android】源码分析 - IntentService机制"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -629,6 +630,8 @@ HandlerThread: 一个已经拥有了Looper的线程类，内部可以直接使�
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -641,23 +644,17 @@ HandlerThread: 一个已经拥有了Looper的线程类，内部可以直接使�
 <p>今天我们来根据平时的使用方式来分析一下第三个IntentSevice到底是什么怎么实现的？</p>
 <h3 id="IntentService的使用"><a href="#IntentService的使用" class="headerlink" title="IntentService的使用"></a>IntentService的使用</h3><p>IntentService继承了Service并且它本身是一个<strong>抽象类</strong>，因此使用它必须创建它的子类才能使用。所以这里我们自定义一个MyIntentService，来处理异步任务：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyIntentService</span> <span class="keyword">extends</span> <span class="title">IntentService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"MyIntentService"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> isRunning = <span class="keyword">true</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyIntentService</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(<span class="string">"MyIntentService"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onHandleIntent</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">	        <span class="comment">//查看线程id</span></span><br><span class="line">	        Log.i(TAG, intent.getStringExtra(<span class="string">"params"</span>) + <span class="string">", 线程id:"</span> + Thread.currentThread().getId());</span><br><span class="line">            Thread.sleep(<span class="number">1000</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//从0-100渐增</span></span><br><span class="line">            isRunning = <span class="keyword">true</span>;</span><br><span class="line">            count = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">while</span> (isRunning) &#123;</span><br><span class="line">                count++;</span><br><span class="line">                Log.i(TAG, <span class="string">"MyIntentService 线程运行中..."</span> + count);</span><br><span class="line">                <span class="keyword">if</span> (count &gt;= <span class="number">100</span>) &#123;</span><br><span class="line">                    isRunning = <span class="keyword">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                Thread.sleep(<span class="number">50</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onDestroy();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-        <!-- 前言提到Android的多线程机制，除了我们常用的Thread来实现异步任务之外，还有
-
-AsyncTask：封装了线程池和Handler，主要为了子线程更新UI；
-HandlerThread：一个已经拥有了Looper的线程类，内部可以直接使用Handler；
-IntentService：一个内部采用HandlerThread来执行任务的Service服务，任务执行完毕后会自动退出；
-
-今......  -->
-        <p class="article-more-link">
-          <a href="../../2017/10/05/【Android】源码分析 - IntentService机制/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/源码分析/">源码分析</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -665,6 +662,7 @@ IntentService：一个内部采用HandlerThread来执行任务的Service服务�
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android】EventBus 3.0源码分析"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -691,6 +689,8 @@ IntentService：一个内部采用HandlerThread来执行任务的Service服务�
     <a class="article-category-link" href="../../categories/源码分析/">源码分析</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -701,17 +701,17 @@ IntentService：一个内部采用HandlerThread来执行任务的Service服务�
 <p>EventBus 是Android上的以<strong>发布\订阅事件</strong>为核心的库。事件 (<code>event</code>) 通过 <code>post()</code> 发送到总线，然后再分发到匹配事件类型的订阅者 (<code>subscribers</code>) 。订阅者只有在总线中注册 (<code>register</code>) 了才能收到事件，注销 (<code>unrigister</code>) 之后就收不到任何事件了。事件方法必须带有 <code>Subscribe</code> 的注解，必须是 <code>public</code> ，没有返回类型 <code>void</code> 并且只能有一个参数。</p>
 </blockquote>
 <p>EventBus3 与之前的相比，其主要差别在于订阅方法可以不再以<code>onEvent</code> 开头了，改为用<strong>注解</strong>。</p>
-        <!-- 概述EventBus是Android中一个基于观察者模式的事件发布/订阅框架，开发者可以通过极少的代码去实现多个模块之间的通信，主要功能是替代Intent，Handler，BroadCast 在 Fragment，Activity，Service，线程Thread之间传递消息。优点是开销小，使用方便，可以很大程度上降低它们之间的耦合。 类似的库还有Otto ，今天就带大家一起研读 Event......  -->
-        <p class="article-more-link">
-          <a href="../../2017/09/30/【Android】EventBus 3.0源码分析/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/源码分析/">源码分析</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -719,6 +719,7 @@ IntentService：一个内部采用HandlerThread来执行任务的Service服务�
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Java】try-catch-finally语句中return的执行顺序思考"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -745,25 +746,25 @@ IntentService：一个内部采用HandlerThread来执行任务的Service服务�
     <a class="article-category-link" href="../../categories/Java/">Java</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
         <h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a><strong>实验</strong></h3><p>对于try-catch-finally语句中return的执行顺序，我们都有知道，finally块中的内容会先于try中的return语句执行，如果finall语句块中也有return语句的话，那么直接从finally中返回了，这也是不建议在finally中return的原因。</p>
 <p>下面通过实验来看这几种情况的执行顺序到底是什么。</p>
 <h4 id="1、try中有return，finally中没有"><a href="#1、try中有return，finally中没有" class="headerlink" title="1、try中有return，finally中没有"></a><strong>1、try中有return，finally中没有</strong></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TryCatchTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"test()函数返回："</span> + test());</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			System.out.println(<span class="string">"Try block executing: "</span> + ++i);</span><br><span class="line">			<span class="keyword">return</span> i;</span><br><span class="line">		&#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">			System.out.println(<span class="string">"Catch Error executing: "</span> + ++i);</span><br><span class="line">			<span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">		&#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">			System.out.println(<span class="string">"finally executing: "</span> + ++i);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-        <!-- 实验对于try-catch-finally语句中return的执行顺序，我们都有知道，finally块中的内容会先于try中的return语句执行，如果finall语句块中也有return语句的话，那么直接从finally中返回了，这也是不建议在finally中return的原因。
-下面通过实验来看这几种情况的执行顺序到底是什么。
-1、try中有return，finally中没有123456......  -->
-        <p class="article-more-link">
-          <a href="../../2017/09/20/【Java】try-catch-finally语句中return的执行顺序思考/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -771,6 +772,7 @@ IntentService：一个内部采用HandlerThread来执行任务的Service服务�
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【算法】从多项式乘法到快速傅里叶变换"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -797,6 +799,8 @@ IntentService：一个内部采用HandlerThread来执行任务的Service服务�
     <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -807,20 +811,17 @@ IntentService：一个内部采用HandlerThread来执行任务的Service服务�
 <h2 id="准备知识"><a href="#准备知识" class="headerlink" title="准备知识"></a>准备知识</h2><p>这里介绍一些后面可能会用到的知识（主要是关于多项式、卷积以及复数的），如果你已经知道觉得它太水了或者想用到的时候再看就跳过吧。</p>
 <h2 id="多项式"><a href="#多项式" class="headerlink" title="多项式"></a>多项式</h2><p>简单来说，形如 $ a_0+a_1X+a_2X^2+\cdots+a_nX^n $ 的代数表达式叫做<strong>多项式</strong>，可以记作$P(X)=a_0+a_1X+a_2X^2+\cdots+a_nX^n$，$a_0, a_1, \cdots, a_n $叫做多项式的<strong>系数</strong>，$X $是一个不定元，不表示任何值，不定元在多项式中最大项的次数称作多项式的<strong>次数</strong></p>
 <h3 id="多项式的系数表示法"><a href="#多项式的系数表示法" class="headerlink" title="多项式的系数表示法"></a>多项式的系数表示法</h3><p>像刚刚我们提到的那些多项式，都是以系数形式表示的，也就是将 n 次多项式$ A(x) $的系数 $a_0, a_1, \cdots, a_n $看作 $n+1 $维向量$ \vec a=(a_0,a_1,\cdots,a_n)$，其<strong>系数表示（coefficient representation）</strong>就是向量$ \vec a$ 。</p>
-        <!-- 
-本文来自： 从多项式乘法到快速傅里叶变换 — miskcoo
-
-概述计算多项式的乘法，或者计算两个大整数的乘法是在计算机中很常见的运算，如果用普通的方法进行，复杂度将会是$ \mathcal O(n^2) ​$的，还有一种分治乘法，可以做到 $\mathcal O(n^{\log_23}) ​$时间计算（可以看Karatsuba 乘法）。下面从计算多项式的乘法出发，介绍快速傅里叶变换（Fa......  -->
-        <p class="article-more-link">
-          <a href="../../2017/09/08/【算法】从多项式乘法到快速傅里叶变换/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -828,6 +829,7 @@ IntentService：一个内部采用HandlerThread来执行任务的Service服务�
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【算法】大数相乘问题及其高效算法"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -854,6 +856,8 @@ IntentService：一个内部采用HandlerThread来执行任务的Service服务�
     <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -872,23 +876,17 @@ IntentService：一个内部采用HandlerThread来执行任务的Service服务�
 <li><strong>中国剩余定理</strong>：把每个数分解到一些互素的模上，然后每个同余方程对应乘起来就行；</li>
 <li><strong>Furer’s algorithm</strong>：在渐进意义上FNTT还快的算法。不过好像不太实用，本文就不作介绍了。大家可以参考维基百科<a href="https://en.wikipedia.org/wiki/F%C3%BCrer%27s_algorithm" target="_blank" rel="noopener">Fürer’s algorithm</a></li>
 </ol>
-        <!-- 题目编写两个任意位数的大数相乘的程序，给出计算结果。比如：
-
-题目描述：    输出两个不超过100位的大整数的乘积。输入：    输入两个大整数，如1234567 和 123输出：    输出乘积，如：151851741
-
-或者
-1求 1234567891011121314151617181920 * 2019181716151413121110987654321 的乘积结果
-分析所谓大数......  -->
-        <p class="article-more-link">
-          <a href="../../2017/08/22/【算法】大数相乘问题及其高效算法/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -896,6 +894,7 @@ IntentService：一个内部采用HandlerThread来执行任务的Service服务�
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【算法】反转字符串"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -922,6 +921,8 @@ IntentService：一个内部采用HandlerThread来执行任务的Service服务�
     <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -931,20 +932,17 @@ IntentService：一个内部采用HandlerThread来执行任务的Service服务�
 <h3 id="1、使用字符数组倒序输出"><a href="#1、使用字符数组倒序输出" class="headerlink" title="1、使用字符数组倒序输出"></a>1、使用字符数组倒序输出</h3><p>最常规的解法，也是最容易想到的一种方法就是使用字符数组倒序输出。</p>
 <p>具体思路是：倒序遍历字符串字符循环给char数组赋值</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">strReverseWithArray</span><span class="params">(String string)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (string == <span class="keyword">null</span> || string.length() == <span class="number">0</span>) <span class="keyword">return</span> string;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">char</span>[] array = <span class="keyword">new</span> <span class="keyword">char</span>[string.length()];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; string.length(); i++)&#123;</span><br><span class="line">        array[i] = string.charAt(string.length() - i - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> String(array);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-        <!-- 前言研究算法能提高我们的编程功底，更好地编写出高效稳健的代码。今天，我们研究的是 —— 反转字符串。
-123//输入一个字符串，输出它的倒序字符串input:  Hellooutput: olleH
-解法反转字符串，确实没什么难度，但是我无意间搜索了一下，才发现这么一个看似简单的反转算法实现起来真可谓花样繁多。这里我们尽可能分别总结介绍一下。
-1、使用字符数组倒序输出最常规的解法，也是最容易......  -->
-        <p class="article-more-link">
-          <a href="../../2017/08/05/【算法】反转字符串/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -952,6 +950,7 @@ IntentService：一个内部采用HandlerThread来执行任务的Service服务�
 </article>
 
 <!-- Table of Contents -->
+
 
   
 
@@ -1052,7 +1051,7 @@ IntentService：一个内部采用HandlerThread来执行任务的Service服务�
     });
 </script>
 
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
 
@@ -1080,7 +1079,7 @@ IntentService：一个内部采用HandlerThread来执行任务的Service服务�
 
 
 
-	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
 	</script>
 
 

@@ -374,6 +374,8 @@
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -392,17 +394,17 @@
 <li>Looper</li>
 </ul>
 <p>我们依次结合源码分析一下。</p>
-        <!-- 前言多线程的消息传递处理，从初学Android时的Handler，懵懵懂懂地照猫画虎，到后来一头雾水的疑惑它为什么这么复杂，再到熟悉之后的叹为观止，一步步地都是自己踩过的足迹，都是成长啊哈哈哈。虽然离出神入化的境界还远十万八千里呢，但Android中的Handler多线程消息传递机制，的确是研发技术学习中不可多得的一个宝藏。本来我以为自己之前的学习以及比较了解 Handler，在印象中 An......  -->
-        <p class="article-more-link">
-          <a href="../../2017/08/03/【Android】源码分析 - Handler消息机制再梳理/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/源码分析/">源码分析</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -410,6 +412,7 @@
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Android】Binder - 如何使用AIDL"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -436,6 +439,8 @@
     <a class="article-category-link" href="../../categories/Android/">Android</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -446,19 +451,17 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// IServiceCallBack.aidl</span></span><br><span class="line"><span class="keyword">package</span> com.cuc.myandroidtest;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IServiceCallback</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onDownloadProgress</span><span class="params">(<span class="keyword">double</span> progress)</span></span>;   <span class="comment">//服务端下载进度通知</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onDownloadCompleted</span><span class="params">()</span></span>;                 <span class="comment">//下载完成通知</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>（3） MyData.aidl：定义传输的Parcel数据</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MyData.aidl</span></span><br><span class="line"><span class="keyword">package</span> com.cuc.myandroidtest;</span><br><span class="line"></span><br><span class="line">parcelable MyData;</span><br></pre></td></tr></table></figure>
-        <!-- 一、跨进程通信为了演示方便，将Service与Activity处于不同的进程，可以在AndroidManifest.xml中，把service配置成android:process=&quot;:remote&quot; ，也可以命名成其他的。
-AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
-12345678910111213// IRemoteSer......  -->
-        <p class="article-more-link">
-          <a href="../../2017/08/02/【Android】Binder - 如何使用AIDL/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -466,6 +469,7 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-Google 笔试题 - 连通图的最大生成树的权和"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -492,6 +496,8 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
     <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -503,18 +509,17 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
 <p>C、13</p>
 <p>D、14</p>
 <p>E、15</p>
-        <!-- 这是一道Google 笔试题
-题目一个有n个结点的连通图的生成树是原图的最小连通子图, 且包含原图中所有n个结点，并且有保持图联通的最少的边。最大生成树就是权和最大生成树，现在给出一个无向带权图的邻接矩阵，权为0表示没有边。12345&#123;&#123;0, 4, 5, 0, 3&#125;,  &#123;4, 0, 4, 2, 3&#125;,  &#123;5, 4, 0, 2, ......  -->
-        <p class="article-more-link">
-          <a href="../../2017/07/31/Google 笔试题 - 连通图的最大生成树的权和/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Google/">Google</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -522,6 +527,7 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-八大排序算法总结与java实现"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -548,6 +554,8 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
     <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -563,30 +571,17 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
 <li>归并排序</li>
 <li>基数排序</li>
 </ul>
-        <!-- 概述因为健忘，加上对各种排序算法理解不深刻，过段时间面对排序就蒙了。所以决定对我们常见的这几种排序算法进行统一总结，强行学习。首先罗列一下常见的十大排序算法：
-
-
-直接插入排序
-希尔排序
-简单选择排序
-堆排序
-冒泡排序
-快速排序
-归并排序
-基数排序
-
-
-我们讨论的这八大排序算法的实现可以参考我的Github：SortAlgorithms，其中也包括了排序测试模块[Test.java]和排序算......  -->
-        <p class="article-more-link">
-          <a href="../../2017/07/18/八大排序算法总结与java实现/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -594,6 +589,7 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【算法】10亿int型数，统计只出现一次的数"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -620,6 +616,8 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
     <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -631,21 +629,17 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
 <li><strong>分治法</strong>：分批处理这10亿的数。</li>
 </ol>
 <p>一种是位图法，如果各位老司机有经验的话很快会想到int整型数是4字节（Byte），也就是32位（bit），如果能用一个bit位来标识一个int整数那么存储空间将大大减少。另一种是分治法，内存有限，我想办法分批读取处理。下面大致分析一下两种思路。</p>
-        <!-- 题目10亿int整型数，以及一台可用内存为1GB的机器，时间复杂度要求O(n)，统计只出现一次的数？
-分析首先分析多大的内存能够表示10亿的数呢？一个int型占4字节，10亿就是40亿字节（很明显就是4GB），也就是如果完全读入内存需要占用4GB，而题目只给1GB内存，显然不可能将所有数据读入内存。
-我们先不考虑时间复杂度，仅考虑解决问题。那么接下来的思路一般有两种。
-
-位图法：用一个bit......  -->
-        <p class="article-more-link">
-          <a href="../../2017/07/13/【算法】10亿int型数，统计只出现一次的数/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -653,6 +647,7 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-遗传算法的基本概念和Java实现"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -679,25 +674,24 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
     <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
         <p>基因遗传算法是一种灵感源于达尔文自然进化理论的启发式搜索算法。该算法反映了自然选择的过程，即最适者被选定繁殖，并产生下一代。本文简要地介绍了遗传算法的基本概念和实现，希望能为读者展示启发式搜索的魅力。</p>
 <p><img src="/gallery/genetic-algorithms/1-BYDJpa6M2rzWNSurvspf8Q.png" alt="如上图（左）所示，遗传算法的个体由多条染色体组成，每条染色体由多个基因组成。上图（右）展示了染色体分割和组合的方式。"></p>
-        <!-- 基因遗传算法是一种灵感源于达尔文自然进化理论的启发式搜索算法。该算法反映了自然选择的过程，即最适者被选定繁殖，并产生下一代。本文简要地介绍了遗传算法的基本概念和实现，希望能为读者展示启发式搜索的魅力。
-
-
-遗传算法的概念自然选择的过程从选择群体中最适应环境的个体开始。后代继承了父母的特性，并且这些特性将添加到下一代中。如果父母具有更好的适应性，那么它们的后代将更易于存活。迭代地进行该自然选择......  -->
-        <p class="article-more-link">
-          <a href="../../2017/07/11/遗传算法的基本概念和Java实现/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -705,6 +699,7 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【Java】Integer变量相等（==）比较问题"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -731,6 +726,8 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
     <a class="article-category-link" href="../../categories/Java/">Java</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -741,18 +738,17 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
 <p>true<br>false</p>
 </blockquote>
 <p>一个是true，一个是false！<br>这是为什么呢？为什么和大多数人心里想的不一样！</p>
-        <!-- 题目这是关于一段令人疑惑的Java代码:
-12345678910111213class TestIntegerCache &#123;    public static void main(String[] args)&#123;        Integer i3 = 100;        Integer i4 = 100;        System.out.println(i3 ==......  -->
-        <p class="article-more-link">
-          <a href="../../2017/07/11/【Java】Integer变量相等（==）比较问题/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -760,6 +756,7 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-Java 8系列之重新认识HashMap"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -786,6 +783,8 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
     <a class="article-category-link" href="../../categories/Java/">Java</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -795,20 +794,17 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
 <h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a><strong>摘要</strong></h2><p>HashMap是Java程序员使用频率最高的用于映射(键值对)处理的数据类型。随着JDK（Java Developmet Kit）版本的更新，JDK1.8对HashMap底层的实现进行了优化，例如引入红黑树的数据结构和扩容的优化等。本文结合JDK1.7和JDK1.8的区别，深入探讨HashMap的结构实现和功能原理。</p>
 <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a><strong>简介</strong></h2><p>Java为数据结构中的映射定义了一个接口java.util.Map，此接口主要有四个常用的实现类，分别是<code>HashMap</code>、<code>Hashtable</code>、<code>LinkedHashMap</code>和<code>TreeMap</code>，类继承关系如下图所示：</p>
 <p><img src="http://img.blog.csdn.net/20170616165413193" alt=""></p>
-        <!-- 
-本文来自美团点评技术团队： Java 8系列之重新认识HashMap
-
-摘要HashMap是Java程序员使用频率最高的用于映射(键值对)处理的数据类型。随着JDK（Java Developmet Kit）版本的更新，JDK1.8对HashMap底层的实现进行了优化，例如引入红黑树的数据结构和扩容的优化等。本文结合JDK1.7和JDK1.8的区别，深入探讨HashMap的结构实现和功能原理......  -->
-        <p class="article-more-link">
-          <a href="../../2017/06/16/Java 8系列之重新认识HashMap/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -816,6 +812,7 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-【面试题】Java String常量相等（==）问题"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -842,23 +839,24 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
     <a class="article-category-link" href="../../categories/Java/">Java</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>以下三个结果分别输出（true or false）？别小看它，很多程序员因为上面问题出过生产bug</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">String s3 = <span class="string">"s"</span>;</span><br><span class="line">String s4 = <span class="string">"s"</span>;</span><br><span class="line">System.out.println(s3==s4);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">String s5 = <span class="string">"hello"</span>;</span><br><span class="line">String s6 = <span class="string">"he"</span>+<span class="string">"llo"</span>;</span><br><span class="line">System.out.println(s5==s6);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">Integer i = <span class="number">2017</span>;</span><br><span class="line">Integer j = <span class="number">2017</span>;</span><br><span class="line">System.out.println(i==j);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">String s1 = <span class="keyword">new</span> String(<span class="string">"s"</span>);</span><br><span class="line">String s2 = <span class="keyword">new</span> String(<span class="string">"s"</span>);</span><br><span class="line">System.out.println(s1==s2);</span><br><span class="line">System.out.println(s1.intern()==s2.intern());</span><br></pre></td></tr></table></figure>
-        <!-- 问题以下三个结果分别输出（true or false）？别小看它，很多程序员因为上面问题出过生产bug
-12345678910111213141516171819202122String s3 = "s";String s4 = "s";System.out.println(s3==s4);---String s5 = "hello";String s6 = "he"+"llo";Syste......  -->
-        <p class="article-more-link">
-          <a href="../../2017/06/15/【面试题】Java String常量相等（==）问题/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -866,6 +864,7 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
 </article>
 
 <!-- Table of Contents -->
+
 
   
     <article id="post-详解Java类的生命周期"  class="article article-type-post" itemscope itemprop="blogPost" >
@@ -892,6 +891,8 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
     <a class="article-category-link" href="../../categories/Java/">Java</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -903,17 +904,17 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
 <li><strong>堆区</strong>：用于存放类的对象实例。</li>
 <li><strong>栈区</strong>：也叫java虚拟机栈，是由一个一个的栈帧组成的后进先出的栈式结构，栈桢中存放方法运行时产生的局部变量、方法出口等信息。当调用一个方法时，虚拟机栈中就会创建一个栈帧存放这些数据，当方法调用完成时，栈帧消失，如果方法中调用了其他方法，则继续在栈顶创建新的栈桢。</li>
 </ul>
-        <!-- 引言最近有位细心的朋友在阅读笔者的文章时，对Java类的生命周期问题有一些疑惑，笔者打开百度搜了一下相关的问题，看到网上的资料很少有把这个问题讲明白的，主要是因为目前国内Java方面的教材大多只是告诉你“怎样做”，但至于“为什么这样做”却不多说，所以造成大家在基础和原理方面的知识比较匮乏，所以笔者今天就斗胆来讲一下这个问题，权当抛砖引玉，希望对在这个问题上有疑惑的朋友有所帮助，文中有说的不对......  -->
-        <p class="article-more-link">
-          <a href="../../2017/06/02/详解Java类的生命周期/#more">阅读全文</a>
-        </p>
       
     </div>
     <footer class="article-footer">
       
       
       
+      
+        
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
+
+      
 
     </footer>
   </div>
@@ -921,6 +922,7 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
 </article>
 
 <!-- Table of Contents -->
+
 
   
 
@@ -1021,7 +1023,7 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
     });
 </script>
 
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
 
@@ -1049,7 +1051,7 @@ AIDL（1） IRemoteService.aidl：定义Server端提供的服务接口
 
 
 
-	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
 	</script>
 
 
