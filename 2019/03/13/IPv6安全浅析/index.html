@@ -20,7 +20,7 @@
 <meta property="og:description" content="原文链接 ：IPv6安全浅析 - Huawei - 2010.12 第52期   “缺乏安全性是互联网天生的弱点，这与是否采用IPv6关系不大。事实上，IPv6并没有引入新的安全问题，反而由于IPSec的引入以及发送设备采用永久性IP地址而解决了网络层溯源难题，给网络安全提供了根本的解决途径，有望实现端到端安全性。”中国电信科技委主任韦乐平这样评价IPv6安全。 IPv6协议设计的安全考虑从协议">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://github.com/gallery/common/ipv6-ready-1-1024x768.png">
-<meta property="og:updated_time" content="2019-03-13T11:49:46.045Z">
+<meta property="og:updated_time" content="2019-03-13T11:55:51.285Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="IPv6安全浅析">
 <meta name="twitter:description" content="原文链接 ：IPv6安全浅析 - Huawei - 2010.12 第52期   “缺乏安全性是互联网天生的弱点，这与是否采用IPv6关系不大。事实上，IPv6并没有引入新的安全问题，反而由于IPSec的引入以及发送设备采用永久性IP地址而解决了网络层溯源难题，给网络安全提供了根本的解决途径，有望实现端到端安全性。”中国电信科技委主任韦乐平这样评价IPv6安全。 IPv6协议设计的安全考虑从协议">
@@ -176,7 +176,7 @@
 <div class="article-gallery">
   <div class="article-gallery-photos">
     
-      <a class="article-gallery-img fancybox" href="../../../../gallery/common/ipv6-ready-1-1024x768.png" rel="gallery_cjt7582cg002on2fye1khp5sd">
+      <a class="article-gallery-img fancybox" href="../../../../gallery/common/ipv6-ready-1-1024x768.png" rel="gallery_cjt75evux002kpofyt15u790w">
         <img src="../../../../gallery/common/ipv6-ready-1-1024x768.png" itemprop="image">
       </a>
     
@@ -218,7 +218,7 @@
         <blockquote>
 <p>原文链接 ：<a href="https://www.huawei.com/ilink/en/download/HW_079734" target="_blank" rel="noopener">IPv6安全浅析 - Huawei - 2010.12 第52期</a> </p>
 </blockquote>
-<p>“缺乏安全性是互联网天生的弱点，这与是否采用IPv6关系不大。事实上，IPv6并没有引入新的安全问<br>题，反而由于IPSec的引入以及发送设备采用永久性IP地址而解决了网络层溯源难题，给网络安全提供了<br>根本的解决途径，有望实现端到端安全性。”中国电信科技委主任韦乐平这样评价IPv6安全。</p>
+<p>“缺乏安全性是互联网天生的弱点，这与是否采用IPv6关系不大。事实上，IPv6并没有引入新的安全问题，反而由于IPSec的引入以及发送设备采用永久性IP地址而解决了网络层溯源难题，给网络安全提供了根本的解决途径，有望实现端到端安全性。”中国电信科技委主任韦乐平这样评价IPv6安全。</p>
 <h2 id="IPv6协议设计的安全考虑"><a href="#IPv6协议设计的安全考虑" class="headerlink" title="IPv6协议设计的安全考虑"></a>IPv6协议设计的安全考虑</h2><p>从协议的角度，IPv6作为IPv4的下一代，与IPv4同属于网络层的传输协议。然而，协议上最核心、最本质的差别就是地址空间的扩大，由IPv4下的32位地址空间变为128位的地址空间，这正是IPv6被选作新网络的承载协议并逐渐商用部署的根本驱动力。IPv6拥有如此巨大的地址空间，甚至可以为每一粒沙子都分配一个IP地址。而IPv4网络的地址分配是不规则的，并且很多时候是一个地址被多台主机共用。使用IPv6之后，我们能够将每个地址指定给一个责任体，就像给每个人一个身份证号，每辆车一个车牌号一样，每个地址都是唯一的；IPv6的地址分配采用逐级、层次化的结构，这就使得追踪定位、攻击溯源有了很大的改善。</p>
 <p>另外，IPv6提出了新的地址生成方式——密码生成地址。密码生成地址与公私钥对绑定，保证地址不能被他人伪造。这如同汽车的车牌印上了指纹，别人不可能伪造这样的车牌，因为指纹造不了假。在IPv6协议设计之初，IP Sec（IPSecurity）协议族中的AH（AuthenticationHeader，报文认证头）和ESP（EncapsulationSecurity Payload，报文封装安全载荷）就内嵌到协议栈中，作为IPv6的扩展头出现在IP报文中，提供完整性、保密性和源认保护，这无疑是从协议上较大地提升安全性。</p>
 <p>整体上看，IPv4协议的设计没有任何的安全考虑，特别是报文地址的伪造与欺骗使得无法对网络进行有效的监管和控制。因此，当出现网络攻击与安全威胁时，我们只能围绕攻击事件做好事前、事中和事后的防范、检测和过滤防御，缺乏有效的技术支撑手段，无法对攻击者形成真正的打击和管控。</p>
