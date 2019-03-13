@@ -350,6 +350,63 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-Android 热修复原理和实现"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2016/11/10/Android 热修复原理和实现/">Android 热修复原理和实现</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2016/11/10/Android 热修复原理和实现/" class="article-date">
+	  <time datetime="2016-11-10T05:06:00.000Z" itemprop="datePublished">2016-11-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Android/">Android</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>查看原文： <a href="http://kymjs.com/code/2016/05/08/01" target="_blank" rel="noopener"><strong>Android 热修复，没你想的那么难</strong></a> —— by kymjs张涛</p>
+</blockquote>
+<p>一种动态加载最简单的实现方式，代码实现起来非常简单，重要的是这种思路和原理 。</p>
+<p>《插件化从放弃到捡起》第一章，首先看一张图：</p>
+<p><img src="http://img.blog.csdn.net/20161110131925707" alt=""></p>
+<p>这张图是我所理解的 Android 插件化技术的三个技术点以及它们的应用场景。今天以 <a href="https://zhuanlan.zhihu.com/p/20308548" target="_blank" rel="noopener">【Qzone 热修复方案】</a>为例，跟大家讲一讲插件化中 <code>热修复方案</code> 的实现。</p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/hotfix/">hotfix</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-使用Neo4j进行全栈Web开发"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -861,68 +918,6 @@
       
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Design-Pattern/">Design Pattern</a></li></ul>
-
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-【Go语言】基本类型排序和 slice 排序"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/09/07/【Go语言】基本类型排序和 slice 排序/">【Go语言】基本类型排序和 slice 排序</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2016/09/07/【Go语言】基本类型排序和 slice 排序/" class="article-date">
-	  <time datetime="2016-09-07T08:36:00.000Z" itemprop="datePublished">2016-09-07</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Go语言/">Go语言</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>Go 是通过 sort 包提供排序和搜索，因为 Go 暂时不支持泛型（将来也不好说支不支持），所以，Go 的 sort 和 search 使用起来跟类型是有关的，或是需要像 c 一样写比较函数等，稍微显得也不是很方便。</p>
-</blockquote>
-<h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a><strong>引言</strong></h3><p>  Go 的排序思路和 C 和 C++ 有些差别。 C 默认是对数组进行排序， C++ 是对一个序列进行排序， Go 则更宽泛一些，待排序的可以是<strong><code>任何对象</code></strong>， 虽然很多情况下是一个 <code>slice</code> (分片， 类似于数组)，或是包含 slice 的一个对象。</p>
-<p>排序(接口)的三个要素：</p>
-<ul>
-<li>待排序元素个数 n ；</li>
-<li>第 i 和第 j 个元素的比较函数 cmp ；</li>
-<li>第 i 和 第 j 个元素的交换 swap ；</li>
-</ul>
-<p>乍一看条件 3 是多余的， c 和 c++ 都不提供 swap 。 c 的 qsort 的用法： <code>qsort(data, n, sizeof(int), cmp_int);</code>  data 是起始地址， n 是元素个数， sizeof(int) 是每个元素的大小， cmp_int 是一个比较两个 int 的函数。</p>
-<p>c++ 的 sort 的用法： <code>sort(data, data+n, cmp_int);</code> data 是第一个元素的位置， data+n 是最后一个元素的下一个位置， cmp_int 是比较函数。</p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Go语言/">Go语言</a></li></ul>
 
       
 

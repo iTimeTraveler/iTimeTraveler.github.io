@@ -350,6 +350,62 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【算法】反转字符串"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/08/05/【算法】反转字符串/">【算法】反转字符串</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/08/05/【算法】反转字符串/" class="article-date">
+	  <time datetime="2017-08-05T14:20:55.000Z" itemprop="datePublished">2017-08-05</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>研究算法能提高我们的编程功底，更好地编写出高效稳健的代码。今天，我们研究的是 —— 反转字符串。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//输入一个字符串，输出它的倒序字符串</span></span><br><span class="line">input:  Hello</span><br><span class="line">output: olleH</span><br></pre></td></tr></table></figure>
+<h2 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h2><p>反转字符串，确实没什么难度，但是我无意间搜索了一下，才发现这么一个看似简单的反转算法实现起来真可谓花样繁多。这里我们尽可能分别总结介绍一下。</p>
+<h3 id="1、使用字符数组倒序输出"><a href="#1、使用字符数组倒序输出" class="headerlink" title="1、使用字符数组倒序输出"></a>1、使用字符数组倒序输出</h3><p>最常规的解法，也是最容易想到的一种方法就是使用字符数组倒序输出。</p>
+<p>具体思路是：倒序遍历字符串字符循环给char数组赋值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">strReverseWithArray</span><span class="params">(String string)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (string == <span class="keyword">null</span> || string.length() == <span class="number">0</span>) <span class="keyword">return</span> string;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">char</span>[] array = <span class="keyword">new</span> <span class="keyword">char</span>[string.length()];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; string.length(); i++)&#123;</span><br><span class="line">        array[i] = string.charAt(string.length() - i - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> String(array);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Algorithm/">Algorithm</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-【Android】源码分析 - Handler消息机制再梳理"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -846,64 +902,6 @@
       
         <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>以下三个结果分别输出（true or false）？别小看它，很多程序员因为上面问题出过生产bug</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">String s3 = <span class="string">"s"</span>;</span><br><span class="line">String s4 = <span class="string">"s"</span>;</span><br><span class="line">System.out.println(s3==s4);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">String s5 = <span class="string">"hello"</span>;</span><br><span class="line">String s6 = <span class="string">"he"</span>+<span class="string">"llo"</span>;</span><br><span class="line">System.out.println(s5==s6);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">Integer i = <span class="number">2017</span>;</span><br><span class="line">Integer j = <span class="number">2017</span>;</span><br><span class="line">System.out.println(i==j);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">String s1 = <span class="keyword">new</span> String(<span class="string">"s"</span>);</span><br><span class="line">String s2 = <span class="keyword">new</span> String(<span class="string">"s"</span>);</span><br><span class="line">System.out.println(s1==s2);</span><br><span class="line">System.out.println(s1.intern()==s2.intern());</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/">Java</a></li></ul>
-
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-详解Java类的生命周期"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/06/02/详解Java类的生命周期/">详解Java类的生命周期</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/06/02/详解Java类的生命周期/" class="article-date">
-	  <time datetime="2017-06-02T03:36:55.000Z" itemprop="datePublished">2017-06-02</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Java/">Java</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a><strong>引言</strong></h2><p>最近有位细心的朋友在阅读笔者的文章时，对Java类的生命周期问题有一些疑惑，笔者打开百度搜了一下相关的问题，看到网上的资料很少有把这个问题讲明白的，主要是因为目前国内Java方面的教材大多只是告诉你“怎样做”，但至于“为什么这样做”却不多说，所以造成大家在基础和原理方面的知识比较匮乏，所以笔者今天就斗胆来讲一下这个问题，权当抛砖引玉，希望对在这个问题上有疑惑的朋友有所帮助，文中有说的不对的地方，也希望各路高手前来指正。</p>
-<p>首先来了解一下jvm（java虚拟机）中的几个比较重要的内存区域，这几个区域在java类的生命周期中扮演着比较重要的角色：</p>
-<ul>
-<li><strong>方法区</strong>：在java的虚拟机中有一块专门用来存放已经加载的类信息、常量、静态变量以及方法代码的内存区域，叫做方法区。</li>
-<li><strong>常量池</strong>：常量池是方法区的一部分，主要用来存放常量和类中的符号引用等信息。</li>
-<li><strong>堆区</strong>：用于存放类的对象实例。</li>
-<li><strong>栈区</strong>：也叫java虚拟机栈，是由一个一个的栈帧组成的后进先出的栈式结构，栈桢中存放方法运行时产生的局部变量、方法出口等信息。当调用一个方法时，虚拟机栈中就会创建一个栈帧存放这些数据，当方法调用完成时，栈帧消失，如果方法中调用了其他方法，则继续在栈顶创建新的栈桢。</li>
-</ul>
       
     </div>
     <footer class="article-footer">

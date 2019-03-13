@@ -350,6 +350,68 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Android】TextView中不同大小字体如何上下垂直居中？"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/01/03/【Android】TextView中不同大小字体如何上下垂直居中？/">【Android】TextView中不同大小字体如何上下垂直居中？</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/01/03/【Android】TextView中不同大小字体如何上下垂直居中？/" class="article-date">
+	  <time datetime="2017-01-03T09:03:00.000Z" itemprop="datePublished">2017-01-03</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Android/">Android</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h2><p>在客户端开发中，我们往往需要对一个TextView的文字的部分内容进行特殊化处理，比如加粗、改变颜色、加链接、下划线等。iOS为我们提供了<code>AttributedString</code>，而Android则提供了<strong><code>SpannableString</code></strong>。</p>
+<p>在Android的android.text.style包下为我们提供了各种各样的span（可以<a href="http://blog.csdn.net/u010983881/article/details/52383539" target="_blank" rel="noopener"><strong>参考这篇文章</strong></a>），例如：</p>
+<ul>
+<li><p><strong>AbsoluteSizeSpan(int size)</strong> —— 设置字体大小，参数是绝对数值，相当于Word中的字体大小</p>
+</li>
+<li><p><strong>RelativeSizeSpan(float proportion)</strong> —— 设置字体大小，参数是相对于默认字体大小的倍数，比如默认字体大小是x, 那么设置后的字体大小就是x*proportion，这个用起来比较灵活，proportion&gt;1就是放大(zoom in), proportion&lt;1就是缩小(zoom out)</p>
+</li>
+<li><p><strong>BackgroundColorSpan(int color)</strong> —— 背景着色，参数是颜色数值，可以直接使用android.graphics.Color里面定义的常量，或是用Color.rgb(int, int, int)</p>
+</li>
+<li><p><strong>ForegroundColorSpan(int color)</strong> —— 前景着色，也就是字的着色，参数与背景着色一致</p>
+</li>
+</ul>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Android/">Android</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-【Java】泛型中 extends 和 super 的区别？"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -849,63 +911,6 @@
       
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/D3/">D3</a></li></ul>
-
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-Android 热修复原理和实现"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/11/10/Android 热修复原理和实现/">Android 热修复原理和实现</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2016/11/10/Android 热修复原理和实现/" class="article-date">
-	  <time datetime="2016-11-10T05:06:00.000Z" itemprop="datePublished">2016-11-10</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Android/">Android</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>查看原文： <a href="http://kymjs.com/code/2016/05/08/01" target="_blank" rel="noopener"><strong>Android 热修复，没你想的那么难</strong></a> —— by kymjs张涛</p>
-</blockquote>
-<p>一种动态加载最简单的实现方式，代码实现起来非常简单，重要的是这种思路和原理 。</p>
-<p>《插件化从放弃到捡起》第一章，首先看一张图：</p>
-<p><img src="http://img.blog.csdn.net/20161110131925707" alt=""></p>
-<p>这张图是我所理解的 Android 插件化技术的三个技术点以及它们的应用场景。今天以 <a href="https://zhuanlan.zhihu.com/p/20308548" target="_blank" rel="noopener">【Qzone 热修复方案】</a>为例，跟大家讲一讲插件化中 <code>热修复方案</code> 的实现。</p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/hotfix/">hotfix</a></li></ul>
 
       
 
