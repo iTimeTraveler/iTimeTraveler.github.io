@@ -20,7 +20,7 @@
 <meta property="og:description" content="原文链接 ：IPv6安全浅析 - Huawei - 2010.12 第52期   “缺乏安全性是互联网天生的弱点，这与是否采用IPv6关系不大。事实上，IPv6并没有引入新的安全问题，反而由于IPSec的引入以及发送设备采用永久性IP地址而解决了网络层溯源难题，给网络安全提供了根本的解决途径，有望实现端到端安全性。”中国电信科技委主任韦乐平这样评价IPv6安全。 IPv6协议设计的安全考虑从协议">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://github.com/gallery/common/ipv6-ready-1-1024x768.png">
-<meta property="og:updated_time" content="2019-03-13T11:47:18.529Z">
+<meta property="og:updated_time" content="2019-03-13T11:49:46.045Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="IPv6安全浅析">
 <meta name="twitter:description" content="原文链接 ：IPv6安全浅析 - Huawei - 2010.12 第52期   “缺乏安全性是互联网天生的弱点，这与是否采用IPv6关系不大。事实上，IPv6并没有引入新的安全问题，反而由于IPSec的引入以及发送设备采用永久性IP地址而解决了网络层溯源难题，给网络安全提供了根本的解决途径，有望实现端到端安全性。”中国电信科技委主任韦乐平这样评价IPv6安全。 IPv6协议设计的安全考虑从协议">
@@ -176,7 +176,7 @@
 <div class="article-gallery">
   <div class="article-gallery-photos">
     
-      <a class="article-gallery-img fancybox" href="../../../../gallery/common/ipv6-ready-1-1024x768.png" rel="gallery_cjt7542f5002dl1fycidqi3ho">
+      <a class="article-gallery-img fancybox" href="../../../../gallery/common/ipv6-ready-1-1024x768.png" rel="gallery_cjt7582cg002on2fye1khp5sd">
         <img src="../../../../gallery/common/ipv6-ready-1-1024x768.png" itemprop="image">
       </a>
     
@@ -223,6 +223,7 @@
 <p>另外，IPv6提出了新的地址生成方式——密码生成地址。密码生成地址与公私钥对绑定，保证地址不能被他人伪造。这如同汽车的车牌印上了指纹，别人不可能伪造这样的车牌，因为指纹造不了假。在IPv6协议设计之初，IP Sec（IPSecurity）协议族中的AH（AuthenticationHeader，报文认证头）和ESP（EncapsulationSecurity Payload，报文封装安全载荷）就内嵌到协议栈中，作为IPv6的扩展头出现在IP报文中，提供完整性、保密性和源认保护，这无疑是从协议上较大地提升安全性。</p>
 <p>整体上看，IPv4协议的设计没有任何的安全考虑，特别是报文地址的伪造与欺骗使得无法对网络进行有效的监管和控制。因此，当出现网络攻击与安全威胁时，我们只能围绕攻击事件做好事前、事中和事后的防范、检测和过滤防御，缺乏有效的技术支撑手段，无法对攻击者形成真正的打击和管控。</p>
 <p>而在IPv6网络的安全体系下，用户、报文和攻击可以一一对应，用户对自己的任何行为都必须负责，具有不可否认性，所以IPv6建立起严密的围绕攻击者的管控机制，实现对用户行为的安全监控。</p>
+<a id="more"></a>
 <h2 id="IPv6能减缓现有攻击"><a href="#IPv6能减缓现有攻击" class="headerlink" title="IPv6能减缓现有攻击"></a>IPv6能减缓现有攻击</h2><p>扫描几乎是任何攻击手段的必需前提。攻击者利用扫描收集目标网络的数据，据此分析、推断目标网络的拓扑结构、开放的服务、知名端口等有用信息，以作为真正攻击的基础。扫描的主要目的是通过ping每个地址，找到作为潜在攻击目标的在线主机或设备。</p>
 <p>在IPv6时代，每个地址为128位，协议中规定的默认网络前缀为64位。换句话说，就是一个网段内有264个地址，假设攻击者以10M/s的速度来扫描，也得需要大约5万年的时间才能遍历。IPv6大大增大了扫描难度，由此增加了网络攻击的成本和代价。此时，黑客如果想侵占一定数量的主机发起DDoS（Distributed Denial of Service，分布式拒绝服务）攻击，那么其将会付出更多的代价，这在一定程度上减少了DDoS攻击发生的可能性。</p>
 <p>IPv6协议定义了多播地址类型，而取消了IPv4下的广播地址，有效避免IPv4网络中的利用广播地址发起的广播风暴攻击和DDoS攻击。同时，IPv6协议规定了不允许向使用多播地址的报文回复ICMPv6（Internet Control Management Protocol Version6）差错消息，因此也能防止ICMPv6报文造成的放大攻击。</p>
