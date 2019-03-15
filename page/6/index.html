@@ -12,7 +12,7 @@
   <meta name="description" content="Someone knock at the door.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="iTimeTraveler">
-<meta property="og:url" content="http://github.com/page/6/index.html">
+<meta property="og:url" content="https://itimetraveler.github.io/page/6/index.html">
 <meta property="og:site_name" content="iTimeTraveler">
 <meta property="og:description" content="Someone knock at the door.">
 <meta property="og:locale" content="zh-CN">
@@ -618,7 +618,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <blockquote>
-<p>本文转载自 <a href="http://gank.io/post/560e15be2dca930e00da1083" target="_blank" rel="noopener">给 Android 开发者的 RxJava 详解</a> —— by <a href="https://github.com/rengwuxian">扔物线</a></p>
+<p>本文转载自 <a href="http://gank.io/post/560e15be2dca930e00da1083" target="_blank" rel="noopener">给 Android 开发者的 RxJava 详解</a> —— by <a href="https://github.com/rengwuxian" target="_blank" rel="noopener">扔物线</a></p>
 </blockquote>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h2><p>我从去年开始使用 RxJava ，到现在一年多了。今年加入了 Flipboard 后，看到 Flipboard 的 Android 项目也在使用 RxJava ，并且使用的场景越来越多 。而最近这几个月，我也发现国内越来越多的人开始提及 RxJava 。有人说『RxJava 真是太好用了』，有人说『RxJava 真是太难用了』，另外更多的人表示：我真的百度了也谷歌了，但我还是想问： RxJava 到底是什么？</p>
 <p>鉴于 RxJava 目前这种既火爆又神秘的现状，而我又在一年的使用过程中对 RxJava 有了一些理解，我决定写下这篇文章来对 RxJava 做一个相对详细的、针对 Android 开发者的介绍。</p>
@@ -627,7 +627,7 @@
 <li>给对 RxJava 感兴趣的人一些入门的指引 </li>
 <li>给正在使用 RxJava 但仍然心存疑惑的人一些更深入的解析</li>
 </ol>
-<p>在正文开始之前的最后，放上 GitHub 链接和引入依赖的 gradle 代码：<br>RxJava ： <a href="https://github.com/ReactiveX/RxJava">https://github.com/ReactiveX/RxJava</a><br>RxAndroid： <a href="https://github.com/ReactiveX/RxAndroid">https://github.com/ReactiveX/RxAndroid</a> </p>
+<p>在正文开始之前的最后，放上 GitHub 链接和引入依赖的 gradle 代码：<br>RxJava ： <a href="https://github.com/ReactiveX/RxJava" target="_blank" rel="noopener">https://github.com/ReactiveX/RxJava</a><br>RxAndroid： <a href="https://github.com/ReactiveX/RxAndroid" target="_blank" rel="noopener">https://github.com/ReactiveX/RxAndroid</a> </p>
 <p>引入依赖： </p>
 <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//（版本号是文章发布时的最新稳定版）</span></span><br><span class="line">compile <span class="string">'io.reactivex:rxjava:1.0.14'</span> </span><br><span class="line">compile <span class="string">'io.reactivex:rxandroid:1.0.1'</span></span><br></pre></td></tr></table></figure>
       
@@ -843,8 +843,8 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a><strong>简介</strong></h2><p> <strong><code>Tinker</code></strong>： n.   〈英〉小炉匠，补锅匠，修补匠</p>
-<p><a href="https://github.com/Tencent/tinker"><strong>Tinker</strong></a> 是微信官方开源的 Android 热修复框架，支持在无需升级APK的前提下更新 <code>dex</code>, <code>library</code> and <code>resources</code> 文件。它也就是今年9月24才刚刚开源，几天功夫star数就超过3000，可见在开发者中的影响力有多大，也说明这是一个刚需。</p>
-<p>Tinker GitHub: <a href="https://github.com/Tencent/tinker">https://github.com/Tencent/tinker</a></p>
+<p><a href="https://github.com/Tencent/tinker" target="_blank" rel="noopener"><strong>Tinker</strong></a> 是微信官方开源的 Android 热修复框架，支持在无需升级APK的前提下更新 <code>dex</code>, <code>library</code> and <code>resources</code> 文件。它也就是今年9月24才刚刚开源，几天功夫star数就超过3000，可见在开发者中的影响力有多大，也说明这是一个刚需。</p>
+<p>Tinker GitHub: <a href="https://github.com/Tencent/tinker" target="_blank" rel="noopener">https://github.com/Tencent/tinker</a></p>
 <h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a><strong>使用步骤</strong></h2><h3 id="一个小坑"><a href="#一个小坑" class="headerlink" title="一个小坑"></a>一个小坑</h3><p>很多人遇到的第一个错误就是提示 <code>tinkerId is not set</code> ，这个在tinker-sample-android的<code>app/build.gradle</code> 中默认设置为Git的提交版本号，如下</p>
 <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> getTinkerIdValue() &#123;</span><br><span class="line">    <span class="keyword">return</span> hasProperty(<span class="string">"TINKER_ID"</span>) ? TINKER_ID : gitSha()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>如果不是通过git clone方式下载的就可能出现这个错误，其实可以简单粗暴的方式解决，那就是在app/build.gradle中把tinker id写死：</p>

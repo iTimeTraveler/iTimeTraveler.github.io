@@ -15,16 +15,16 @@
 <meta name="keywords" content="Android,源码分析">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【Android】源码分析 - AsyncTask异步任务机制">
-<meta property="og:url" content="http://github.com/2017/10/09/【Android】源码分析 - AsyncTask异步任务机制/index.html">
+<meta property="og:url" content="https://itimetraveler.github.io/2017/10/09/【Android】源码分析 - AsyncTask异步任务机制/index.html">
 <meta property="og:site_name" content="iTimeTraveler">
 <meta property="og:description" content="前言提到Android的多线程机制，常用的有如下几种方式：  AsyncTask: 封装了线程池和Handler，为 UI 线程与工作线程之间进行快速切换提供一种便捷机制。适用于当下立即需要启动，但是异步执行的生命周期短暂的使用场景。 HandlerThread: 一个已经拥有了Looper的线程类，内部可以直接使用Handler。为某些回调方法或者等待某些任务的执行设置一个专属的线程，并提供线程">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://github.com/gallery/android-asynctask/AsyncTask.webp">
+<meta property="og:image" content="https://itimetraveler.github.io/gallery/android-asynctask/AsyncTask.webp">
 <meta property="og:updated_time" content="2018-03-14T08:13:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【Android】源码分析 - AsyncTask异步任务机制">
 <meta name="twitter:description" content="前言提到Android的多线程机制，常用的有如下几种方式：  AsyncTask: 封装了线程池和Handler，为 UI 线程与工作线程之间进行快速切换提供一种便捷机制。适用于当下立即需要启动，但是异步执行的生命周期短暂的使用场景。 HandlerThread: 一个已经拥有了Looper的线程类，内部可以直接使用Handler。为某些回调方法或者等待某些任务的执行设置一个专属的线程，并提供线程">
-<meta name="twitter:image" content="http://github.com/gallery/android-asynctask/AsyncTask.webp">
+<meta name="twitter:image" content="https://itimetraveler.github.io/gallery/android-asynctask/AsyncTask.webp">
   
     <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
   
@@ -176,7 +176,7 @@
 <div class="article-gallery">
   <div class="article-gallery-photos">
     
-      <a class="article-gallery-img fancybox" href="../../../../gallery/android-asynctask/AsyncTask.webp" rel="gallery_cjt75evy0006spofy0q2mzxba">
+      <a class="article-gallery-img fancybox" href="../../../../gallery/android-asynctask/AsyncTask.webp" rel="gallery_cjt9rdpnz006pd0fy0w7d0vy0">
         <img src="../../../../gallery/android-asynctask/AsyncTask.webp" itemprop="image">
       </a>
     
@@ -254,7 +254,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> DownloadFilesTask().execute(url1, url2, url3);</span><br></pre></td></tr></table></figure>
 <p>以上就是AsyncTask的基本用法，我们并不需要去考虑什么异步消息处理机制，也不需要专门使用一个Handler来发送和接收消息，只需要调用一下<code>publishProgress()</code>方法就可以轻松地从子线程切换到UI线程了。</p>
 <h3 id="AsyncTask源码"><a href="#AsyncTask源码" class="headerlink" title="AsyncTask源码"></a>AsyncTask源码</h3><p>首先提醒一下大家，该版本分析的代码是Android API 21（对应的Android 5.0）的源码，由于AsyncTask在之前几个版本改动比较大，不过不影响我们分析原理，所以最后我尽量介绍一下区别。</p>
-<p>AsyncTask的源码链接：<a href="https://github.com/android/platform_frameworks_base/blob/master/core/java/android/os/AsyncTask.java">https://github.com/android/platform_frameworks_base/blob/master/core/java/android/os/AsyncTask.java</a></p>
+<p>AsyncTask的源码链接：<a href="https://github.com/android/platform_frameworks_base/blob/master/core/java/android/os/AsyncTask.java" target="_blank" rel="noopener">https://github.com/android/platform_frameworks_base/blob/master/core/java/android/os/AsyncTask.java</a></p>
 <p>可以看到AsyncTask开头定义了一些字段，如下所示：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String LOG_TAG = <span class="string">"AsyncTask"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//CPU_COUNT为手机中的CPU核数</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CPU_COUNT = Runtime.getRuntime().availableProcessors();</span><br><span class="line"><span class="comment">//线程池的核心线程数</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CORE_POOL_SIZE = CPU_COUNT + <span class="number">1</span>;</span><br><span class="line"><span class="comment">//线程池的最大线程数</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAXIMUM_POOL_SIZE = CPU_COUNT * <span class="number">2</span> + <span class="number">1</span>;</span><br><span class="line"><span class="comment">//同一时刻只允许1个线程执行</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> KEEP_ALIVE = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//sThreadFactory用于在后面创建线程池</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadFactory sThreadFactory = <span class="keyword">new</span> ThreadFactory() &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> AtomicInteger mCount = <span class="keyword">new</span> AtomicInteger(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//重写newThread方法: 为了将新增线程的名字以"AsyncTask #"标识</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Thread <span class="title">newThread</span><span class="params">(Runnable r)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Thread(r, <span class="string">"AsyncTask #"</span> + mCount.getAndIncrement());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//实例化阻塞式队列BlockingQueue，队列中存放Runnable，容量为128</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> BlockingQueue&lt;Runnable&gt; sPoolWorkQueue =</span><br><span class="line">        <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;(<span class="number">128</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//根据上面定义的参数实例化线程池</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Executor THREAD_POOL_EXECUTOR</span><br><span class="line">        = <span class="keyword">new</span> ThreadPoolExecutor(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE,</span><br><span class="line">                TimeUnit.SECONDS, sPoolWorkQueue, sThreadFactory);</span><br></pre></td></tr></table></figure>
 <p>通过以上代码和注释我们可以知道，AsyncTask初始化了一些参数，并用这些参数实例化了一个线程池<code>THREAD_POOL_EXECUTOR</code>，需要注意的是该线程池被定义为<code>public static final</code>，由此我们可以看出AsyncTask内部维护了一个静态的线程池，默认情况下，AsyncTask的实际工作就是通过该<code>THREAD_POOL_EXECUTOR</code>完成的。</p>
@@ -400,7 +400,7 @@ var a = new Donate({
           </li>
           <li class="post-copyright-link">
           <strong>本文链接:  </strong>
-          <a href="/2017/10/09/【Android】源码分析 - AsyncTask异步任务机制/" target="_blank" title="【Android】源码分析 - AsyncTask异步任务机制">http://github.com/2017/10/09/【Android】源码分析 - AsyncTask异步任务机制/</a>
+          <a href="/2017/10/09/【Android】源码分析 - AsyncTask异步任务机制/" target="_blank" title="【Android】源码分析 - AsyncTask异步任务机制">https://itimetraveler.github.io/2017/10/09/【Android】源码分析 - AsyncTask异步任务机制/</a>
           </li>
           <li class="post-copyright-license">
             <strong>版权声明:   </strong>

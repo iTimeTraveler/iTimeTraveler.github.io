@@ -15,16 +15,16 @@
 <meta name="keywords" content="RxJava">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【Android】RxJava 入门详解">
-<meta property="og:url" content="http://github.com/2016/12/19/【Android】RxJava 入门详解/index.html">
+<meta property="og:url" content="https://itimetraveler.github.io/2016/12/19/【Android】RxJava 入门详解/index.html">
 <meta property="og:site_name" content="iTimeTraveler">
 <meta property="og:description" content="本文转载自 给 Android 开发者的 RxJava 详解 —— by 扔物线  前言我从去年开始使用 RxJava ，到现在一年多了。今年加入了 Flipboard 后，看到 Flipboard 的 Android 项目也在使用 RxJava ，并且使用的场景越来越多 。而最近这几个月，我也发现国内越来越多的人开始提及 RxJava 。有人说『RxJava 真是太好用了』，有人说『RxJav">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://github.com/gallery/rxjava-introduction.png">
+<meta property="og:image" content="https://itimetraveler.github.io/gallery/rxjava-introduction.png">
 <meta property="og:updated_time" content="2018-03-14T08:13:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【Android】RxJava 入门详解">
 <meta name="twitter:description" content="本文转载自 给 Android 开发者的 RxJava 详解 —— by 扔物线  前言我从去年开始使用 RxJava ，到现在一年多了。今年加入了 Flipboard 后，看到 Flipboard 的 Android 项目也在使用 RxJava ，并且使用的场景越来越多 。而最近这几个月，我也发现国内越来越多的人开始提及 RxJava 。有人说『RxJava 真是太好用了』，有人说『RxJav">
-<meta name="twitter:image" content="http://github.com/gallery/rxjava-introduction.png">
+<meta name="twitter:image" content="https://itimetraveler.github.io/gallery/rxjava-introduction.png">
   
     <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
   
@@ -176,7 +176,7 @@
 <div class="article-gallery">
   <div class="article-gallery-photos">
     
-      <a class="article-gallery-img fancybox" href="../../../../gallery/rxjava-introduction.png" rel="gallery_cjt75evwp0055pofyqm0kf7vc">
+      <a class="article-gallery-img fancybox" href="../../../../gallery/rxjava-introduction.png" rel="gallery_cjt9rdpmf0055d0fyn9rhn4yy">
         <img src="../../../../gallery/rxjava-introduction.png" itemprop="image">
       </a>
     
@@ -216,7 +216,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <blockquote>
-<p>本文转载自 <a href="http://gank.io/post/560e15be2dca930e00da1083" target="_blank" rel="noopener">给 Android 开发者的 RxJava 详解</a> —— by <a href="https://github.com/rengwuxian">扔物线</a></p>
+<p>本文转载自 <a href="http://gank.io/post/560e15be2dca930e00da1083" target="_blank" rel="noopener">给 Android 开发者的 RxJava 详解</a> —— by <a href="https://github.com/rengwuxian" target="_blank" rel="noopener">扔物线</a></p>
 </blockquote>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h2><p>我从去年开始使用 RxJava ，到现在一年多了。今年加入了 Flipboard 后，看到 Flipboard 的 Android 项目也在使用 RxJava ，并且使用的场景越来越多 。而最近这几个月，我也发现国内越来越多的人开始提及 RxJava 。有人说『RxJava 真是太好用了』，有人说『RxJava 真是太难用了』，另外更多的人表示：我真的百度了也谷歌了，但我还是想问： RxJava 到底是什么？</p>
 <p>鉴于 RxJava 目前这种既火爆又神秘的现状，而我又在一年的使用过程中对 RxJava 有了一些理解，我决定写下这篇文章来对 RxJava 做一个相对详细的、针对 Android 开发者的介绍。</p>
@@ -225,7 +225,7 @@
 <li>给对 RxJava 感兴趣的人一些入门的指引 </li>
 <li>给正在使用 RxJava 但仍然心存疑惑的人一些更深入的解析</li>
 </ol>
-<p>在正文开始之前的最后，放上 GitHub 链接和引入依赖的 gradle 代码：<br>RxJava ： <a href="https://github.com/ReactiveX/RxJava">https://github.com/ReactiveX/RxJava</a><br>RxAndroid： <a href="https://github.com/ReactiveX/RxAndroid">https://github.com/ReactiveX/RxAndroid</a> </p>
+<p>在正文开始之前的最后，放上 GitHub 链接和引入依赖的 gradle 代码：<br>RxJava ： <a href="https://github.com/ReactiveX/RxJava" target="_blank" rel="noopener">https://github.com/ReactiveX/RxJava</a><br>RxAndroid： <a href="https://github.com/ReactiveX/RxAndroid" target="_blank" rel="noopener">https://github.com/ReactiveX/RxAndroid</a> </p>
 <p>引入依赖： </p>
 <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//（版本号是文章发布时的最新稳定版）</span></span><br><span class="line">compile <span class="string">'io.reactivex:rxjava:1.0.14'</span> </span><br><span class="line">compile <span class="string">'io.reactivex:rxandroid:1.0.1'</span></span><br></pre></td></tr></table></figure>
 <a id="more"></a>
@@ -490,18 +490,18 @@
 <p>而使用 RxJava 的话，代码是这样的：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GET</span>(<span class="string">"/token"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> Observable&lt;String&gt; <span class="title">getToken</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@GET</span>(<span class="string">"/user"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> Observable&lt;User&gt; <span class="title">getUser</span><span class="params">(@Query(<span class="string">"token"</span>)</span> String token, @<span class="title">Query</span><span class="params">(<span class="string">"userId"</span>)</span> String userId)</span>;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">getToken()</span><br><span class="line">    .flatMap(<span class="keyword">new</span> Func1&lt;String, Observable&lt;User&gt;&gt;() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Observable&lt;User&gt; <span class="title">onNext</span><span class="params">(String token)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> getUser(token, userId);</span><br><span class="line">        &#125;)</span><br><span class="line">    .observeOn(AndroidSchedulers.mainThread())</span><br><span class="line">    .subscribe(<span class="keyword">new</span> Observer&lt;User&gt;() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNext</span><span class="params">(User user)</span> </span>&#123;</span><br><span class="line">            userView.setUser(user);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCompleted</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onError</span><span class="params">(Throwable error)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// Error handling</span></span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
 <p>用一个 <code>flatMap()</code> 就搞定了逻辑，依然是一条链。看着就很爽，是吧？</p>
-<p>2016/03/31 更新，加上我写的一个 Sample 项目： <a href="https://github.com/rengwuxian/RxJavaSamples"><strong>rengwuxian RxJava Samples</strong></a></p>
+<p>2016/03/31 更新，加上我写的一个 Sample 项目： <a href="https://github.com/rengwuxian/RxJavaSamples" target="_blank" rel="noopener"><strong>rengwuxian RxJava Samples</strong></a></p>
 <p>好，Retrofit 部分就到这里。</p>
-<h3 id="2-RxBinding"><a href="#2-RxBinding" class="headerlink" title="2. RxBinding"></a>2. RxBinding</h3><p><a href="https://github.com/JakeWharton/RxBinding"><strong>RxBinding</strong></a> 是 Jake Wharton 的一个开源库，它提供了一套在 Android 平台上的基于 RxJava 的 Binding API。所谓 Binding，就是类似设置 <code>OnClickListener</code> 、设置 <code>TextWatcher</code> 这样的注册绑定对象的 API。</p>
+<h3 id="2-RxBinding"><a href="#2-RxBinding" class="headerlink" title="2. RxBinding"></a>2. RxBinding</h3><p><a href="https://github.com/JakeWharton/RxBinding" target="_blank" rel="noopener"><strong>RxBinding</strong></a> 是 Jake Wharton 的一个开源库，它提供了一套在 Android 平台上的基于 RxJava 的 Binding API。所谓 Binding，就是类似设置 <code>OnClickListener</code> 、设置 <code>TextWatcher</code> 这样的注册绑定对象的 API。</p>
 <p>举个设置点击监听的例子。使用 <code>RxBinding</code> ，可以把事件监听用这样的方法来设置：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Button button = ...;</span><br><span class="line">RxView.clickEvents(button) <span class="comment">// 以 Observable 形式来反馈点击事件</span></span><br><span class="line">    .subscribe(<span class="keyword">new</span> Action1&lt;ViewClickEvent&gt;() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">call</span><span class="params">(ViewClickEvent event)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// Click handling</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
 <p>看起来除了形式变了没什么区别，实质上也是这样。甚至如果你看一下它的源码，你会发现它连实现都没什么惊喜：它的内部是直接用一个包裹着的 <code>setOnClickListener()</code> 来实现的。然而，仅仅这一个形式的改变，却恰好就是 RxBinding 的目的：<strong>扩展性</strong>。通过 RxBinding 把点击监听转换成 Observable 之后，就有了对它进行扩展的可能。扩展的方式有很多，根据需求而定。一个例子是前面提到过的 <code>throttleFirst()</code> ，用于去抖动，也就是消除手抖导致的快速连环点击：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RxView.clickEvents(button)</span><br><span class="line">    .throttleFirst(<span class="number">500</span>, TimeUnit.MILLISECONDS)</span><br><span class="line">    .subscribe(clickAction);</span><br></pre></td></tr></table></figure>
-<p>如果想对 RxBinding 有更多了解，可以去它的 <a href="https://github.com/JakeWharton/RxBinding"><strong>GitHub 项目</strong></a> 下面看看。</p>
+<p>如果想对 RxBinding 有更多了解，可以去它的 <a href="https://github.com/JakeWharton/RxBinding" target="_blank" rel="noopener"><strong>GitHub 项目</strong></a> 下面看看。</p>
 <h3 id="3-各种异步操作"><a href="#3-各种异步操作" class="headerlink" title="3. 各种异步操作"></a>3. 各种异步操作</h3><p>前面举的 <strong>Retrofit</strong> 和 <strong>RxBinding</strong> 的例子，是两个可以提供现成的 Observable 的库。而如果你有某些异步操作无法用这些库来自动生成 Observable，也完全可以自己写。例如数据库的读写、大图片的载入、文件压缩/解压等各种需要放在后台工作的耗时操作，都可以用 RxJava 来实现，有了之前几章的例子，这里应该不用再举例了。</p>
 <h3 id="4-RxBus"><a href="#4-RxBus" class="headerlink" title="4. RxBus"></a>4. RxBus</h3><p><strong>RxBus 名字看起来像一个库，但它并不是一个库，而是一种模式</strong>。它的思想是使用 RxJava 来实现了 <code>EventBus</code> ，而让你不再需要使用 <code>Otto</code> 或者 GreenRobot 的 <code>EventBus</code>。至于什么是 RxBus，可以看<a href="http://blog.kaush.co/2014/12/24/implementing-an-event-bus-with-rxjava-rxbus/" target="_blank" rel="noopener"><strong>这篇文章</strong></a>。顺便说一句，Flipboard 已经用 RxBus 替换掉了 Otto ，目前为止没有不良反应。</p>
 <h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a><strong>最后</strong></h2><p>对于 Android 开发者来说， RxJava 是一个很难上手的库，因为它对于 Android 开发者来说有太多陌生的概念了。可是它真的很牛逼。因此，我写了这篇《给 Android 开发者的 RxJava 详解》，希望能给始终搞不明白什么是 RxJava 的人一些入门的指引，或者能让正在使用 RxJava 但仍然心存疑惑的人看到一些更深入的解析。无论如何，只要能给各位同为 Android 工程师的你们提供一些帮助，这篇文章的目的就达到了。</p>
-<h3 id="关于作者"><a href="#关于作者" class="headerlink" title="关于作者"></a>关于作者</h3><p>朱凯（<a href="https://github.com/rengwuxian">扔物线</a>），<a href="http://www.flipboard.cn/app" target="_blank" rel="noopener">Flipboard 北京</a> Android 工程师。</p>
+<h3 id="关于作者"><a href="#关于作者" class="headerlink" title="关于作者"></a>关于作者</h3><p>朱凯（<a href="https://github.com/rengwuxian" target="_blank" rel="noopener">扔物线</a>），<a href="http://www.flipboard.cn/app" target="_blank" rel="noopener">Flipboard 北京</a> Android 工程师。</p>
 <h3 id="为什么写这个？"><a href="#为什么写这个？" class="headerlink" title="为什么写这个？"></a>为什么写这个？</h3><p>与两三年前的境况不同，中国现在已经不缺初级 Android 工程师，但中级和高级工程师严重供不应求。因此我决定从今天开始不定期地发布我的技术分享，只希望能够和大家共同提升，通过我们的成长来解决一点点国内互联网公司人才稀缺的困境，也提升各位技术党的收入。所以，不仅要写这篇，我还会写更多。至于内容的定位，我计划只定位真正的干货，一些边边角角的小技巧和炫酷的黑科技应该都不会写，总之希望每篇文章都能帮读者提升真正的实力。</p>
 
       
@@ -529,7 +529,7 @@ var a = new Donate({
           </li>
           <li class="post-copyright-link">
           <strong>本文链接:  </strong>
-          <a href="/2016/12/19/【Android】RxJava 入门详解/" target="_blank" title="【Android】RxJava 入门详解">http://github.com/2016/12/19/【Android】RxJava 入门详解/</a>
+          <a href="/2016/12/19/【Android】RxJava 入门详解/" target="_blank" title="【Android】RxJava 入门详解">https://itimetraveler.github.io/2016/12/19/【Android】RxJava 入门详解/</a>
           </li>
           <li class="post-copyright-license">
             <strong>版权声明:   </strong>

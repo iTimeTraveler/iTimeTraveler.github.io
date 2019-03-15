@@ -12,7 +12,7 @@
   <meta name="description" content="Someone knock at the door.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="iTimeTraveler">
-<meta property="og:url" content="http://github.com/page/2/index.html">
+<meta property="og:url" content="https://itimetraveler.github.io/page/2/index.html">
 <meta property="og:site_name" content="iTimeTraveler">
 <meta property="og:description" content="Someone knock at the door.">
 <meta property="og:locale" content="zh-CN">
@@ -510,7 +510,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Android为我们提供了两种HTTP交互的方式：<a href="https://developer.android.com/reference/java/net/HttpURLConnection.html" target="_blank" rel="noopener">HttpURLConnection</a> 和 Apache HttpClient，虽然两者都支持HTTPS，流的上传和下载，配置超时，IPv6和连接池，已足够满足我们各种HTTP请求的需求。但更高效的使用HTTP 可以让您的应用运行更快、更节省流量。而<a href="https://github.com/square/okhttp">OkHttp</a>库就是为此而生。在开始分析OkHttp之前我们先了解一下 HttpURLConnection 和 HttpClient 两者之间关系，以及它们和 OkHttp 之间的关系。</p>
+        <p>Android为我们提供了两种HTTP交互的方式：<a href="https://developer.android.com/reference/java/net/HttpURLConnection.html" target="_blank" rel="noopener">HttpURLConnection</a> 和 Apache HttpClient，虽然两者都支持HTTPS，流的上传和下载，配置超时，IPv6和连接池，已足够满足我们各种HTTP请求的需求。但更高效的使用HTTP 可以让您的应用运行更快、更节省流量。而<a href="https://github.com/square/okhttp" target="_blank" rel="noopener">OkHttp</a>库就是为此而生。在开始分析OkHttp之前我们先了解一下 HttpURLConnection 和 HttpClient 两者之间关系，以及它们和 OkHttp 之间的关系。</p>
 <h2 id="HttpClient-vs-HttpURLConnection"><a href="#HttpClient-vs-HttpURLConnection" class="headerlink" title="HttpClient vs HttpURLConnection"></a>HttpClient vs HttpURLConnection</h2><p>在Android API Level 9（Android 2.2）之前只能使用<code>HttpClient</code>类发送http请求。<code>HttpClient</code>是Apache用于发送http请求的客户端，其提供了强大的API支持，而且基本没有什么bug，但是由于其太过复杂，Android团队在保持向后兼容的情况下，很难对<code>DefaultHttpClient</code>进行增强。为此，Android团队从Android API Level 9开始自己实现了一个发送http请求的客户端类 —— <code>HttpURLConnection</code>。</p>
 <p>相比于<code>DefaultHttpClient</code>，<code>HttpURLConnection</code>比较轻量级，虽然功能没有<code>DefaultHttpClient</code>那么强大，但是能够满足大部分的需求，所以Android推荐使用<code>HttpURLConnection</code>代替<code>DefaultHttpClient</code>，并不强制使用<code>HttpURLConnection</code>。</p>
 <p><strong>但从Android API Level 23（Android 6.0）开始，不能再在Android中使用<code>HttpClient</code></strong>，强制使用<code>HttpURLConnection</code>。参考官网：<a href="https://developer.android.com/about/versions/marshmallow/android-6.0-changes.html" target="_blank" rel="noopener">Android 6.0 Changes - Google Developer</a></p>

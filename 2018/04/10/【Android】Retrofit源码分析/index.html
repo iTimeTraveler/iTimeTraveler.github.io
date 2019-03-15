@@ -15,7 +15,7 @@
 <meta name="keywords" content="Retrofit">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【Android】Retrofit源码分析">
-<meta property="og:url" content="http://github.com/2018/04/10/【Android】Retrofit源码分析/index.html">
+<meta property="og:url" content="https://itimetraveler.github.io/2018/04/10/【Android】Retrofit源码分析/index.html">
 <meta property="og:site_name" content="iTimeTraveler">
 <meta property="og:description" content="Retrofit简介retrofit n. 式样翻新，花样翻新      vt. 给机器设备装配（新部件），翻新，改型 Retrofit 是一个 RESTful 的 HTTP 网络请求框架的封装。注意这里并没有说它是网络请求框架，主要原因在于网络请求的工作并不是 Retrofit 来完成的。Retrofit 2.0 开始内置 OkHttp，前者专注于接口的封装，后者专注于真正的网络请求。即通过 大">
 <meta property="og:locale" content="zh-CN">
@@ -176,7 +176,7 @@
 <div class="article-gallery">
   <div class="article-gallery-photos">
     
-      <a class="article-gallery-img fancybox" href="https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/master/gallery/android_common/retrofit.jpg" rel="gallery_cjt75evwr0059pofyw86mutw7">
+      <a class="article-gallery-img fancybox" href="https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/master/gallery/android_common/retrofit.jpg" rel="gallery_cjt9rdpms005gd0fy012lesrh">
         <img src="https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/master/gallery/android_common/retrofit.jpg" itemprop="image">
       </a>
     
@@ -226,7 +226,7 @@
 <li>最后执行<code>HTTP</code>请求</li>
 </ol>
 <p>这篇文章我将从Retrofit的基本用法出发，按照其使用步骤，一步步的探究Retrofit的实现原理及其源码的设计模式。</p>
-<p>Retrofit Github: <a href="https://github.com/square/retrofit">https://github.com/square/retrofit</a></p>
+<p>Retrofit Github: <a href="https://github.com/square/retrofit" target="_blank" rel="noopener">https://github.com/square/retrofit</a></p>
 <h3 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h3><p>使用 <code>Retrofit</code> 非常简单，首先需要在 build.gradle 中添加依赖：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">implementation <span class="string">'com.squareup.retrofit2:retrofit:2.4.0'</span></span><br></pre></td></tr></table></figure>
 <p>如果需要使用Gson解析器，也需要在build.gradle中添加依赖（后文会详细讲到Retrofit的Converter）：</p>
@@ -500,7 +500,7 @@ var a = new Donate({
           </li>
           <li class="post-copyright-link">
           <strong>本文链接:  </strong>
-          <a href="/2018/04/10/【Android】Retrofit源码分析/" target="_blank" title="【Android】Retrofit源码分析">http://github.com/2018/04/10/【Android】Retrofit源码分析/</a>
+          <a href="/2018/04/10/【Android】Retrofit源码分析/" target="_blank" title="【Android】Retrofit源码分析">https://itimetraveler.github.io/2018/04/10/【Android】Retrofit源码分析/</a>
           </li>
           <li class="post-copyright-license">
             <strong>版权声明:   </strong>

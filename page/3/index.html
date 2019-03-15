@@ -12,7 +12,7 @@
   <meta name="description" content="Someone knock at the door.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="iTimeTraveler">
-<meta property="og:url" content="http://github.com/page/3/index.html">
+<meta property="og:url" content="https://itimetraveler.github.io/page/3/index.html">
 <meta property="og:site_name" content="iTimeTraveler">
 <meta property="og:description" content="Someone knock at the door.">
 <meta property="og:locale" content="zh-CN">
@@ -765,7 +765,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><strong><a href="https://github.com/greenrobot/EventBus">EventBus</a></strong>是Android中一个基于<strong>观察者模式</strong>的事件发布/订阅框架，开发者可以通过极少的代码去实现多个模块之间的通信，主要功能是替代Intent，Handler，BroadCast 在 Fragment，Activity，Service，线程Thread之间传递消息。优点是开销小，使用方便，可以很大程度上降低它们之间的耦合。 类似的库还有<a href="https://github.com/square/otto">Otto</a> ，今天就带大家一起研读 EventBus 的源码。</p>
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><strong><a href="https://github.com/greenrobot/EventBus" target="_blank" rel="noopener">EventBus</a></strong>是Android中一个基于<strong>观察者模式</strong>的事件发布/订阅框架，开发者可以通过极少的代码去实现多个模块之间的通信，主要功能是替代Intent，Handler，BroadCast 在 Fragment，Activity，Service，线程Thread之间传递消息。优点是开销小，使用方便，可以很大程度上降低它们之间的耦合。 类似的库还有<a href="https://github.com/square/otto" target="_blank" rel="noopener">Otto</a> ，今天就带大家一起研读 EventBus 的源码。</p>
 <p>这是EventBus源码中的介绍：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * EventBus is a central publish/subscribe event system for Android. Events are posted (&#123;<span class="doctag">@link</span> #post(Object)&#125;) to the</span></span><br><span class="line"><span class="comment"> * bus, which delivers it to subscribers that have a matching handler method for the event type. To receive events,</span></span><br><span class="line"><span class="comment"> * subscribers must register themselves to the bus using &#123;<span class="doctag">@link</span> #register(Object)&#125;. Once registered, subscribers</span></span><br><span class="line"><span class="comment"> * receive events until &#123;<span class="doctag">@link</span> #unregister(Object)&#125; is called. Event handling methods must be annotated by</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link</span> Subscribe&#125;, must be public, return nothing (void), and have exactly one parameter</span></span><br><span class="line"><span class="comment"> * (the event).</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Markus Junginger, greenrobot</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
 <blockquote>

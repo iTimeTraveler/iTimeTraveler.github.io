@@ -15,16 +15,16 @@
 <meta name="keywords" content="Tinker">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【Android】微信热修复 Tinker 的集成和使用">
-<meta property="og:url" content="http://github.com/2016/11/17/【Android】微信热修复 Tinker 的集成和使用/index.html">
+<meta property="og:url" content="https://itimetraveler.github.io/2016/11/17/【Android】微信热修复 Tinker 的集成和使用/index.html">
 <meta property="og:site_name" content="iTimeTraveler">
 <meta property="og:description" content="简介 Tinker： n.   〈英〉小炉匠，补锅匠，修补匠 Tinker 是微信官方开源的 Android 热修复框架，支持在无需升级APK的前提下更新 dex, library and resources 文件。它也就是今年9月24才刚刚开源，几天功夫star数就超过3000，可见在开发者中的影响力有多大，也说明这是一个刚需。 Tinker GitHub: https://github.com">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://github.com/gallery/tinker.png">
+<meta property="og:image" content="https://itimetraveler.github.io/gallery/tinker.png">
 <meta property="og:updated_time" content="2018-03-14T08:13:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【Android】微信热修复 Tinker 的集成和使用">
 <meta name="twitter:description" content="简介 Tinker： n.   〈英〉小炉匠，补锅匠，修补匠 Tinker 是微信官方开源的 Android 热修复框架，支持在无需升级APK的前提下更新 dex, library and resources 文件。它也就是今年9月24才刚刚开源，几天功夫star数就超过3000，可见在开发者中的影响力有多大，也说明这是一个刚需。 Tinker GitHub: https://github.com">
-<meta name="twitter:image" content="http://github.com/gallery/tinker.png">
+<meta name="twitter:image" content="https://itimetraveler.github.io/gallery/tinker.png">
   
     <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
   
@@ -176,7 +176,7 @@
 <div class="article-gallery">
   <div class="article-gallery-photos">
     
-      <a class="article-gallery-img fancybox" href="../../../../gallery/tinker.png" rel="gallery_cjt75evxn006fpofyb29cce24">
+      <a class="article-gallery-img fancybox" href="../../../../gallery/tinker.png" rel="gallery_cjt9rdpnu006fd0fydfr8iznt">
         <img src="../../../../gallery/tinker.png" itemprop="image">
       </a>
     
@@ -216,8 +216,8 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a><strong>简介</strong></h2><p> <strong><code>Tinker</code></strong>： n.   〈英〉小炉匠，补锅匠，修补匠</p>
-<p><a href="https://github.com/Tencent/tinker"><strong>Tinker</strong></a> 是微信官方开源的 Android 热修复框架，支持在无需升级APK的前提下更新 <code>dex</code>, <code>library</code> and <code>resources</code> 文件。它也就是今年9月24才刚刚开源，几天功夫star数就超过3000，可见在开发者中的影响力有多大，也说明这是一个刚需。</p>
-<p>Tinker GitHub: <a href="https://github.com/Tencent/tinker">https://github.com/Tencent/tinker</a></p>
+<p><a href="https://github.com/Tencent/tinker" target="_blank" rel="noopener"><strong>Tinker</strong></a> 是微信官方开源的 Android 热修复框架，支持在无需升级APK的前提下更新 <code>dex</code>, <code>library</code> and <code>resources</code> 文件。它也就是今年9月24才刚刚开源，几天功夫star数就超过3000，可见在开发者中的影响力有多大，也说明这是一个刚需。</p>
+<p>Tinker GitHub: <a href="https://github.com/Tencent/tinker" target="_blank" rel="noopener">https://github.com/Tencent/tinker</a></p>
 <h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a><strong>使用步骤</strong></h2><h3 id="一个小坑"><a href="#一个小坑" class="headerlink" title="一个小坑"></a>一个小坑</h3><p>很多人遇到的第一个错误就是提示 <code>tinkerId is not set</code> ，这个在tinker-sample-android的<code>app/build.gradle</code> 中默认设置为Git的提交版本号，如下</p>
 <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> getTinkerIdValue() &#123;</span><br><span class="line">    <span class="keyword">return</span> hasProperty(<span class="string">"TINKER_ID"</span>) ? TINKER_ID : gitSha()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>如果不是通过git clone方式下载的就可能出现这个错误，其实可以简单粗暴的方式解决，那就是在app/build.gradle中把tinker id写死：</p>
@@ -230,7 +230,7 @@
 <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        mavenLocal()</span><br><span class="line">        jcenter()    <span class="comment">//注意这里，因为maven仓库里没有</span></span><br><span class="line">    &#125;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        classpath <span class="string">'com.android.tools.build:gradle:2.2.2'</span></span><br><span class="line">        classpath <span class="string">"com.tencent.tinker:tinker-patch-gradle-plugin:$&#123;TINKER_VERSION&#125;"</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// default values for all sub projects</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="二、在app-build-gradle中的dependencies节点添加依赖"><a href="#二、在app-build-gradle中的dependencies节点添加依赖" class="headerlink" title="二、在app/build.gradle中的dependencies节点添加依赖"></a><strong>二、在app/build.gradle中的dependencies节点添加依赖</strong></h3><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    <span class="comment">//可选，用于生成application类 </span></span><br><span class="line">    provided(<span class="string">'com.tencent.tinker:tinker-android-anno:1.7.3'</span>)</span><br><span class="line">    <span class="comment">//tinker的核心库</span></span><br><span class="line">    compile(<span class="string">'com.tencent.tinker:tinker-android-lib:1.7.3'</span>) </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="三、复制官方sample工程app-build-gradle中的其他相关配置"><a href="#三、复制官方sample工程app-build-gradle中的其他相关配置" class="headerlink" title="三、复制官方sample工程app/build.gradle中的其他相关配置"></a><strong>三、复制官方sample工程app/build.gradle中的其他相关配置</strong></h3><p>把官方 tinker-sample-android 工程中的<code>app/build.gradle</code>复制到自己的app/build.gradle中，特别是最下面的task 代码块，否则无法生成patch。</p>
-<h3 id="四、替换自己的Application类"><a href="#四、替换自己的Application类" class="headerlink" title="四、替换自己的Application类"></a><strong>四、替换自己的Application类</strong></h3><p>这一块需要特殊说明一下，tinker为了达到修改应用自己的Application的目的，使用代码框架封装继承<code>DefaultApplicationLike</code>的方式来实现对Application的修改，主要为了减少反射的使用和提高兼容性，具体说明参考 <a href="https://github.com/Tencent/tinker/wiki/Tinker-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%89%A9%E5%B1%95"><strong>Tinker Wiki：自定义Application类</strong></a>。</p>
+<h3 id="四、替换自己的Application类"><a href="#四、替换自己的Application类" class="headerlink" title="四、替换自己的Application类"></a><strong>四、替换自己的Application类</strong></h3><p>这一块需要特殊说明一下，tinker为了达到修改应用自己的Application的目的，使用代码框架封装继承<code>DefaultApplicationLike</code>的方式来实现对Application的修改，主要为了减少反射的使用和提高兼容性，具体说明参考 <a href="https://github.com/Tencent/tinker/wiki/Tinker-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%89%A9%E5%B1%95" target="_blank" rel="noopener"><strong>Tinker Wiki：自定义Application类</strong></a>。</p>
 <blockquote>
 <p>在替换更改之前，强烈建议先把项目中的Application类做个备份。因为需要采用Annotation自动生成Application，<strong>原来的Application类需要删掉</strong>。</p>
 </blockquote>
@@ -267,10 +267,10 @@
 <li>2、如果生成patch失败，并且原因如下：</li>
 </ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Warning: ignoreWarning is false, but we found loader classes are found in old secondary dex.</span><br></pre></td></tr></table></figure>
-<p>那么需要把<strong>相应的报错类</strong>声明在项目的<code>keep_in_main_dex.txt</code> 文件中，保证它编译时会被放置到主dex中。参考<a href="https://github.com/Tencent/tinker/issues/96">Tinker Issue #96</a> 。</p>
+<p>那么需要把<strong>相应的报错类</strong>声明在项目的<code>keep_in_main_dex.txt</code> 文件中，保证它编译时会被放置到主dex中。参考<a href="https://github.com/Tencent/tinker/issues/96" target="_blank" rel="noopener">Tinker Issue #96</a> 。</p>
 <hr>
 <h2 id="【参考资料】"><a href="#【参考资料】" class="headerlink" title="【参考资料】"></a>【参考资料】</h2><ul>
-<li><a href="https://github.com/Tencent/tinker/wiki/Tinker-%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97">Tinker 官方接入指南</a> </li>
+<li><a href="https://github.com/Tencent/tinker/wiki/Tinker-%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97" target="_blank" rel="noopener">Tinker 官方接入指南</a> </li>
 <li><a href="http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;mid=2649286306&amp;idx=1&amp;sn=d6b2865e033a99de60b2d4314c6e0a25&amp;scene=23&amp;srcid=0705vd1zLzQEHZ9G6JyQSqTG#rd" target="_blank" rel="noopener">微信Android热补丁实践演进之路</a></li>
 <li><a href="http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;mid=2649286384&amp;idx=1&amp;sn=f1aff31d6a567674759be476bcd12549&amp;scene=4#wechat_redirect" target="_blank" rel="noopener">微信Tinker的一切都在这里，包括源码(一)</a></li>
 <li><a href="https://zhuanlan.zhihu.com/p/22089905" target="_blank" rel="noopener">【腾讯Bugly干货分享】微信热补丁Tinker的实践演进之路</a></li>
@@ -305,7 +305,7 @@ var a = new Donate({
           </li>
           <li class="post-copyright-link">
           <strong>本文链接:  </strong>
-          <a href="/2016/11/17/【Android】微信热修复 Tinker 的集成和使用/" target="_blank" title="【Android】微信热修复 Tinker 的集成和使用">http://github.com/2016/11/17/【Android】微信热修复 Tinker 的集成和使用/</a>
+          <a href="/2016/11/17/【Android】微信热修复 Tinker 的集成和使用/" target="_blank" title="【Android】微信热修复 Tinker 的集成和使用">https://itimetraveler.github.io/2016/11/17/【Android】微信热修复 Tinker 的集成和使用/</a>
           </li>
           <li class="post-copyright-license">
             <strong>版权声明:   </strong>

@@ -15,16 +15,16 @@
 <meta name="keywords" content="Android">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【Android】APK瘦身记，实现将近一半的压缩效果">
-<meta property="og:url" content="http://github.com/2016/11/30/【Android】APK瘦身记，实现将近一半的压缩效果/index.html">
+<meta property="og:url" content="https://itimetraveler.github.io/2016/11/30/【Android】APK瘦身记，实现将近一半的压缩效果/index.html">
 <meta property="og:site_name" content="iTimeTraveler">
 <meta property="og:description" content="本文转载自知乎： APK瘦身记，如何实现高达53%的压缩效果 —— by 阿里聚安全  一、我是怎么思考这件事情的APK是Android系统安装包的文件格式，关于这个话题其实是一个老生常谈的题目，不论是公司内部，还是外部网络，前人前辈已经总结出很多方法和规律。不过随着移动端技术近两年的飞速发展，一些新的思维方式和优化方法也逐渐涌现和成熟起来。笔者在实践过程中踩过一些坑，收获了一些经验，在这里做个">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://github.com/gallery/apk.png">
+<meta property="og:image" content="https://itimetraveler.github.io/gallery/apk.png">
 <meta property="og:updated_time" content="2018-03-14T08:13:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【Android】APK瘦身记，实现将近一半的压缩效果">
 <meta name="twitter:description" content="本文转载自知乎： APK瘦身记，如何实现高达53%的压缩效果 —— by 阿里聚安全  一、我是怎么思考这件事情的APK是Android系统安装包的文件格式，关于这个话题其实是一个老生常谈的题目，不论是公司内部，还是外部网络，前人前辈已经总结出很多方法和规律。不过随着移动端技术近两年的飞速发展，一些新的思维方式和优化方法也逐渐涌现和成熟起来。笔者在实践过程中踩过一些坑，收获了一些经验，在这里做个">
-<meta name="twitter:image" content="http://github.com/gallery/apk.png">
+<meta name="twitter:image" content="https://itimetraveler.github.io/gallery/apk.png">
   
     <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
   
@@ -176,7 +176,7 @@
 <div class="article-gallery">
   <div class="article-gallery-photos">
     
-      <a class="article-gallery-img fancybox" href="../../../../gallery/apk.png" rel="gallery_cjt75evvj003lpofyaq1po29n">
+      <a class="article-gallery-img fancybox" href="../../../../gallery/apk.png" rel="gallery_cjt9rdpk3003hd0fyulkeeyg2">
         <img src="../../../../gallery/apk.png" itemprop="image">
       </a>
     
@@ -280,7 +280,7 @@
 <p><img src="/gallery/android_apk/9.png" alt=""></p>
 <p>恩，所有的png文件居然是STORE的方式存储到apk里的，关于zip里的STORE和DEFLATE，详见<a href="https://en.wikipedia.org/wiki/Zip_(file_format" target="_blank" rel="noopener">Wikipedia</a> )</p>
 <p>通俗的说，当文件是STORED的方式存储到zip，表示这个文件并没有经过压缩，如果是Defl:N的方式，表示通过DEFLATED normal的方式压缩存储到zip。</p>
-<p>这看起来有点不合理，png原封不动的放入zip，当然最后产出的apk会比较大。那么，如何解决呢？笔者首先尝使用android gradle plugin的方式，发现aaptOptions和packagingOptions都未能解决问题。在github上发现一个开源项目<a href="https://github.com/shwenzhang/AndResGuard"><strong>AndResGuard</strong></a>，试了集成到项目中，再看结果如下：</p>
+<p>这看起来有点不合理，png原封不动的放入zip，当然最后产出的apk会比较大。那么，如何解决呢？笔者首先尝使用android gradle plugin的方式，发现aaptOptions和packagingOptions都未能解决问题。在github上发现一个开源项目<a href="https://github.com/shwenzhang/AndResGuard" target="_blank" rel="noopener"><strong>AndResGuard</strong></a>，试了集成到项目中，再看结果如下：</p>
 <p>优化前：</p>
 <p><img src="/gallery/android_apk/10.png" alt=""></p>
 <p>10536027字节</p>
@@ -301,7 +301,7 @@
 <li><p>意外发现resources.arsc, META-INF/<em>.SF 以及 META-INF/</em>.MF变小了，而且是解压之后的文件大小也变小了。</p>
 </li>
 </ol>
-<p>用apk反编译神器<a href="https://github.com/skylot/jadx"><strong>jadx</strong></a>内窥apk寻找真相</p>
+<p>用apk反编译神器<a href="https://github.com/skylot/jadx" target="_blank" rel="noopener"><strong>jadx</strong></a>内窥apk寻找真相</p>
 <p><img src="/gallery/android_apk/14.png" alt=""></p>
 <p>原来apk中资源（png, xml，以及properties文件）的相对路径会存放到META-INF/<em>.SF 以及 META-INF/</em>.MF中并为每个资源文件计算SHA1值并存储在这两个文件中，至于为啥这么做以及这两个SHA1有啥区别和作用请参考网络上关于这方面知识的文章，已超出本文的主题所以这里不再赘述。</p>
 <p>对于resources.arsc文件</p>
@@ -426,7 +426,7 @@ var a = new Donate({
           </li>
           <li class="post-copyright-link">
           <strong>本文链接:  </strong>
-          <a href="/2016/11/30/【Android】APK瘦身记，实现将近一半的压缩效果/" target="_blank" title="【Android】APK瘦身记，实现将近一半的压缩效果">http://github.com/2016/11/30/【Android】APK瘦身记，实现将近一半的压缩效果/</a>
+          <a href="/2016/11/30/【Android】APK瘦身记，实现将近一半的压缩效果/" target="_blank" title="【Android】APK瘦身记，实现将近一半的压缩效果">https://itimetraveler.github.io/2016/11/30/【Android】APK瘦身记，实现将近一半的压缩效果/</a>
           </li>
           <li class="post-copyright-license">
             <strong>版权声明:   </strong>

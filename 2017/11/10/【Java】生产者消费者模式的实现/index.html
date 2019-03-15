@@ -15,16 +15,16 @@
 <meta name="keywords" content="生产者消费者">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【Java】生产者消费者模式的实现">
-<meta property="og:url" content="http://github.com/2017/11/10/【Java】生产者消费者模式的实现/index.html">
+<meta property="og:url" content="https://itimetraveler.github.io/2017/11/10/【Java】生产者消费者模式的实现/index.html">
 <meta property="og:site_name" content="iTimeTraveler">
 <meta property="og:description" content="前言生产者消费者问题是线程模型中的经典问题：生产者和消费者在同一时间段内共用同一存储空间，生产者向空间里生产数据，而消费者取走数据。 阻塞队列就相当于一个缓冲区，平衡了生产者和消费者的处理能力。这个阻塞队列就是用来给生产者和消费者解耦的。 wait/notify方法首先，我们搞清楚Thread.sleep()方法和Object.wait()、Object.notify()方法的区别。根据这篇文章j">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://github.com/gallery/android_common/producer-consumer.png">
+<meta property="og:image" content="https://itimetraveler.github.io/gallery/android_common/producer-consumer.png">
 <meta property="og:updated_time" content="2018-03-14T08:13:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【Java】生产者消费者模式的实现">
 <meta name="twitter:description" content="前言生产者消费者问题是线程模型中的经典问题：生产者和消费者在同一时间段内共用同一存储空间，生产者向空间里生产数据，而消费者取走数据。 阻塞队列就相当于一个缓冲区，平衡了生产者和消费者的处理能力。这个阻塞队列就是用来给生产者和消费者解耦的。 wait/notify方法首先，我们搞清楚Thread.sleep()方法和Object.wait()、Object.notify()方法的区别。根据这篇文章j">
-<meta name="twitter:image" content="http://github.com/gallery/android_common/producer-consumer.png">
+<meta name="twitter:image" content="https://itimetraveler.github.io/gallery/android_common/producer-consumer.png">
   
     <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
   
@@ -176,7 +176,7 @@
 <div class="article-gallery">
   <div class="article-gallery-photos">
     
-      <a class="article-gallery-img fancybox" href="../../../../gallery/android_common/producer-consumer.png" rel="gallery_cjt75evzu008xpofybomc056m">
+      <a class="article-gallery-img fancybox" href="../../../../gallery/android_common/producer-consumer.png" rel="gallery_cjt9rdppq0097d0fy15oih5fq">
         <img src="../../../../gallery/android_common/producer-consumer.png" itemprop="image">
       </a>
     
@@ -232,7 +232,7 @@
 </ul>
 <h3 id="实现生产者消费者模型"><a href="#实现生产者消费者模型" class="headerlink" title="实现生产者消费者模型"></a>实现生产者消费者模型</h3><p>生产者消费者问题是研究多线程程序时绕不开的经典问题之一，它描述是有一块缓冲区作为仓库，生产者可以将产品放入仓库，消费者则可以从仓库中取走产品。在Java中一共有四种方法支持同步，其中前三个是同步方法，一个是管道方法。</p>
 <p>（1）<strong>Object</strong>的wait() / notify()方法<br>（2）<strong>Lock</strong>和<strong>Condition</strong>的await() / signal()方法<br>（3）<strong>BlockingQueue</strong>阻塞队列方法<br>（4）<strong>PipedInputStream</strong> / <strong>PipedOutputStream</strong></p>
-<p>本文只介绍最常用的前三种，第四种暂不做讨论。源代码在这里：<a href="https://github.com/iTimeTraveler/DataStructureAndAlgorithms/tree/master/src/main/java/multithread">Java实现生产者消费者模型</a></p>
+<p>本文只介绍最常用的前三种，第四种暂不做讨论。源代码在这里：<a href="https://github.com/iTimeTraveler/DataStructureAndAlgorithms/tree/master/src/main/java/multithread" target="_blank" rel="noopener">Java实现生产者消费者模型</a></p>
 <h4 id="1-使用Object的wait-notify-方法"><a href="#1-使用Object的wait-notify-方法" class="headerlink" title="1. 使用Object的wait() / notify()方法"></a>1. 使用Object的wait() / notify()方法</h4><p><code>wait()</code>/ <code>nofity()</code>方法是基类Object的两个方法，也就意味着所有Java类都会拥有这两个方法，这样，我们就可以为任何对象实现同步机制。</p>
 <ul>
 <li><code>wait()</code>：当缓冲区已满/空时，生产者/消费者线程停止自己的执行，放弃锁，使自己处于等待状态，让其他线程执行。</li>
@@ -299,7 +299,7 @@ var a = new Donate({
           </li>
           <li class="post-copyright-link">
           <strong>本文链接:  </strong>
-          <a href="/2017/11/10/【Java】生产者消费者模式的实现/" target="_blank" title="【Java】生产者消费者模式的实现">http://github.com/2017/11/10/【Java】生产者消费者模式的实现/</a>
+          <a href="/2017/11/10/【Java】生产者消费者模式的实现/" target="_blank" title="【Java】生产者消费者模式的实现">https://itimetraveler.github.io/2017/11/10/【Java】生产者消费者模式的实现/</a>
           </li>
           <li class="post-copyright-license">
             <strong>版权声明:   </strong>
