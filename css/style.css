@@ -1732,7 +1732,7 @@ a.article-title:hover {
 .article-entry .highlight .gutter pre,
 .article-entry .gist .gist-file .gist-data .line-numbers {
   color: #666;
-  font-size: 0.85em;
+  font-size: 0.9em;
 }
 figure.highlight::-webkit-scrollbar {
   width: 10px;
