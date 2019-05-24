@@ -37,7 +37,6 @@
     @font-face{font-family:futura-pt; src:url("css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
     @font-face{font-family:futura-pt-light; src:url("css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
     @font-face{font-family:futura-pt-italic; src:url("css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
-
 }
 
   </style>
@@ -352,6 +351,167 @@
       <div id="content" class="outer">
         
           <section id="main" style="float:none;">
+  
+    <article id="post-【Android】内存泄漏分析心得"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/02/13/【Android】内存泄漏分析心得/">【Android】内存泄漏分析心得</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/02/13/【Android】内存泄漏分析心得/" class="article-date">
+	  <time datetime="2017-02-13T08:03:00.000Z" itemprop="datePublished">2017-02-13</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Android/">Android</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本文来源：<a href="http://mp.weixin.qq.com/s?__biz=MzI1MTA1MzM2Nw==&amp;mid=2649796884&amp;idx=1&amp;sn=92b4e344060362128e4a86d6132c3736&amp;chksm=f1fcc54cc68b4c5add08371265320163381ea81333daea5664b94e9a12246a34cfaa31e6f0b3&amp;mpshare=1&amp;scene=1&amp;srcid=0213Ssp5geOThmtF6tg9Bz7U#rd" target="_blank" rel="noopener">QQ空间终端开发团队公众号</a></p>
+</blockquote>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h2><p>对于C++来说，内存泄漏就是new出来的对象没有delete，俗称野指针；<br>对于Java来说，就是new出来的Object 放在Heap上无法被GC回收；</p>
+<p><img src="http://img.blog.csdn.net/20170213160148023?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDk4Mzg4MQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
+<p>本文通过QQ和Qzone中内存泄漏实例来讲android中内存泄漏分析解法和编写代码应注意的事项。</p>
+<h2 id="Java-中的内存分配"><a href="#Java-中的内存分配" class="headerlink" title="Java 中的内存分配"></a><strong>Java 中的内存分配</strong></h2><ul>
+<li><p><strong>静态储存区</strong>：编译时就分配好，在程序整个运行期间都存在。它主要存放静态数据和常量；</p>
+</li>
+<li><p><strong>栈区</strong>：当方法执行时，会在栈区内存中创建方法体内部的局部变量，方法结束后自动释放内存；</p>
+</li>
+<li><p><strong>堆区</strong>：通常存放 new 出来的对象。由 Java 垃圾回收器回收。</p>
+</li>
+</ul>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-【算法】单链表反转，两两反转"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/01/31/【算法】单链表反转，两两反转/">【算法】反转单链表，两两反转</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/01/31/【算法】单链表反转，两两反转/" class="article-date">
+	  <time datetime="2017-01-31T09:20:55.000Z" itemprop="datePublished">2017-01-31</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="问题一、反转单链表"><a href="#问题一、反转单链表" class="headerlink" title="问题一、反转单链表"></a>问题一、反转单链表</h2><p>题目：定义一个函数，输入一个链表的头结点，反转该链表并输出反转后链表的头结点。</p>
+<p><img src="/gallery/reverse-linklist.jpg" alt=""></p>
+<p>链表结点定义如下，这里使用的是Java描述：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> val;</span><br><span class="line">    ListNode next;</span><br><span class="line">    ListNode(<span class="keyword">int</span> x) &#123; val = x; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-【Android】AlertDialog中的EditText不能弹出软键盘的问题"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/01/20/【Android】AlertDialog中的EditText不能弹出软键盘的问题/">【Android】AlertDialog中的EditText不能弹出软键盘的问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/01/20/【Android】AlertDialog中的EditText不能弹出软键盘的问题/" class="article-date">
+	  <time datetime="2017-01-20T03:03:00.000Z" itemprop="datePublished">2017-01-20</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Android/">Android</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a><strong>摘要</strong></h2><p>AlertDialog中加入EditText但是不弹出软键盘等问题网上有很多不管用的解决方案，有的方案是<strong>强制弹出软键盘</strong>，然而即使弹出来，也是显示在AlertDialog的后面，被Dialog遮挡。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a><strong>解决方案</strong></h2><p>Dialog的官方文档：<a href="http://developer.android.com/reference/android/app/Dialog.html" target="_blank" rel="noopener">http://developer.android.com/reference/android/app/Dialog.html</a> ，其中有一段：</p>
+<blockquote>
+<p><strong>Note:</strong> Activities provide a facility to manage the creation, saving and restoring of dialogs. See <a href="https://developer.android.com/reference/android/app/Activity.html#onCreateDialog%28int%29" target="_blank" rel="noopener">onCreateDialog(int)</a>, <a href="https://developer.android.com/reference/android/app/Activity.html#onPrepareDialog%28int,%20android.app.Dialog%29" target="_blank" rel="noopener">onPrepareDialog(int, Dialog)</a>, <a href="https://developer.android.com/reference/android/app/Activity.html#showDialog%28int%29" target="_blank" rel="noopener">showDialog(int)</a>, and <a href="https://developer.android.com/reference/android/app/Activity.html#dismissDialog%28int%29" target="_blank" rel="noopener">dismissDialog(int)</a>. If these methods are used, <a href="https://developer.android.com/reference/android/app/Dialog.html#getOwnerActivity%28%29" target="_blank" rel="noopener">getOwnerActivity()</a> will return the Activity that managed this dialog.</p>
+</blockquote>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
   
     <article id="post-【Android】TextView中不同大小字体如何上下垂直居中？"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
@@ -718,157 +878,6 @@
 <p>其中的分析和可视化是用Gephi做的，Gephi是非常流行的图分析工具。但作者觉得使用Neo4j来实现更有趣。</p>
 <h2 id="导入原始数据到Neo4j"><a href="#导入原始数据到Neo4j" class="headerlink" title="导入原始数据到Neo4j"></a>导入原始数据到Neo4j</h2><p>原始数据可<a href="https://www.macalester.edu/~abeverid/data/stormofswords.csv" target="_blank" rel="noopener">从网络上下载</a>，格式如下：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Source,Target,Weight</span><br><span class="line">Aemon,Grenn,5</span><br><span class="line">Aemon,Samwell,31</span><br><span class="line">Aerys,Jaime,18</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-【D3.js】力导向布局 + 圆形图片展示的人物关系"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/11/18/【D3.js】力导向布局 + 圆形图片展示的人物关系/">【D3.js】力导向布局 + 圆形图片展示的人物关系</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2016/11/18/【D3.js】力导向布局 + 圆形图片展示的人物关系/" class="article-date">
-	  <time datetime="2016-11-18T08:06:00.000Z" itemprop="datePublished">2016-11-18</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/D3-js/">D3.js</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h2><p>使用d3的力学图（力导向图）与生活中常见的人物关系图结合，已经有了很好的例子： <a href="http://blog.csdn.net/lzhlzz/article/details/40450379" target="_blank" rel="noopener"><strong>【 D3.js 进阶系列 — 2.0 】 力学图 + 人物关系图</strong></a>，博主实现了下面这种样式，已经相当不错了。</p>
-<p><img src="http://img.blog.csdn.net/20161118161553200" alt=""></p>
-<p>但是对于想把节点的方形图片换成圆形头像，网上的资料却很少，本例子就在上面的实例的基础上实现圆形头像，让人物关系图看起来更漂亮了一个档次。两个主要文件如下：</p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-【Android】微信热修复 Tinker 的集成和使用"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/11/17/【Android】微信热修复 Tinker 的集成和使用/">【Android】微信热修复 Tinker 的集成和使用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2016/11/17/【Android】微信热修复 Tinker 的集成和使用/" class="article-date">
-	  <time datetime="2016-11-17T03:51:55.000Z" itemprop="datePublished">2016-11-17</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Android/">Android</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a><strong>简介</strong></h2><p> <strong><code>Tinker</code></strong>： n.   〈英〉小炉匠，补锅匠，修补匠</p>
-<p><a href="https://github.com/Tencent/tinker" target="_blank" rel="noopener"><strong>Tinker</strong></a> 是微信官方开源的 Android 热修复框架，支持在无需升级APK的前提下更新 <code>dex</code>, <code>library</code> and <code>resources</code> 文件。它也就是今年9月24才刚刚开源，几天功夫star数就超过3000，可见在开发者中的影响力有多大，也说明这是一个刚需。</p>
-<p>Tinker GitHub: <a href="https://github.com/Tencent/tinker" target="_blank" rel="noopener">https://github.com/Tencent/tinker</a></p>
-<h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a><strong>使用步骤</strong></h2><h3 id="一个小坑"><a href="#一个小坑" class="headerlink" title="一个小坑"></a>一个小坑</h3><p>很多人遇到的第一个错误就是提示 <code>tinkerId is not set</code> ，这个在tinker-sample-android的<code>app/build.gradle</code> 中默认设置为Git的提交版本号，如下</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> getTinkerIdValue() &#123;</span><br><span class="line">    <span class="keyword">return</span> hasProperty(<span class="string">"TINKER_ID"</span>) ? TINKER_ID : gitSha()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果不是通过git clone方式下载的就可能出现这个错误，其实可以简单粗暴的方式解决，那就是在app/build.gradle中把tinker id写死：</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> getTinkerIdValue() &#123;</span><br><span class="line">    <span class="keyword">return</span> hasProperty(<span class="string">"TINKER_ID"</span>) ? TINKER_ID : <span class="string">"tinker_id_2333"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>下面介绍一下如何一步步的把Tinker集成到自己的项目中，以及会遇到哪些问题该如何解决。</p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-【D3】Link Nodes by Name"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/11/16/【D3】Link Nodes by Name/">【D3】Link Nodes by Name</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2016/11/16/【D3】Link Nodes by Name/" class="article-date">
-	  <time datetime="2016-11-16T08:08:00.000Z" itemprop="datePublished">2016-11-16</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/D3-js/">D3.js</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Source : <a href="http://bl.ocks.org/mbostock/533daf20348023dfdd76" target="_blank" rel="noopener">http://bl.ocks.org/mbostock/533daf20348023dfdd76</a></p>
-<p>This example shows how to link nodes in a <a href="http://bl.ocks.org/mbostock/4062045" target="_blank" rel="noopener"><strong>force-directed graph</strong></a> using a named identifier rather than a numeric index.</p>
       
     </div>
     <footer class="article-footer">

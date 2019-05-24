@@ -37,7 +37,6 @@
     @font-face{font-family:futura-pt; src:url("css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
     @font-face{font-family:futura-pt-light; src:url("css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
     @font-face{font-family:futura-pt-italic; src:url("css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
-
 }
 
   </style>
@@ -352,6 +351,169 @@
       <div id="content" class="outer">
         
           <section id="main" style="float:none;">
+  
+    <article id="post-【Java】try-catch-finally语句中return的执行顺序思考"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/09/20/【Java】try-catch-finally语句中return的执行顺序思考/">【Java】try-catch-finally语句中return的执行顺序思考</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/09/20/【Java】try-catch-finally语句中return的执行顺序思考/" class="article-date">
+	  <time datetime="2017-09-20T14:30:55.000Z" itemprop="datePublished">2017-09-20</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Java/">Java</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a><strong>实验</strong></h3><p>对于try-catch-finally语句中return的执行顺序，我们都有知道，finally块中的内容会先于try中的return语句执行，如果finall语句块中也有return语句的话，那么直接从finally中返回了，这也是不建议在finally中return的原因。</p>
+<p>下面通过实验来看这几种情况的执行顺序到底是什么。</p>
+<h4 id="1、try中有return，finally中没有"><a href="#1、try中有return，finally中没有" class="headerlink" title="1、try中有return，finally中没有"></a><strong>1、try中有return，finally中没有</strong></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TryCatchTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"test()函数返回："</span> + test());</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			System.out.println(<span class="string">"Try block executing: "</span> + ++i);</span><br><span class="line">			<span class="keyword">return</span> i;</span><br><span class="line">		&#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">			System.out.println(<span class="string">"Catch Error executing: "</span> + ++i);</span><br><span class="line">			<span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">		&#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">			System.out.println(<span class="string">"finally executing: "</span> + ++i);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-【算法】从多项式乘法到快速傅里叶变换"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/09/08/【算法】从多项式乘法到快速傅里叶变换/">【算法】从多项式乘法到快速傅里叶变换</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/09/08/【算法】从多项式乘法到快速傅里叶变换/" class="article-date">
+	  <time datetime="2017-09-08T04:20:55.000Z" itemprop="datePublished">2017-09-08</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本文来自： <a href="http://blog.miskcoo.com/2015/04/polynomial-multiplication-and-fast-fourier-transform" target="_blank" rel="noopener">从多项式乘法到快速傅里叶变换</a> — <a href="http://blog.miskcoo.com/about" target="_blank" rel="noopener">miskcoo</a></p>
+</blockquote>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>计算多项式的乘法，或者计算两个大整数的乘法是在计算机中很常见的运算，如果用普通的方法进行，复杂度将会是$ \mathcal O(n^2) ​$的，还有一种分治乘法，可以做到 $\mathcal O(n^{\log_23}) ​$时间计算（可以看<a href="http://blog.miskcoo.com/2014/10/karatsuba-multiplication" target="_blank" rel="noopener">Karatsuba 乘法</a>）。下面从计算多项式的乘法出发，介绍<strong>快速傅里叶变换（Fast Fourier Transform, FFT）</strong>如何在 $\mathcal O(n\log n) ​$的时间内计算出两个多项式的乘积。</p>
+<h2 id="准备知识"><a href="#准备知识" class="headerlink" title="准备知识"></a>准备知识</h2><p>这里介绍一些后面可能会用到的知识（主要是关于多项式、卷积以及复数的），如果你已经知道觉得它太水了或者想用到的时候再看就跳过吧。</p>
+<h2 id="多项式"><a href="#多项式" class="headerlink" title="多项式"></a>多项式</h2><p>简单来说，形如 $ a_0+a_1X+a_2X^2+\cdots+a_nX^n $ 的代数表达式叫做<strong>多项式</strong>，可以记作$P(X)=a_0+a_1X+a_2X^2+\cdots+a_nX^n$，$a_0, a_1, \cdots, a_n $叫做多项式的<strong>系数</strong>，$X $是一个不定元，不表示任何值，不定元在多项式中最大项的次数称作多项式的<strong>次数</strong></p>
+<h3 id="多项式的系数表示法"><a href="#多项式的系数表示法" class="headerlink" title="多项式的系数表示法"></a>多项式的系数表示法</h3><p>像刚刚我们提到的那些多项式，都是以系数形式表示的，也就是将 n 次多项式$ A(x) $的系数 $a_0, a_1, \cdots, a_n $看作 $n+1 $维向量$ \vec a=(a_0,a_1,\cdots,a_n)$，其<strong>系数表示（coefficient representation）</strong>就是向量$ \vec a$ 。</p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-【算法】大数相乘问题及其高效算法"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/08/22/【算法】大数相乘问题及其高效算法/">【算法】大数乘法问题及其高效算法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/08/22/【算法】大数相乘问题及其高效算法/" class="article-date">
+	  <time datetime="2017-08-22T14:20:55.000Z" itemprop="datePublished">2017-08-22</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>编写两个任意位数的大数相乘的程序，给出计算结果。比如：</p>
+<blockquote>
+<p>题目描述：    输出两个不超过100位的大整数的乘积。<br>输入：    输入两个大整数，如1234567 和 123<br>输出：    输出乘积，如：151851741</p>
+</blockquote>
+<p>或者</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">求 <span class="number">1234567891011121314151617181920</span> * <span class="number">2019181716151413121110987654321</span> 的乘积结果</span><br></pre></td></tr></table></figure>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>所谓大数相乘（Multiplication algorithm），就是指数字比较大，相乘的结果超出了基本类型的表示范围，所以这样的数不能够直接做乘法运算。</p>
+<p>参考了很多资料，包括维基百科词条<a href="https://en.wikipedia.org/wiki/Multiplication_algorithm" target="_blank" rel="noopener">Multiplication algorithm</a>，才知道目前大数乘法算法主要有以下几种思路：</p>
+<ol>
+<li><strong>模拟小学乘法</strong>：最简单的乘法竖式手算的累加型；</li>
+<li><strong>分治乘法</strong>：最简单的是Karatsuba乘法，一般化以后有Toom-Cook乘法；</li>
+<li><strong>快速傅里叶变换FFT</strong>：（为了避免精度问题，可以改用快速数论变换FNTT），时间复杂度O(N lgN lglgN)。具体可参照<a href="https://en.wikipedia.org/wiki/Sch%C3%B6nhage%E2%80%93Strassen_algorithm" target="_blank" rel="noopener">Schönhage–Strassen algorithm</a>；</li>
+<li><strong>中国剩余定理</strong>：把每个数分解到一些互素的模上，然后每个同余方程对应乘起来就行；</li>
+<li><strong>Furer’s algorithm</strong>：在渐进意义上FNTT还快的算法。不过好像不太实用，本文就不作介绍了。大家可以参考维基百科<a href="https://en.wikipedia.org/wiki/F%C3%BCrer%27s_algorithm" target="_blank" rel="noopener">Fürer’s algorithm</a></li>
+</ol>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
   
     <article id="post-【算法】反转字符串"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
@@ -716,159 +878,6 @@
       
         <p>基因遗传算法是一种灵感源于达尔文自然进化理论的启发式搜索算法。该算法反映了自然选择的过程，即最适者被选定繁殖，并产生下一代。本文简要地介绍了遗传算法的基本概念和实现，希望能为读者展示启发式搜索的魅力。</p>
 <p><img src="/gallery/genetic-algorithms/1-BYDJpa6M2rzWNSurvspf8Q.png" alt="如上图（左）所示，遗传算法的个体由多条染色体组成，每条染色体由多个基因组成。上图（右）展示了染色体分割和组合的方式。"></p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-【Java】Integer变量相等（==）比较问题"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/07/11/【Java】Integer变量相等（==）比较问题/">【Java】Integer变量相等（==）比较问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/07/11/【Java】Integer变量相等（==）比较问题/" class="article-date">
-	  <time datetime="2017-07-11T04:30:55.000Z" itemprop="datePublished">2017-07-11</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Java/">Java</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>这是关于一段令人疑惑的Java代码:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestIntegerCache</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Integer i3 = <span class="number">100</span>;</span><br><span class="line">        Integer i4 = <span class="number">100</span>;</span><br><span class="line">        System.out.println(i3 == i4);</span><br><span class="line"></span><br><span class="line">        Integer i5 = <span class="number">1000</span>;</span><br><span class="line">        Integer i6 = <span class="number">1000</span>;</span><br><span class="line">        System.out.println(i5 == i6);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这么简单，执行结果是什么？</p>
-<blockquote>
-<p>true<br>false</p>
-</blockquote>
-<p>一个是true，一个是false！<br>这是为什么呢？为什么和大多数人心里想的不一样！</p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-Java 8系列之重新认识HashMap"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/06/16/Java 8系列之重新认识HashMap/">Java 8系列之重新认识HashMap</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/06/16/Java 8系列之重新认识HashMap/" class="article-date">
-	  <time datetime="2017-06-16T09:30:55.000Z" itemprop="datePublished">2017-06-16</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Java/">Java</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>本文来自美团点评技术团队： <a href="http://tech.meituan.com/java-hashmap.html" target="_blank" rel="noopener">Java 8系列之重新认识HashMap</a></p>
-</blockquote>
-<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a><strong>摘要</strong></h2><p>HashMap是Java程序员使用频率最高的用于映射(键值对)处理的数据类型。随着JDK（Java Developmet Kit）版本的更新，JDK1.8对HashMap底层的实现进行了优化，例如引入红黑树的数据结构和扩容的优化等。本文结合JDK1.7和JDK1.8的区别，深入探讨HashMap的结构实现和功能原理。</p>
-<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a><strong>简介</strong></h2><p>Java为数据结构中的映射定义了一个接口java.util.Map，此接口主要有四个常用的实现类，分别是<code>HashMap</code>、<code>Hashtable</code>、<code>LinkedHashMap</code>和<code>TreeMap</code>，类继承关系如下图所示：</p>
-<p><img src="http://img.blog.csdn.net/20170616165413193" alt=""></p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-【面试题】Java String常量相等（==）问题"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/06/15/【面试题】Java String常量相等（==）问题/">【面试题】Java String常量相等（==）问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/06/15/【面试题】Java String常量相等（==）问题/" class="article-date">
-	  <time datetime="2017-06-15T08:51:55.000Z" itemprop="datePublished">2017-06-15</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Java/">Java</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>以下三个结果分别输出（true or false）？别小看它，很多程序员因为上面问题出过生产bug</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">String s3 = <span class="string">"s"</span>;</span><br><span class="line">String s4 = <span class="string">"s"</span>;</span><br><span class="line">System.out.println(s3==s4);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">String s5 = <span class="string">"hello"</span>;</span><br><span class="line">String s6 = <span class="string">"he"</span>+<span class="string">"llo"</span>;</span><br><span class="line">System.out.println(s5==s6);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">Integer i = <span class="number">2017</span>;</span><br><span class="line">Integer j = <span class="number">2017</span>;</span><br><span class="line">System.out.println(i==j);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">String s1 = <span class="keyword">new</span> String(<span class="string">"s"</span>);</span><br><span class="line">String s2 = <span class="keyword">new</span> String(<span class="string">"s"</span>);</span><br><span class="line">System.out.println(s1==s2);</span><br><span class="line">System.out.println(s1.intern()==s2.intern());</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">

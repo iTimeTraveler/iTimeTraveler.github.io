@@ -37,7 +37,6 @@
     @font-face{font-family:futura-pt; src:url("css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
     @font-face{font-family:futura-pt-light; src:url("css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
     @font-face{font-family:futura-pt-italic; src:url("css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
-
 }
 
   </style>
@@ -352,6 +351,175 @@
       <div id="content" class="outer">
         
           <section id="main" style="float:none;">
+  
+    <article id="post-【Java】NIO的理解"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2018/05/15/【Java】NIO的理解/">【Java】NIO的原理与浅析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2018/05/15/【Java】NIO的理解/" class="article-date">
+	  <time datetime="2018-05-15T14:20:55.000Z" itemprop="datePublished">2018-05-15</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Java/">Java</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="几个概念"><a href="#几个概念" class="headerlink" title="几个概念"></a>几个概念</h2><h3 id="用户空间与内核空间"><a href="#用户空间与内核空间" class="headerlink" title="用户空间与内核空间"></a>用户空间与内核空间</h3><p>现在操作系统都是采用虚拟存储器，那么对32位操作系统而言，它的寻址空间（虚拟存储空间）为4G（2的32次方）。操作系统的核心是内核，独立于普通的应用程序，可以访问受保护的内存空间，也有访问底层硬件设备的所有权限。为了保证用户进程不能直接操作内核（kernel），保证内核的安全，操心系统将虚拟空间划分为两部分，一部分为内核空间，一部分为用户空间。针对linux操作系统而言，将最高的1G字节（从虚拟地址0xC0000000到0xFFFFFFFF），供内核使用，称为内核空间，而将较低的3G字节（从虚拟地址0x00000000到0xBFFFFFFF），供各个进程使用，称为用户空间。</p>
+<p>在Linux世界，进程不能直接访问硬件设备，当进程需要访问硬件设备(比如读取磁盘文件，接收网络数据等等)时，必须由用户态模式切换至内核态模式，通过系统调用访问硬件设备。</p>
+<h3 id="文件描述符fd"><a href="#文件描述符fd" class="headerlink" title="文件描述符fd"></a>文件描述符fd</h3><p>文件描述符（File descriptor）是计算机科学中的一个术语，是一个用于表述指向文件的引用的抽象化概念。</p>
+<p>文件描述符在形式上是一个非负整数。实际上，它是一个索引值，指向内核为每一个进程所维护的该进程打开文件的记录表。当程序打开一个现有文件或者创建一个新文件时，内核向进程返回一个文件描述符。在程序设计中，一些涉及底层的程序编写往往会围绕着文件描述符展开。但是文件描述符这一概念往往只适用于UNIX、Linux这样的操作系统。</p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-【Java】Thread类中的join()方法原理"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2018/05/04/【Java】Thread类中的join()方法原理/">【Java】Thread类中的join()方法原理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2018/05/04/【Java】Thread类中的join()方法原理/" class="article-date">
+	  <time datetime="2018-05-04T14:20:55.000Z" itemprop="datePublished">2018-05-04</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Java/">Java</a><a class="article-category-link" href="../../categories/Java/源码分析/">源码分析</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><code>join()</code>是Thread类的一个方法。根据jdk文档的定义：</p>
+<blockquote>
+<p>public final void join()throws InterruptedException:  <strong>Waits for this thread to die</strong>.</p>
+</blockquote>
+<p><code>join()</code>方法的作用，是等待这个线程结束；但显然，这样的定义并不清晰。个人认为”Java 7 Concurrency Cookbook”的定义较为清晰：</p>
+<blockquote>
+<p><strong>join() method suspends the execution of the calling thread until the object called finishes its execution.</strong></p>
+</blockquote>
+<p>也就是说，t.join()方法阻塞调用此方法的线程(calling thread)，直到线程t完成，此线程再继续；通常用于在main()主线程内，等待其它线程完成再结束main()主线程。我们来看看下面的例子。</p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-【Android】Retrofit源码分析"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2018/04/10/【Android】Retrofit源码分析/">【Android】Retrofit源码分析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2018/04/10/【Android】Retrofit源码分析/" class="article-date">
+	  <time datetime="2018-04-10T14:20:55.000Z" itemprop="datePublished">2018-04-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Android/">Android</a><a class="article-category-link" href="../../categories/Android/源码分析/">源码分析</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="Retrofit简介"><a href="#Retrofit简介" class="headerlink" title="Retrofit简介"></a>Retrofit简介</h3><p><code>retrofit</code> n. 式样翻新，花样翻新      vt. 给机器设备装配（新部件），翻新，改型</p>
+<p><a href="http://square.github.io/retrofit/" target="_blank" rel="noopener"><strong>Retrofit</strong></a> 是一个 RESTful 的 HTTP 网络请求框架的封装。注意这里并没有说它是网络请求框架，主要原因在于网络请求的工作并不是 <code>Retrofit</code> 来完成的。<code>Retrofit</code> 2.0 开始内置 <a href="http://square.github.io/okhttp/" target="_blank" rel="noopener"><code>OkHttp</code></a>，前者专注于接口的封装，后者专注于真正的网络请求。即通过 大量的设计模式 封装了 <code>OkHttp</code> ，使得简洁易用。</p>
+<p><img src="/gallery/android_common/4182937778-57515297dacff_articlex.png" alt=""></p>
+<p>我们的应用程序通过 <code>Retrofit</code> 请求网络，实际上是使用 <code>Retrofit</code> 接口层封装请求参数、Header、Url 等信息，之后由 <code>OkHttp</code>完成后续的请求操作，在服务端返回数据之后，<code>OkHttp</code> 将原始的结果交给 <code>Retrofit</code>，后者根据用户的需求对结果进行解析的过程。Retrofit的大概原理过程如下：</p>
+<ol>
+<li><code>Retrofit</code> 将 <code>Http</code>请求 抽象 成 <code>Java</code>接口</li>
+<li>在接口里用 注解 描述和配置 网络请求参数</li>
+<li>用动态代理 的方式，动态将网络请求接口的注解 解析 成<code>HTTP</code>请求</li>
+<li>最后执行<code>HTTP</code>请求</li>
+</ol>
+<p>这篇文章我将从Retrofit的基本用法出发，按照其使用步骤，一步步的探究Retrofit的实现原理及其源码的设计模式。</p>
+<p>Retrofit Github: <a href="https://github.com/square/retrofit" target="_blank" rel="noopener">https://github.com/square/retrofit</a></p>
+<h3 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h3><p>使用 <code>Retrofit</code> 非常简单，首先需要在 build.gradle 中添加依赖：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">implementation <span class="string">'com.squareup.retrofit2:retrofit:2.4.0'</span></span><br></pre></td></tr></table></figure>
+<p>如果需要使用Gson解析器，也需要在build.gradle中添加依赖（后文会详细讲到Retrofit的Converter）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">implementation <span class="string">'com.squareup.retrofit2:converter-gson:2.0.2'</span></span><br></pre></td></tr></table></figure>
+<h4 id="1-定义Interface"><a href="#1-定义Interface" class="headerlink" title="1. 定义Interface"></a>1. 定义Interface</h4><p>Retrofit使用java interface和注解描述了HTTP请求的API参数，比如Github的一个API：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">GitHubService</span> </span>&#123;</span><br><span class="line">  <span class="meta">@GET</span>(<span class="string">"users/&#123;user&#125;/repos"</span>)</span><br><span class="line">  Call&lt;List&lt;Repo&gt;&gt; listRepos(<span class="meta">@Path</span>(<span class="string">"user"</span>) String user);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
   
     <article id="post-【Android】App应用前后台切换的一种监听方法"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
@@ -736,166 +904,6 @@
 <p>ABCD—&gt;ABCDA—-&gt;ABCDAB—-&gt;ABCDABC—-&gt;ABCDABCD……</p>
 </blockquote>
 <p>因此，可以看出对s1做循环移位所得到的字符串都将是字符串s1s1的子字符串。如果s2可以由s1循环移位得到，那么s2一定在s1s1上，这样时间复杂度就降低了。</p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-【算法】如何判断链表有环"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/12/24/【算法】如何判断链表有环/">【算法】如何判断链表有环</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/12/24/【算法】如何判断链表有环/" class="article-date">
-	  <time datetime="2017-12-24T14:20:55.000Z" itemprop="datePublished">2017-12-24</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="如何判断单链表是否存在环"><a href="#如何判断单链表是否存在环" class="headerlink" title="如何判断单链表是否存在环"></a>如何判断单链表是否存在环</h3><blockquote>
-<p>有一个单向链表，链表当中有可能出现“环”，就像题图这样。如何用程序判断出这个链表是有环链表？</p>
-<ul>
-<li>不允许修改链表结构。</li>
-<li>时间复杂度O(n)，空间复杂度O(1)。</li>
-</ul>
-</blockquote>
-<h4 id="方法一、穷举遍历"><a href="#方法一、穷举遍历" class="headerlink" title="方法一、穷举遍历"></a>方法一、穷举遍历</h4><p>方法一：首先从头节点开始，依次遍历单链表的每一个节点。每遍历到一个新节点，就从头节点重新遍历新节点之前的所有节点，用新节点ID和此节点之前所有节点ID依次作比较。如果发现新节点之前的所有节点当中存在相同节点ID，则说明该节点被遍历过两次，链表有环；如果之前的所有节点当中不存在相同的节点，就继续遍历下一个新节点，继续重复刚才的操作。</p>
-<p>例如这样的链表：A-&gt;B-&gt;C-&gt;D-&gt;B-&gt;C-&gt;D， 当遍历到节点D的时候，我们需要比较的是之前的节点A、B、C，不存在相同节点。这时候要遍历的下一个新节点是B，B之前的节点A、B、C、D中恰好也存在B，因此B出现了两次，判断出链表有环。</p>
-<p>假设从链表头节点到入环点的距离是D，链表的环长是S。那么算法的时间复杂度是0+1+2+3+….+(D+S-1) = (D+S-1)*(D+S)/2 ， 可以简单地理解成 O(N*N)。而此算法没有创建额外存储空间，空间复杂度可以简单地理解成为O(1)。</p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-【Android】源码分析 - Activity启动流程"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/12/18/【Android】源码分析 - Activity启动流程/">【Android】源码分析 - Activity启动流程</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/12/18/【Android】源码分析 - Activity启动流程/" class="article-date">
-	  <time datetime="2017-12-18T14:20:55.000Z" itemprop="datePublished">2017-12-18</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Android/">Android</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="启动Activity的方式"><a href="#启动Activity的方式" class="headerlink" title="启动Activity的方式"></a>启动Activity的方式</h3><p>Activity有2种启动的方式，一种是在Launcher界面点击应用的图标、另一种是在应用中通过Intent进行跳转。我们主要介绍与后者相关的启动流程。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent(<span class="keyword">this</span>, TestActivity.class);</span><br><span class="line">startActivity(intent);</span><br></pre></td></tr></table></figure>
-<h3 id="从Activity入手"><a href="#从Activity入手" class="headerlink" title="从Activity入手"></a>从Activity入手</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startActivity</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.startActivity(intent, <span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startActivity</span><span class="params">(Intent intent, @Nullable Bundle options)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (options != <span class="keyword">null</span>) &#123;</span><br><span class="line">        startActivityForResult(intent, -<span class="number">1</span>, options);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// Note we want to go through this call for compatibility with</span></span><br><span class="line">        <span class="comment">// applications that may have overridden the method.</span></span><br><span class="line">        startActivityForResult(intent, -<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-【Java】HashMap源码分析（JDK1.8）"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/11/25/【Java】HashMap源码分析（JDK1.8）/">【Java】HashMap源码分析（JDK1.8）</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/11/25/【Java】HashMap源码分析（JDK1.8）/" class="article-date">
-	  <time datetime="2017-11-25T14:20:55.000Z" itemprop="datePublished">2017-11-25</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Java/">Java</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>Java为数据结构中的映射定义了一个接口java.util.Map，此接口主要有四个常用的实现类，分别是<code>HashMap</code>、<code>Hashtable</code>、<code>LinkedHashMap</code>和<code>TreeMap</code>，类继承关系如下图所示：</p>
-<p><img src="https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/master/gallery/java-common/java.util.map_class.png" alt=""></p>
-<p>下面针对各个实现类的特点做一些说明：</p>
-<p>(1) <strong>HashMap</strong>：它根据键的hashCode值存储数据，大多数情况下可以直接定位到它的值，因而具有很快的访问速度，但遍历顺序却是不确定的。 HashMap最多只允许一条记录的键为null，允许多条记录的值为null。HashMap非线程安全，即任一时刻可以有多个线程同时写HashMap，可能会导致数据的不一致。如果需要满足线程安全，可以用 Collections的synchronizedMap方法使HashMap具有线程安全的能力，或者使用ConcurrentHashMap。</p>
-<p>(2) <strong>Hashtable</strong>：Hashtable是遗留类，很多映射的常用功能与HashMap类似，不同的是它继承自Dictionary类，并且是线程安全的，任一时间只有一个线程能写Hashtable，并发性不如<strong>ConcurrentHashMap</strong>，因为ConcurrentHashMap引入了分段锁。Hashtable不建议在新代码中使用，不需要线程安全的场合可以用HashMap替换，需要线程安全的场合可以用ConcurrentHashMap替换。</p>
-<p>(3) <strong>LinkedHashMap</strong>：LinkedHashMap是HashMap的一个子类，保存了记录的插入顺序，在用Iterator遍历LinkedHashMap时，先得到的记录肯定是先插入的，也可以在构造时带参数，按照访问次序排序。</p>
-<p>(4) <strong>TreeMap</strong>：TreeMap实现SortedMap接口，能够把它保存的记录根据键排序，默认是按键值的升序排序，也可以指定排序的比较器，当用Iterator遍历TreeMap时，得到的记录是排过序的。如果使用排序的映射，建议使用TreeMap。在使用TreeMap时，key必须实现Comparable接口或者在构造TreeMap传入自定义的Comparator，否则会在运行时抛出java.lang.ClassCastException类型的异常。</p>
-<p>对于上述四种Map类型的类，要求映射中的key是不可变对象。不可变对象是该对象在创建后它的哈希值不会被改变。如果对象的哈希值发生变化，Map对象很可能就定位不到映射的位置了。</p>
-<p>通过上面的比较，我们知道了HashMap是Java的Map家族中一个普通成员，鉴于它可以满足大多数场景的使用条件，所以是使用频度最高的一个。下文我们主要结合源码，从存储结构、常用方法分析、扩容以及安全性等方面深入讲解HashMap的工作原理。</p>
       
     </div>
     <footer class="article-footer">

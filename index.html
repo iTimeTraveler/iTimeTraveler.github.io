@@ -37,7 +37,6 @@
     @font-face{font-family:futura-pt; src:url("css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
     @font-face{font-family:futura-pt-light; src:url("css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
     @font-face{font-family:futura-pt-italic; src:url("css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
-
 }
 
   </style>
@@ -352,6 +351,161 @@
       <div id="content" class="outer">
         
           <section id="main" style="float:none;">
+  
+    <article id="post-Android Doze模式识别"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="2019/05/25/Android Doze模式识别/">【Android】Doze模式识别与检测</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="2019/05/25/Android Doze模式识别/" class="article-date">
+	  <time datetime="2019-05-25T14:20:55.000Z" itemprop="datePublished">2019-05-25</time>
+	</a>
+
+      
+    <a class="article-category-link" href="categories/Android/">Android</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>从 Android 6.0（API 级别 23）开始，Android 引入了两个省电功能：Doze模式（官方翻译为低电耗模式）和 App Standby模式（官方翻译为应用待机模式），可通过管理应用在设备未连接至电源时的行为方式为用户延长电池寿命。<strong>Doze模式</strong>通过在设备长时间处于闲置状态时推迟应用的后台 CPU 和网络 Activity 来减少电池消耗。<strong>App Standby模式</strong>可推迟用户近期未与之交互的应用的后台网络 Activity。</p>
+<h2 id="Doze模式"><a href="#Doze模式" class="headerlink" title="Doze模式"></a>Doze模式</h2><p>满足以下条件的设备会进入Doze低电耗模式。</p>
+<ul>
+<li>用户设备未插接电源</li>
+<li>处于静止状态一段时间</li>
+<li>屏幕关闭 </li>
+</ul>
+<p>在低电耗模式下，系统会尝试通过限制应用对网络和 CPU 密集型服务的访问来节省电量。 这还可以阻止应用访问网络并推迟其作业、同步和标准闹铃。</p>
+<p>系统会定期退出Doze低电耗模式一会儿，好让应用完成其已推迟的 Activity。在此维护时段内，系统会运行所有待定同步、作业和闹铃并允许应用访问网络。</p>
+<p><img src="/gallery/android_common/doze.png" alt="图 1. 低电耗模式提供了定期维护时段，可供应用使用网络并处理待定 Activity。"></p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-protobuf编码原理"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="2019/05/24/protobuf编码原理/">protobuf编码原理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="2019/05/24/protobuf编码原理/" class="article-date">
+	  <time datetime="2019-05-24T14:20:55.000Z" itemprop="datePublished">2019-05-24</time>
+	</a>
+
+      
+    <a class="article-category-link" href="categories/protobuf/">protobuf</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-Tcpdump与libpcap原理"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="2019/05/22/Tcpdump与libpcap原理/">WireShark抓包原理与libpcap</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="2019/05/22/Tcpdump与libpcap原理/" class="article-date">
+	  <time datetime="2019-05-22T14:20:55.000Z" itemprop="datePublished">2019-05-22</time>
+	</a>
+
+      
+    <a class="article-category-link" href="categories/Java/">Java</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://www.jianshu.com/p/ed6db49a3428" target="_blank" rel="noopener">libpcap实现机制及接口函数</a></li>
+<li><a href="https://www.jianshu.com/p/6d3f3cdc2411" target="_blank" rel="noopener">PF_RING学习笔记</a></li>
+<li><a href="https://www.tcpdump.org/manpages/pcap-filter.7.html" target="_blank" rel="noopener">pcap-filter - packet filter syntax</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
   
     <article id="post-IPv6安全浅析"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
@@ -741,175 +895,6 @@
 <p>详细介绍可以参考：<a href="http://ifeve.com/java-atomic/" target="_blank" rel="noopener">Java中的Atomic包使用指南</a></p>
 <h2 id="Atomic的原理"><a href="#Atomic的原理" class="headerlink" title="Atomic的原理"></a>Atomic的原理</h2><p>下面通过<code>AtomicInteger</code>的源码来看一下是怎么在没有锁的情况下保证数据正确性。首先看一下<code>incrementAndGet()</code>方法的实现：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Atomically increments by one the current value.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> the updated value</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">incrementAndGet</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> unsafe.getAndAddInt(<span class="keyword">this</span>, valueOffset, <span class="number">1</span>) + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-【Java】NIO的理解"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="2018/05/15/【Java】NIO的理解/">【Java】NIO的原理与浅析</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="2018/05/15/【Java】NIO的理解/" class="article-date">
-	  <time datetime="2018-05-15T14:20:55.000Z" itemprop="datePublished">2018-05-15</time>
-	</a>
-
-      
-    <a class="article-category-link" href="categories/Java/">Java</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="几个概念"><a href="#几个概念" class="headerlink" title="几个概念"></a>几个概念</h2><h3 id="用户空间与内核空间"><a href="#用户空间与内核空间" class="headerlink" title="用户空间与内核空间"></a>用户空间与内核空间</h3><p>现在操作系统都是采用虚拟存储器，那么对32位操作系统而言，它的寻址空间（虚拟存储空间）为4G（2的32次方）。操作系统的核心是内核，独立于普通的应用程序，可以访问受保护的内存空间，也有访问底层硬件设备的所有权限。为了保证用户进程不能直接操作内核（kernel），保证内核的安全，操心系统将虚拟空间划分为两部分，一部分为内核空间，一部分为用户空间。针对linux操作系统而言，将最高的1G字节（从虚拟地址0xC0000000到0xFFFFFFFF），供内核使用，称为内核空间，而将较低的3G字节（从虚拟地址0x00000000到0xBFFFFFFF），供各个进程使用，称为用户空间。</p>
-<p>在Linux世界，进程不能直接访问硬件设备，当进程需要访问硬件设备(比如读取磁盘文件，接收网络数据等等)时，必须由用户态模式切换至内核态模式，通过系统调用访问硬件设备。</p>
-<h3 id="文件描述符fd"><a href="#文件描述符fd" class="headerlink" title="文件描述符fd"></a>文件描述符fd</h3><p>文件描述符（File descriptor）是计算机科学中的一个术语，是一个用于表述指向文件的引用的抽象化概念。</p>
-<p>文件描述符在形式上是一个非负整数。实际上，它是一个索引值，指向内核为每一个进程所维护的该进程打开文件的记录表。当程序打开一个现有文件或者创建一个新文件时，内核向进程返回一个文件描述符。在程序设计中，一些涉及底层的程序编写往往会围绕着文件描述符展开。但是文件描述符这一概念往往只适用于UNIX、Linux这样的操作系统。</p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-【Java】Thread类中的join()方法原理"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="2018/05/04/【Java】Thread类中的join()方法原理/">【Java】Thread类中的join()方法原理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="2018/05/04/【Java】Thread类中的join()方法原理/" class="article-date">
-	  <time datetime="2018-05-04T14:20:55.000Z" itemprop="datePublished">2018-05-04</time>
-	</a>
-
-      
-    <a class="article-category-link" href="categories/Java/">Java</a><a class="article-category-link" href="categories/Java/源码分析/">源码分析</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><code>join()</code>是Thread类的一个方法。根据jdk文档的定义：</p>
-<blockquote>
-<p>public final void join()throws InterruptedException:  <strong>Waits for this thread to die</strong>.</p>
-</blockquote>
-<p><code>join()</code>方法的作用，是等待这个线程结束；但显然，这样的定义并不清晰。个人认为”Java 7 Concurrency Cookbook”的定义较为清晰：</p>
-<blockquote>
-<p><strong>join() method suspends the execution of the calling thread until the object called finishes its execution.</strong></p>
-</blockquote>
-<p>也就是说，t.join()方法阻塞调用此方法的线程(calling thread)，直到线程t完成，此线程再继续；通常用于在main()主线程内，等待其它线程完成再结束main()主线程。我们来看看下面的例子。</p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-【Android】Retrofit源码分析"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="2018/04/10/【Android】Retrofit源码分析/">【Android】Retrofit源码分析</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="2018/04/10/【Android】Retrofit源码分析/" class="article-date">
-	  <time datetime="2018-04-10T14:20:55.000Z" itemprop="datePublished">2018-04-10</time>
-	</a>
-
-      
-    <a class="article-category-link" href="categories/Android/">Android</a><a class="article-category-link" href="categories/Android/源码分析/">源码分析</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="Retrofit简介"><a href="#Retrofit简介" class="headerlink" title="Retrofit简介"></a>Retrofit简介</h3><p><code>retrofit</code> n. 式样翻新，花样翻新      vt. 给机器设备装配（新部件），翻新，改型</p>
-<p><a href="http://square.github.io/retrofit/" target="_blank" rel="noopener"><strong>Retrofit</strong></a> 是一个 RESTful 的 HTTP 网络请求框架的封装。注意这里并没有说它是网络请求框架，主要原因在于网络请求的工作并不是 <code>Retrofit</code> 来完成的。<code>Retrofit</code> 2.0 开始内置 <a href="http://square.github.io/okhttp/" target="_blank" rel="noopener"><code>OkHttp</code></a>，前者专注于接口的封装，后者专注于真正的网络请求。即通过 大量的设计模式 封装了 <code>OkHttp</code> ，使得简洁易用。</p>
-<p><img src="/gallery/android_common/4182937778-57515297dacff_articlex.png" alt=""></p>
-<p>我们的应用程序通过 <code>Retrofit</code> 请求网络，实际上是使用 <code>Retrofit</code> 接口层封装请求参数、Header、Url 等信息，之后由 <code>OkHttp</code>完成后续的请求操作，在服务端返回数据之后，<code>OkHttp</code> 将原始的结果交给 <code>Retrofit</code>，后者根据用户的需求对结果进行解析的过程。Retrofit的大概原理过程如下：</p>
-<ol>
-<li><code>Retrofit</code> 将 <code>Http</code>请求 抽象 成 <code>Java</code>接口</li>
-<li>在接口里用 注解 描述和配置 网络请求参数</li>
-<li>用动态代理 的方式，动态将网络请求接口的注解 解析 成<code>HTTP</code>请求</li>
-<li>最后执行<code>HTTP</code>请求</li>
-</ol>
-<p>这篇文章我将从Retrofit的基本用法出发，按照其使用步骤，一步步的探究Retrofit的实现原理及其源码的设计模式。</p>
-<p>Retrofit Github: <a href="https://github.com/square/retrofit" target="_blank" rel="noopener">https://github.com/square/retrofit</a></p>
-<h3 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h3><p>使用 <code>Retrofit</code> 非常简单，首先需要在 build.gradle 中添加依赖：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">implementation <span class="string">'com.squareup.retrofit2:retrofit:2.4.0'</span></span><br></pre></td></tr></table></figure>
-<p>如果需要使用Gson解析器，也需要在build.gradle中添加依赖（后文会详细讲到Retrofit的Converter）：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">implementation <span class="string">'com.squareup.retrofit2:converter-gson:2.0.2'</span></span><br></pre></td></tr></table></figure>
-<h4 id="1-定义Interface"><a href="#1-定义Interface" class="headerlink" title="1. 定义Interface"></a>1. 定义Interface</h4><p>Retrofit使用java interface和注解描述了HTTP请求的API参数，比如Github的一个API：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">GitHubService</span> </span>&#123;</span><br><span class="line">  <span class="meta">@GET</span>(<span class="string">"users/&#123;user&#125;/repos"</span>)</span><br><span class="line">  Call&lt;List&lt;Repo&gt;&gt; listRepos(<span class="meta">@Path</span>(<span class="string">"user"</span>) String user);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
