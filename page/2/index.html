@@ -352,6 +352,63 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Java】使用Atomic实现锁"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2018/05/22/【Java】使用Atomic实现锁/">【Java】使用Atomic变量实现锁</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2018/05/22/【Java】使用Atomic实现锁/" class="article-date">
+	  <time datetime="2018-05-22T14:20:55.000Z" itemprop="datePublished">2018-05-22</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Java/">Java</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Atomic原子操作"><a href="#Atomic原子操作" class="headerlink" title="Atomic原子操作"></a>Atomic原子操作</h2><p>Java从JDK1.5开始提供了java.util.concurrent.atomic包，方便程序员在多线程环境下，无锁的进行原子操作。原子变量的底层使用了处理器提供的原子指令，但是不同的CPU架构可能提供的原子指令不一样，也有可能需要某种形式的内部锁,所以该方法不能绝对保证线程不被阻塞。</p>
+<p>在Atomic包里一共有12个类，四种原子更新方式，分别是原子更新基本类型，原子更新数组，原子更新引用和原子更新字段。Atomic包里的类基本都是使用Unsafe实现的包装类。</p>
+<ul>
+<li>原子更新基本类型类： AtomicBoolean，AtomicInteger，AtomicLong，AtomicReference</li>
+<li>原子更新数组类：AtomicIntegerArray，AtomicLongArray</li>
+<li>原子更新引用类型：AtomicMarkableReference，AtomicStampedReference，AtomicReferenceArray</li>
+<li>原子更新字段类：AtomicLongFieldUpdater，AtomicIntegerFieldUpdater，AtomicReferenceFieldUpdater</li>
+</ul>
+<p>详细介绍可以参考：<a href="http://ifeve.com/java-atomic/" target="_blank" rel="noopener">Java中的Atomic包使用指南</a></p>
+<h2 id="Atomic的原理"><a href="#Atomic的原理" class="headerlink" title="Atomic的原理"></a>Atomic的原理</h2><p>下面通过<code>AtomicInteger</code>的源码来看一下是怎么在没有锁的情况下保证数据正确性。首先看一下<code>incrementAndGet()</code>方法的实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Atomically increments by one the current value.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> the updated value</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">incrementAndGet</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> unsafe.getAndAddInt(<span class="keyword">this</span>, valueOffset, <span class="number">1</span>) + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-【Java】NIO的理解"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -844,66 +901,6 @@
 <h3 id="二、LruCache的使用"><a href="#二、LruCache的使用" class="headerlink" title="二、LruCache的使用"></a>二、LruCache的使用</h3><p><code>LruCache</code>是Android 3.1所提供的一个缓存类，所以在Android中可以直接使用LruCache实现内存缓存。而DisLruCache目前在Android 还不是Android SDK的一部分，但Android官方文档推荐使用该算法来实现硬盘缓存。</p>
 <p>讲到<code>LruCache</code>不得不提一下<code>LinkedHashMap</code>，因为LruCache中Lru算法的实现就是通过<code>LinkedHashMap</code>来实现的。<code>LinkedHashMap</code>继承于<code>HashMap</code>，它使用了一个双向链表来存储Map中的Entry顺序关系，这种顺序有两种，一种是<strong>LRU顺序</strong>，一种是<strong>插入顺序</strong>，这可以由其构造函数<code>public LinkedHashMap(int initialCapacity,float loadFactor, boolean accessOrder)</code>的最后一个参数<code>accessOrder</code>来指定。所以，对于get、put、remove等操作，<code>LinkedHashMap</code>除了要做<code>HashMap</code>做的事情，还做些调整Entry顺序链表的工作。<code>LruCache</code>中将<code>LinkedHashMap</code>的顺序设置为LRU顺序来实现LRU缓存，每次调用get(也就是从内存缓存中取图片)，则将该对象移到链表的尾端。调用put插入新的对象也是存储在链表尾端，这样当内存缓存达到设定的最大值时，将链表头部的对象（近期最少用到的）移除。关于LinkedHashMap详解请前往：<a href="http://www.cnblogs.com/children/archive/2012/10/02/2710624.html" target="_blank" rel="noopener">理解LinkedHashMap</a></p>
 <p><img src="https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/master/gallery/algorithms/lru-cache.png" alt=""></p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-【算法】字符串循环移位后是否可包含"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/12/31/【算法】字符串循环移位后是否可包含/">【算法】字符串循环移位后是否可包含</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/12/31/【算法】字符串循环移位后是否可包含/" class="article-date">
-	  <time datetime="2017-12-31T07:20:55.000Z" itemprop="datePublished">2017-12-31</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><blockquote>
-<p>给定两个字符串s1和s2，要求判断s2是否能够被通过s1做循环移位（rotate）得到的字符串包含。<br>例如，s1=AABCD和s2=CDAA，返回true；给定s1=ABCD和s2=ACBD，返回false。</p>
-</blockquote>
-<h3 id="解法一"><a href="#解法一" class="headerlink" title="解法一"></a>解法一</h3><p>最直接最笨的方法就对s1进行循环移动，再进行字符串包含的判断，从而遍历其所有的可能性。字符串循环移动，时间复杂度为O（n），字符串包含判断，采用普通的方法，时间复杂度为O（n*m），总体复杂度为O（n*n*m）。字符串包含判断，若采用KMP算法，时间复杂度为O（n），这样总体的复杂度为O（n*n）。若字符串的长度n较大，显然效率比较低。其中n为s1的长度，m为s2的长度。</p>
-<h3 id="解法二"><a href="#解法二" class="headerlink" title="解法二"></a>解法二</h3><p>对s1的循环移位操作，可以使用拼接s1+s1的方式得到。</p>
-<p>以S1 = ABCD为例，先分析对S1进行循环移位之后的结果，如下所示：</p>
-<blockquote>
-<p>ABCD—&gt;BCDA—-&gt;CDAB—-&gt;DABC—-&gt;ABCD……</p>
-</blockquote>
-<p>假设我们把前面的移走的数据进行保留，会发现有如下的规律：</p>
-<blockquote>
-<p>ABCD—&gt;ABCDA—-&gt;ABCDAB—-&gt;ABCDABC—-&gt;ABCDABCD……</p>
-</blockquote>
-<p>因此，可以看出对s1做循环移位所得到的字符串都将是字符串s1s1的子字符串。如果s2可以由s1循环移位得到，那么s2一定在s1s1上，这样时间复杂度就降低了。</p>
       
     </div>
     <footer class="article-footer">

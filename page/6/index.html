@@ -352,6 +352,57 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-【Gradle】Android Studio中Gradle重复依赖的问题"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/02/23/【Gradle】Android Studio中Gradle重复依赖的问题/">【Gradle】Android Studio中Gradle重复依赖的问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/02/23/【Gradle】Android Studio中Gradle重复依赖的问题/" class="article-date">
+	  <time datetime="2017-02-23T05:03:00.000Z" itemprop="datePublished">2017-02-23</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Gradle/">Gradle</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a><strong>问题</strong></h2><p>项目中有个Module需要解析json所以选用了依赖Gson，但是编译时报错如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Error:Execution failed for task &apos;:app:transformClassesWithJarMergingForAutoioDebug&apos;.</span><br><span class="line">&gt; com.android.build.api.transform.TransformException: java.util.zip.ZipException: duplicate entry: com/google/gson/annotations/Expose.class</span><br></pre></td></tr></table></figure>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a><strong>分析</strong></h2><p>看到错误中的这个<strong>duplicate</strong>，第一反应和平常一样，难道是得先清理一下Clean project ? 反复试了几次都不行，上网查才发现是重复依赖Gson库的问题，导致项目中有了两个重复的<code>Expose.class</code> 类。</p>
+<p>使用快捷键（Shift + Ctrl + T）查看项目中的<code>Expose.class</code> 类，发现是和passport-1.4.2.jar这个本地jar包冲突了，它也依赖了gson库所以导致了重复依赖。</p>
+<p><img src="http://img.blog.csdn.net/20170223114733531" alt=""></p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-【Android】内存泄漏分析心得"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -828,56 +879,6 @@
 </blockquote>
 <h2 id="一、我是怎么思考这件事情的"><a href="#一、我是怎么思考这件事情的" class="headerlink" title="一、我是怎么思考这件事情的"></a><strong>一、我是怎么思考这件事情的</strong></h2><p>APK是Android系统安装包的文件格式，关于这个话题其实是一个老生常谈的题目，不论是公司内部，还是外部网络，前人前辈已经总结出很多方法和规律。不过随着移动端技术近两年的飞速发展，一些新的思维方式和优化方法也逐渐涌现和成熟起来。笔者在实践过程中踩过一些坑，收获了一些经验，在这里做个思考和总结，所以随笔给大家，希望对大家从事相关工作的时候有所帮助和参考，同时也是抛砖引玉，希望大家共同探讨这个开放性的话题。</p>
 <p>关于为什么APK要瘦身，这个不多说，只从三个方面唠叨一下，对于用户（或者客户）来说，APK越大，在下载安装过程中，他们耗费的流量会越多，安装等待时间也会越长；对于产品本身，意味着下载转化率会越低（因为竞品中，用户有更多机会选择那个体验最好，功能最多，性能最好，包最小的）；对于研发来说，是一种优化改进技术的机会。</p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-基于社区发现算法和图分析Neo4j解读《权力的游戏》"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2016/11/21/基于社区发现算法和图分析Neo4j解读《权力的游戏》/">基于社区发现算法和图分析Neo4j解读《权力的游戏》</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2016/11/21/基于社区发现算法和图分析Neo4j解读《权力的游戏》/" class="article-date">
-	  <time datetime="2016-11-21T03:08:00.000Z" itemprop="datePublished">2016-11-21</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Web/">Web</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="导读"><a href="#导读" class="headerlink" title="导读"></a>导读</h2><p>几个月前，数学家 Andrew Beveridge 和Jie Shan在数学杂志上发表<a href="http://www.maa.org/sites/default/files/pdf/Mathhorizons/NetworkofThrones.pdf" target="_blank" rel="noopener"><strong>《权力的网络》</strong></a>，主要分析畅销小说《冰与火之歌》第三部《冰雨的风暴》中人物关系，其已经拍成电视剧《权力的游戏》系列。他们在论文中介绍了如何通过文本分析和实体提取构建人物关系的网络。紧接着，使用社交网络分析算法对人物关系网络分析找出最重要的角色；应用社区发现算法来找到人物聚类。</p>
-<p>其中的分析和可视化是用Gephi做的，Gephi是非常流行的图分析工具。但作者觉得使用Neo4j来实现更有趣。</p>
-<h2 id="导入原始数据到Neo4j"><a href="#导入原始数据到Neo4j" class="headerlink" title="导入原始数据到Neo4j"></a>导入原始数据到Neo4j</h2><p>原始数据可<a href="https://www.macalester.edu/~abeverid/data/stormofswords.csv" target="_blank" rel="noopener">从网络上下载</a>，格式如下：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Source,Target,Weight</span><br><span class="line">Aemon,Grenn,5</span><br><span class="line">Aemon,Samwell,31</span><br><span class="line">Aerys,Jaime,18</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">

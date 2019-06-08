@@ -352,6 +352,54 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-遗传算法的基本概念和Java实现"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="../../2017/07/11/遗传算法的基本概念和Java实现/">遗传算法的基本概念和Java实现</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="../../2017/07/11/遗传算法的基本概念和Java实现/" class="article-date">
+	  <time datetime="2017-07-11T10:30:55.000Z" itemprop="datePublished">2017-07-11</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../categories/Algorithm/">Algorithm</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>基因遗传算法是一种灵感源于达尔文自然进化理论的启发式搜索算法。该算法反映了自然选择的过程，即最适者被选定繁殖，并产生下一代。本文简要地介绍了遗传算法的基本概念和实现，希望能为读者展示启发式搜索的魅力。</p>
+<p><img src="/gallery/genetic-algorithms/1-BYDJpa6M2rzWNSurvspf8Q.png" alt="如上图（左）所示，遗传算法的个体由多条染色体组成，每条染色体由多个基因组成。上图（右）展示了染色体分割和组合的方式。"></p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-【Java】Integer变量相等（==）比较问题"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -802,57 +850,6 @@
       
         <p>在手机客户端尤其是Android应用的开发过程中，我们经常会接触到“硬件加速”这个词。由于操作系统对底层软硬件封装非常完善，上层软件开发者往往对硬件加速的底层原理了解很少，也不清楚了解底层原理的意义，因此常会有一些误解，如硬件加速是不是通过特殊算法实现页面渲染加速，或是通过硬件提高CPU/GPU运算速率实现渲染加速。</p>
 <p>本文尝试从底层硬件原理，一直到上层代码实现，对硬件加速技术进行简单介绍，其中上层实现基于Android 6.0。</p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-【Gradle】Android Studio中Gradle重复依赖的问题"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="../../2017/02/23/【Gradle】Android Studio中Gradle重复依赖的问题/">【Gradle】Android Studio中Gradle重复依赖的问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="../../2017/02/23/【Gradle】Android Studio中Gradle重复依赖的问题/" class="article-date">
-	  <time datetime="2017-02-23T05:03:00.000Z" itemprop="datePublished">2017-02-23</time>
-	</a>
-
-      
-    <a class="article-category-link" href="../../categories/Gradle/">Gradle</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a><strong>问题</strong></h2><p>项目中有个Module需要解析json所以选用了依赖Gson，但是编译时报错如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Error:Execution failed for task &apos;:app:transformClassesWithJarMergingForAutoioDebug&apos;.</span><br><span class="line">&gt; com.android.build.api.transform.TransformException: java.util.zip.ZipException: duplicate entry: com/google/gson/annotations/Expose.class</span><br></pre></td></tr></table></figure>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a><strong>分析</strong></h2><p>看到错误中的这个<strong>duplicate</strong>，第一反应和平常一样，难道是得先清理一下Clean project ? 反复试了几次都不行，上网查才发现是重复依赖Gson库的问题，导致项目中有了两个重复的<code>Expose.class</code> 类。</p>
-<p>使用快捷键（Shift + Ctrl + T）查看项目中的<code>Expose.class</code> 类，发现是和passport-1.4.2.jar这个本地jar包冲突了，它也依赖了gson库所以导致了重复依赖。</p>
-<p><img src="http://img.blog.csdn.net/20170223114733531" alt=""></p>
       
     </div>
     <footer class="article-footer">
