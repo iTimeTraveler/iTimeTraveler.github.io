@@ -32,7 +32,7 @@
   
   <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
-  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
   <style type="text/css">
     @font-face{font-family:futura-pt; src:url("css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
     @font-face{font-family:futura-pt-light; src:url("css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
@@ -352,6 +352,223 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-Uber使用QUIC协议优化App网络性能"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="2019/12/02/Uber使用QUIC协议优化App网络性能/">Uber使用QUIC协议优化App网络性能</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="2019/12/02/Uber使用QUIC协议优化App网络性能/" class="article-date">
+	  <time datetime="2019-12-02T03:08:00.000Z" itemprop="datePublished">2019-12-02</time>
+	</a>
+
+      
+    <a class="article-category-link" href="categories/Web/">Web</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>原文：<a href="https://eng.uber.com/employing-quic-protocol/" target="_blank" rel="noopener">Employing QUIC Protocol to Optimize Uber’s App Performance</a></p>
+</blockquote>
+<p>Uber operates on a global scale across more than 600 cities, with our apps relying entirely on wireless connectivity from over 4,500 mobile carriers. To deliver the real-time performance expected from Uber’s users, our mobile apps require low-latency and highly reliable network communication. Unfortunately, the <a href="https://en.wikipedia.org/wiki/HTTP/2" target="_blank" rel="noopener">HTTP/2</a> stack fares poorly in dynamic, lossy wireless networks, and we learned that poor performance can often be traced directly to Transmission Control Protocol (TCP) implementations buried in OS kernels.</p>
+<p>Uber在全球600个城市运营，我们的APP完全依赖于4500家移动网络运营商提供的无线网络服务。为了提供Uber用户期望的实时性能，我们的手机应用需要低延迟、高可用的网络通信。不幸的是，HTTP/2协议在动态、有损的无线网络中表现不佳，我们了解到低性能的原因通常被追溯定位到内核中的TCP实现。</p>
+<p>To address these pain points, we adopted the <a href="https://en.wikipedia.org/wiki/QUIC" target="_blank" rel="noopener">QUIC protocol</a>, a stream-multiplexed modern transport protocol implemented over UDP, which enables us to better control the transport protocol performance. QUIC is currently being standardized by the <a href="https://www.ietf.org/" target="_blank" rel="noopener">Internet Engineering Task Force</a> (IETF) as <a href="https://github.com/quicwg" target="_blank" rel="noopener">HTTP/3</a>.</p>
+<p>After thorough testing of QUIC, we concluded that integrating QUIC in our apps would fchroreduce the tail-end latencies compared to TCP. We witnessed a reduction of 10-30 percent in tail-end latencies for HTTPS traffic at scale in our rider and driver apps. In addition to improving the performance of our apps in low connectivity networks, QUIC gives us end-to-end control over the flow of packets in the user space.</p>
+<p>In this article, we share our experiences optimizing TCP performance for Uber’s apps by moving to a network stack that supports the QUIC protocol.</p>
+<h2 id="State-of-the-Art-TCP"><a href="#State-of-the-Art-TCP" class="headerlink" title="State of the Art: TCP"></a>State of the Art: TCP</h2><p>On today’s Internet, <a href="https://en.wikipedia.org/wiki/Transmission_Control_Protocol" target="_blank" rel="noopener">TCP</a> is the most widely adopted transport protocol for carrying HTTPS traffic. TCP provides a reliable byte stream, dealing with the complexities of network <a href="https://en.wikipedia.org/wiki/TCP_congestion_control" target="_blank" rel="noopener">congestion</a> and link layer <a href="https://tools.ietf.org/html/rfc2018" target="_blank" rel="noopener">losses</a>. The widespread use of TCP for HTTPS traffic is mainly attributed to ubiquity (almost every OS includes TCP), availability on a wide range of infrastructure, such as load balancers, HTTPS <a href="https://www.nginx.com/" target="_blank" rel="noopener">proxies</a>, and <a href="https://www.akamai.com/us/en/resources/content-distribution-network.jsp" target="_blank" rel="noopener">CDNs</a>, and it’s out-of-the-box functionality for most platforms and networks.</p>
+<p>Most users access Uber’s services on the move, and the tail-end latencies of our applications running on TCP were far from meeting the requirements of the real-time nature of our HTTPS traffic. Specifically, users perceived high tail-end latencies across the world. In Figure 1, below, we plot the tail-end latencies of our HTTPS network calls across major cities:</p>
+<p><img src="/gallery/common/image3-1068x531.png" alt="Figure 1. Tail-end latencies vary across the major cities where Uber operates."></p>
+<p>Although the latencies in India and Brazil’s networks were worse than those in the US and UK, the tail-end latencies are significantly higher than the average latencies, even in the case of the US and UK.</p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-【Android】Wifi设置代理原理解析"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="2019/11/27/【Android】Wifi设置代理原理解析/">【Android】Wifi代理抓包原理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="2019/11/27/【Android】Wifi设置代理原理解析/" class="article-date">
+	  <time datetime="2019-11-27T14:20:55.000Z" itemprop="datePublished">2019-11-27</time>
+	</a>
+
+      
+    <a class="article-category-link" href="categories/Android/">Android</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>无论是Android还是iOS，都可以在wifi配置中设置一个<strong>代理服务器ip和port</strong>，很多人用这个功能来对移动设备APP的网络请求（准确来说是HTTP请求）进行抓包。这其中的原理是什么？怎么实现的？</p>
+<h1 id="Android源码分析"><a href="#Android源码分析" class="headerlink" title="Android源码分析"></a>Android源码分析</h1><p>从wifi设置中配置了代理服务ip和port之后的生效流程，可以参考这篇文章：<a href="https://bbs.pediy.com/thread-252161.htm" target="_blank" rel="noopener">[原创]Android4.4 wifi代理流程</a></p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-【Android】使用VPN实现抓包"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="2019/07/25/【Android】使用VPN实现抓包/">【Android】 使用VPN实现抓包</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="2019/07/25/【Android】使用VPN实现抓包/" class="article-date">
+	  <time datetime="2019-07-25T14:20:55.000Z" itemprop="datePublished">2019-07-25</time>
+	</a>
+
+      
+    <a class="article-category-link" href="categories/Android/">Android</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="VpnService和安卓VPN例子"><a href="#VpnService和安卓VPN例子" class="headerlink" title="VpnService和安卓VPN例子"></a>VpnService和安卓VPN例子</h1><p>VpnService是开发安卓VPN的基础，下面是<a href="https://developer.android.com/reference/android/net/VpnService" target="_blank" rel="noopener">官方文档的阐释</a></p>
+<blockquote>
+<p>VpnService is a base class for applications to extend and build their own VPN solutions. In general, it creates a virtual network interface, configures addresses and routing rules, and returns a file descriptor to the application. Each read from the descriptor retrieves an outgoing packet which was routed to the interface. Each write to the descriptor injects an incoming packet just like it was received from the interface. The interface is running on Internet Protocol (IP), so packets are always started with IP headers. The application then completes a VPN connection by processing and exchanging packets with the remote server over a tunnel.</p>
+</blockquote>
+<p>上面的阐释的重点是：虚拟一个网卡、返回文件描述符、 读写的内容是ip数据报</p>
+<p>安卓example的<a href="https://android.googlesource.com/platform/development/+/master/samples/ToyVpn" target="_blank" rel="noopener">ToyVpn</a>；初步搭一个vpn应用的框架可以看<a href="https://www.tuicool.com/articles/uuiMje" target="_blank" rel="noopener">这里</a>，这个仅仅是搭建了框架，功能（ip数据包的收发）则没有实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">+----------------------------------------------------------------+</span><br><span class="line">|                                                                |</span><br><span class="line">|  +--------------------+      +--------------------+            |</span><br><span class="line">|  | User Application A |      | User Application B |&lt;-----+     |</span><br><span class="line">|  +--------------------+      +--------------------+      |     |</span><br><span class="line">|               | <span class="number">1</span>                    | <span class="number">5</span>                 |     |</span><br><span class="line">|...............|......................|...................|.....|</span><br><span class="line">|               ↓                      ↓                   |     |</span><br><span class="line">|         +----------+           +----------+              |     |</span><br><span class="line">|         | socket A |           | socket B |              |     |</span><br><span class="line">|         +----------+           +----------+              |     |</span><br><span class="line">|                 | <span class="number">2</span>               | <span class="number">6</span>                    |     |</span><br><span class="line">|.................|.................|......................|.....|</span><br><span class="line">|                 ↓                 ↓                      |     |</span><br><span class="line">|             +------------------------+                 <span class="number">4</span> |     |</span><br><span class="line">|             | Newwork Protocol Stack |                   |     |</span><br><span class="line">|             +------------------------+                   |     |</span><br><span class="line">|                | <span class="number">7</span>                 | <span class="number">3</span>                   |     |</span><br><span class="line">|................|...................|.....................|.....|</span><br><span class="line">|                ↓                   ↓                     |     |</span><br><span class="line">|        +----------------+    +----------------+          |     |</span><br><span class="line">|        |      eth0      |    |      tun0      |          |     |</span><br><span class="line">|        +----------------+    +----------------+          |     |</span><br><span class="line">|    <span class="number">10.32</span>.0.11  |                   |   <span class="number">192.168</span>.3.11      |     |</span><br><span class="line">|                | <span class="number">8</span>                 +---------------------+     |</span><br><span class="line">|                |                                               |</span><br><span class="line">+----------------|-----------------------------------------------+</span><br><span class="line">                 ↓</span><br><span class="line">         Physical Network</span><br></pre></td></tr></table></figure>
+<p>上图中有两个应用程序A和B，都在用户层，而其它的socket、协议栈（Newwork Protocol Stack）和网络设备（eth0和tun0）部分都在内核层，其实socket是协议栈的一部分，这里分开来的目的是为了看的更直观。</p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-移动端接入Cronet网络库实践"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="2019/07/25/移动端接入Cronet网络库实践/">移动端(Android、iOS)接入Cronet实践</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="2019/07/25/移动端接入Cronet网络库实践/" class="article-date">
+	  <time datetime="2019-07-25T14:20:55.000Z" itemprop="datePublished">2019-07-25</time>
+	</a>
+
+      
+    <a class="article-category-link" href="categories/Android/">Android</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="QUIC协议"><a href="#QUIC协议" class="headerlink" title="QUIC协议"></a>QUIC协议</h2><p><a href="https://www.chromium.org/quic" target="_blank" rel="noopener">QUIC, a multiplexed stream transport over UDP</a> 是Chromium使用的通信协议，是基于UDP实现的类似于 TCP+TLS+HTTP/2 的协议。也是HTTP 3.0的设计方案。有兴趣的话大家可参考文档： <a href="https://www.chromium.org/quic/playing-with-quic" target="_blank" rel="noopener">Playing with QUIC</a></p>
+<p>Chromium项目是开源的，The Chromium Projects(<a href="http://dev.chromium.org/chromium-projects" target="_blank" rel="noopener">http://dev.chromium.org/chromium-projects</a>) 文档详细介绍了Chromium项目的实现原理，以及如何获取源码并进行编译。</p>
+<p>Cronet 库是Chrome使用的移动端网络库。支持 HTTP、HTTP/2 以及 QUIC 协议。支持 Android 和 iOS 平台。 其编译工具是 gn 和 ninja，类似于 cmake 与 make 的关系。 下面介绍 Cronet 库的编译及编译注意事项。</p>
+<h2 id="获取Chromium源码"><a href="#获取Chromium源码" class="headerlink" title="获取Chromium源码"></a>获取Chromium源码</h2><p>可以参考官方文档：<a href="https://chromium.googlesource.com/chromium/src/+/master/docs/mac_build_instructions.md" target="_blank" rel="noopener">Checking out and building Chromium for Mac</a></p>
+<p>获取源码之前，首先需要下载安装 <a href="https://commondatastorage.googleapis.com/chrome-infra-docs/flat/depot_tools/docs/html/depot_tools_tutorial.html#_setting_up" target="_blank" rel="noopener">depot_tools</a> 工具。在一个适当的目录下clone depot_tools包：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">clone</span> https://chromium.googlesource.com/chromium/tools/depot_tools.git</span></span><br></pre></td></tr></table></figure>
+<p>将<code>depot_tools</code>的路径（最好是绝对路径，<code>~</code>需替换为<code>$HOME</code>）加进环境变量PATH中，假设 <code>depot_tools</code> 工程在<code>/path/to/depot_tools</code>目录下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=$PATH:/path/to/depot_tools</span><br></pre></td></tr></table></figure>
+<p>如果从来没有下载过Chromium的代码的话，为源码创建一个文件夹并下载源码：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir chromium &amp;&amp; cd chromium</span><br><span class="line">fetch --no-history chromium       # 可能花费30min或几小时，依网络速度而不同</span><br></pre></td></tr></table></figure>
+<p><code>–no-history</code> 可以节省代码下载时间，它忽略仓库的历史信息；整个代码量较大，约 14G，且<strong>需要翻墙</strong>，1M 左右的速度需要 20~30 分钟。若中间拉取失败，可以执行 <code>gclient sync</code> 继续拉取， 拉取结束后，该目录会生成一个 src 目录，包含 cronet 源码。</p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-Android ADB原理探究"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -447,105 +664,6 @@
 <p>在低电耗模式下，系统会尝试通过限制应用对网络和 CPU 密集型服务的访问来节省电量。 这还可以阻止应用访问网络并推迟其作业、同步和标准闹铃。</p>
 <p>系统会定期退出Doze低电耗模式一会儿，好让应用完成其已推迟的 Activity。在此维护时段内，系统会运行所有待定同步、作业和闹铃并允许应用访问网络。</p>
 <p><img src="/gallery/android_common/doze.png" alt="图 1. 低电耗模式提供了定期维护时段，可供应用使用网络并处理待定 Activity。"></p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-protobuf编码原理"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="2019/05/24/protobuf编码原理/">protobuf编码原理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="2019/05/24/protobuf编码原理/" class="article-date">
-	  <time datetime="2019-05-24T14:20:55.000Z" itemprop="datePublished">2019-05-24</time>
-	</a>
-
-      
-    <a class="article-category-link" href="categories/protobuf/">protobuf</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-Tcpdump与libpcap原理"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="2019/05/22/Tcpdump与libpcap原理/">WireShark抓包原理与libpcap</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="2019/05/22/Tcpdump与libpcap原理/" class="article-date">
-	  <time datetime="2019-05-22T14:20:55.000Z" itemprop="datePublished">2019-05-22</time>
-	</a>
-
-      
-    <a class="article-category-link" href="categories/Java/">Java</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li><a href="https://www.jianshu.com/p/ed6db49a3428" target="_blank" rel="noopener">libpcap实现机制及接口函数</a></li>
-<li><a href="https://www.jianshu.com/p/6d3f3cdc2411" target="_blank" rel="noopener">PF_RING学习笔记</a></li>
-<li><a href="https://www.tcpdump.org/manpages/pcap-filter.7.html" target="_blank" rel="noopener">pcap-filter - packet filter syntax</a></li>
-</ul>
-
       
     </div>
     <footer class="article-footer">
@@ -758,142 +876,6 @@
 </blockquote>
 <p>横向遍历的 CPU cache 命中率高，所以它比纵向遍历约快这么多倍！</p>
 <p><a href="http://igoro.com/archive/gallery-of-processor-cache-effects/" target="_blank" rel="noopener">Gallery of Processor Cache Effects</a> 用 7 个源码示例生动的介绍 cache 原理，深入浅出！但是可能因操作系统的差异、编译器是否优化，以及近些年 cache 性能的提升，有些样例在 Mac 的效果与原文相差较大。</p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-【Java】J.U.C并发包 - AQS机制"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="2018/07/19/【Java】J.U.C并发包 - AQS机制/">【Java】J.U.C并发包 - AQS机制</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="2018/07/19/【Java】J.U.C并发包 - AQS机制/" class="article-date">
-	  <time datetime="2018-07-19T14:20:55.000Z" itemprop="datePublished">2018-07-19</time>
-	</a>
-
-      
-    <a class="article-category-link" href="categories/Java/">Java</a><a class="article-category-link" href="categories/Java/源码分析/">源码分析</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Java并发包（java.util.concurrent）中提供了很多并发工具，这其中，很多我们耳熟能详的并发工具，譬如ReentrantLock、Semaphore，CountDownLatch，CyclicBarrier，它们的实现都用到了一个共同的基类 - <strong>AbstractQueuedSynchronizer</strong>，简称AQS。AQS提供了一种原子式管理同步状态、阻塞和唤醒线程功能以及队列模型的简单框架。是一个用来构建锁和同步器的框架，使用AQS能简单且高效地构造出应用广泛的大量的同步器，比如我们提到的ReentrantLock，Semaphore，其他的诸如ReentrantReadWriteLock，SynchronousQueue，FutureTask等等皆是基于AQS的。</p>
-<h2 id="设计思想"><a href="#设计思想" class="headerlink" title="设计思想"></a>设计思想</h2><p>同步器背后的基本思想非常简单，可以参考AQS作者 Doug Lea 的论文：<a href="http://gee.cs.oswego.edu/dl/papers/aqs.pdf" target="_blank" rel="noopener">The java.util.concurrent Synchronizer Framework</a>。同步器一般包含两种方法，一种是acquire，另一种是release。</p>
-<ul>
-<li>acquire操作阻塞调用的线程，直到同步状态允许其继续执行。</li>
-<li>release操作则是改变同步状态，使得一或多个被acquire阻塞的线程继续执行。</li>
-</ul>
-<p>其中acquire操作伪代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (synchronization state does not allow acquire) &#123;</span><br><span class="line">	enqueue current thread <span class="keyword">if</span> not already queued;</span><br><span class="line">	possibly block current thread;</span><br><span class="line">&#125;</span><br><span class="line">dequeue current thread <span class="keyword">if</span> it was queued;</span><br></pre></td></tr></table></figure>
-<p>release操作伪代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">update synchronization state;</span><br><span class="line"><span class="keyword">if</span> (state may permit a blocked thread to acquire)</span><br><span class="line">	unblock one or more queued threads;</span><br></pre></td></tr></table></figure>
-<p>为了实现上述操作，需要下面三个基本组件的相互协作：</p>
-<ul>
-<li>同步状态的原子性管理；</li>
-<li>线程的阻塞与解除阻塞；</li>
-<li>队列的管理；</li>
-</ul>
-<p>AQS框架借助于两个类：<strong>Unsafe</strong>(提供CAS操作) 和 <strong>LockSupport</strong>(提供park/unpark操作)。</p>
-<h2 id="1-同步状态的原子性管理"><a href="#1-同步状态的原子性管理" class="headerlink" title="1. 同步状态的原子性管理"></a>1. 同步状态的原子性管理</h2><p>AQS类使用单个<code>int</code>（32位）来保存同步状态，并暴露出<code>getState</code>、<code>setState</code>以及<code>compareAndSet</code>操作来读取和更新这个状态。该整数可以表现任何状态。比如， <code>Semaphore</code> 用它来表现剩余的许可数，<code>ReentrantLock</code> 用它来表现拥有它的线程已经请求了多少次锁；<code>FutureTask</code> 用它来表现任务的状态(尚未开始、运行、完成和取消)。</p>
-<p>如JDK的文档中所说，使用AQS来实现一个同步器需要覆盖实现如下几个方法，并且使用<code>getState</code>，<code>setState</code>，<code>compareAndSetState</code>这几个方法来设置或者获取状态。</p>
-<ul>
-<li><p><code>boolean tryAcquire(int arg)</code> </p>
-</li>
-<li><p><code>boolean tryRelease(int arg)</code> </p>
-</li>
-<li><p><code>int tryAcquireShared(int arg)</code> </p>
-</li>
-<li><p><code>boolean tryReleaseShared(int arg)</code> </p>
-</li>
-<li><code>boolean isHeldExclusively()</code></li>
-</ul>
-<p>以上方法不需要全部实现，根据获取的锁的种类可以选择实现不同的方法，支持独占(排他)获取锁的同步器应该实现<code>tryAcquire</code>、 <code>tryRelease</code>、<code>isHeldExclusively</code>而支持共享获取的同步器应该实现<code>tryAcquireShared</code>、<code>tryReleaseShared</code>、<code>isHeldExclusively</code>。下面以 <code>CountDownLatch</code> 举例说明基于AQS实现同步器, <code>CountDownLatch</code> 用同步状态持有当前计数，<code>countDown</code>方法调用 release从而导致计数器递减；当计数器为0时，解除所有线程的等待；<code>await</code>调用acquire，如果计数器为0，<code>acquire</code> 会立即返回，否则阻塞。</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li><a href="http://gee.cs.oswego.edu/dl/papers/aqs.pdf" target="_blank" rel="noopener">The java.util.concurrent Synchronizer Framework - AQS框架作者Doug Lea的论文</a></li>
-<li><a href="http://ifeve.com/aqs-2/" target="_blank" rel="noopener">The j.u.c Synchronizer Framework翻译(二)设计与实现</a></li>
-<li><a href="https://blog.csdn.net/vernonzheng/article/details/8288251" target="_blank" rel="noopener">Java多线程（九）之ReentrantLock与Condition</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-【Android】动态链接库so的加载原理"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="2018/07/03/【Android】动态链接库so的加载原理/">【Android】动态链接库so的加载原理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="2018/07/03/【Android】动态链接库so的加载原理/" class="article-date">
-	  <time datetime="2018-07-03T03:51:55.000Z" itemprop="datePublished">2018-07-03</time>
-	</a>
-
-      
-    <a class="article-category-link" href="categories/Android/">Android</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近开发的组件时常出现了运行时加载so库失败问题，每天都会有<code>java.lang.UnsatisfiedLinkError</code>的错误爆出来，而且线上总是偶然复现，很疑惑。所以本文将从AOSP源码简单跟踪Android中的动态链接库so的加载原理，试图找出一丝线索。</p>
-<h2 id="加载入口"><a href="#加载入口" class="headerlink" title="加载入口"></a>加载入口</h2><p>首先我们知道在Android(Java)中加载一个动态链接库非常简单。就是我们日常调用的 <code>System.load(Sring filename)</code> 或者<code>System.loadLibrary(String libname)</code>开始。 看过<a href="http://47.98.205.211/2017/05/17/jni/" target="_blank" rel="noopener">《理解JNI技术》</a>的应该知道上述代码执行过程中会调用native层的<code>JNI_OnLoad()</code>方法，一般用于动态注册native方法。</p>
-<h2 id="System-loadLibrary"><a href="#System-loadLibrary" class="headerlink" title="# System.loadLibrary"></a># System.loadLibrary</h2><p>[System.java]</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">loadLibrary</span><span class="params">(String libname)</span> </span>&#123;</span><br><span class="line">    Runtime.getRuntime().loadLibrary0(VMStack.getCallingClassLoader(), libname);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>此处<code>VMStack.getCallingClassLoader()</code>拿到的是调用者的ClassLoader，一般情况下是<strong>PathClassLoader</strong>。我们进入Runtime类的<code>loadLibrary0()</code>方法看看。</p>
-<p>[Runtime.java]</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">loadLibrary0</span><span class="params">(ClassLoader loader, String libname)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (libname.indexOf((<span class="keyword">int</span>)File.separatorChar) != -<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnsatisfiedLinkError(<span class="string">"Directory separator should not appear in library name: "</span> + libname);</span><br><span class="line">    &#125;</span><br><span class="line">    String libraryName = libname;</span><br><span class="line">    <span class="comment">// 1. 如果classloder存在，通过loader.findLibrary()查找到so路径</span></span><br><span class="line">    <span class="keyword">if</span> (loader != <span class="keyword">null</span>) &#123;</span><br><span class="line">        String filename = loader.findLibrary(libraryName);</span><br><span class="line">        <span class="keyword">if</span> (filename == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// It's not necessarily true that the ClassLoader used</span></span><br><span class="line">            <span class="comment">// System.mapLibraryName, but the default setup does, and it's</span></span><br><span class="line">            <span class="comment">// misleading to say we didn't find "libMyLibrary.so" when we</span></span><br><span class="line">            <span class="comment">// actually searched for "liblibMyLibrary.so.so".</span></span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UnsatisfiedLinkError(loader + <span class="string">" couldn't find \""</span> +</span><br><span class="line">                                           System.mapLibraryName(libraryName) + <span class="string">"\""</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        String error = doLoad(filename, loader);</span><br><span class="line">        <span class="keyword">if</span> (error != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UnsatisfiedLinkError(error);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 如果classloder不存在，通过loader.findLibrary()查找到so路径</span></span><br><span class="line">    String filename = System.mapLibraryName(libraryName);</span><br><span class="line">    List&lt;String&gt; candidates = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">    String lastError = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">for</span> (String directory : getLibPaths()) &#123;	<span class="comment">// getLibPaths()代码在最下方</span></span><br><span class="line">        String candidate = directory + filename;</span><br><span class="line">        candidates.add(candidate);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (IoUtils.canOpenReadOnly(candidate)) &#123;</span><br><span class="line">            String error = doLoad(candidate, loader);</span><br><span class="line">            <span class="keyword">if</span> (error == <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span>; <span class="comment">// We successfully loaded the library. Job done.</span></span><br><span class="line">            &#125;</span><br><span class="line">            lastError = error;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 都没找到，抛出 UnsatisfiedLinkError 异常</span></span><br><span class="line">    <span class="keyword">if</span> (lastError != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnsatisfiedLinkError(lastError);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> UnsatisfiedLinkError(<span class="string">"Library "</span> + libraryName + <span class="string">" not found; tried "</span> + candidates);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
