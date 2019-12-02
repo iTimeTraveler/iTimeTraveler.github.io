@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>android 热修复原理和实现 | iTimeTraveler</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="hotfix" />
+  
+  
+  
+  
+  <meta name="description" content="查看原文： Android 热修复，没你想的那么难 —— by kymjs张涛  一种动态加载最简单的实现方式，代码实现起来非常简单，重要的是这种思路和原理 。 《插件化从放弃到捡起》第一章，首先看一张图：  这张图是我所理解的 Android 插件化技术的三个技术点以及它们的应用场景。今天以 【Qzone 热修复方案】为例，跟大家讲一讲插件化中 热修复方案 的实现。">
+<meta name="keywords" content="hotfix">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 热修复原理和实现">
+<meta property="og:url" content="https://itimetraveler.github.io/2016/11/10/Android 热修复原理和实现/index.html">
+<meta property="og:site_name" content="iTimeTraveler">
+<meta property="og:description" content="查看原文： Android 热修复，没你想的那么难 —— by kymjs张涛  一种动态加载最简单的实现方式，代码实现起来非常简单，重要的是这种思路和原理 。 《插件化从放弃到捡起》第一章，首先看一张图：  这张图是我所理解的 Android 插件化技术的三个技术点以及它们的应用场景。今天以 【Qzone 热修复方案】为例，跟大家讲一讲插件化中 热修复方案 的实现。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://itimetraveler.github.io/gallery/hotfix.png">
+<meta property="og:updated_time" content="2018-03-14T08:13:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 热修复原理和实现">
+<meta name="twitter:description" content="查看原文： Android 热修复，没你想的那么难 —— by kymjs张涛  一种动态加载最简单的实现方式，代码实现起来非常简单，重要的是这种思路和原理 。 《插件化从放弃到捡起》第一章，首先看一张图：  这张图是我所理解的 Android 插件化技术的三个技术点以及它们的应用场景。今天以 【Qzone 热修复方案】为例，跟大家讲一讲插件化中 热修复方案 的实现。">
+<meta name="twitter:image" content="https://itimetraveler.github.io/gallery/hotfix.png">
+  
+    <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/gallery/avatar/0.jpg">
+  <link rel="apple-touch-icon" href="/gallery/avatar/0.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="../../../../css/style.css">
+
+  <script src="../../../../js/jquery-3.1.1.min.js"></script>
+  <script src="../../../../js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="../../../../css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 8px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="62px" height="75px" alt="Hike News" src="/gallery/avatar/0.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="../../../../index.html">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../funnysite">酷站</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../collection">收藏</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../mybooks">🎁</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '../../../../content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="../../../../js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Android 热修复原理和实现" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" href="../../../../gallery/hotfix.png" rel="gallery_ck3o8amgk0025hcs6wqgp12bg">
+        <img src="../../../../gallery/hotfix.png" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Android 热修复原理和实现
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="" class="article-date">
+	  <time datetime="2016-11-10T05:06:00.000Z" itemprop="datePublished">2016-11-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../../../categories/Android/">Android</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>查看原文： <a href="http://kymjs.com/code/2016/05/08/01" target="_blank" rel="noopener"><strong>Android 热修复，没你想的那么难</strong></a> —— by kymjs张涛</p>
+</blockquote>
+<p>一种动态加载最简单的实现方式，代码实现起来非常简单，重要的是这种思路和原理 。</p>
+<p>《插件化从放弃到捡起》第一章，首先看一张图：</p>
+<p><img src="http://img.blog.csdn.net/20161110131925707" alt=""></p>
+<p>这张图是我所理解的 Android 插件化技术的三个技术点以及它们的应用场景。今天以 <a href="https://zhuanlan.zhihu.com/p/20308548" target="_blank" rel="noopener">【Qzone 热修复方案】</a>为例，跟大家讲一讲插件化中 <code>热修复方案</code> 的实现。</p>
+<a id="more"></a>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><h3 id="ClassLoader"><a href="#ClassLoader" class="headerlink" title="ClassLoader"></a>ClassLoader</h3><p>在 Java 中，要加载一个类需要用到<code>ClassLoader</code>。<br>Android 中有三个 ClassLoader, 分别为<code>URLClassLoader</code>、<code>PathClassLoader</code>、<code>DexClassLoader</code>。其中:</p>
+<ul>
+<li><p><strong>URLClassLoader</strong> : 只能用于加载jar文件，但是由于 dalvik 不能直接识别jar，所以在 Android 中无法使用这个加载器。</p>
+</li>
+<li><p><strong>PathClassLoader</strong> :它只能加载已经安装的apk。因为 PathClassLoader 只会去读取 /data/dalvik-cache 目录下的 dex 文件。例如我们安装一个包名为<code>com.hujiang.xxx</code>的 apk,那么当 apk 安装过程中，就会在<code>/data/dalvik-cache</code>目录下生产一个名为<code>data@app@com.hujiang.xxx-1.apk@classes.dex</code>的 ODEX 文件。在使用 PathClassLoader 加载 apk 时，它就会去这个文件夹中找相应的 ODEX 文件，如果 apk 没有安装，自然会报<code>ClassNotFoundException</code>。</p>
+</li>
+<li><p><strong>DexClassLoader</strong> : 是最理想的加载器。它的构造函数包含四个参数，分别为：</p>
+<p>  1、dexPath, 指目标类所在的APK或jar文件的路径.类装载器将从该路径中寻找指定的目标类,该类必须是APK或jar的全路径.如果要包含多个路径,路径之间必须使用特定的分割符分隔,特定的分割符可以使用System.getProperty(“path.separtor”)获得.</p>
+<p>  2、dexOutputDir, 由于dex文件被包含在APK或者Jar文件中,因此在装载目标类之前需要先从APK或Jar文件中解压出dex文件,该参数就是制定解压出的dex 文件存放的路径.在Android系统中,一个应用程序一般对应一个Linux用户id,应用程序仅对属于自己的数据目录路径有写的权限,因此,该参数可以使用该程序的数据路径.</p>
+<p>  3、libPath, 指目标类中所使用的C/C++库存放的路径</p>
+<p> 4、classload, 是指该装载器的父装载器,一般为当前执行类的装载器</p>
+</li>
+</ul>
+<p>从<a href="http://androidxref.com/4.0.4/xref/libcore/dalvik/src/main/java/dalvik/system/BaseDexClassLoader.java" target="_blank" rel="noopener">framework源码</a>中的<code>dalvik.system</code>包下，找到<code>DexClassLoader</code>源码，并没有什么卵用，实际内容是在它的父类<code>BaseDexClassLoader</code>中，顺带一提，这个类最低在API14开始有用。包含了两个变量：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** originally specified path (just used for &#123;<span class="doctag">@code</span> toString()&#125;) */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> String originalPath;</span><br><span class="line"> </span><br><span class="line"><span class="comment">/** structured lists of path elements */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> DexPathList pathList;</span><br></pre></td></tr></table></figure>
+<p>可以看到注释：pathList就是多dex的结构列表，查看其<a href="http://androidxref.com/4.0.4/xref/libcore/dalvik/src/main/java/dalvik/system/DexPathList.java" target="_blank" rel="noopener">源码</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*package*/</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">DexPathList</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String DEX_SUFFIX = <span class="string">".dex"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String JAR_SUFFIX = <span class="string">".jar"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String ZIP_SUFFIX = <span class="string">".zip"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String APK_SUFFIX = <span class="string">".apk"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** class definition context */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ClassLoader definingContext;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** list of dex/resource (class path) elements */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Element[] dexElements;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** list of native library directory elements */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> File[] nativeLibraryDirectories;</span><br></pre></td></tr></table></figure>
+<p>可以看到 <code>dexElements</code> 注释，dexElements 就是一个dex列表，那么我们就可以把每个 Element 当成是一个 dex。</p>
+<p>此时我们整理一下思路，DexClassLoader 包含有一个dex数组<code>Element[] dexElements</code>，其中每个dex文件是一个Element，当需要加载类的时候会遍历 dexElements，如果找到类则加载，如果找不到从下一个 dex 文件继续查找。</p>
+<p>那么我们的实现就是把这个插件 dex 插入到 Elements 的最前面，这么做的好处是不仅可以动态的加载一个类，并且由于 DexClassLoader 会优先加载靠前的类，所以我们同时实现了宿主 apk 的热修复功能。</p>
+<p>ODEX过程<br>上文就是整个热修复的原理了，就是向<code>Classloader</code>列表中插入一个dex。但是如果你这儿实现了，会发现一个问题，就是 ODEX 过程中引发的问题。<br>在讲这个蛋疼的过程之前，有几个问题是要搞懂的。<br>为什么 Android 不能识别 .class 文件，而只能识别 dex 文件。<br>因为 dex 是对 class 的优化，它对 class 做了极大的压缩，比如以下是一个 class 文件的结构(摘自邓凡平老师博客)</p>
+<p><img src="http://img.blog.csdn.net/20161110132655991" alt=""></p>
+<p>dex 将整个 Android 工程中所有的 class 压缩到一个(或几个) dex 文件中，合并了每个 class 的常量、class 版本信息等，例如每个 class 中都有一个相同的字符串，在 dex 中就只存一份就够了。所以，在Android 上，dalvik 虚拟机是无法识别一个普通 class 文件的，因为无法识别这个 class 文件的结构。</p>
+<p>以下是一个 dex 文件的结构 :</p>
+<p><img src="http://img.blog.csdn.net/20161110132725000" alt=""></p>
+<p>感兴趣的可以阅读《深入理解Android》这本书。</p>
+<p>继续往下，其实 dalvik 虚拟机也并不是直接读取 dex 文件的，而是在一个 APK 安装的时候，会首先做一次优化，会生成一个 ODEX 文件，即 Optimized dex。 为什么还要优化，依旧是为了效率。 </p>
+<p>只不过，Class -&gt; dex 是为了平台无关的优化；<br>而 dex -&gt; odex 则是针对不同平台，不同手机的硬件配置做针对性的优化。<br>就是在这一过程中，虚拟机在启动优化的时候，会有一个选项就是 verify 选项，当 verify 选项被打开的时候，就会执行一次校验，校验的目的是为了判断，这个类是否有引用其他 dex 中的类，如果没有，那么这个类会被打上一个 CLASS_ISPREVERIFIED 的标志。一旦被打上这个标志，就无法再从其他 dex 中替换这个类了。而这个选项开启，则是由虚拟机控制的。</p>
+<h3 id="字节码操作"><a href="#字节码操作" class="headerlink" title="字节码操作"></a>字节码操作</h3><p>那么既然知道了原因，解决的办法自然也有了。你不是没有引用其他 dex 中的类就会被标记吗，那咱们就引用一个其他 dex 中的类。</p>
+<p>ClassReader:该类用来解析编译过的class字节码文件。<br>ClassWriter:该类用来重新构建编译后的类，比如说修改类名、属性以及方法，甚至可以生成新的类的字节码文件。<br>ClassAdapter:该类也实现了ClassVisitor接口，它将对它的方法调用委托给另一个ClassVisitor对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 当对象初始化的时候注入Inject类</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Note</span> https://www.ibm.com/developerworks/cn/java/j-lo-asm30/</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> inputStream 需要注入的Class的文件输入流</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 返回注入以后的Class文件二进制数组</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">byte</span>[] referHackWhenInit(InputStream inputStream) &#123;</span><br><span class="line">    <span class="comment">//该类用来解析编译过的class字节码文件。</span></span><br><span class="line">    ClassReader cr = <span class="keyword">new</span> ClassReader(inputStream);</span><br><span class="line">    <span class="comment">//该类用来重新构建编译后的类，比如说修改类名、属性以及方法，甚至可以生成新的类的字节码文件</span></span><br><span class="line">    ClassWriter cw = <span class="keyword">new</span> ClassWriter(cr, <span class="number">0</span>);</span><br><span class="line">    <span class="comment">//类的访问者,可以用来创建对一个Class的改动操作</span></span><br><span class="line">    ClassVisitor cv = <span class="keyword">new</span> ClassVisitor(Opcodes.ASM4, cw) &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> MethodVisitor <span class="title">visitMethod</span><span class="params">(<span class="keyword">int</span> access, String name, String desc,</span></span></span><br><span class="line"><span class="function"><span class="params">                                         String signature, String[] exceptions)</span> </span>&#123;</span><br><span class="line">            MethodVisitor mv = <span class="keyword">super</span>.visitMethod(access, name, desc, signature, exceptions);</span><br><span class="line">            <span class="comment">//如果方法名是&lt;init&gt;,每个类的构造函数函数名叫&lt;init&gt;</span></span><br><span class="line">            <span class="keyword">if</span> (<span class="string">"&lt;init&gt;"</span>.equals(name)) &#123;</span><br><span class="line">                <span class="comment">//在原本的visitMethod操作中添加自己定义的操作</span></span><br><span class="line">                mv = <span class="keyword">new</span> MethodVisitor(Opcodes.ASM4, mv) &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="function"><span class="keyword">void</span> <span class="title">visitInsn</span><span class="params">(<span class="keyword">int</span> opcode)</span> </span>&#123;</span><br><span class="line">                        <span class="comment">//Opcodes可以看做为关键字</span></span><br><span class="line">                        <span class="keyword">if</span> (opcode == Opcodes.RETURN) &#123;</span><br><span class="line">                            <span class="comment">//visitLdcInsn() 将一个值写入到栈中,可以是一个Class类名/method方法名/desc方法描述</span></span><br><span class="line">                            <span class="comment">//这里相当于插入了一条语句:Class a = Inject.class;</span></span><br><span class="line">                            <span class="keyword">super</span>.visitLdcInsn(Type.getType(<span class="string">"Lcom/hujiang/hotfix/Inject;"</span>));</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="comment">//执行opcode对应的其他操作</span></span><br><span class="line">                        <span class="keyword">super</span>.visitInsn(opcode);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//责任链完成,返回</span></span><br><span class="line">            <span class="keyword">return</span> mv;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="comment">//accept这个方法接受一个实现了 ClassVisitor接口的对象实例作为参数，然后依次调用 ClassVisitor接口的各个方法</span></span><br><span class="line">    <span class="comment">//用户无法控制各个方法调用顺序,但是可以提供不同的 Visitor(访问者) 来对字节码树进行不同的修改</span></span><br><span class="line">    <span class="comment">//在这里,调用这一步的目的是为了让上面的visitMethod方法被调用</span></span><br><span class="line">    cr.accept(cv, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> cw.toByteArray();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>可以参考 <a href="https://github.com/jasonross/Nuwa" target="_blank" rel="noopener"><strong>nuwa</strong></a> 中的实现，首先是 dex 怎样去插入到<code>Classloader</code>列表中，其实就是一段反射：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">injectDexAtFirst</span><span class="params">(String dexPath, String defaultDexOptPath)</span> <span class="keyword">throws</span> NoSuchFieldException, IllegalAccessException, ClassNotFoundException </span>&#123;</span><br><span class="line">    DexClassLoader dexClassLoader = <span class="keyword">new</span> DexClassLoader(dexPath, defaultDexOptPath, dexPath, getPathClassLoader());</span><br><span class="line">    Object baseDexElements = getDexElements(getPathList(getPathClassLoader()));</span><br><span class="line">    Object newDexElements = getDexElements(getPathList(dexClassLoader));</span><br><span class="line">    Object allDexElements = combineArray(newDexElements, baseDexElements);</span><br><span class="line">    Object pathList = getPathList(getPathClassLoader());</span><br><span class="line">    ReflectionUtils.setField(pathList, pathList.getClass(), <span class="string">"dexElements"</span>, allDexElements);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先分别获取到宿主应用和补丁的 dex 中的<code>PathList.dexElements</code>, 并把两个 dexElements 数组做拼接，将补丁数组放在前面，最后将拼接后生成的数组再赋值回<code>Classloader</code>.</p>
+<p>nuwa 更主要的是他的 groovy 脚本，完整代码：<a href="https://github.com/jasonross/NuwaGradle/blob/master/src/main/groovy/cn/jiajixin/nuwa/NuwaPlugin.groovy" target="_blank" rel="noopener"><strong>这里</strong></a>，由于代码很多，就只跟大家讲两个关键的点的实现以及目的，具体的内容可以直接查看源码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获得所有输入文件,即preDex的所有jar文件</span></span><br><span class="line">Set&lt;File&gt; inputFiles = preDexTask.inputs.files.files</span><br><span class="line">inputFiles.each &#123; inputFile -&gt;</span><br><span class="line">    def path = inputFile.absolutePath</span><br><span class="line">    <span class="comment">//如果不是support包或者引入的依赖库,则开始生成代码修改部分的hotfix包</span></span><br><span class="line">    <span class="keyword">if</span> (HotFixProcessors.shouldProcessPreDexJar(path)) &#123;</span><br><span class="line">        HotFixProcessors.processJar(classHashFile, inputFile, patchDir, classHashMap, includePackage, excludeClass)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中<code>HotFixProcessors.processJar()</code>是脚本的第一个作用，就是找出哪些类是发生了改变，应该生成对应的补丁。<br>循环遍历工程中的全部类,声明忽略的直接跳过.对每个类计算hash,并写入到hashFile文件中.通过比较hashFile文件与原先host工程的hashFile(即这里的classHashMap参数),得到所有修改过的类生成这些类的class文件,以及所有修改过的class文件的集合jar文件。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;File&gt; inputFiles = dexTask.inputs.files.files</span><br><span class="line">inputFiles.each &#123; inputFile -&gt;</span><br><span class="line">    def path = inputFile.absolutePath</span><br><span class="line">	<span class="keyword">if</span> (path.endsWith(<span class="string">".class"</span>) &amp;&amp; !path.contains(<span class="string">"/R\$"</span>) &amp;&amp; !path.endsWith(<span class="string">"/R.class"</span>) &amp;&amp; !path.endsWith(<span class="string">"/BuildConfig.class"</span>)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (HotFixSetUtils.isIncluded(path, includePackage)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!HotFixSetUtils.isExcluded(path, excludeClass)) &#123;</span><br><span class="line">                def bytes = HotFixProcessors.processClass(inputFile)</span><br><span class="line">                path = path.split(<span class="string">"$&#123;dirName&#125;/"</span>)[<span class="number">1</span>]</span><br><span class="line">                def hash = DigestUtils.shaHex(bytes)</span><br><span class="line">                classHashFile.append(HotFixMapUtils.format(path, hash))</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (HotFixMapUtils.notSame(classHashMap, path, hash)) &#123;</span><br><span class="line">                    HotFixFileUtils.copyBytesToFile(inputFile.bytes, HotFixFileUtils.touchFile(patchDir, path))</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这一段是脚本的第二个作用，也就是上文字节码操作的目的，为了防止类被虚拟机打上<code>CLASS_ISPREVERIFIED</code>，所以需要执行字节码写入。其中<code>HotFixProcessors.processClass()</code>就是实际写入字节码的代码。</p>
+<h2 id="好像差个结尾"><a href="#好像差个结尾" class="headerlink" title="好像差个结尾"></a>好像差个结尾</h2><p>同样的方案，除了 nuwa 还有一个开源的实现，<strong><a href="https://github.com/dodola/HotFix" target="_blank" rel="noopener">HotFix</a></strong> 两者是差不多的，所以看一个就可以了。</p>
+<h3 id="看到有很多朋友问，如果混淆后代码怎么办？"><a href="#看到有很多朋友问，如果混淆后代码怎么办？" class="headerlink" title="看到有很多朋友问，如果混淆后代码怎么办？"></a><strong>看到有很多朋友问，如果混淆后代码怎么办？</strong></h3><p>在 Gradle 插件编译过程中，有一个<code>proguardTask</code>，看名字应该就知道他是负责 proguard 任务的，我们可以保存首次执行时的混淆规则(也就是线上出BUG的包)，这个混淆规则保存在工程目录中的一个<code>mapping</code>文件，当我们需要执行热修复补丁生成的时候，将线上包的<code>mapping</code>规则拿出来应用到本次编译中，就可以生成混淆后的类跟线上混淆后的类相同的类名的补丁了。具体实现可以看 nuwa 项目的<code>applymapping()</code>方法。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="../../../../js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Mr.Seven</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2016/11/10/Android 热修复原理和实现/" target="_blank" title="Android 热修复原理和实现">https://itimetraveler.github.io/2016/11/10/Android 热修复原理和实现/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/hotfix/">hotfix</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../16/【D3】Link Nodes by Name/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          【D3】Link Nodes by Name
+        
+      </div>
+    </a>
+  
+  
+    <a href="../使用Neo4j进行全栈Web开发/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">使用Neo4j进行全栈Web开发</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">1.</span> <span class="nav-text">原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ClassLoader"><span class="nav-number">1.1.</span> <span class="nav-text">ClassLoader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字节码操作"><span class="nav-number">1.2.</span> <span class="nav-text">字节码操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码实现"><span class="nav-number">2.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#好像差个结尾"><span class="nav-number">3.</span> <span class="nav-text">好像差个结尾</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#看到有很多朋友问，如果混淆后代码怎么办？"><span class="nav-number">3.1.</span> <span class="nav-text">看到有很多朋友问，如果混淆后代码怎么办？</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2019 iTimeTraveler All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="../../../../categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="../../../../tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="../../../../funnysite" class="mobile-nav-link">酷站</a>
+  
+    <a href="../../../../collection" class="mobile-nav-link">收藏</a>
+  
+    <a href="../../../../about" class="mobile-nav-link">About</a>
+  
+    <a href="../../../../mybooks" class="mobile-nav-link">🎁</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.css">
+  <script src="../../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="../../../../js/scripts.js"></script>
+
+
+
+
+  <script src="../../../../js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            iTimeTraveler
+          </div>
+          <div class="panel-body">
+            Copyright © 2019 Mr.Seven All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

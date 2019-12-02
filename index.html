@@ -458,60 +458,6 @@
 
 
   
-    <article id="post-【Android】使用VPN实现抓包"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="2019/07/25/【Android】使用VPN实现抓包/">【Android】 使用VPN实现抓包</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="2019/07/25/【Android】使用VPN实现抓包/" class="article-date">
-	  <time datetime="2019-07-25T14:20:55.000Z" itemprop="datePublished">2019-07-25</time>
-	</a>
-
-      
-    <a class="article-category-link" href="categories/Android/">Android</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="VpnService和安卓VPN例子"><a href="#VpnService和安卓VPN例子" class="headerlink" title="VpnService和安卓VPN例子"></a>VpnService和安卓VPN例子</h1><p>VpnService是开发安卓VPN的基础，下面是<a href="https://developer.android.com/reference/android/net/VpnService" target="_blank" rel="noopener">官方文档的阐释</a></p>
-<blockquote>
-<p>VpnService is a base class for applications to extend and build their own VPN solutions. In general, it creates a virtual network interface, configures addresses and routing rules, and returns a file descriptor to the application. Each read from the descriptor retrieves an outgoing packet which was routed to the interface. Each write to the descriptor injects an incoming packet just like it was received from the interface. The interface is running on Internet Protocol (IP), so packets are always started with IP headers. The application then completes a VPN connection by processing and exchanging packets with the remote server over a tunnel.</p>
-</blockquote>
-<p>上面的阐释的重点是：虚拟一个网卡、返回文件描述符、 读写的内容是ip数据报</p>
-<p>安卓example的<a href="https://android.googlesource.com/platform/development/+/master/samples/ToyVpn" target="_blank" rel="noopener">ToyVpn</a>；初步搭一个vpn应用的框架可以看<a href="https://www.tuicool.com/articles/uuiMje" target="_blank" rel="noopener">这里</a>，这个仅仅是搭建了框架，功能（ip数据包的收发）则没有实现</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">+----------------------------------------------------------------+</span><br><span class="line">|                                                                |</span><br><span class="line">|  +--------------------+      +--------------------+            |</span><br><span class="line">|  | User Application A |      | User Application B |&lt;-----+     |</span><br><span class="line">|  +--------------------+      +--------------------+      |     |</span><br><span class="line">|               | <span class="number">1</span>                    | <span class="number">5</span>                 |     |</span><br><span class="line">|...............|......................|...................|.....|</span><br><span class="line">|               ↓                      ↓                   |     |</span><br><span class="line">|         +----------+           +----------+              |     |</span><br><span class="line">|         | socket A |           | socket B |              |     |</span><br><span class="line">|         +----------+           +----------+              |     |</span><br><span class="line">|                 | <span class="number">2</span>               | <span class="number">6</span>                    |     |</span><br><span class="line">|.................|.................|......................|.....|</span><br><span class="line">|                 ↓                 ↓                      |     |</span><br><span class="line">|             +------------------------+                 <span class="number">4</span> |     |</span><br><span class="line">|             | Newwork Protocol Stack |                   |     |</span><br><span class="line">|             +------------------------+                   |     |</span><br><span class="line">|                | <span class="number">7</span>                 | <span class="number">3</span>                   |     |</span><br><span class="line">|................|...................|.....................|.....|</span><br><span class="line">|                ↓                   ↓                     |     |</span><br><span class="line">|        +----------------+    +----------------+          |     |</span><br><span class="line">|        |      eth0      |    |      tun0      |          |     |</span><br><span class="line">|        +----------------+    +----------------+          |     |</span><br><span class="line">|    <span class="number">10.32</span>.0.11  |                   |   <span class="number">192.168</span>.3.11      |     |</span><br><span class="line">|                | <span class="number">8</span>                 +---------------------+     |</span><br><span class="line">|                |                                               |</span><br><span class="line">+----------------|-----------------------------------------------+</span><br><span class="line">                 ↓</span><br><span class="line">         Physical Network</span><br></pre></td></tr></table></figure>
-<p>上图中有两个应用程序A和B，都在用户层，而其它的socket、协议栈（Newwork Protocol Stack）和网络设备（eth0和tun0）部分都在内核层，其实socket是协议栈的一部分，这里分开来的目的是为了看的更直观。</p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
     <article id="post-移动端接入Cronet网络库实践"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -552,6 +498,60 @@
 <p>如果从来没有下载过Chromium的代码的话，为源码创建一个文件夹并下载源码：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir chromium &amp;&amp; cd chromium</span><br><span class="line">fetch --no-history chromium       # 可能花费30min或几小时，依网络速度而不同</span><br></pre></td></tr></table></figure>
 <p><code>–no-history</code> 可以节省代码下载时间，它忽略仓库的历史信息；整个代码量较大，约 14G，且<strong>需要翻墙</strong>，1M 左右的速度需要 20~30 分钟。若中间拉取失败，可以执行 <code>gclient sync</code> 继续拉取， 拉取结束后，该目录会生成一个 src 目录，包含 cronet 源码。</p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-【Android】使用VPN实现抓包"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="2019/07/25/【Android】使用VPN实现抓包/">【Android】 使用VPN实现抓包</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="2019/07/25/【Android】使用VPN实现抓包/" class="article-date">
+	  <time datetime="2019-07-25T14:20:55.000Z" itemprop="datePublished">2019-07-25</time>
+	</a>
+
+      
+    <a class="article-category-link" href="categories/Android/">Android</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="VpnService和安卓VPN例子"><a href="#VpnService和安卓VPN例子" class="headerlink" title="VpnService和安卓VPN例子"></a>VpnService和安卓VPN例子</h1><p>VpnService是开发安卓VPN的基础，下面是<a href="https://developer.android.com/reference/android/net/VpnService" target="_blank" rel="noopener">官方文档的阐释</a></p>
+<blockquote>
+<p>VpnService is a base class for applications to extend and build their own VPN solutions. In general, it creates a virtual network interface, configures addresses and routing rules, and returns a file descriptor to the application. Each read from the descriptor retrieves an outgoing packet which was routed to the interface. Each write to the descriptor injects an incoming packet just like it was received from the interface. The interface is running on Internet Protocol (IP), so packets are always started with IP headers. The application then completes a VPN connection by processing and exchanging packets with the remote server over a tunnel.</p>
+</blockquote>
+<p>上面的阐释的重点是：虚拟一个网卡、返回文件描述符、 读写的内容是ip数据报</p>
+<p>安卓example的<a href="https://android.googlesource.com/platform/development/+/master/samples/ToyVpn" target="_blank" rel="noopener">ToyVpn</a>；初步搭一个vpn应用的框架可以看<a href="https://www.tuicool.com/articles/uuiMje" target="_blank" rel="noopener">这里</a>，这个仅仅是搭建了框架，功能（ip数据包的收发）则没有实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">+----------------------------------------------------------------+</span><br><span class="line">|                                                                |</span><br><span class="line">|  +--------------------+      +--------------------+            |</span><br><span class="line">|  | User Application A |      | User Application B |&lt;-----+     |</span><br><span class="line">|  +--------------------+      +--------------------+      |     |</span><br><span class="line">|               | <span class="number">1</span>                    | <span class="number">5</span>                 |     |</span><br><span class="line">|...............|......................|...................|.....|</span><br><span class="line">|               ↓                      ↓                   |     |</span><br><span class="line">|         +----------+           +----------+              |     |</span><br><span class="line">|         | socket A |           | socket B |              |     |</span><br><span class="line">|         +----------+           +----------+              |     |</span><br><span class="line">|                 | <span class="number">2</span>               | <span class="number">6</span>                    |     |</span><br><span class="line">|.................|.................|......................|.....|</span><br><span class="line">|                 ↓                 ↓                      |     |</span><br><span class="line">|             +------------------------+                 <span class="number">4</span> |     |</span><br><span class="line">|             | Newwork Protocol Stack |                   |     |</span><br><span class="line">|             +------------------------+                   |     |</span><br><span class="line">|                | <span class="number">7</span>                 | <span class="number">3</span>                   |     |</span><br><span class="line">|................|...................|.....................|.....|</span><br><span class="line">|                ↓                   ↓                     |     |</span><br><span class="line">|        +----------------+    +----------------+          |     |</span><br><span class="line">|        |      eth0      |    |      tun0      |          |     |</span><br><span class="line">|        +----------------+    +----------------+          |     |</span><br><span class="line">|    <span class="number">10.32</span>.0.11  |                   |   <span class="number">192.168</span>.3.11      |     |</span><br><span class="line">|                | <span class="number">8</span>                 +---------------------+     |</span><br><span class="line">|                |                                               |</span><br><span class="line">+----------------|-----------------------------------------------+</span><br><span class="line">                 ↓</span><br><span class="line">         Physical Network</span><br></pre></td></tr></table></figure>
+<p>上图中有两个应用程序A和B，都在用户层，而其它的socket、协议栈（Newwork Protocol Stack）和网络设备（eth0和tun0）部分都在内核层，其实socket是协议栈的一部分，这里分开来的目的是为了看的更直观。</p>
       
     </div>
     <footer class="article-footer">

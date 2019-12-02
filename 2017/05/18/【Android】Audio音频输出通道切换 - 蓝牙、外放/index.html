@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>【android】audio音频输出通道切换 - 蓝牙、外放 | iTimeTraveler</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="AndroidAudio" />
+  
+  
+  
+  
+  <meta name="description" content="手机音频的输出有外放（Speaker）、听筒（Telephone Receiver）、有线耳机（WiredHeadset）、蓝牙音箱（Bluetooth A2DP）等输出设备。在平时，电话免提、插拔耳机、连接断开蓝牙设备等操作系统都会自动切换Audio音频到相应的输出设备上。比如电话免提就是从听筒切换到外放扬声器，插入耳机就是从外放切换到耳机。 场景需求Android系统自动切换的这些策略，并不能">
+<meta name="keywords" content="Android,Audio">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Android】Audio音频输出通道切换 - 蓝牙、外放">
+<meta property="og:url" content="https://itimetraveler.github.io/2017/05/18/【Android】Audio音频输出通道切换 - 蓝牙、外放/index.html">
+<meta property="og:site_name" content="iTimeTraveler">
+<meta property="og:description" content="手机音频的输出有外放（Speaker）、听筒（Telephone Receiver）、有线耳机（WiredHeadset）、蓝牙音箱（Bluetooth A2DP）等输出设备。在平时，电话免提、插拔耳机、连接断开蓝牙设备等操作系统都会自动切换Audio音频到相应的输出设备上。比如电话免提就是从听筒切换到外放扬声器，插入耳机就是从外放切换到耳机。 场景需求Android系统自动切换的这些策略，并不能">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://itimetraveler.github.io/gallery/round_trip_on_device.png">
+<meta property="og:updated_time" content="2018-03-14T08:13:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【Android】Audio音频输出通道切换 - 蓝牙、外放">
+<meta name="twitter:description" content="手机音频的输出有外放（Speaker）、听筒（Telephone Receiver）、有线耳机（WiredHeadset）、蓝牙音箱（Bluetooth A2DP）等输出设备。在平时，电话免提、插拔耳机、连接断开蓝牙设备等操作系统都会自动切换Audio音频到相应的输出设备上。比如电话免提就是从听筒切换到外放扬声器，插入耳机就是从外放切换到耳机。 场景需求Android系统自动切换的这些策略，并不能">
+<meta name="twitter:image" content="https://itimetraveler.github.io/gallery/round_trip_on_device.png">
+  
+    <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/gallery/avatar/0.jpg">
+  <link rel="apple-touch-icon" href="/gallery/avatar/0.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="../../../../css/style.css">
+
+  <script src="../../../../js/jquery-3.1.1.min.js"></script>
+  <script src="../../../../js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="../../../../css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 8px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="62px" height="75px" alt="Hike News" src="/gallery/avatar/0.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="../../../../index.html">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../funnysite">酷站</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../collection">收藏</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../mybooks">🎁</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '../../../../content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="../../../../js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-【Android】Audio音频输出通道切换 - 蓝牙、外放" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" href="../../../../gallery/round_trip_on_device.png" rel="gallery_ck3o8amj0004ghcs6oj6k97y3">
+        <img src="../../../../gallery/round_trip_on_device.png" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      【Android】Audio音频输出通道切换 - 蓝牙、外放
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="" class="article-date">
+	  <time datetime="2017-05-18T03:40:00.000Z" itemprop="datePublished">2017-05-18</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../../../categories/Android/">Android</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>手机音频的输出有外放（Speaker）、听筒（Telephone Receiver）、有线耳机（WiredHeadset）、蓝牙音箱（Bluetooth A2DP）等输出设备。在平时，电话免提、插拔耳机、连接断开蓝牙设备等操作系统都会自动切换Audio音频到相应的输出设备上。比如电话免提就是从听筒切换到外放扬声器，插入耳机就是从外放切换到耳机。</p>
+<h2 id="场景需求"><a href="#场景需求" class="headerlink" title="场景需求"></a><strong>场景需求</strong></h2><p>Android系统自动切换的这些策略，并不能全部满足我们的产品需求，比如音乐App需要对听歌时拔出耳机的操作进行阻止（暂停播放），防止突然切换到外放导致尴尬。</p>
+<p>最近项目需求希望<strong><code>即使在连接蓝牙音箱的情况下，仍旧使用手机外放播放音频</code></strong>。这就需要强制切换Audio输出通道，打破系统原有的策略。</p>
+<p>查阅资料，看到了Android中可以通过<code>AudioManager</code>查询、切换当前Audio输出通道，并且在Audio输出发生变化时，捕获并处理这种变化。</p>
+<a id="more"></a>
+<p>首先提醒下大家，使用下面的方法时，需要添加权限：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.MODIFY_AUDIO_SETTINGS"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Audio输出状态查询"><a href="#Audio输出状态查询" class="headerlink" title="Audio输出状态查询"></a><strong>Audio输出状态查询</strong></h2><p>AudioManager 提供的下列方法可以用来查询当前Audio输出的状态：</p>
+<ul>
+<li><p><strong><code>isBluetoothA2dpOn()</code></strong>：检查A2DPAudio音频输出是否通过蓝牙耳机；</p>
+</li>
+<li><p><strong><code>isSpeakerphoneOn()</code></strong>：检查扬声器是否打开；</p>
+</li>
+<li><p><strong><code>isWiredHeadsetOn()</code></strong>：检查线控耳机是否连着；注意这个方法只是用来判断耳机是否是插入状态，并不能用它的结果来判定当前的Audio是通过耳机输出的，这还依赖于其他条件。</p>
+</li>
+<li><p><strong><code>setSpeakerphoneOn(boolean on)</code></strong>：直接选择外放扬声器发声；</p>
+</li>
+<li><p><strong><code>setBluetoothScoOn(boolean on)</code></strong>：要求使用蓝牙SCO耳机进行通讯；</p>
+</li>
+</ul>
+<p>此处<a href="http://blog.csdn.net/ec_boy_hl/article/details/45112493" target="_blank" rel="noopener">根据这篇文章</a>简单地介绍一下蓝牙耳机的两种链路，A2DP及SCO。android的api表明：</p>
+<ul>
+<li><strong>A2DP</strong>：是一种单向的高品质音频数据传输链路，<strong>通常用于播放立体声音乐</strong>；</li>
+<li><strong>SCO</strong>： 则是一种双向的音频数据的传输链路，该链路只支持8K及16K单声道的音频数据，<strong>只能用于普通语音的传输</strong>，若用于播放音乐那就只能呵呵了。</li>
+</ul>
+<p>两者的主要区别是：<strong>A2DP只能播放，默认是打开的，而SCO既能录音也能播放，默认是关闭的。</strong> 如果要录音肯定要打开sco啦，因此调用上面的<code>setBluetoothScoOn(boolean on)</code>就可以通过蓝牙耳机录音、播放音频了，录完、播放完记得要关闭。</p>
+<p>另外，在Android系统中通过<code>AudioManager.setMode()</code>方法来管理播放模式。在<code>setMode()</code>方法中有以下几种对应不同的播放模式:</p>
+<ul>
+<li><code>MODE_NORMAL</code> : 普通模式，既不是铃声模式也不是通话模式</li>
+<li><code>MODE_RINGTONE</code> : 铃声模式</li>
+<li><code>MODE_IN_CALL</code> : 通话模式</li>
+<li><code>MODE_IN_COMMUNICATION</code> : 通信模式，包括音/视频,VoIP通话.(3.0加入的，与通话模式类似)</li>
+</ul>
+<p>在设置播放模式的时候，需要考虑流类型，我在这里使用的流类型是 <code>STREAM_MUSIC</code> ，所以切换播放设备的时候就需要设置为<strong><code>MODE_IN_COMMUNICATION</code></strong> 模式而不是 <code>MODE_NORMAL</code> 模式。可以参考<a href="http://stackoverflow.com/questions/31871328/android-5-0-audiomanager-setmode-not-working" target="_blank" rel="noopener"><strong>这个问题</strong></a>。</p>
+<h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a><strong>解决问题</strong></h2><p>使用以下方法切换音频Audio输出，参考<a href="http://stackoverflow.com/questions/22770321/android-switching-audio-between-bluetooth-and-phone-speaker-is-inconsistent" target="_blank" rel="noopener">Android : Switching audio between Bluetooth and Phone Speaker is inconsistent</a>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 切换到外放</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">changeToSpeaker</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="comment">//注意此处，蓝牙未断开时使用MODE_IN_COMMUNICATION而不是MODE_NORMAL</span></span><br><span class="line">    mAudioManager.setMode(bluetoothIsConnected ? AudioManager.MODE_IN_COMMUNICATION : AudioManager.MODE_NORMAL);    </span><br><span class="line">	mAudioManager.stopBluetoothSco();</span><br><span class="line">	mAudioManager.setBluetoothScoOn(<span class="keyword">false</span>);</span><br><span class="line">	mAudioManager.setSpeakerphoneOn(<span class="keyword">true</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 切换到蓝牙音箱</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">changeToHeadset</span><span class="params">()</span></span>&#123;</span><br><span class="line">    mAudioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);</span><br><span class="line">	mAudioManager.startBluetoothSco();</span><br><span class="line">	mAudioManager.setBluetoothScoOn(<span class="keyword">true</span>);</span><br><span class="line">	mAudioManager.setSpeakerphoneOn(<span class="keyword">false</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/************************************************************/</span></span><br><span class="line"><span class="comment">//注意：以下两个方法还未验证</span></span><br><span class="line"><span class="comment">/************************************************************/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 切换到耳机模式</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">changeToHeadset</span><span class="params">()</span></span>&#123;</span><br><span class="line">    mAudioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);</span><br><span class="line">	mAudioManager.stopBluetoothSco();</span><br><span class="line">	mAudioManager.setBluetoothScoOn(<span class="keyword">false</span>);</span><br><span class="line">	mAudioManager.setSpeakerphoneOn(<span class="keyword">false</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 切换到听筒</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">changeToReceiver</span><span class="params">()</span></span>&#123;</span><br><span class="line">    audioManager.setSpeakerphoneOn(<span class="keyword">false</span>);</span><br><span class="line">    <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.HONEYCOMB)&#123;</span><br><span class="line">        audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        audioManager.setMode(AudioManager.MODE_IN_CALL);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>直接切换输出通道的方法我们已经知道了。剩下需要解决的问题是，<strong>当蓝牙设备断开、连接的时候，我们希望可以自动切换到用户原本设置的输出通道上</strong>，比如在蓝牙未连接时，用户设置的是希望通过蓝牙播报，所以应该在蓝牙一旦连接以后，就把音频切换到蓝牙设备上。</p>
+<p>下面我们就看看如何监听蓝牙设备的连接状态。</p>
+<h2 id="监听蓝牙连接状态"><a href="#监听蓝牙连接状态" class="headerlink" title="监听蓝牙连接状态"></a><strong>监听蓝牙连接状态</strong></h2><p>首先注意使用前需要以下权限：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.BLUETOOTH_ADMIN"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.BLUETOOTH"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>根据<a href="http://blog.csdn.net/l627859442/article/details/7918597" target="_blank" rel="noopener">这篇文章</a>，我们发现可以使用 <a href="https://developer.android.com/reference/android/media/AudioManager.html#ACTION_AUDIO_BECOMING_NOISY" target="_blank" rel="noopener"><code>AudioManager.ACTION_AUDIO_BECOMING_NOISY</code></a> 这个Intent Action来监听蓝牙断开、耳机插拔的广播，但是测试发现，它也只能收到蓝牙断开的广播，无法接收到蓝牙连接的广播，所以不是我们想要的。</p>
+<p>进一步找到这篇文章：<a href="http://blog.csdn.net/xiaoqiaozhongcai/article/details/52857910" target="_blank" rel="noopener">关于蓝牙开发，必须注意的广播</a>，总结了以下蓝牙广播。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 有注释的广播，蓝牙连接时都会用到</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">intentFilter.addAction(BluetoothDevice.ACTION_FOUND); <span class="comment">//搜索蓝压设备，每搜到一个设备发送一条广播</span></span><br><span class="line">intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED); <span class="comment">//配对开始时，配对成功时</span></span><br><span class="line">intentFilter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED); <span class="comment">//配对时，发起连接</span></span><br><span class="line">intentFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED);</span><br><span class="line">intentFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED); <span class="comment">//配对结束时，断开连接</span></span><br><span class="line">intentFilter.addAction(PAIRING_REQUEST); <span class="comment">//配对请求（Android.bluetooth.device.action.PAIRING_REQUEST）</span></span><br><span class="line"></span><br><span class="line">intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED); <span class="comment">//开始搜索</span></span><br><span class="line">intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED); <span class="comment">//搜索结束。重新搜索时，会先终止搜索</span></span><br><span class="line">intentFilter.addAction(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);</span><br><span class="line">intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED); <span class="comment">//本机开启、关闭蓝牙开关 </span></span><br><span class="line">intentFilter.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED); <span class="comment">//蓝牙设备连接或断开</span></span><br><span class="line">intentFilter.addAction(BluetoothAdapter.ACTION_LOCAL_NAME_CHANGED); <span class="comment">//更改蓝牙名称，打开蓝牙时，可能会调用多次</span></span><br><span class="line">intentFilter.addAction(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);</span><br><span class="line">intentFilter.addAction(BluetoothAdapter.ACTION_REQUEST_ENABLE);</span><br><span class="line">intentFilter.addAction(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED); <span class="comment">//搜索模式改变</span></span><br></pre></td></tr></table></figure>
+<p>我们发现了<a href="https://developer.android.com/reference/android/bluetooth/BluetoothAdapter.html#ACTION_CONNECTION_STATE_CHANGED" target="_blank" rel="noopener"><code>BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED</code></a> 和 <a href="https://developer.android.com/reference/android/bluetooth/BluetoothAdapter.html#ACTION_STATE_CHANGED" target="_blank" rel="noopener"><code>BluetoothAdapter.ACTION_STATE_CHANGED</code></a> 这两个Intent广播。</p>
+<p>那么这两个广播Intent的区别是什么呢？只用其中一个可以吗？查看Google文档发现</p>
+<ul>
+<li><p><strong><code>BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED</code></strong> ：指的是本地蓝牙适配器的<strong>连接状态</strong>的发生改变（比如没有关闭本机蓝牙开关时，另外一个配对设备自己把连接断开）</p>
+</li>
+<li><p><strong><code>BluetoothAdapter.ACTION_STATE_CHANGED</code></strong> ：指的是本地蓝牙适配器的<strong>状态</strong>已更改。 例如，蓝牙开关打开或关闭。</p>
+</li>
+</ul>
+<p>换句话说，一个是用于连接状态的变化，另一个用于蓝牙适配器本身的状态变化。经过测试发现，如果只使用<code>BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED</code> 监听广播，则会接收不到“主动关闭本机蓝牙开关”的广播事件。但只是用<code>BluetoothAdapter.ACTION_STATE_CHANGED</code> 的话，很明显这时候蓝牙设备并未真正配对。</p>
+<p>动态注册蓝牙连接、断开广播的方式如下：</p>
+<ul>
+<li>动态注册广播</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BluetoothConnectionReceiver</span> <span class="keyword">extends</span> <span class="title">BroadcastReceiver</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceive</span><span class="params">(Context context, Intent intent)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED.equals(intent.getAction())) &#123;		<span class="comment">//蓝牙连接状态</span></span><br><span class="line">			<span class="keyword">int</span> state = intent.getIntExtra(BluetoothAdapter.EXTRA_CONNECTION_STATE, -<span class="number">1</span>);</span><br><span class="line">			<span class="keyword">if</span> (state == BluetoothAdapter.STATE_CONNECTED || state == BluetoothAdapter.STATE_DISCONNECTED) &#123;</span><br><span class="line">				<span class="comment">//连接或失联，切换音频输出（到蓝牙、或者强制仍然扬声器外放）</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (BluetoothAdapter.ACTION_STATE_CHANGED.equals(intent.getAction()))&#123;	<span class="comment">//本地蓝牙打开或关闭</span></span><br><span class="line">			<span class="keyword">int</span> state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -<span class="number">1</span>);</span><br><span class="line">			<span class="keyword">if</span> (state == BluetoothAdapter.STATE_OFF || state == BluetoothAdapter.STATE_TURNING_OFF) &#123;</span><br><span class="line">				 <span class="comment">//断开，切换音频输出</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">BluetoothConnectionReceiver audioNoisyReceiver = <span class="keyword">new</span> BluetoothConnectionReceiver();</span><br><span class="line"></span><br><span class="line"><span class="comment">//蓝牙状态广播监听</span></span><br><span class="line">IntentFilter audioFilter = <span class="keyword">new</span> IntentFilter();</span><br><span class="line">audioFilter.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);</span><br><span class="line">audioFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);</span><br><span class="line">mContext.registerReceiver(audioNoisyReceiver, audioFilter);</span><br></pre></td></tr></table></figure>
+<p>之后，我们就可以根据上面切换音频输出通道的代码来实现蓝牙设备连接、断开以后<strong>强制打破操作系统原有的输出通道切换策略</strong>，来实现我们自己想要的切换功能了。</p>
+<h3 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h3><p>1、<a href="http://blog.csdn.net/l627859442/article/details/7918597" target="_blank" rel="noopener">Android中的Audio播放：控制Audio输出通道切换 </a><br>2、<a href="http://www.devwiki.net/2015/09/20/Android-Music-Play-Mode/" target="_blank" rel="noopener">Android音乐播放模式切换-外放、听筒、耳机</a><br>3、<a href="http://stackoverflow.com/questions/22770321/android-switching-audio-between-bluetooth-and-phone-speaker-is-inconsistent" target="_blank" rel="noopener">Android : Switching audio between Bluetooth and Phone Speaker is inconsistent</a><br>4、<a href="http://www.b2cloud.com.au/tutorial/listening-to-bluetooth-connections/" target="_blank" rel="noopener">Listening to bluetooth connections</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="../../../../js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Mr.Seven</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2017/05/18/【Android】Audio音频输出通道切换 - 蓝牙、外放/" target="_blank" title="【Android】Audio音频输出通道切换 - 蓝牙、外放">https://itimetraveler.github.io/2017/05/18/【Android】Audio音频输出通道切换 - 蓝牙、外放/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Audio/">Audio</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../../06/02/详解Java类的生命周期/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          详解Java类的生命周期
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../05/Google 面试题 - 判断字符串是否可由重复子字符串组成/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Google 面试题 | 判断字符串是否可由重复子字符串组成</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#场景需求"><span class="nav-number">1.</span> <span class="nav-text">场景需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Audio输出状态查询"><span class="nav-number">2.</span> <span class="nav-text">Audio输出状态查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决问题"><span class="nav-number">3.</span> <span class="nav-text">解决问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监听蓝牙连接状态"><span class="nav-number">4.</span> <span class="nav-text">监听蓝牙连接状态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料："><span class="nav-number">4.1.</span> <span class="nav-text">参考资料：</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2019 iTimeTraveler All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="../../../../categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="../../../../tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="../../../../funnysite" class="mobile-nav-link">酷站</a>
+  
+    <a href="../../../../collection" class="mobile-nav-link">收藏</a>
+  
+    <a href="../../../../about" class="mobile-nav-link">About</a>
+  
+    <a href="../../../../mybooks" class="mobile-nav-link">🎁</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.css">
+  <script src="../../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="../../../../js/scripts.js"></script>
+
+
+
+
+  <script src="../../../../js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            iTimeTraveler
+          </div>
+          <div class="panel-body">
+            Copyright © 2019 Mr.Seven All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>uber使用quic协议优化app网络性能 | iTimeTraveler</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="QUIC" />
+  
+  
+  
+  
+  <meta name="description" content="原文：Employing QUIC Protocol to Optimize Uber’s App Performance  Uber operates on a global scale across more than 600 cities, with our apps relying entirely on wireless connectivity from over 4,500 mob">
+<meta name="keywords" content="QUIC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Uber使用QUIC协议优化App网络性能">
+<meta property="og:url" content="https://itimetraveler.github.io/2019/12/02/Uber使用QUIC协议优化App网络性能/index.html">
+<meta property="og:site_name" content="iTimeTraveler">
+<meta property="og:description" content="原文：Employing QUIC Protocol to Optimize Uber’s App Performance  Uber operates on a global scale across more than 600 cities, with our apps relying entirely on wireless connectivity from over 4,500 mob">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://itimetraveler.github.io/gallery/common/L_154138_uber.jpg">
+<meta property="og:updated_time" content="2019-12-02T09:07:51.770Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Uber使用QUIC协议优化App网络性能">
+<meta name="twitter:description" content="原文：Employing QUIC Protocol to Optimize Uber’s App Performance  Uber operates on a global scale across more than 600 cities, with our apps relying entirely on wireless connectivity from over 4,500 mob">
+<meta name="twitter:image" content="https://itimetraveler.github.io/gallery/common/L_154138_uber.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/gallery/avatar/0.jpg">
+  <link rel="apple-touch-icon" href="/gallery/avatar/0.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="../../../../css/style.css">
+
+  <script src="../../../../js/jquery-3.1.1.min.js"></script>
+  <script src="../../../../js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="../../../../css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 8px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="62px" height="75px" alt="Hike News" src="/gallery/avatar/0.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="../../../../index.html">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../funnysite">酷站</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../collection">收藏</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../mybooks">🎁</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '../../../../content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="../../../../js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Uber使用QUIC协议优化App网络性能" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" href="../../../../gallery/common/L_154138_uber.jpg" rel="gallery_ck3o8amh0002zhcs6hsw9cmee">
+        <img src="../../../../gallery/common/L_154138_uber.jpg" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Uber使用QUIC协议优化App网络性能
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="" class="article-date">
+	  <time datetime="2019-12-02T03:08:00.000Z" itemprop="datePublished">2019-12-02</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../../../categories/Web/">Web</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>原文：<a href="https://eng.uber.com/employing-quic-protocol/" target="_blank" rel="noopener">Employing QUIC Protocol to Optimize Uber’s App Performance</a></p>
+</blockquote>
+<p>Uber operates on a global scale across more than 600 cities, with our apps relying entirely on wireless connectivity from over 4,500 mobile carriers. To deliver the real-time performance expected from Uber’s users, our mobile apps require low-latency and highly reliable network communication. Unfortunately, the <a href="https://en.wikipedia.org/wiki/HTTP/2" target="_blank" rel="noopener">HTTP/2</a> stack fares poorly in dynamic, lossy wireless networks, and we learned that poor performance can often be traced directly to Transmission Control Protocol (TCP) implementations buried in OS kernels.</p>
+<p>Uber在全球600个城市运营，我们的APP完全依赖于4500家移动网络运营商提供的无线网络服务。为了提供Uber用户期望的实时性能，我们的手机应用需要低延迟、高可用的网络通信。不幸的是，HTTP/2协议在动态、有损的无线网络中表现不佳，我们了解到低性能的原因通常被追溯定位到内核中的TCP实现。</p>
+<p>To address these pain points, we adopted the <a href="https://en.wikipedia.org/wiki/QUIC" target="_blank" rel="noopener">QUIC protocol</a>, a stream-multiplexed modern transport protocol implemented over UDP, which enables us to better control the transport protocol performance. QUIC is currently being standardized by the <a href="https://www.ietf.org/" target="_blank" rel="noopener">Internet Engineering Task Force</a> (IETF) as <a href="https://github.com/quicwg" target="_blank" rel="noopener">HTTP/3</a>.</p>
+<p>After thorough testing of QUIC, we concluded that integrating QUIC in our apps would fchroreduce the tail-end latencies compared to TCP. We witnessed a reduction of 10-30 percent in tail-end latencies for HTTPS traffic at scale in our rider and driver apps. In addition to improving the performance of our apps in low connectivity networks, QUIC gives us end-to-end control over the flow of packets in the user space.</p>
+<p>In this article, we share our experiences optimizing TCP performance for Uber’s apps by moving to a network stack that supports the QUIC protocol.</p>
+<h2 id="State-of-the-Art-TCP"><a href="#State-of-the-Art-TCP" class="headerlink" title="State of the Art: TCP"></a>State of the Art: TCP</h2><p>On today’s Internet, <a href="https://en.wikipedia.org/wiki/Transmission_Control_Protocol" target="_blank" rel="noopener">TCP</a> is the most widely adopted transport protocol for carrying HTTPS traffic. TCP provides a reliable byte stream, dealing with the complexities of network <a href="https://en.wikipedia.org/wiki/TCP_congestion_control" target="_blank" rel="noopener">congestion</a> and link layer <a href="https://tools.ietf.org/html/rfc2018" target="_blank" rel="noopener">losses</a>. The widespread use of TCP for HTTPS traffic is mainly attributed to ubiquity (almost every OS includes TCP), availability on a wide range of infrastructure, such as load balancers, HTTPS <a href="https://www.nginx.com/" target="_blank" rel="noopener">proxies</a>, and <a href="https://www.akamai.com/us/en/resources/content-distribution-network.jsp" target="_blank" rel="noopener">CDNs</a>, and it’s out-of-the-box functionality for most platforms and networks.</p>
+<p>Most users access Uber’s services on the move, and the tail-end latencies of our applications running on TCP were far from meeting the requirements of the real-time nature of our HTTPS traffic. Specifically, users perceived high tail-end latencies across the world. In Figure 1, below, we plot the tail-end latencies of our HTTPS network calls across major cities:</p>
+<p><img src="/gallery/common/image3-1068x531.png" alt="Figure 1. Tail-end latencies vary across the major cities where Uber operates."></p>
+<p>Although the latencies in India and Brazil’s networks were worse than those in the US and UK, the tail-end latencies are significantly higher than the average latencies, even in the case of the US and UK.</p>
+<a id="more"></a>
+<h3 id="TCP-Performance-over-wireless"><a href="#TCP-Performance-over-wireless" class="headerlink" title="TCP Performance over wireless"></a>TCP Performance over wireless</h3><p>TCP was originally designed for <em>wired</em> networks, which have largely predictable links. However, <em>wireless</em> networks have unique characteristics and challenges. Firstly, wireless networks are susceptible to losses from interference and signal attenuation. For instance, WiFi networks are susceptible to interference from microwaves, bluetooth, and other types of radio waves. Cellular networks are affected by signal loss (or <a href="https://en.wikipedia.org/wiki/Path_loss" target="_blank" rel="noopener">path loss</a>) due to reflection/absorption by things in the environment, such as buildings, and <a href="https://en.wikipedia.org/wiki/Co-channel_interference" target="_blank" rel="noopener">interference</a> from neighboring <a href="http://www.artizanetworks.com/resources/tutorials/what_lteenb.html" target="_blank" rel="noopener">base stations</a>. These result in much higher (e.g: 4-10x) and variable Round-trip times (<a href="https://en.wikipedia.org/wiki/Round-trip_delay_time" target="_blank" rel="noopener">RTTs</a>) and packet loss than wired counterparts.</p>
+<p>To overcome intermittent fluctuations in bandwidth and loss, cellular networks typically employ large buffers to absorb traffic bursts. Large buffers can cause excessive queueing, causing longer delays. TCP often interprets such queuing as loss due to time out durations, so it tends to retransmit and further fill up the buffer. This problem, known as <a href="https://queue.acm.org/detail.cfm?id=2071893" target="_blank" rel="noopener">bufferbloat</a>, is a major <a href="http://conferences.sigcomm.org/sigcomm/2012/paper/cellnet/p1.pdf" target="_blank" rel="noopener">challenge</a> in today’s Internet.</p>
+<p>Finally, cellular network performance <a href="https://pdfs.semanticscholar.org/00aa/a84be127c04a21b5f5f8dc5d2426921654e2.pdf" target="_blank" rel="noopener">varies</a> significantly across carriers, regions, and time. In Figure 2, below, we plot the median latencies of HTTPS traffic in Uber’s rider app across hexagons of 2 kilometers for two major mobile carriers in Delhi, India. As can be seen in the figure, the network performance varies significantly across the hexagons in the same city. Also, the performance is significantly different for two of the top carriers. Factors such as user access patterns based on location and time, user mobility, and the network deployment of the carrier based on the density of the towers and the proportion of the types of networks (LTE, 3G, etc.) cause network load variations across location and carriers.</p>
+<p><img src="/gallery/common/image4-1068x478.png" alt="Figure 2: Charting tail-end latencies over two-kilometer hexagons in Delhi, India, we see major differences from two different carriers."></p>
+<p>In addition to varying across locations, the cellular network performance varies over time. As shown in Figure 3, below, the median latency across two kilometer hexagons for the same region within Delhi and the same carrier fluctuates across the days of the week. We also saw variations within finer time scales, such as within a day and an hour.</p>
+<p><img src="/gallery/common/image1-1068x259.png" alt="Figure 3: Tail-end latencies can vary considerably from day to day, on the same carrier."></p>
+<p>The above characteristics translate into inefficiencies in TCP’s performance on wireless networks. However, before looking into alternatives to TCP,  we wanted to develop a key understanding of the problem space by assessing the following considerations:</p>
+<ul>
+<li>Is TCP the main contributor to the high tail-end latencies on our mobile applications?</li>
+<li>Do current networks have significantly high RTT variance and losses?</li>
+<li>What is the impact of the high RTTs and losses on the performance of TCP?</li>
+</ul>
+<h3 id="TCP-performance-analysis"><a href="#TCP-performance-analysis" class="headerlink" title="TCP performance analysis"></a>TCP performance analysis</h3><p>To better understand how we analyze TCP performance, let’s first briefly explain how TCP transfers data from a sender to a receiver. Initially, the sender sets up a TCP connection by performing a three-way <a href="https://www.inetdaemon.com/tutorials/internet/tcp/3-way_handshake.shtml" target="_blank" rel="noopener">handshake</a>: the sender transmits a SYN packet, waits for a SYN-ACK packet from the receiver, then sends an ACK packet. An additional two to three round trips are spent on setting up a <a href="https://en.wikipedia.org/wiki/Transport_Layer_Security" target="_blank" rel="noopener">TLS</a> connection. Each data packet is ACKed by the receiver to ensure reliable delivery.</p>
+<p>In the case that a packet or ACK is lost, the sender retransmits the packet after the expiration of a <a href="https://tools.ietf.org/html/rfc6298" target="_blank" rel="noopener">retransmission timeout</a> (RTO). The RTO is dynamically computed based on various factors, such as the estimate of the RTT between the sender and the receiver.</p>
+<p><img src="/gallery/common/image10-1068x578.png" alt="Figure 4: TCP/TLS packet exchanges include a mechanism to retransmit lost packets."></p>
+<p>To determine how the TCP flow was performing in our apps, we collected TCP packet traces using <a href="https://www.tcpdump.org/" target="_blank" rel="noopener">tcpdump</a> for a week of production traffic from Uber’s edge servers for connections originating from India. We then analyzed the TCP connections using <a href="http://www.tcptrace.org/" target="_blank" rel="noopener">tcptrace</a>. In addition, we also built an Android application that sends emulated traffic to a test server closely mimicking real traffic. The application collects TCP traces in the background, and uploads the logs to a back-end server. Android phones running this application were handed out to a few employees in India, who collected logs for a period of a few days.</p>
+<p>The results were consistent from both experiments. We witnessed high RTT values, and tail-end values being almost <em>six times</em> the median value, with an average variance of more than one second. Additionally, most connections were lossy, causing TCP to retransmit 3.5 percent of total packets. In congested locations, such as railway stations and airports, we witnessed as high as 7 percent of packets being dropped by the network. These results challenge a common notion that cellular networks’ <a href="http://www.sharetechnote.com/html/BasicProcedure_LTE_HARQ.html" target="_blank" rel="noopener">advanced retransmission schemes</a> significantly reduce losses at the transport layer. Below, we outline our results running tests on our mock application:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Network Metrics</strong></th>
+<th><strong>Values</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RTT in msecs [50%,75%, 95%,99%]</strong></td>
+<td>[350, 425, 725, 2300]</td>
+</tr>
+<tr>
+<td><strong>RTT variance in secs</strong></td>
+<td>Average ~ 1.2 seconds</td>
+</tr>
+<tr>
+<td><strong>Packet Loss Rate in lossy connections</strong></td>
+<td>Average ~3.5% (7% in congestion areas)</td>
+</tr>
+</tbody>
+</table>
+<p>Almost half of these connections saw at least one packet loss, with a significant number of connections suffering losses of SYN and SYN-ACK packets. Since TCP uses highly conservative RTO values for retransmitting SYN and SYN-ACK packets compared to data packets, most TCP implementations use an initial RTO of one second for SYN packets, with the RTO exponentially increased for subsequent losses. The initial load time of the application can suffer as TCP takes more time to setup the connections.</p>
+<p>In the case of data packets, high RTOs effectively reduce network utilization in the presence of transient losses in the wireless networks. We found that the average time to retransmit is around <em>one</em> <em>second</em>, with tail-end times being almost 30 seconds. These high delays in the TCP layer were causing the HTTPS transfer to timeout and retry the request, leading to further latency and network inefficiency.</p>
+<p>While the 75th percentile of the measured RTTs on our networks was around 425 milliseconds, the 75th percentile of TCP back-off was almost three seconds. This result implies that losses cause TCP to take 7 times-10 times round-trips to actually transmit the data successfully. This can be attributed to the inefficient computation of RTOs, TCP’s inability to react quickly to loss of last few packets in a window (<a href="https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/41217.pdf" target="_blank" rel="noopener">tail loss</a>), and inefficiencies in the congestion control algorithm, which does not differentiate between wireless losses and losses due to network congestion. Below, we outline the results of our TCP packet loss tests:</p>
+<table>
+<thead>
+<tr>
+<th><strong>TCP Packet Loss Stats</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Percentage of connections with at least 1 packet loss</td>
+<td>45%</td>
+</tr>
+<tr>
+<td>Percentage of connections with loss that have packet loss during connection establishment</td>
+<td>30%</td>
+</tr>
+<tr>
+<td>Percentage of connections with loss that have packet loss during data exchange</td>
+<td>76%</td>
+</tr>
+<tr>
+<td>Distribution of delays in retransmission in seconds [50%, 75%, 95%,99%]</td>
+<td>[1, 2.8, 15, 28]</td>
+</tr>
+<tr>
+<td>Distribution of the number of retransmissions for a given packet or TCP segment</td>
+<td>[1,3,6,7]</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Adopting-QUIC"><a href="#Adopting-QUIC" class="headerlink" title="Adopting QUIC"></a>Adopting QUIC</h2><p>Originally designed by Google, <a href="https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/46403.pdf" target="_blank" rel="noopener">QUIC</a> is a stream-multiplexed modern transport protocol implemented over UDP.  Currently, QUIC is being standardized as a part of an ongoing <a href="https://quicwg.github.io/base-drafts/draft-ietf-quic-transport.html" target="_blank" rel="noopener">IETF effort</a>. As depicted in Figure 5, below, QUIC transparently sits under HTTP/3 (HTTP/2 over QUIC is being standardized as HTTP/3). It replaces portions of HTTPS and TCP layers on the stack, using UDP for packet framing. QUIC only supports secure data transmission, hence the TLS layer is completely embedded within QUIC.</p>
+<p><img src="/gallery/common/image8.png" alt="Figure 5: QUIC sits under HTTP/3, absorbing the secure TLS layer which formerly ran under HTTP/2."></p>
+<p>Below, we outline <a href="https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/46403.pdf" target="_blank" rel="noopener">features</a> that made it compelling for us to adopt QUIC in addition to TCP for this edge communication:</p>
+<ul>
+<li><strong>0-RTT connection establishment:</strong> QUIC allows reuse of the security credential established in previous connections, reducing the overhead of secure connection handshakes by way of sending data in the first round trip. In the future, <a href="https://www.ietf.org/blog/tls13/" target="_blank" rel="noopener">TLS1.3</a> will support 0-RTT, but the TCP three-way handshake will still be required.</li>
+<li><strong>Overcoming HoL blocking:</strong> HTTP/2 uses a single TCP connection to each origin to improve performance, but this can lead to head-of-line (HoL) blocking. For instance, an object B (e.g, trip request) may get blocked behind another object A (e.g, logging request) which experiences loss. In this case, delivery of B is delayed until A can recover from the loss. However, QUIC facilitates multiplexing and delivers a request to the application independent of other requests that are being exchanged.  </li>
+<li><strong>Congestion control:</strong> QUIC sits in the application layer, making it easier to update the core algorithm of the transport protocol that controls the sending rate based on network conditions, such as packet loss and RTT. Most TCP deployments use the <a href="https://www.cs.princeton.edu/courses/archive/fall16/cos561/papers/Cubic08.pdf" target="_blank" rel="noopener">CUBIC</a> algorithm, which is not optimal for delay-sensitive traffic. Recently developed algorithms, such as <a href="https://queue.acm.org/detail.cfm?id=3022184" target="_blank" rel="noopener">BBR</a>, model the network more accurately and optimize for latency. QUIC lets us enable BBR and update the algorithm as it <a href="https://datatracker.ietf.org/meeting/102/materials/slides-102-iccrg-an-update-on-bbr-work-at-google-00" target="_blank" rel="noopener">evolves</a>.</li>
+<li><strong>Loss Recovery:</strong> QUIC invokes two tail loss probes (<a href="https://tools.ietf.org/html/draft-dukkipati-tcpm-tcp-loss-probe-01" target="_blank" rel="noopener">TLP</a>) before RTO is triggered even when a loss is outstanding, which is different from some TCP implementations. TLP essentially retransmits the last packet (or a new packet, if available) to trigger fast recovery. Tail loss handling is particularly useful for Uber’s network traffic patterns, which are composed of short, sporadic latency-sensitive transfers.</li>
+<li><strong>Optimized ACKing:</strong> Since each packet carries a unique sequence number, the <a href="https://www.extrahop.com/company/blog/2016/karns-algorithm/" target="_blank" rel="noopener">problem</a> of distinguishing retransmission from delayed packets is eliminated. The ACK packets also contain the time to process the packet and generate the ACK at the client level. These features ensure that QUIC more accurately estimates the RTT. QUIC’s ACKs support up to 256 <a href="https://webrtcglossary.com/nack/" target="_blank" rel="noopener">NACK</a> ranges, helping the sender to be more resilient to packet reordering and ensuring fewer bytes on the wire. Selective ACK (<a href="https://tools.ietf.org/html/rfc2018" target="_blank" rel="noopener">SACK</a>) in TCP does not resolve this problem in all cases.</li>
+<li><strong>Connection Migration:</strong> QUIC connections are identified by a 64 bit connection ID, so that if a client changes IP addresses, it can continue to use the old connection ID from the new IP address without interrupting any in-flight requests. This is a common occurrence in mobile applications when a user switches between WiFi and cellular connections.</li>
+</ul>
+<h3 id="Alternatives-to-QUIC-considered"><a href="#Alternatives-to-QUIC-considered" class="headerlink" title="Alternatives to QUIC considered"></a>Alternatives to QUIC considered</h3><p>Before settling on QUIC, we looked into alternative approaches to improving TCP performance across our apps.</p>
+<p>We first tried deploying TCP Points of Presence (PoPs) to terminate the TCP connections closer to users. Essentially, PoPs terminates the TCP connection to the mobile device closer to the cellular network and reverse proxies the traffic to the original infrastructure. By terminating the TCP closer, we can potentially reduce the RTT, and ensure that TCP is more reactive to the dynamic wireless environment. However, our experiments proved that the bulk of the RTT and loss is coming from cellular networks and use of PoPs did not provide a significant performance improvement.</p>
+<p>We also looked into tuning the parameters of TCP to improve app performance. Tuning TCP stacks across our heterogeneous edge servers was challenging, since TCP has disparate implementations across different versions of the OS. It was difficult to apply and verify the different configuration changes across the network. Tuning the TCP configurations on the mobile devices themselves was impossible due to a lack of privileges. More fundamentally, features like 0-RTT connections and better RTT estimation are central to protocol design and it is not possible to reap such benefits by simply tuning TCP alone.</p>
+<p>Finally, we assessed a few <a href="https://en.wikipedia.org/wiki/Real-Time_Media_Flow_Protocol" target="_blank" rel="noopener">UDP</a>-based protocols that have addressed shortcomings for video streaming to see if they might be leveraged for our use case.  However, they lack industry grade security features and typically assume a complementary TCP connection for metadata and control information.</p>
+<p>To the best of our knowledge and based on our research, QUIC was one of very few protocols that addressed the general problem for Internet traffic, taking into account both security and performance.</p>
+<h3 id="QUIC-integration-on-the-Uber-platform"><a href="#QUIC-integration-on-the-Uber-platform" class="headerlink" title="QUIC integration on the Uber platform"></a>QUIC integration on the Uber platform</h3><p>To successfully integrate QUIC and improve app performance in low connectivity networks, we replaced Uber’s legacy networking stack (HTTP/2 over TLS/TCP) with the QUIC protocol. We leveraged the <a href="https://developer.android.com/guide/topics/connectivity/cronet" target="_blank" rel="noopener">Cronet¹</a> networking library from the <a href="https://www.chromium.org/Home" target="_blank" rel="noopener">Chromium Projects</a> which implement a version of the QUIC protocol (gQUIC) that was originally designed by Google. The implementation is continuously <a href="https://groups.google.com/a/chromium.org/forum/#!topic/proto-quic/b6gZ18W5qn0" target="_blank" rel="noopener">evolving</a> to follow the latest IETF specification.</p>
+<p>We first integrated Cronet into our Android applications to enable QUIC support. The integration was done in a way to ensure zero migration cost for our mobile engineers. Instead of completely replacing our legacy network stack that used the <a href="https://square.github.io/okhttp/" target="_blank" rel="noopener">OkHttp</a> library, we integrated the Cronet library under the OkHttp API framework. By performing the integration in this way, we avoided changes to the API layer of our network calls, which rely on <a href="https://square.github.io/retrofit/" target="_blank" rel="noopener">Retrofit</a>.</p>
+<p>In addition, we also avoided changing core networking functions that perform such tasks as failover, redirects, and compression. We leveraged the interceptor mechanism of OkHttp to implement middleware to seamlessly intercept HTTP traffic from the application and send the traffic to the Cronet library using Java <a href="https://developer.android.com/guide/topics/connectivity/cronet" target="_blank" rel="noopener">APIs</a>. We still use the OkHttp library in cases where the Cronet library fails to load for certain Android devices.</p>
+<p>Similar to our Android approach, we integrated Cronet into Uber’s iOS applications by intercepting HTTP traffic from the iOS networking <a href="https://developer.apple.com/documentation/foundation/nsurlsession" target="_blank" rel="noopener">APIs</a> using <a href="https://developer.apple.com/documentation/foundation/nsurlprotocol" target="_blank" rel="noopener">NSURLProtocol</a>. This abstraction, provided by the iOS Foundation, handles loading protocol-specific URL data and ensures that we can integrate Cronet into our iOS applications without significant migration costs.</p>
+<h3 id="QUIC-termination-on-Google-Cloud-Load-Balancers"><a href="#QUIC-termination-on-Google-Cloud-Load-Balancers" class="headerlink" title="QUIC termination on Google Cloud Load Balancers"></a>QUIC termination on Google Cloud Load Balancers</h3><p>On the backend, the QUIC termination is <a href="https://www.inetdaemon.com/tutorials/internet/tcp/3-way_handshake.shtml" target="_blank" rel="noopener">provided</a> by a Google Cloud Load balancing infrastructure that supports QUIC using the <a href="https://www.inetdaemon.com/tutorials/internet/tcp/3-way_handshake.shtml" target="_blank" rel="noopener">alt-svc</a> header on responses. Essentially, on every HTTP response, the load balancer adds an alt-svc header that validates QUIC support for that domain. When the Cronet client receives an HTTP response with an alt-svc header, it uses QUIC for the following HTTP requests sent to that domain. Once the load balancer terminates QUIC, our infrastructure transparently forwards it over HTTP2/TCP to our back-end data centers.</p>
+<h2 id="Performance-results"><a href="#Performance-results" class="headerlink" title="Performance results"></a>Performance results</h2><p>Given performance is the primary reason for our exploration of a better transport protocol, we first set up a <a href="https://code.fb.com/production-engineering/augmented-traffic-control-a-tool-to-simulate-network-conditions/" target="_blank" rel="noopener">network emulation</a> testbed to study how QUIC performs under different network profiles in the lab. To verify QUIC’s performance gains in real networks, we then conducted on-road experiments in New Delhi using emulated traffic that closely replays the highly frequent HTTPS network calls in our rider application.</p>
+<h3 id="Experiment-one"><a href="#Experiment-one" class="headerlink" title="Experiment one"></a>Experiment one</h3><p>The experiment setup, outlined below, consists of the following components:</p>
+<ol>
+<li>Android test devices with the OkHttp and Cronet network stack to ensure we can run HTTPS traffic over both TCP and QUIC, respectively.</li>
+<li>A Java-based emulation server that sends stubbed HTTPS response headers and payloads to the client devices upon receiving HTTPS requests.</li>
+<li>Proxies placed in a cloud region close to India to terminate the TCP and QUIC connections. While we used the <a href="https://www.nginx.com/" target="_blank" rel="noopener">NGINX</a> reverse proxy to terminate TCP, it was challenging to find an openly available reverse proxy for QUIC. We built a QUIC reverse proxy in-house using the core QUIC stack from Chromium and <a href="https://chromium.googlesource.com/chromium/src/+/4380217c0aa51adff8f624ba412e415e6493413a" target="_blank" rel="noopener">contributed</a> the proxy back to Chromium as open source.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="/gallery/common/image9-768x294.png" alt=""></td>
+<td><img src="/gallery/common/image6-300x225.png" alt=""></td>
+</tr>
+</tbody>
+</table>
+<p><em>Figure 6 : Our on-road experimental setup to test QUIC versus TCP performance consisted of Android devices running the OkHttp and Cronet stacks, cloud-based proxies to terminate the connections, and an emulation server.</em></p>
+<p>The results from this experiment showed that QUIC consistently and very significantly outperformed TCP in terms of latency when downloading the HTTPS responses on the devices. Specifically, we witnessed a 50 percent reduction in latencies across the board, from the 50th percentile to 99th percentile.</p>
+<h3 id="Experiment-two"><a href="#Experiment-two" class="headerlink" title="Experiment two"></a>Experiment two</h3><p>Once Google made QUIC available within <a href="https://cloud.google.com/blog/products/gcp/introducing-quic-support-https-load-balancing" target="_blank" rel="noopener">Google Cloud Load Balancing</a>, we repeated the same experiment setup with one modification: instead of using NGINX, we used the Google Cloud load balancers to terminate the TCP and QUIC connections from the devices and forward the HTTPS traffic to an emulated server. These load balancers are spread across the globe, with the closest PoP server selected based on the geolocation of the device.</p>
+<p><img src="/gallery/common/image5-1068x455.png" alt="Figure 8: In our second experimental setup, we wanted to compare the latency of TCP and QUIC terminating at the Google Cloud versus using our own cloud-based proxy."></p>
+<p>We encountered a few interesting insights from this second experiment:</p>
+<ul>
+<li><strong>PoP termination improved TCP performance:</strong> Since the Google Cloud load balancers terminate the TCP connection closer to users and are well-tuned for performance, the resulting lower RTTs significantly improved the TCP performance. Although QUIC’s gains were lower, it still out-performed TCP by about a 10-30 percent reduction in tail-end latency.</li>
+<li><strong>Long tail impacted by</strong> <a href="https://en.wikipedia.org/wiki/Hop_(networking" target="_blank" rel="noopener"><strong>cellular/wireless hops</strong></a>)<strong>:</strong> Even though our in-house QUIC proxy  was farther away from the device (approximately 50 milliseconds higher latency) than the Google Cloud load balancers, it offered similar performance gains (a 15 percent reduction as opposed to a 20 percent reduction in the 99th percentile against TCP). These results suggests that the last-mile cellular hop is the main bottleneck in the network.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="/gallery/common/image12.png" alt=""></td>
+<td><img src="/gallery/common/image2.png" alt=""></td>
+</tr>
+</tbody>
+</table>
+<p><em>Figure 7. Results from two experiments we ran testing latency showed significant performance gains for QUIC versus TCP.</em></p>
+<h3 id="Production-traffic"><a href="#Production-traffic" class="headerlink" title="Production traffic"></a>Production traffic</h3><p>Encouraged by previous tests, we proceeded by adding QUIC support into our Android and iOS applications. We performed an A/B test between QUIC and TCP to quantify the impact of QUIC across all cities in which Uber operates. Overall, we saw significant reductions in the tail-end latencies across various dimensions, such as region, carrier, and network type.</p>
+<p>Figure 9, below, depicts the percentage improvements in the tail-end latencies (95th and 99th percentile) across different mega-regions and network types (including LTE, 3G, and 2G.):</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="/gallery/common/image11.png" alt=""></td>
+<td><img src="/gallery/common/image7.png" alt=""></td>
+</tr>
+</tbody>
+</table>
+<p><em>Figure 8. In our production tests, QUIC consistently outperformed TCP in terms of latency over regions and network types.</em></p>
+<h2 id="Moving-forward"><a href="#Moving-forward" class="headerlink" title="Moving forward"></a>Moving forward</h2><p>We are just getting started: deploying QUIC for mobile applications at our scale has paved the way for several exciting avenues to improve application performance across both high and low connectivity networks, including:</p>
+<h3 id="Increase-QUIC-coverage"><a href="#Increase-QUIC-coverage" class="headerlink" title="Increase QUIC coverage"></a>Increase QUIC coverage</h3><p>Based on the analysis of the protocol’s actual performance on real traffic, we observed that around 80 percent of sessions successfully used QUIC for all requests, while about 15 percent of them used a mix of TCP and QUIC. Our current hypothesis about this mix is that the Cronet code library switches back to TCP upon timeouts since it cannot distinguish UDP failures and actual poor network conditions. We are currently working to solve this problem as we move forward with leveraging the QUIC protocol.</p>
+<h3 id="QUIC-optimization"><a href="#QUIC-optimization" class="headerlink" title="QUIC optimization"></a>QUIC optimization</h3><p>The traffic from Uber’s mobile applications are typically latency-sensitive as opposed to bandwidth-intensive. Also, our applications are primarily accessed using cellular networks. Based on our experiments, the tail-end latencies are still higher despite using proxies that terminate TCP and QUIC close to the user. Our team is actively working on investigating further improvements to control congestion and improve loss recovery algorithms for QUIC to optimize for latency based on our traffic and user access patterns.</p>
+<p>With these improvements and others, we plan to  further enhance the user experience on our platform regardless of network or region, making convenient and seamless transportation more accessible across our global markets.</p>
+<p><em>Interested in building technologies to advance the future of networking? Consider joining <a href="https://www.uber.com/us/en/careers/teams/engineering/" target="_blank" rel="noopener">our team</a>.</em></p>
+<p><strong><em>Acknowledgements</em></strong></p>
+<p><em>Special thanks to James Yu, Sivabalan</em> <em>Narayanan,</em> <em>Minh Pham, Z. Morley Mao, Dilpreet Singh, Praveen Neppalli Naga, Ganesh Srinivasan,</em> <em>Bill Fumerola**, Ali-Reza Adl-Tabatabai, Jatin Lodhia and Liang Ma for their contributions to the project.</em></p>
+<p>¹<em>This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit. (</em><a href="http://www.openssl.org/" target="_blank" rel="noopener"><em>http://www.openssl.org/</em></a><em>). This product includes cryptographic software written by Eric Young (</em><a href="mailto:eay@cryptsoft.com" target="_blank" rel="noopener"><em>eay@cryptsoft.com</em></a><em>).</em></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://eng.uber.com/employing-quic-protocol/" target="_blank" rel="noopener">Employing QUIC Protocol to Optimize Uber’s App Performance</a></li>
+<li><a href="https://www.slideshare.net/dhaval2025/uber-mobility-high-performance-networking" target="_blank" rel="noopener">Uber mobility - High Performance Networking</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="../../../../js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Mr.Seven</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2019/12/02/Uber使用QUIC协议优化App网络性能/" target="_blank" title="Uber使用QUIC协议优化App网络性能">https://itimetraveler.github.io/2019/12/02/Uber使用QUIC协议优化App网络性能/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/QUIC/">QUIC</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="../../../11/27/【Android】Wifi设置代理原理解析/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">【Android】Wifi代理抓包原理</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#State-of-the-Art-TCP"><span class="nav-number">1.</span> <span class="nav-text">State of the Art: TCP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-Performance-over-wireless"><span class="nav-number">1.1.</span> <span class="nav-text">TCP Performance over wireless</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-performance-analysis"><span class="nav-number">1.2.</span> <span class="nav-text">TCP performance analysis</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Adopting-QUIC"><span class="nav-number">2.</span> <span class="nav-text">Adopting QUIC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Alternatives-to-QUIC-considered"><span class="nav-number">2.1.</span> <span class="nav-text">Alternatives to QUIC considered</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#QUIC-integration-on-the-Uber-platform"><span class="nav-number">2.2.</span> <span class="nav-text">QUIC integration on the Uber platform</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#QUIC-termination-on-Google-Cloud-Load-Balancers"><span class="nav-number">2.3.</span> <span class="nav-text">QUIC termination on Google Cloud Load Balancers</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Performance-results"><span class="nav-number">3.</span> <span class="nav-text">Performance results</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Experiment-one"><span class="nav-number">3.1.</span> <span class="nav-text">Experiment one</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Experiment-two"><span class="nav-number">3.2.</span> <span class="nav-text">Experiment two</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Production-traffic"><span class="nav-number">3.3.</span> <span class="nav-text">Production traffic</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Moving-forward"><span class="nav-number">4.</span> <span class="nav-text">Moving forward</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Increase-QUIC-coverage"><span class="nav-number">4.1.</span> <span class="nav-text">Increase QUIC coverage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#QUIC-optimization"><span class="nav-number">4.2.</span> <span class="nav-text">QUIC optimization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2019 iTimeTraveler All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="../../../../categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="../../../../tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="../../../../funnysite" class="mobile-nav-link">酷站</a>
+  
+    <a href="../../../../collection" class="mobile-nav-link">收藏</a>
+  
+    <a href="../../../../about" class="mobile-nav-link">About</a>
+  
+    <a href="../../../../mybooks" class="mobile-nav-link">🎁</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.css">
+  <script src="../../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="../../../../js/scripts.js"></script>
+
+
+
+
+  <script src="../../../../js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            iTimeTraveler
+          </div>
+          <div class="panel-body">
+            Copyright © 2019 Mr.Seven All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

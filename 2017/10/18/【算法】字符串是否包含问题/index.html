@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>【算法】字符串是否包含问题 | iTimeTraveler</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Algorithm" />
+  
+  
+  
+  
+  <meta name="description" content="在网上看到这篇文章：一次谷歌面试趣事。觉得其中的算法题以及作者的解决思路很有趣，就拿来分享一下吧。 问题假设这有一个各种字母组成的字符串，假设这还有另外一个字符串，而且这个字符串里的字母数相对少一些。从算法是讲，什么方法能最快的查出所有小字符串里的字母在大字符串里都有？ 比如，如果是下面两个字符串：  String 1: ABCDEFGHLMNOPQRSString 2: DCGSRQPO  答案">
+<meta name="keywords" content="Algorithm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【算法】字符串是否包含问题">
+<meta property="og:url" content="https://itimetraveler.github.io/2017/10/18/【算法】字符串是否包含问题/index.html">
+<meta property="og:site_name" content="iTimeTraveler">
+<meta property="og:description" content="在网上看到这篇文章：一次谷歌面试趣事。觉得其中的算法题以及作者的解决思路很有趣，就拿来分享一下吧。 问题假设这有一个各种字母组成的字符串，假设这还有另外一个字符串，而且这个字符串里的字母数相对少一些。从算法是讲，什么方法能最快的查出所有小字符串里的字母在大字符串里都有？ 比如，如果是下面两个字符串：  String 1: ABCDEFGHLMNOPQRSString 2: DCGSRQPO  答案">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-03-14T08:13:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【算法】字符串是否包含问题">
+<meta name="twitter:description" content="在网上看到这篇文章：一次谷歌面试趣事。觉得其中的算法题以及作者的解决思路很有趣，就拿来分享一下吧。 问题假设这有一个各种字母组成的字符串，假设这还有另外一个字符串，而且这个字符串里的字母数相对少一些。从算法是讲，什么方法能最快的查出所有小字符串里的字母在大字符串里都有？ 比如，如果是下面两个字符串：  String 1: ABCDEFGHLMNOPQRSString 2: DCGSRQPO  答案">
+  
+    <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/gallery/avatar/0.jpg">
+  <link rel="apple-touch-icon" href="/gallery/avatar/0.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="../../../../css/style.css">
+
+  <script src="../../../../js/jquery-3.1.1.min.js"></script>
+  <script src="../../../../js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="../../../../css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 8px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="62px" height="75px" alt="Hike News" src="/gallery/avatar/0.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="../../../../index.html">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../funnysite">酷站</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../collection">收藏</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../mybooks">🎁</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '../../../../content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="../../../../js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-【算法】字符串是否包含问题" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      【算法】字符串是否包含问题
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="" class="article-date">
+	  <time datetime="2017-10-18T14:20:55.000Z" itemprop="datePublished">2017-10-18</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../../../categories/Algorithm/">Algorithm</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在网上看到这篇文章：<a href="http://www.vaikan.com/google-interviewing-story/" target="_blank" rel="noopener">一次谷歌面试趣事</a>。觉得其中的算法题以及作者的解决思路很有趣，就拿来分享一下吧。</p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>假设这有一个各种字母组成的字符串，假设这还有另外一个字符串，而且这个字符串里的字母数相对少一些。从算法是讲，什么方法能最快的查出所有小字符串里的字母在大字符串里都有？</p>
+<p>比如，如果是下面两个字符串：</p>
+<blockquote>
+<p>String 1: ABCDEFGHLMNOPQRS<br>String 2: DCGSRQPO</p>
+</blockquote>
+<p>答案是true，所有在String2里的字母String1也都有。如果是下面两个字符串：</p>
+<blockquote>
+<p>String 1: ABCDEFGHLMNOPQRS<br>String 2: DCGSRQPZ</p>
+</blockquote>
+<p>答案是false，因为第二个字符串里的Z字母不在第一个字符串里。</p>
+<a id="more"></a>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><h4 id="1-轮询"><a href="#1-轮询" class="headerlink" title="1. 轮询"></a>1. 轮询</h4><p>对于这种操作最简单最幼稚的做法是轮询第二个字符串里的每个字母，看它是否同在第一个字符串里。从算法上讲，这需要<code>O(n*m)</code>次操作，其中n是string1的长度，m是string2的长度。就拿上面的例子来说，最坏的情况下将会有16*8 = 128次操作。</p>
+<h4 id="2-排序"><a href="#2-排序" class="headerlink" title="2. 排序"></a>2. 排序</h4><p>一个稍微好一点的方案是先对这两个字符串的字母进行排序，然后同时对两个字串依次轮询。两个字串的排序需要<code>O(m log m) + O(n log n)</code>次操作（常规情况下），之后的线性扫描需要<code>O(m+n)</code>次操作。同样拿上面的字串做例子，将会需要16<em>4 + 8</em>3 = 88加上对两个字串线性扫描的16 + 8 = 24的操作。（随着字串长度的增长，你会发现这个算法的效果会越来越好）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 排序方案：快速排序</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isSubsetByQuickSort</span><span class="params">(String a, String b)</span></span>&#123;</span><br><span class="line">	<span class="keyword">char</span>[] ca = a.toCharArray();</span><br><span class="line">	<span class="keyword">char</span>[] cb = b.toCharArray();</span><br><span class="line"></span><br><span class="line">	quickSort(ca, <span class="number">0</span>, ca.length - <span class="number">1</span>);</span><br><span class="line">	quickSort(cb, <span class="number">0</span>, cb.length - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//字符串String1的比较指针</span></span><br><span class="line">	<span class="keyword">int</span> pos = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">char</span> c : cb)&#123;</span><br><span class="line">		<span class="keyword">while</span>(pos &lt; ca.length-<span class="number">1</span> &amp;&amp; ca[pos] &lt; c)&#123;</span><br><span class="line">			pos++;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(c != ca[pos])&#123;</span><br><span class="line">			System.out.println(<span class="string">"No exist char: "</span> + c);</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">char</span>[] arr, <span class="keyword">int</span> low, <span class="keyword">int</span> high)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(arr.length &lt;= <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">	<span class="keyword">if</span>(low &gt;= high) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> l = low;</span><br><span class="line">	<span class="keyword">int</span> r = high;</span><br><span class="line">	<span class="keyword">char</span> pivot = arr[l];</span><br><span class="line">	<span class="keyword">while</span>(l &lt; r)&#123;</span><br><span class="line">		<span class="keyword">while</span>(l &lt; r &amp;&amp; arr[r] &gt;= pivot)&#123;</span><br><span class="line">			r--;</span><br><span class="line">		&#125;</span><br><span class="line">		arr[l] = arr[r];</span><br><span class="line">		<span class="keyword">while</span>(l &lt; r &amp;&amp; arr[l] &lt;= pivot)&#123;</span><br><span class="line">			l++;</span><br><span class="line">		&#125;</span><br><span class="line">		arr[r] = arr[l];</span><br><span class="line">	&#125;</span><br><span class="line">	arr[l] = pivot;</span><br><span class="line">	quickSort(arr, low, l - <span class="number">1</span>);</span><br><span class="line">	quickSort(arr, l + <span class="number">1</span>, high);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不过，常规排序比如快排可以达到<code>O(n log n)</code>的时间复杂度，这里也可以选用用空间换时间的的基数排序、桶排序等线性时间复杂度的排序算法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 字母编码[A - z]:[65 - 122]</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> LETTER_REGION = <span class="number">122</span> - <span class="number">65</span> + <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 排序方案：计数排序</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isSubsetByCounterSort</span><span class="params">(String a, String b)</span></span>&#123;</span><br><span class="line">	<span class="keyword">char</span>[] ca = a.toCharArray();</span><br><span class="line">	<span class="keyword">char</span>[] cb = b.toCharArray();</span><br><span class="line"></span><br><span class="line">	ca = counterSort(ca);</span><br><span class="line">	cb = counterSort(cb);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//字符串String1的比较指针</span></span><br><span class="line">	<span class="keyword">int</span> pos = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">char</span> c : cb)&#123;</span><br><span class="line">		<span class="keyword">while</span>(pos &lt; ca.length-<span class="number">1</span> &amp;&amp; ca[pos] &lt; c)&#123;</span><br><span class="line">			pos++;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(c != ca[pos])&#123;</span><br><span class="line">			System.out.println(<span class="string">"No exist char: "</span> + c);</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">char</span>[] counterSort(<span class="keyword">char</span>[] arr)&#123;</span><br><span class="line">	<span class="keyword">int</span>[] bucket = <span class="keyword">new</span> <span class="keyword">int</span>[LETTER_REGION];</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">char</span> c : arr)&#123;</span><br><span class="line">		<span class="keyword">int</span> index = c - <span class="string">'A'</span>;</span><br><span class="line">		bucket[index]++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; LETTER_REGION; i++)&#123;</span><br><span class="line">		bucket[i] += bucket[i - <span class="number">1</span>];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">char</span>[] res = <span class="keyword">new</span> <span class="keyword">char</span>[arr.length];</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">char</span> c : arr)&#123;</span><br><span class="line">		<span class="keyword">int</span> index = c - <span class="string">'A'</span>;</span><br><span class="line">		res[bucket[index] - <span class="number">1</span>] = c;</span><br><span class="line">		bucket[index]--;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-哈希表"><a href="#3-哈希表" class="headerlink" title="3. 哈希表"></a>3. 哈希表</h4><p>哈希表Hashtable是一个只需要<code>O(n+m)</code>次操作的算法。方法就是，对第一个字串进行轮询，把其中的每个字母都放入一个Hashtable里（时间成本是<code>O(n)</code>，这里是16次操作）。然后轮询第二个字串，在Hashtable里查询每个字母，看能否找到。如果找不到，说明没有匹配成功。这将消耗掉8次操作 —— 这样两项操作加起来一共只有24次。不错吧，比前面两种方案都要好。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 哈希表Hashset</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isSubsetByHashset</span><span class="params">(String a, String b)</span></span>&#123;</span><br><span class="line">	<span class="keyword">char</span>[] ca = a.toCharArray();</span><br><span class="line">	<span class="keyword">char</span>[] cb = b.toCharArray();</span><br><span class="line">	HashSet&lt;Character&gt; set = <span class="keyword">new</span> HashSet&lt;Character&gt;();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">char</span> c : ca)&#123;</span><br><span class="line">		set.add(c);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">char</span> c : cb)&#123;</span><br><span class="line">		<span class="keyword">if</span>(!set.contains(c))&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="4、Bitmap位图法"><a href="#4、Bitmap位图法" class="headerlink" title="4、Bitmap位图法"></a>4、Bitmap位图法</h4><p>这个解决方案思想和Hashtable一致，只不过使用的是位图法来为每一个字符保留一位。同样只需要<code>O(n+m)</code>次操作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 字母编码区间[A - z]:[65 - 122]</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> LETTER_REGION = <span class="number">122</span> - <span class="number">65</span> + <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 比特位方案</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isSubsetByBitmap</span><span class="params">(String a, String b)</span></span>&#123;</span><br><span class="line">	<span class="keyword">char</span>[] ca = a.toCharArray();</span><br><span class="line">	<span class="keyword">char</span>[] cb = b.toCharArray();</span><br><span class="line">	<span class="keyword">byte</span>[] bitmap = <span class="keyword">new</span> <span class="keyword">byte</span>[LETTER_REGION / Byte.SIZE];</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">char</span> c : ca)&#123;</span><br><span class="line">		setBit(bitmap, c - <span class="string">'A'</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">char</span> c : cb)&#123;</span><br><span class="line">		<span class="keyword">if</span>(getBit(bitmap, c - <span class="string">'A'</span>) == <span class="number">0</span>)&#123;</span><br><span class="line">			System.out.println(<span class="string">"No exist char in Bitmap: "</span> + c);</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 写入指定位的比特</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setBit</span><span class="params">(<span class="keyword">byte</span> bitmap[], <span class="keyword">int</span> k)</span></span>&#123;</span><br><span class="line">	bitmap[k / Byte.SIZE] |= (<span class="number">1</span> &lt;&lt; (k % Byte.SIZE));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 读取指定位的比特</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getBit</span><span class="params">(<span class="keyword">byte</span> bitmap[], <span class="keyword">int</span> k)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> (bitmap[k / Byte.SIZE] &amp; (<span class="number">1</span> &lt;&lt; (k % Byte.SIZE)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>到此为止，<code>O(n+m)</code>几乎是你能得到的最好的结果了，因为至少要对每个字母至少访问一次才能完成这项操作，而上述这两个方案是刚好是对每个字母只访问一次。下面看看文章中最后的这个素数方案。</p>
+<h4 id="5-素数"><a href="#5-素数" class="headerlink" title="5. 素数"></a>5. 素数</h4><p>假设我们有一个一定个数的字母组成字串。我给每个字母分配一个素数，从2开始，往后类推。这样A将会是2，B将会是3，C将会是5，等等。现在我遍历第一个字串，把每个字母代表的素数相乘。最终会得到一个很大的整数，对吧？然后 —— 轮询第二个字符串，用每个字母除它。如果除的结果有余数，这说明有不匹配的字母。如果整个过程中没有余数，你应该知道它是第一个字串恰好的子集了。这样不行吗？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> primes[] =  &#123;</span><br><span class="line">			<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">11</span>,<span class="number">13</span>,<span class="number">17</span>,<span class="number">19</span>,<span class="number">23</span>,<span class="number">29</span>,<span class="number">31</span>,<span class="number">37</span>,<span class="number">41</span>,<span class="number">43</span>,<span class="number">47</span>,<span class="number">53</span>,<span class="number">59</span>,<span class="number">61</span>,<span class="number">67</span>,<span class="number">71</span>,<span class="number">73</span>,<span class="number">79</span>,<span class="number">83</span>,<span class="number">89</span>,<span class="number">97</span>,<span class="number">101</span>,<span class="number">103</span>,</span><br><span class="line">			<span class="number">107</span>,<span class="number">109</span>,<span class="number">113</span>,<span class="number">127</span>,<span class="number">131</span>,<span class="number">137</span>,<span class="number">139</span>,<span class="number">149</span>,<span class="number">151</span>,<span class="number">157</span>,<span class="number">163</span>,<span class="number">167</span>,<span class="number">173</span>,<span class="number">179</span>,<span class="number">181</span>,<span class="number">191</span>,<span class="number">193</span>,<span class="number">197</span>,<span class="number">199</span>,<span class="number">211</span>,</span><br><span class="line">			<span class="number">223</span>,<span class="number">227</span>,<span class="number">229</span>,<span class="number">233</span>,<span class="number">239</span>,<span class="number">241</span>,<span class="number">251</span>,<span class="number">257</span>,<span class="number">263</span>,<span class="number">269</span>,<span class="number">271</span>,<span class="number">277</span>,<span class="number">281</span>,<span class="number">283</span>,<span class="number">293</span>,<span class="number">307</span>,<span class="number">311</span>,<span class="number">313</span>,<span class="number">317</span>,<span class="number">331</span>,</span><br><span class="line">			<span class="number">337</span>,<span class="number">347</span>,<span class="number">349</span>,<span class="number">353</span>,<span class="number">359</span>,<span class="number">367</span>,<span class="number">373</span>,<span class="number">379</span>,<span class="number">383</span>,<span class="number">389</span>,<span class="number">397</span>,<span class="number">401</span>,<span class="number">409</span>,<span class="number">419</span>,<span class="number">421</span>,<span class="number">431</span>,<span class="number">433</span>,<span class="number">439</span>,<span class="number">443</span>,<span class="number">449</span>,</span><br><span class="line">			<span class="number">457</span>,<span class="number">461</span>,<span class="number">463</span>,<span class="number">467</span>,<span class="number">479</span>,<span class="number">487</span>,<span class="number">491</span>,<span class="number">499</span>,<span class="number">503</span>,<span class="number">509</span>,<span class="number">521</span>,<span class="number">523</span>,<span class="number">541</span>,<span class="number">547</span>,<span class="number">557</span>,<span class="number">563</span>,<span class="number">569</span>,<span class="number">571</span>,<span class="number">577</span>,<span class="number">587</span>,</span><br><span class="line">			<span class="number">593</span>,<span class="number">599</span>,<span class="number">601</span>,<span class="number">607</span>,<span class="number">613</span>,<span class="number">617</span>,<span class="number">619</span>,<span class="number">631</span>,<span class="number">641</span>,<span class="number">643</span>,<span class="number">647</span>,<span class="number">653</span>,<span class="number">659</span>,<span class="number">661</span>,<span class="number">673</span>,<span class="number">677</span>,<span class="number">683</span>,<span class="number">691</span>,<span class="number">701</span>,<span class="number">709</span>,</span><br><span class="line">			<span class="number">719</span>,<span class="number">727</span>,<span class="number">733</span>,<span class="number">739</span>,<span class="number">743</span>,<span class="number">751</span>,<span class="number">757</span>,<span class="number">761</span>,<span class="number">769</span>,<span class="number">773</span>,<span class="number">787</span>,<span class="number">797</span>,<span class="number">809</span>,<span class="number">811</span>,<span class="number">821</span>,<span class="number">823</span>,<span class="number">827</span>,<span class="number">829</span>,<span class="number">839</span>,<span class="number">853</span>,</span><br><span class="line">			<span class="number">857</span>,<span class="number">859</span>,<span class="number">863</span>,<span class="number">877</span>,<span class="number">881</span>,<span class="number">883</span>,<span class="number">887</span>,<span class="number">907</span>,<span class="number">911</span>,<span class="number">919</span>,<span class="number">929</span>,<span class="number">937</span>,<span class="number">941</span>,<span class="number">947</span>,<span class="number">953</span>,<span class="number">967</span>,<span class="number">971</span>,<span class="number">977</span>,<span class="number">983</span>,<span class="number">991</span>&#125;;</span><br><span class="line"><span class="comment">// 字母编码区间[A - z]:[65 - 122]</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> LETTER_REGION = <span class="number">122</span> - <span class="number">65</span> + <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 素数方案</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isSubsetByPrimeNumber</span><span class="params">(String a, String b)</span></span>&#123;</span><br><span class="line">	<span class="keyword">char</span>[] ca = a.toCharArray();</span><br><span class="line">	<span class="keyword">char</span>[] cb = b.toCharArray();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 防止乘积int溢出，使用BigInteger存储乘积结果</span></span><br><span class="line">	BigInteger p = BigInteger.ONE;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">char</span> c : ca)&#123;</span><br><span class="line">		p = p.multiply(BigInteger.valueOf(primes[c - <span class="string">'A'</span>]));</span><br><span class="line">	&#125;</span><br><span class="line">	System.out.println(<span class="string">"乘积结果p = "</span> + p.toString());</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">char</span> c : cb)&#123;</span><br><span class="line">		<span class="keyword">if</span>(!p.remainder(BigInteger.valueOf(primes[c - <span class="string">'A'</span>])).equals(BigInteger.ZERO))&#123;</span><br><span class="line">			System.out.println(<span class="string">"No exist char: "</span> + c);</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CharacterSubset</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 假设你有一个一定长度的由字母组成的字符串。你还有另外一个，短些。你如何才能知道所有的在较短的字符串里的字母在长字符串里也有？</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span></span>&#123;</span><br><span class="line">		String a1 = <span class="string">"ABCDEFGHLMNOPQRS"</span>;</span><br><span class="line">		String b1 = <span class="string">"DCGSRQPOM"</span>;</span><br><span class="line"></span><br><span class="line">		String a2 = <span class="string">"ABCDEFGHLMNOPQRS"</span>;</span><br><span class="line">		String b2 = <span class="string">"DCGSRQPOZ"</span>;</span><br><span class="line">		</span><br><span class="line">		System.out.println(<span class="string">"\na1 and b1: "</span> + isSubsetByQuickSort(a1, b1));</span><br><span class="line">		System.out.println(<span class="string">"\na2 and b2: "</span> + isSubsetByQuickSort(a2, b2));</span><br><span class="line">		System.out.println(<span class="string">"\na1 and b1: "</span> + isSubsetByCounterSort(a1, b1));</span><br><span class="line">		System.out.println(<span class="string">"\na2 and b2: "</span> + isSubsetByCounterSort(a2, b2));</span><br><span class="line">		System.out.println(<span class="string">"\na1 and b1: "</span> + isSubsetByHashset(a1, b1));</span><br><span class="line">		System.out.println(<span class="string">"\na2 and b2: "</span> + isSubsetByHashset(a2, b2));</span><br><span class="line">		System.out.println(<span class="string">"\na1 and b1: "</span> + isSubsetByPrimeNumber(a1, b1));</span><br><span class="line">		System.out.println(<span class="string">"\na2 and b2: "</span> + isSubsetByPrimeNumber(a2, b2));</span><br><span class="line">		System.out.println(<span class="string">"\na1 and b1: "</span> + isSubsetByBitmap(a1, b1));</span><br><span class="line">		System.out.println(<span class="string">"\na2 and b2: "</span> + isSubsetByBitmap(a2, b2));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>就如文章中所说，素数方案在算法上并不能说就比哈希表好。而且在实际操作中，你很可能仍会使用哈希表的方案，因为它更通用，无需跟麻烦的大型数字打交道。但从”巧妙水平“上讲，Guy提供的素数方案是一种更、更、更有趣的方案。</p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a href="http://www.vaikan.com/google-interviewing-story/" target="_blank" rel="noopener">一次谷歌面试趣事</a></li>
+<li><a href="http://blog.csdn.net/v_JULY_v/article/details/6347454" target="_blank" rel="noopener">程序员编程艺术：第二章、字符串是否包含问题</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="../../../../js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Mr.Seven</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2017/10/18/【算法】字符串是否包含问题/" target="_blank" title="【算法】字符串是否包含问题">https://itimetraveler.github.io/2017/10/18/【算法】字符串是否包含问题/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Algorithm/">Algorithm</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../26/【Android】Dialog异常CalledFromWrongThreadException深入分析/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          【Android】Dialog异常CalledFromWrongThreadException深入分析
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../09/【Android】源码分析 - AsyncTask异步任务机制/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">【Android】源码分析 - AsyncTask异步任务机制</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方案"><span class="nav-number">2.</span> <span class="nav-text">解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-轮询"><span class="nav-number">2.1.</span> <span class="nav-text">1. 轮询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-排序"><span class="nav-number">2.2.</span> <span class="nav-text">2. 排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-哈希表"><span class="nav-number">2.3.</span> <span class="nav-text">3. 哈希表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、Bitmap位图法"><span class="nav-number">2.4.</span> <span class="nav-text">4、Bitmap位图法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-素数"><span class="nav-number">2.5.</span> <span class="nav-text">5. 素数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试代码"><span class="nav-number">3.</span> <span class="nav-text">测试代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2019 iTimeTraveler All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="../../../../categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="../../../../tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="../../../../funnysite" class="mobile-nav-link">酷站</a>
+  
+    <a href="../../../../collection" class="mobile-nav-link">收藏</a>
+  
+    <a href="../../../../about" class="mobile-nav-link">About</a>
+  
+    <a href="../../../../mybooks" class="mobile-nav-link">🎁</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.css">
+  <script src="../../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="../../../../js/scripts.js"></script>
+
+
+
+
+  <script src="../../../../js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            iTimeTraveler
+          </div>
+          <div class="panel-body">
+            Copyright © 2019 Mr.Seven All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

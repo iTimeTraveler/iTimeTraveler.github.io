@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>用java实现断点续传 (http) | iTimeTraveler</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Java" />
+  
+  
+  
+  
+  <meta name="description" content="断点续传的原理其实断点续传的原理很简单，就是在 Http 的请求上和一般的下载有所不同而已。打个比方，浏览器请求服务器上的一个文时，所发出的请求如下：假设服务器域名为 www.sjtu.edu.cn，文件名为 down.zip。  1234567GET /down.zip HTTP/1.1 Accept: image/gif, image/x-xbitmap, image/jpeg, image/">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用Java实现断点续传 (HTTP)">
+<meta property="og:url" content="https://itimetraveler.github.io/2018/01/22/用Java实现断点续传 (HTTP)/index.html">
+<meta property="og:site_name" content="iTimeTraveler">
+<meta property="og:description" content="断点续传的原理其实断点续传的原理很简单，就是在 Http 的请求上和一般的下载有所不同而已。打个比方，浏览器请求服务器上的一个文时，所发出的请求如下：假设服务器域名为 www.sjtu.edu.cn，文件名为 down.zip。  1234567GET /down.zip HTTP/1.1 Accept: image/gif, image/x-xbitmap, image/jpeg, image/">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://itimetraveler.github.io/gallery/java-common/0e651424700514.png">
+<meta property="og:updated_time" content="2018-03-14T08:13:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用Java实现断点续传 (HTTP)">
+<meta name="twitter:description" content="断点续传的原理其实断点续传的原理很简单，就是在 Http 的请求上和一般的下载有所不同而已。打个比方，浏览器请求服务器上的一个文时，所发出的请求如下：假设服务器域名为 www.sjtu.edu.cn，文件名为 down.zip。  1234567GET /down.zip HTTP/1.1 Accept: image/gif, image/x-xbitmap, image/jpeg, image/">
+<meta name="twitter:image" content="https://itimetraveler.github.io/gallery/java-common/0e651424700514.png">
+  
+    <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/gallery/avatar/0.jpg">
+  <link rel="apple-touch-icon" href="/gallery/avatar/0.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="../../../../css/style.css">
+
+  <script src="../../../../js/jquery-3.1.1.min.js"></script>
+  <script src="../../../../js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="../../../../css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 8px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="62px" height="75px" alt="Hike News" src="/gallery/avatar/0.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="../../../../index.html">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../funnysite">酷站</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../collection">收藏</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../mybooks">🎁</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '../../../../content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="../../../../js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-用Java实现断点续传 (HTTP)" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" href="../../../../gallery/java-common/0e651424700514.png" rel="gallery_ck3o8amm100d1hcs6nuju6mlh">
+        <img src="../../../../gallery/java-common/0e651424700514.png" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      用Java实现断点续传 (HTTP)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="" class="article-date">
+	  <time datetime="2018-01-22T04:30:55.000Z" itemprop="datePublished">2018-01-22</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../../../categories/Java/">Java</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="断点续传的原理"><a href="#断点续传的原理" class="headerlink" title="断点续传的原理"></a>断点续传的原理</h3><p>其实断点续传的原理很简单，就是在 Http 的请求上和一般的下载有所不同而已。<br>打个比方，浏览器请求服务器上的一个文时，所发出的请求如下：<br>假设服务器域名为 <a href="www.sjtu.edu.cn">www.sjtu.edu.cn</a>，文件名为 down.zip。 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">GET /down.zip HTTP/1.1 </span><br><span class="line">Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/vnd.ms- </span><br><span class="line">excel, application/msword, application/vnd.ms-powerpoint, */* </span><br><span class="line">Accept-Language: zh-cn </span><br><span class="line">Accept-Encoding: gzip, deflate </span><br><span class="line">User-Agent: Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0) </span><br><span class="line">Connection: Keep-Alive</span><br></pre></td></tr></table></figure>
+<p>服务器收到请求后，按要求寻找请求的文件，提取文件的信息，然后返回给浏览器，返回信息如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">200 </span><br><span class="line">Content-Length=106786028 </span><br><span class="line">Accept-Ranges=bytes </span><br><span class="line">Date=Mon, 30 Apr 2001 12:56:11 GMT </span><br><span class="line">ETag=W/&quot;02ca57e173c11:95b&quot; </span><br><span class="line">Content-Type=application/octet-stream </span><br><span class="line">Server=Microsoft-IIS/5.0 </span><br><span class="line">Last-Modified=Mon, 30 Apr 2001 12:56:11 GMT</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>所谓断点续传，也就是要从文件已经下载的地方开始继续下载。所以在客户端浏览器传给 Web 服务器的时候要多加一条信息 – 从哪里开始。<br>下面是用自己编的一个”浏览器”来传递请求信息给 Web 服务器，要求从 2000070 字节开始。 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GET /down.zip HTTP/1.0 </span><br><span class="line">User-Agent: NetFox </span><br><span class="line">RANGE: bytes=2000070- </span><br><span class="line">Accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2</span><br></pre></td></tr></table></figure>
+<p>仔细看一下就会发现多了一行 <code>RANGE: bytes=2000070-</code><br>这一行的意思就是告诉服务器 down.zip 这个文件从 2000070 字节开始传，前面的字节不用传了。<br>服务器收到这个请求以后，返回的信息如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">206 </span><br><span class="line">Content-Length=106786028 </span><br><span class="line">Content-Range=bytes 2000070-106786027/106786028 </span><br><span class="line">Date=Mon, 30 Apr 2001 12:55:20 GMT </span><br><span class="line">ETag=W/&quot;02ca57e173c11:95b&quot; </span><br><span class="line">Content-Type=application/octet-stream </span><br><span class="line">Server=Microsoft-IIS/5.0 </span><br><span class="line">Last-Modified=Mon, 30 Apr 2001 12:55:20 GMT</span><br></pre></td></tr></table></figure></p>
+<p>和前面服务器返回的信息比较一下，就会发现增加了一行： <code>Content-Range=bytes 2000070-106786027/106786028</code>，返回的代码也改为 206 了，而不再是 200 了。</p>
+<p>知道了以上原理，就可以进行断点续传的编程了。</p>
+<h3 id="Java-实现断点续传的关键几点"><a href="#Java-实现断点续传的关键几点" class="headerlink" title="Java 实现断点续传的关键几点"></a>Java 实现断点续传的关键几点</h3><ol>
+<li><p><strong>用什么方法实现提交<code>RANGE: bytes=2000070-</code></strong></p>
+<p>当然用最原始的 Socket 是肯定能完成的，不过那样太费事了，其实 Java 的 net 包中提供了这种功能。代码如下：</p>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">URL url = <span class="keyword">new</span> URL(<span class="string">"http://www.sjtu.edu.cn/down.zip"</span>);</span><br><span class="line"></span><br><span class="line">HttpURLConnection httpConnection = (HttpURLConnection)url.openConnection();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置 User-Agent</span></span><br><span class="line">httpConnection.setRequestProperty(<span class="string">"User-Agent"</span>,<span class="string">"NetFox"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置断点续传的开始位置</span></span><br><span class="line">httpConnection.setRequestProperty(<span class="string">"RANGE"</span>,<span class="string">"bytes=2000070"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获得输入流</span></span><br><span class="line">InputStream input = httpConnection.getInputStream();</span><br></pre></td></tr></table></figure>
+<p>从输入流中取出的字节流就是 down.zip 文件从 2000070 开始的字节流。 大家看，其实断点续传用 Java 实现起来还是很简单的吧。 接下来要做的事就是怎么保存获得的流到文件中去了。</p>
+<ol start="2">
+<li><strong>保存文件采用的方法</strong>。<br>我采用的是 IO 包中的 RandAccessFile 类。<br>操作相当简单，假设从 2000070 处开始保存文件，代码如下： </li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">RandomAccess oSavedFile = <span class="keyword">new</span> RandomAccessFile(<span class="string">"down.zip"</span>,<span class="string">"rw"</span>); </span><br><span class="line"><span class="keyword">long</span> nPos = <span class="number">2000070</span>; </span><br><span class="line"></span><br><span class="line"><span class="comment">// 定位文件指针到 nPos 位置 </span></span><br><span class="line">oSavedFile.seek(nPos); </span><br><span class="line"><span class="keyword">byte</span>[] b = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>]; </span><br><span class="line"><span class="keyword">int</span> nRead; </span><br><span class="line"></span><br><span class="line"><span class="comment">// 从输入流中读入字节流，然后写到文件中 </span></span><br><span class="line"><span class="keyword">while</span>((nRead=input.read(b,<span class="number">0</span>,<span class="number">1024</span>)) &gt; <span class="number">0</span>) &#123; </span><br><span class="line">    oSavedFile.write(b,<span class="number">0</span>,nRead); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>怎么样，也很简单吧。 接下来要做的就是整合成一个完整的程序了。包括一系列的线程控制等等。</p>
+<h3 id="断点续传内核的实现"><a href="#断点续传内核的实现" class="headerlink" title="断点续传内核的实现"></a>断点续传内核的实现</h3><p>主要用了 6 个类，包括一个测试类。 </p>
+<ul>
+<li><p>SiteFileFetch.java 负责整个文件的抓取，控制内部线程 (FileSplitterFetch 类 )。 </p>
+</li>
+<li><p>FileSplitterFetch.java 负责部分文件的抓取。 </p>
+</li>
+<li><p>FileAccess.java 负责文件的存储。 </p>
+</li>
+<li><p>SiteInfoBean.java 要抓取的文件的信息，如文件保存的目录，名字，抓取文件的 URL 等。 </p>
+</li>
+<li><p>Utility.java 工具类，放一些简单的方法。 </p>
+</li>
+<li><p>TestMethod.java 测试类。</p>
+</li>
+</ul>
+<p>我们来分别看看代码：</p>
+<ol>
+<li>SiteFileFetch.java</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * SiteFileFetch.java </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">package</span> NetFox;</span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.net.*;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SiteFileFetch</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">	SiteInfoBean siteInfoBean = <span class="keyword">null</span>; <span class="comment">// 文件信息 Bean </span></span><br><span class="line">	<span class="keyword">long</span>[] nStartPos; <span class="comment">// 开始位置</span></span><br><span class="line">	<span class="keyword">long</span>[] nEndPos; <span class="comment">// 结束位置</span></span><br><span class="line">	FileSplitterFetch[] fileSplitterFetch; <span class="comment">// 子线程对象</span></span><br><span class="line">	<span class="keyword">long</span> nFileLength; <span class="comment">// 文件长度</span></span><br><span class="line">	<span class="keyword">boolean</span> bFirst = <span class="keyword">true</span>; <span class="comment">// 是否第一次取文件</span></span><br><span class="line">	<span class="keyword">boolean</span> bStop = <span class="keyword">false</span>; <span class="comment">// 停止标志</span></span><br><span class="line">	File tmpFile; <span class="comment">// 文件下载的临时信息</span></span><br><span class="line">	DataOutputStream output; <span class="comment">// 输出到文件的输出流</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">SiteFileFetch</span><span class="params">(SiteInfoBean bean)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">		siteInfoBean = bean;</span><br><span class="line">		<span class="comment">//tmpFile = File.createTempFile ("zhong","1111",new File(bean.getSFilePath())); </span></span><br><span class="line">		tmpFile = <span class="keyword">new</span> File(bean.getSFilePath()+File.separator + bean.getSFileName()+<span class="string">".info"</span>);</span><br><span class="line">		<span class="keyword">if</span>(tmpFile.exists ())</span><br><span class="line">		&#123;</span><br><span class="line">			bFirst = <span class="keyword">false</span>;</span><br><span class="line">			read_nPos();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			nStartPos = <span class="keyword">new</span> <span class="keyword">long</span>[bean.getNSplitter()];</span><br><span class="line">			nEndPos = <span class="keyword">new</span> <span class="keyword">long</span>[bean.getNSplitter()];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 获得文件长度</span></span><br><span class="line">		<span class="comment">// 分割文件</span></span><br><span class="line">		<span class="comment">// 实例 FileSplitterFetch </span></span><br><span class="line">		<span class="comment">// 启动 FileSplitterFetch 线程</span></span><br><span class="line">		<span class="comment">// 等待子线程返回</span></span><br><span class="line">		<span class="keyword">try</span>&#123;</span><br><span class="line">			<span class="keyword">if</span>(bFirst)&#123;</span><br><span class="line">				nFileLength = getFileSize();</span><br><span class="line">				<span class="keyword">if</span>(nFileLength == -<span class="number">1</span>)&#123;</span><br><span class="line">					System.err.println(<span class="string">"File Length is not known!"</span>);</span><br><span class="line">				&#125;<span class="keyword">else</span> <span class="keyword">if</span>(nFileLength == -<span class="number">2</span>)&#123;</span><br><span class="line">					System.err.println(<span class="string">"File is not access!"</span>);</span><br><span class="line">				&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">					<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;nStartPos.length;i++)&#123;</span><br><span class="line">						nStartPos[i] = (<span class="keyword">long</span>)(i*(nFileLength/nStartPos.length));</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;nEndPos.length-<span class="number">1</span>;i++)&#123;</span><br><span class="line">						nEndPos[i] = nStartPos[i+<span class="number">1</span>];</span><br><span class="line">					&#125;</span><br><span class="line">					nEndPos[nEndPos.length-<span class="number">1</span>] = nFileLength;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// 启动子线程</span></span><br><span class="line">			fileSplitterFetch = <span class="keyword">new</span> FileSplitterFetch[nStartPos.length];</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;nStartPos.length;i++)&#123;</span><br><span class="line">				fileSplitterFetch[i] = <span class="keyword">new</span> FileSplitterFetch(siteInfoBean.getSSiteURL(),</span><br><span class="line">						siteInfoBean.getSFilePath() + File.separator + siteInfoBean.getSFileName(),</span><br><span class="line">						nStartPos[i],nEndPos[i],i);</span><br><span class="line">				Utility.log(<span class="string">"Thread "</span> + i + <span class="string">" , nStartPos = "</span> + nStartPos[i] + <span class="string">", nEndPos = "</span></span><br><span class="line">						+ nEndPos[i]);</span><br><span class="line">				fileSplitterFetch[i].start();</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// fileSplitterFetch[nPos.length-1] = new FileSplitterFetch(siteInfoBean.getSSiteURL(),</span></span><br><span class="line">			siteInfoBean.getSFilePath() + File.separator</span><br><span class="line">					+ siteInfoBean.getSFileName(),nPos[nPos.length-<span class="number">1</span>],nFileLength,nPos.length-<span class="number">1</span>);</span><br><span class="line">			<span class="comment">// Utility.log("Thread " +(nPos.length-1) + ",nStartPos = "+nPos[nPos.length-1]+", nEndPos = " + nFileLength); </span></span><br><span class="line">			<span class="comment">// fileSplitterFetch[nPos.length-1].start(); </span></span><br><span class="line">			<span class="comment">// 等待子线程结束</span></span><br><span class="line">			<span class="comment">//int count = 0; </span></span><br><span class="line">			<span class="comment">// 是否结束 while 循环</span></span><br><span class="line">			<span class="keyword">boolean</span> breakWhile = <span class="keyword">false</span>;</span><br><span class="line">			<span class="keyword">while</span>(!bStop)&#123;</span><br><span class="line">				write_nPos();</span><br><span class="line">				Utility.sleep(<span class="number">500</span>);</span><br><span class="line">				breakWhile = <span class="keyword">true</span>;</span><br><span class="line">				<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;nStartPos.length;i++)&#123;</span><br><span class="line">					<span class="keyword">if</span>(!fileSplitterFetch[i].bDownOver)&#123;</span><br><span class="line">						breakWhile = <span class="keyword">false</span>;</span><br><span class="line">						<span class="keyword">break</span>;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span>(breakWhile)</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				<span class="comment">//count++; </span></span><br><span class="line">				<span class="comment">//if(count&gt;4) </span></span><br><span class="line">				<span class="comment">//    siteStop(); </span></span><br><span class="line">			&#125;</span><br><span class="line">			System.err.println(<span class="string">"文件下载结束！"</span>);</span><br><span class="line">		&#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">            e.printStackTrace ();</span><br><span class="line">        &#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 获得文件长度</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">getFileSize</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">int</span> nFileLength = -<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">try</span>&#123;</span><br><span class="line">			URL url = <span class="keyword">new</span> URL(siteInfoBean.getSSiteURL());</span><br><span class="line">			HttpURLConnection httpConnection = (HttpURLConnection)url.openConnection ();</span><br><span class="line">			httpConnection.setRequestProperty(<span class="string">"User-Agent"</span>,<span class="string">"NetFox"</span>);</span><br><span class="line">			<span class="keyword">int</span> responseCode=httpConnection.getResponseCode();</span><br><span class="line">			<span class="keyword">if</span>(responseCode&gt;=<span class="number">400</span>)&#123;</span><br><span class="line">				processErrorCode(responseCode);</span><br><span class="line">				<span class="keyword">return</span> -<span class="number">2</span>; <span class="comment">//-2 represent access is error </span></span><br><span class="line">			&#125;</span><br><span class="line">			String sHeader;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;;i++)&#123;</span><br><span class="line">				<span class="comment">//DataInputStream in = new DataInputStream(httpConnection.getInputStream ()); </span></span><br><span class="line">				<span class="comment">//Utility.log(in.readLine()); </span></span><br><span class="line">				sHeader=httpConnection.getHeaderFieldKey(i);</span><br><span class="line">				<span class="keyword">if</span>(sHeader!=<span class="keyword">null</span>)&#123;</span><br><span class="line">					<span class="keyword">if</span>(sHeader.equals(<span class="string">"Content-Length"</span>))&#123;</span><br><span class="line">						nFileLength = Integer.parseInt(httpConnection.getHeaderField(sHeader));</span><br><span class="line">						<span class="keyword">break</span>;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">else</span></span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span>(IOException e)&#123;e.printStackTrace ();&#125;</span><br><span class="line">		<span class="keyword">catch</span>(Exception e)&#123;e.printStackTrace ();&#125;</span><br><span class="line">		Utility.log(nFileLength);</span><br><span class="line">		<span class="keyword">return</span> nFileLength;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 保存下载信息（文件指针位置）</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">write_nPos</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">try</span>&#123;</span><br><span class="line">			output = <span class="keyword">new</span> DataOutputStream(<span class="keyword">new</span> FileOutputStream(tmpFile));</span><br><span class="line">			output.writeInt(nStartPos.length);</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;nStartPos.length;i++)&#123;</span><br><span class="line">				<span class="comment">// output.writeLong(nPos[i]); </span></span><br><span class="line">				output.writeLong(fileSplitterFetch[i].nStartPos);</span><br><span class="line">				output.writeLong(fileSplitterFetch[i].nEndPos);</span><br><span class="line">			&#125;</span><br><span class="line">			output.close();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span>(IOException e)&#123;e.printStackTrace ();&#125;</span><br><span class="line">		<span class="keyword">catch</span>(Exception e)&#123;e.printStackTrace ();&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 读取保存的下载信息（文件指针位置）</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">read_nPos</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">try</span>&#123;</span><br><span class="line">			DataInputStream input = <span class="keyword">new</span> DataInputStream(<span class="keyword">new</span> FileInputStream(tmpFile));</span><br><span class="line">			<span class="keyword">int</span> nCount = input.readInt();</span><br><span class="line">			nStartPos = <span class="keyword">new</span> <span class="keyword">long</span>[nCount];</span><br><span class="line">			nEndPos = <span class="keyword">new</span> <span class="keyword">long</span>[nCount];</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;nStartPos.length;i++)&#123;</span><br><span class="line">				nStartPos[i] = input.readLong();</span><br><span class="line">				nEndPos[i] = input.readLong();</span><br><span class="line">			&#125;</span><br><span class="line">			input.close();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span>(IOException e)&#123;e.printStackTrace ();&#125;</span><br><span class="line">		<span class="keyword">catch</span>(Exception e)&#123;e.printStackTrace ();&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">processErrorCode</span><span class="params">(<span class="keyword">int</span> nErrorCode)</span></span>&#123;</span><br><span class="line">		System.err.println(<span class="string">"Error Code : "</span> + nErrorCode);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 停止文件下载</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">siteStop</span><span class="params">()</span></span>&#123;</span><br><span class="line">		bStop = <span class="keyword">true</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;nStartPos.length;i++)</span><br><span class="line">			fileSplitterFetch[i].splitterStop();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>FileSplitterFetch.java</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> *FileSplitterFetch.java </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">package</span> NetFox;</span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.net.*;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FileSplitterFetch</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">	String sURL; <span class="comment">//File URL </span></span><br><span class="line">	<span class="keyword">long</span> nStartPos; <span class="comment">//File Snippet Start Position </span></span><br><span class="line">	<span class="keyword">long</span> nEndPos; <span class="comment">//File Snippet End Position </span></span><br><span class="line">	<span class="keyword">int</span> nThreadID; <span class="comment">//Thread's ID </span></span><br><span class="line">	<span class="keyword">boolean</span> bDownOver = <span class="keyword">false</span>; <span class="comment">//Downing is over </span></span><br><span class="line">	<span class="keyword">boolean</span> bStop = <span class="keyword">false</span>; <span class="comment">//Stop identical </span></span><br><span class="line">	FileAccessI fileAccessI = <span class="keyword">null</span>; <span class="comment">//File Access interface </span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">FileSplitterFetch</span><span class="params">(String sURL,String sName,<span class="keyword">long</span> nStart,<span class="keyword">long</span> nEnd,<span class="keyword">int</span> id)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.sURL = sURL;</span><br><span class="line">		<span class="keyword">this</span>.nStartPos = nStart;</span><br><span class="line">		<span class="keyword">this</span>.nEndPos = nEnd;</span><br><span class="line">		nThreadID = id;</span><br><span class="line">		fileAccessI = <span class="keyword">new</span> FileAccessI(sName,nStartPos);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">while</span>(nStartPos &lt; nEndPos &amp;&amp; !bStop)&#123;</span><br><span class="line">			<span class="keyword">try</span>&#123;</span><br><span class="line">				URL url = <span class="keyword">new</span> URL(sURL);</span><br><span class="line">				HttpURLConnection httpConnection = (HttpURLConnection)url.openConnection ();</span><br><span class="line">				httpConnection.setRequestProperty(<span class="string">"User-Agent"</span>,<span class="string">"NetFox"</span>);</span><br><span class="line">				String sProperty = <span class="string">"bytes="</span>+nStartPos+<span class="string">"-"</span>;</span><br><span class="line">				httpConnection.setRequestProperty(<span class="string">"RANGE"</span>,sProperty);</span><br><span class="line">				Utility.log(sProperty);</span><br><span class="line">				InputStream input = httpConnection.getInputStream();</span><br><span class="line">				<span class="comment">//logResponseHead(httpConnection); </span></span><br><span class="line">				<span class="keyword">byte</span>[] b = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">				<span class="keyword">int</span> nRead;</span><br><span class="line">				<span class="keyword">while</span>((nRead=input.read(b,<span class="number">0</span>,<span class="number">1024</span>)) &gt; <span class="number">0</span> &amp;&amp; nStartPos &lt; nEndPos</span><br><span class="line">						&amp;&amp; !bStop) &#123;</span><br><span class="line">					nStartPos += fileAccessI.write(b,<span class="number">0</span>,nRead);</span><br><span class="line">					<span class="comment">//if(nThreadID == 1)</span></span><br><span class="line">					<span class="comment">// Utility.log("nStartPos = " + nStartPos + ", nEndPos = " + nEndPos); </span></span><br><span class="line">				&#125;</span><br><span class="line">				Utility.log(<span class="string">"Thread "</span> + nThreadID + <span class="string">" is over!"</span>);</span><br><span class="line">				bDownOver = <span class="keyword">true</span>;</span><br><span class="line">				<span class="comment">//nPos = fileAccessI.write (b,0,nRead); </span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">catch</span>(Exception e)&#123;e.printStackTrace ();&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 打印回应的头信息</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">logResponseHead</span><span class="params">(HttpURLConnection con)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;;i++)&#123;</span><br><span class="line">			String header=con.getHeaderFieldKey(i);</span><br><span class="line">			<span class="keyword">if</span>(header!=<span class="keyword">null</span>)</span><br><span class="line">				<span class="comment">//responseHeaders.put(header,httpConnection.getHeaderField(header)); </span></span><br><span class="line">				Utility.log(header+<span class="string">" : "</span>+con.getHeaderField(header));</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">splitterStop</span><span class="params">()</span></span>&#123;</span><br><span class="line">		bStop = <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>FileAccess.java </li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> *FileAccess.java </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">package</span> NetFox;</span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FileAccessI</span> <span class="keyword">implements</span> <span class="title">Serializable</span></span>&#123;</span><br><span class="line">	RandomAccessFile oSavedFile;</span><br><span class="line">	<span class="keyword">long</span> nPos;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">FileAccessI</span><span class="params">()</span> <span class="keyword">throws</span> IOException</span>&#123;</span><br><span class="line">		<span class="keyword">this</span>(<span class="string">""</span>,<span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">FileAccessI</span><span class="params">(String sName,<span class="keyword">long</span> nPos)</span> <span class="keyword">throws</span> IOException</span>&#123;</span><br><span class="line">		oSavedFile = <span class="keyword">new</span> RandomAccessFile(sName,<span class="string">"rw"</span>);</span><br><span class="line">		<span class="keyword">this</span>.nPos = nPos;</span><br><span class="line">		oSavedFile.seek(nPos);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">int</span> <span class="title">write</span><span class="params">(<span class="keyword">byte</span>[] b,<span class="keyword">int</span> nStart,<span class="keyword">int</span> nLen)</span></span>&#123;</span><br><span class="line">		<span class="keyword">int</span> n = -<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">try</span>&#123;</span><br><span class="line">			oSavedFile.write(b,nStart,nLen);</span><br><span class="line">			n = nLen;</span><br><span class="line">		&#125;<span class="keyword">catch</span>(IOException e)&#123;</span><br><span class="line">			e.printStackTrace ();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> n;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>SiteInfoBean.java </li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> *SiteInfoBean.java</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">package</span> NetFox;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SiteInfoBean</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> String sSiteURL; <span class="comment">//Site's URL</span></span><br><span class="line">	<span class="keyword">private</span> String sFilePath; <span class="comment">//Saved File's Path</span></span><br><span class="line">	<span class="keyword">private</span> String sFileName; <span class="comment">//Saved File's Name</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> nSplitter; <span class="comment">//Count of Splited Downloading File</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">SiteInfoBean</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//default value of nSplitter is 5</span></span><br><span class="line">		<span class="keyword">this</span>(<span class="string">""</span>,<span class="string">""</span>,<span class="string">""</span>,<span class="number">5</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">SiteInfoBean</span><span class="params">(String sURL,String sPath,String sName,<span class="keyword">int</span> nSpiltter)</span> </span>&#123;</span><br><span class="line">		sSiteURL= sURL;</span><br><span class="line">		sFilePath = sPath;</span><br><span class="line">		sFileName = sName;</span><br><span class="line">		<span class="keyword">this</span>.nSplitter = nSpiltter;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getSSiteURL</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> sSiteURL;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSSiteURL</span><span class="params">(String value)</span> </span>&#123;</span><br><span class="line">		sSiteURL = value;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getSFilePath</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> sFilePath;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSFilePath</span><span class="params">(String value)</span> </span>&#123;</span><br><span class="line">		sFilePath = value;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getSFileName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> sFileName;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSFileName</span><span class="params">(String value)</span> </span>&#123;</span><br><span class="line">		sFileName = value;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getNSplitter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> nSplitter;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setNSplitter</span><span class="params">(<span class="keyword">int</span> nCount)</span> </span>&#123;</span><br><span class="line">		nSplitter = nCount;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>Utility.java</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> *Utility.java</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">package</span> NetFox;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Utility</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Utility</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sleep</span><span class="params">(<span class="keyword">int</span> nSecond)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">try</span>&#123;</span><br><span class="line">			Thread.sleep(nSecond);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">			e.printStackTrace ();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">log</span><span class="params">(String sMsg)</span> </span>&#123;</span><br><span class="line">		System.err.println(sMsg);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">log</span><span class="params">(<span class="keyword">int</span> sMsg)</span> </span>&#123;</span><br><span class="line">		System.err.println(sMsg);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="6">
+<li>TestMethod.java</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> *TestMethod.java</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">package</span> NetFox;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestMethod</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">TestMethod</span><span class="params">()</span> </span>&#123;	 <span class="comment">///xx/weblogic60b2_win.exe</span></span><br><span class="line">		<span class="keyword">try</span>&#123;</span><br><span class="line">			SiteInfoBean bean = <span class="keyword">new</span> SiteInfoBean(<span class="string">"http://localhost/xx/weblogic60b2_win.exe"</span>,</span><br><span class="line">					<span class="string">"L:\\temp"</span>,<span class="string">"weblogic60b2_win.exe"</span>,<span class="number">5</span>);</span><br><span class="line">			<span class="comment">//SiteInfoBean bean = new SiteInfoBean("http://localhost:8080/down.zip","L:\\temp",</span></span><br><span class="line">			<span class="string">"weblogic60b2_win.exe"</span>,<span class="number">5</span>);</span><br><span class="line">			SiteFileFetch fileFetch = <span class="keyword">new</span> SiteFileFetch(bean);</span><br><span class="line">			fileFetch.start();</span><br><span class="line">		&#125; <span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">			e.printStackTrace ();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">new</span> TestMethod();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a href="https://www.ibm.com/developerworks/cn/java/joy-down/" target="_blank" rel="noopener">用 Java 实现断点续传 (HTTP) - IBM DeveloperWorks</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="../../../../js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Mr.Seven</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/01/22/用Java实现断点续传 (HTTP)/" target="_blank" title="用Java实现断点续传 (HTTP)">https://itimetraveler.github.io/2018/01/22/用Java实现断点续传 (HTTP)/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Java/">Java</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../25/【Android】OkHttp源码分析/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          【Android】OkHttp源码分析
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../18/如何判断CPU是大端还是小端模式/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">如何判断CPU是大端还是小端模式</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#断点续传的原理"><span class="nav-number">1.</span> <span class="nav-text">断点续传的原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-实现断点续传的关键几点"><span class="nav-number">2.</span> <span class="nav-text">Java 实现断点续传的关键几点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#断点续传内核的实现"><span class="nav-number">3.</span> <span class="nav-text">断点续传内核的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2019 iTimeTraveler All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="../../../../categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="../../../../tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="../../../../funnysite" class="mobile-nav-link">酷站</a>
+  
+    <a href="../../../../collection" class="mobile-nav-link">收藏</a>
+  
+    <a href="../../../../about" class="mobile-nav-link">About</a>
+  
+    <a href="../../../../mybooks" class="mobile-nav-link">🎁</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.css">
+  <script src="../../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="../../../../js/scripts.js"></script>
+
+
+
+
+  <script src="../../../../js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            iTimeTraveler
+          </div>
+          <div class="panel-body">
+            Copyright © 2019 Mr.Seven All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

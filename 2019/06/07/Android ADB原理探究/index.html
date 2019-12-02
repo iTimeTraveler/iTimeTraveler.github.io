@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>【android】adb工具原理探究 | iTimeTraveler</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="ADB" />
+  
+  
+  
+  
+  <meta name="description" content="ADB简介  Android Debug Bridge (adb) 是一个Android的命令行工具。可以用来连接模拟器或实际的移动设备。比如 adb logcat, adb shell。Dalvik Debug Monitor Server(DDMS) 后台也是运行的adb来实现监控调试移动设备。 总体而言，adb有两个用途：  监控连接设备 ：adb会监控所有已经连接设备(包括模拟器)，譬如设">
+<meta name="keywords" content="ADB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Android】ADB工具原理探究">
+<meta property="og:url" content="https://itimetraveler.github.io/2019/06/07/Android ADB原理探究/index.html">
+<meta property="og:site_name" content="iTimeTraveler">
+<meta property="og:description" content="ADB简介  Android Debug Bridge (adb) 是一个Android的命令行工具。可以用来连接模拟器或实际的移动设备。比如 adb logcat, adb shell。Dalvik Debug Monitor Server(DDMS) 后台也是运行的adb来实现监控调试移动设备。 总体而言，adb有两个用途：  监控连接设备 ：adb会监控所有已经连接设备(包括模拟器)，譬如设">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://itimetraveler.github.io/gallery/android_common/article-header-c8baf0ec.png">
+<meta property="og:updated_time" content="2019-06-08T09:20:54.529Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【Android】ADB工具原理探究">
+<meta name="twitter:description" content="ADB简介  Android Debug Bridge (adb) 是一个Android的命令行工具。可以用来连接模拟器或实际的移动设备。比如 adb logcat, adb shell。Dalvik Debug Monitor Server(DDMS) 后台也是运行的adb来实现监控调试移动设备。 总体而言，adb有两个用途：  监控连接设备 ：adb会监控所有已经连接设备(包括模拟器)，譬如设">
+<meta name="twitter:image" content="https://itimetraveler.github.io/gallery/android_common/article-header-c8baf0ec.png">
+  
+    <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/gallery/avatar/0.jpg">
+  <link rel="apple-touch-icon" href="/gallery/avatar/0.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="../../../../css/style.css">
+
+  <script src="../../../../js/jquery-3.1.1.min.js"></script>
+  <script src="../../../../js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="../../../../css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 8px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="62px" height="75px" alt="Hike News" src="/gallery/avatar/0.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="../../../../index.html">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../funnysite">酷站</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../collection">收藏</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../mybooks">🎁</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '../../../../content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="../../../../js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Android ADB原理探究" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" href="../../../../gallery/android_common/article-header-c8baf0ec.png" rel="gallery_ck3o8amj2004mhcs62rt7mqqa">
+        <img src="../../../../gallery/android_common/article-header-c8baf0ec.png" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      【Android】ADB工具原理探究
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="" class="article-date">
+	  <time datetime="2019-06-07T14:20:55.000Z" itemprop="datePublished">2019-06-07</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../../../categories/Android/">Android</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="ADB简介"><a href="#ADB简介" class="headerlink" title="ADB简介"></a>ADB简介</h1><blockquote class="pullquote right"><p><img src="/gallery/android_common/ADB-feature.png" alt=""></p>
+</blockquote>
+<p>Android Debug Bridge (adb) 是一个Android的命令行工具。可以用来连接模拟器或实际的移动设备。比如 adb logcat, adb shell。Dalvik Debug Monitor Server(DDMS) 后台也是运行的adb来实现监控调试移动设备。</p>
+<p>总体而言，adb有两个用途：</p>
+<ul>
+<li><strong>监控连接设备</strong> ：adb会监控所有已经连接设备(包括模拟器)，譬如设备所处的状态：ONLINE，OFFLINE, BOOTLOADER或RECOVERY。</li>
+<li><strong>提供操作命令</strong> ：adb提供了很多命令(<code>adb shell</code>，<code>adb pull</code>)，来实现对设备的操控。这些操作命令在adb的体系里面，都称为“服务”。</li>
+</ul>
+<h1 id="ADB-实现原理"><a href="#ADB-实现原理" class="headerlink" title="ADB 实现原理"></a>ADB 实现原理</h1><p>Adb的全称为 Android Debug Bridge：Android调试桥，下图为Android官方对adb的介绍：</p>
+<p><img src="/gallery/android_common/adb-introduce.png" alt=""></p>
+<a id="more"></a>
+<p>Android Debug Bridge (adb) 是一个通用命令行工具，其允许我们与模拟器或连接的 Android 设备进行通信。它可为各种设备操作提供便利，如安装和调试应用，并提供对 Unix shell（可用来在模拟器或连接的设备上运行各种命令）的访问。该工具是一个C/S架构实现的程序，包括三个组件：</p>
+<ul>
+<li><strong>ADB Client</strong>：运行在PC上，通过在命令行执行adb，就启动了ADB Client程序</li>
+<li><strong>ADB Server</strong>：运行于PC的后台进程，用于管理ADB Client和Daemon间的通信</li>
+<li><strong>ADB Daemon</strong> (即adbd) ：运行在模拟器或移动设备上的后台服务。当Android系统启动时，由init程序启动adbd。如果adbd挂了，则adbd会由init重新启动。</li>
+</ul>
+<p>您可以在 <code>android_sdk/platform-tools/</code> 中找到 <code>adb</code> 工具。</p>
+<p><img src="/gallery/android_common/adb_architecture.png" alt=""></p>
+<h2 id="ADB-源码"><a href="#ADB-源码" class="headerlink" title="ADB 源码"></a>ADB 源码</h2><p>adb的源码在 <a href="[http://androidxref.com/8.1.0_r33/xref/system/core/adb/](http://androidxref.com/8.1.0_r33/xref/system/core/adb/">system/core/adb</a> 目录下，adb和adbd两个二进制程序都是从这个目录下的代码中编译出来的，可以参考 <a href="http://androidxref.com/8.1.0_r33/xref/system/core/adb/Android.mk" target="_blank" rel="noopener"><code>Android.mk</code></a> 文件，通过宏编译开关<strong>ADB_HOST</strong>来控制：</p>
+<h3 id="Client-和-Server-调用的是adb"><a href="#Client-和-Server-调用的是adb" class="headerlink" title="Client 和 Server 调用的是adb"></a><strong>Client 和 Server 调用的是<code>adb</code></strong></h3><p>ADB_HOST=1</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_CFLAGS += \</span><br><span class="line">    <span class="variable">$(ADB_COMMON_CFLAGS)</span> \</span><br><span class="line">    -D_GNU_SOURCE \</span><br><span class="line">    -DADB_HOST=1 \</span><br><span class="line"></span><br><span class="line">LOCAL_CFLAGS_windows := \</span><br><span class="line">    <span class="variable">$(ADB_COMMON_windows_CFLAGS)</span></span><br><span class="line"></span><br><span class="line">LOCAL_CFLAGS_linux := \</span><br><span class="line">    <span class="variable">$(ADB_COMMON_linux_CFLAGS)</span> \</span><br><span class="line"></span><br><span class="line">LOCAL_CFLAGS_darwin := \</span><br><span class="line">    <span class="variable">$(ADB_COMMON_darwin_CFLAGS)</span> \</span><br><span class="line">    -Wno-sizeof-pointer-memaccess -Wno-unused-parameter \</span><br><span class="line"></span><br><span class="line">LOCAL_MODULE := adb</span><br></pre></td></tr></table></figure>
+<h3 id="而-emulator-device-调用adbd"><a href="#而-emulator-device-调用adbd" class="headerlink" title="而 emulator/device 调用adbd"></a><strong>而 emulator/device 调用<code>adbd</code></strong></h3><p>ADB_HOST=0</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_CFLAGS := \</span><br><span class="line">    <span class="variable">$(ADB_COMMON_CFLAGS)</span> \</span><br><span class="line">    <span class="variable">$(ADB_COMMON_linux_CFLAGS)</span> \</span><br><span class="line">    -DADB_HOST=0 \</span><br><span class="line">    -D_GNU_SOURCE \</span><br><span class="line">    -Wno-deprecated-declarations \</span><br><span class="line"></span><br><span class="line">LOCAL_CFLAGS += -DALLOW_ADBD_NO_AUTH=<span class="variable">$(<span class="built_in">if</span> $(<span class="built_in">filter</span> userdebug eng,<span class="variable">$(TARGET_BUILD_VARIANT)</span>)</span>,1,0)</span><br><span class="line"></span><br><span class="line"><span class="keyword">ifneq</span> (,<span class="variable">$(<span class="built_in">filter</span> userdebug eng,<span class="variable">$(TARGET_BUILD_VARIANT)</span>)</span>)</span><br><span class="line">LOCAL_CFLAGS += -DALLOW_ADBD_DISABLE_VERITY=1</span><br><span class="line">LOCAL_CFLAGS += -DALLOW_ADBD_ROOT=1</span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line">LOCAL_MODULE := adbd</span><br></pre></td></tr></table></figure>
+<p>1、 在PC HOST端，<code>adb</code>会fork出一个守护进程（不是adbd），即ADB Server，而父进程（ADB Client）继续处理Client请求，所有的Client通过TCP端口号5037进行与Server通信，而Server创建 local socket 与 remote socket，前者用于和Client通信，后者用与远端进行通信，emulator通过TCP，real device则通过usb。</p>
+<p>2、在emulator/device端，<code>adbd</code>也创建 local socket 和 remote socket，前者与通过 jdwp 与Java虚拟机进程通信，后者通过 TCP/USB 与 PC HOST通信。</p>
+<p><img src="/gallery/android_common/daemon_server.png" alt=""></p>
+<p>Client和Server虽然是同一个执行程序，但在命令行输入一条<code>adb</code>命令后，实际上完成了一次通信。在Server启动的时候，会将自己绑定到本地的<code>5037</code>端口，当Client有请求到来时，便通过TCP连接Server的5037端口。</p>
+<p>通过以下命令，可以看到server的启动日志：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ adb <span class="built_in">kill</span>-server &amp;&amp; adb devices</span><br><span class="line">* daemon not running. starting it now on port 5037 *</span><br><span class="line">* daemon started successfully *</span><br></pre></td></tr></table></figure>
+<p>通过以下命令，可以看到TCP的5037端口，在侦听连接：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ netstat -l | grep 5037</span><br><span class="line">Proto Recv-Q Send-Q    Local Address   Foreign Address     State</span><br><span class="line">tcp        0      0    127.0.0.1:5037  0.0.0.0:*           LISTEN</span><br></pre></td></tr></table></figure>
+<p>当我们执行一些常用的adb命令时，譬如<code>adb devices</code>、<code>adb shell</code>，server就自动启动了，也可以通过<code>adb start-server</code>来启动；如果想要停止server的运行，可以通过<code>adb kill-server</code>来杀掉server进程。</p>
+<h2 id="PC上命令行输入adb命令后发生了什么"><a href="#PC上命令行输入adb命令后发生了什么" class="headerlink" title="PC上命令行输入adb命令后发生了什么"></a>PC上命令行输入adb命令后发生了什么</h2><p><img src="/gallery/android_common/5521037-139ea4a56038e33e.webp" alt=""></p>
+<ol>
+<li>Client 调用某个 <code>adb</code> 命令</li>
+<li>adb 进程 fork 出一个子进程作为 Server</li>
+<li>Server 查找当前连接的 emulator/device</li>
+<li>Server 接收到来自 Client 请求</li>
+<li>Server 处理请求，将本地处理不了的请求发给 emulator/device</li>
+<li>位于 emulator/device 的 <code>adbd</code>拿到请求后交给对应的java虚拟机进程。</li>
+<li>adbd 将结果发回给 Server</li>
+<li>Server 将结果发回给 Client</li>
+</ol>
+<p><img src="/gallery/android_common/adb_communication.png" alt=""></p>
+<h1 id="ADB-Protocol-通信协议"><a href="#ADB-Protocol-通信协议" class="headerlink" title="ADB Protocol 通信协议"></a>ADB Protocol 通信协议</h1><h2 id="1-ADB-Client-和-ADB-Server-间的通信"><a href="#1-ADB-Client-和-ADB-Server-间的通信" class="headerlink" title="1. ADB Client 和 ADB Server 间的通信"></a>1. ADB Client 和 ADB Server 间的通信</h2><p>这个数据通道是一个本地TCP连接，ADB Server启动以后，在本地的5037端口侦听。ADB Client通过本地的随机端口与5037端口建立连接。</p>
+<p>在这个通道上，Client向Server发送的命令都遵循如下格式：</p>
+<ol>
+<li><strong>命令的长度(Length)</strong>，由四位的十六进制表示</li>
+<li><strong>实际的命令(Payload)</strong>，通过ASCII编码</li>
+</ol>
+<p>Client 和 Server 间传输的命令定义源码在 <a href="http://androidxref.com/8.1.0_r33/xref/system/core/adb/SERVICES.TXT" target="_blank" rel="noopener">/system/core/adb/SERVICES.TXT</a> 文件中，截取部分命令如下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">This file tries to document all requests a client can make</span><br><span class="line">to the ADB server of an adbd daemon. See the OVERVIEW.TXT document</span><br><span class="line">to understand what&apos;s going on here.</span><br><span class="line"></span><br><span class="line">HOST SERVICES:</span><br><span class="line"></span><br><span class="line">host:version</span><br><span class="line">    Ask the ADB server for its internal version number.</span><br><span class="line"></span><br><span class="line">    As a special exception, the server will respond with a 4-byte</span><br><span class="line">    hex string corresponding to its internal version number, without</span><br><span class="line">    any OKAY or FAIL.</span><br><span class="line"></span><br><span class="line">host:kill</span><br><span class="line">    Ask the ADB server to quit immediately. This is used when the</span><br><span class="line">    ADB client detects that an obsolete server is running after an</span><br><span class="line">    upgrade.</span><br><span class="line"></span><br><span class="line">host:devices</span><br><span class="line">host:devices-l</span><br><span class="line">    Ask to return the list of available Android devices and their</span><br><span class="line">    state. devices-l includes the device paths in the state.</span><br><span class="line">    After the OKAY, this is followed by a 4-byte hex len,</span><br><span class="line">    and a string that will be dumped as-is by the client, then</span><br><span class="line">    the connection is closed</span><br><span class="line">    </span><br><span class="line">// 以下省略...</span><br></pre></td></tr></table></figure>
+<p>譬如，查看adb当前的版本，Client会发起如下命令：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">000</span>Chost:version</span><br></pre></td></tr></table></figure>
+<p>000C：表示”host:version”这条命令的长度为12个字节；</p>
+<p>host前缀：是为了区分其他类型的命令(后面还会看到shell前缀的命令)；</p>
+<p><img src="/gallery/android_common/adbclient_hostversion.png" alt=""></p>
+<p>Server收到Client的请求后，返回的数据遵循如下格式：</p>
+<ol>
+<li>如果成功，则返回四个字节的字符串”<strong>OKAY</strong>“</li>
+<li>如果失败，则返回四个字节的字符串”<strong>FAIL</strong>“和<strong>出错原因</strong></li>
+<li>如果异常，则返回<strong>错误码</strong></li>
+</ol>
+<p>当Client收到Server返回的”<strong>OKAY</strong>“后，就可以发继续发起其他操作命令了。</p>
+<p><img src="/gallery/android_common/adbclient_OKAY.png" alt=""></p>
+<h2 id="2-ADB-Daemon-和-ADB-Server-间的通信-—-transport协议"><a href="#2-ADB-Daemon-和-ADB-Server-间的通信-—-transport协议" class="headerlink" title="2. ADB Daemon 和 ADB Server 间的通信 — transport协议"></a>2. ADB Daemon 和 ADB Server 间的通信 — transport协议</h2><p>Android 源码中关于 transport 协议的定义在  <a href="[http://androidxref.com/8.1.0_r33/xref/system/core/adb/protocol.txt](http://androidxref.com/8.1.0_r33/xref/system/core/adb/protocol.txt">system/core/adb/protocol.txt</a> 文件中。下面是 message header 的格式，共占用24字节，分为6个字段（即每个字段占用4字节）：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">The transport layer deals in <span class="string">"messages"</span>, which consist of a <span class="number">24</span> byte</span><br><span class="line">header followed (optionally) by a payload.  The header consists of 6</span><br><span class="line"><span class="number">32</span> bit words which are sent across the wire in little endian format.</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">message</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> command;       <span class="comment">/* command identifier constant (A_CNXN, ...) */</span></span><br><span class="line">    <span class="keyword">unsigned</span> arg0;          <span class="comment">/* first argument                            */</span></span><br><span class="line">    <span class="keyword">unsigned</span> arg1;          <span class="comment">/* second argument                           */</span></span><br><span class="line">    <span class="keyword">unsigned</span> data_length;   <span class="comment">/* length of payload (0 is allowed)          */</span></span><br><span class="line">    <span class="keyword">unsigned</span> data_crc32;    <span class="comment">/* crc32 of data payload                     */</span></span><br><span class="line">    <span class="keyword">unsigned</span> magic;         <span class="comment">/* command ^ 0xffffffff                      */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>并且定义了7种 command，以及每种指令后携带的参数含义 ：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">--- message command constants ------------------------------------------</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> A_SYNC 0x434e5953</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> A_CNXN 0x4e584e43</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> A_AUTH 0x48545541</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> A_OPEN 0x4e45504f</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> A_OKAY 0x59414b4f</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> A_CLSE 0x45534c43</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> A_WRTE 0x45545257</span></span><br></pre></td></tr></table></figure>
+<p><img src="/gallery/android_common/adbtransport_auth.png" alt="使用TCP连接的ADB抓到的包（同一wifi下）"></p>
+<h1 id="几个问题"><a href="#几个问题" class="headerlink" title="几个问题"></a>几个问题</h1><p>一、<strong>PC上为什么要有一个ADB Server，而不是ADB Client 和 ADB Daemon 直接通信呢？</strong></p>
+<p>因为 ADB 是一个需要支持多对多架构的工具，一个PC可以连接多台手机设备或虚拟机，一个手机也可以同时连接多台PC。就需要一个统一的Sever管理多个设备的连接。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="https://www.jianshu.com/p/bf58b58afb1d" target="_blank" rel="noopener">【android】Android ADB工具 adb,adbd,client,server之间的关系</a></li>
+<li><a href="https://duanqz.github.io/2015-05-21-Intro-adb" target="_blank" rel="noopener">adb介绍</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="../../../../js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Mr.Seven</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2019/06/07/Android ADB原理探究/" target="_blank" title="【Android】ADB工具原理探究">https://itimetraveler.github.io/2019/06/07/Android ADB原理探究/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Android/">Android</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../../07/25/【Android】使用VPN实现抓包/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          【Android】 使用VPN实现抓包
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../../05/25/Android Doze模式识别/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">【Android】Doze模式识别与检测</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ADB简介"><span class="nav-number">1.</span> <span class="nav-text">ADB简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ADB-实现原理"><span class="nav-number">2.</span> <span class="nav-text">ADB 实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ADB-源码"><span class="nav-number">2.1.</span> <span class="nav-text">ADB 源码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Client-和-Server-调用的是adb"><span class="nav-number">2.1.1.</span> <span class="nav-text">Client 和 Server 调用的是adb</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#而-emulator-device-调用adbd"><span class="nav-number">2.1.2.</span> <span class="nav-text">而 emulator/device 调用adbd</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PC上命令行输入adb命令后发生了什么"><span class="nav-number">2.2.</span> <span class="nav-text">PC上命令行输入adb命令后发生了什么</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ADB-Protocol-通信协议"><span class="nav-number">3.</span> <span class="nav-text">ADB Protocol 通信协议</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-ADB-Client-和-ADB-Server-间的通信"><span class="nav-number">3.1.</span> <span class="nav-text">1. ADB Client 和 ADB Server 间的通信</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-ADB-Daemon-和-ADB-Server-间的通信-—-transport协议"><span class="nav-number">3.2.</span> <span class="nav-text">2. ADB Daemon 和 ADB Server 间的通信 — transport协议</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#几个问题"><span class="nav-number">4.</span> <span class="nav-text">几个问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2019 iTimeTraveler All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="../../../../categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="../../../../tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="../../../../funnysite" class="mobile-nav-link">酷站</a>
+  
+    <a href="../../../../collection" class="mobile-nav-link">收藏</a>
+  
+    <a href="../../../../about" class="mobile-nav-link">About</a>
+  
+    <a href="../../../../mybooks" class="mobile-nav-link">🎁</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.css">
+  <script src="../../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="../../../../js/scripts.js"></script>
+
+
+
+
+  <script src="../../../../js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            iTimeTraveler
+          </div>
+          <div class="panel-body">
+            Copyright © 2019 Mr.Seven All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

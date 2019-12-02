@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>【go语言】基本类型排序和 slice 排序 | iTimeTraveler</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Go语言" />
+  
+  
+  
+  
+  <meta name="description" content="Go 是通过 sort 包提供排序和搜索，因为 Go 暂时不支持泛型（将来也不好说支不支持），所以，Go 的 sort 和 search 使用起来跟类型是有关的，或是需要像 c 一样写比较函数等，稍微显得也不是很方便。  引言  Go 的排序思路和 C 和 C++ 有些差别。 C 默认是对数组进行排序， C++ 是对一个序列进行排序， Go 则更宽泛一些，待排序的可以是任何对象， 虽然很多情况下">
+<meta name="keywords" content="Go语言">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Go语言】基本类型排序和 slice 排序">
+<meta property="og:url" content="https://itimetraveler.github.io/2016/09/07/【Go语言】基本类型排序和 slice 排序/index.html">
+<meta property="og:site_name" content="iTimeTraveler">
+<meta property="og:description" content="Go 是通过 sort 包提供排序和搜索，因为 Go 暂时不支持泛型（将来也不好说支不支持），所以，Go 的 sort 和 search 使用起来跟类型是有关的，或是需要像 c 一样写比较函数等，稍微显得也不是很方便。  引言  Go 的排序思路和 C 和 C++ 有些差别。 C 默认是对数组进行排序， C++ 是对一个序列进行排序， Go 则更宽泛一些，待排序的可以是任何对象， 虽然很多情况下">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-03-14T08:13:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【Go语言】基本类型排序和 slice 排序">
+<meta name="twitter:description" content="Go 是通过 sort 包提供排序和搜索，因为 Go 暂时不支持泛型（将来也不好说支不支持），所以，Go 的 sort 和 search 使用起来跟类型是有关的，或是需要像 c 一样写比较函数等，稍微显得也不是很方便。  引言  Go 的排序思路和 C 和 C++ 有些差别。 C 默认是对数组进行排序， C++ 是对一个序列进行排序， Go 则更宽泛一些，待排序的可以是任何对象， 虽然很多情况下">
+  
+    <link rel="alternate" href="/atom.xml" title="iTimeTraveler" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/gallery/avatar/0.jpg">
+  <link rel="apple-touch-icon" href="/gallery/avatar/0.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="../../../../css/style.css">
+
+  <script src="../../../../js/jquery-3.1.1.min.js"></script>
+  <script src="../../../../js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="../../../../css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 8px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="62px" height="75px" alt="Hike News" src="/gallery/avatar/0.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="../../../../index.html">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../funnysite">酷站</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../collection">收藏</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="../../../../mybooks">🎁</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '../../../../content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="../../../../js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-【Go语言】基本类型排序和 slice 排序" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      【Go语言】基本类型排序和 slice 排序
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="" class="article-date">
+	  <time datetime="2016-09-07T08:36:00.000Z" itemprop="datePublished">2016-09-07</time>
+	</a>
+
+      
+    <a class="article-category-link" href="../../../../categories/Go语言/">Go语言</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>Go 是通过 sort 包提供排序和搜索，因为 Go 暂时不支持泛型（将来也不好说支不支持），所以，Go 的 sort 和 search 使用起来跟类型是有关的，或是需要像 c 一样写比较函数等，稍微显得也不是很方便。</p>
+</blockquote>
+<h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a><strong>引言</strong></h3><p>  Go 的排序思路和 C 和 C++ 有些差别。 C 默认是对数组进行排序， C++ 是对一个序列进行排序， Go 则更宽泛一些，待排序的可以是<strong><code>任何对象</code></strong>， 虽然很多情况下是一个 <code>slice</code> (分片， 类似于数组)，或是包含 slice 的一个对象。</p>
+<p>排序(接口)的三个要素：</p>
+<ul>
+<li>待排序元素个数 n ；</li>
+<li>第 i 和第 j 个元素的比较函数 cmp ；</li>
+<li>第 i 和 第 j 个元素的交换 swap ；</li>
+</ul>
+<p>乍一看条件 3 是多余的， c 和 c++ 都不提供 swap 。 c 的 qsort 的用法： <code>qsort(data, n, sizeof(int), cmp_int);</code>  data 是起始地址， n 是元素个数， sizeof(int) 是每个元素的大小， cmp_int 是一个比较两个 int 的函数。</p>
+<p>c++ 的 sort 的用法： <code>sort(data, data+n, cmp_int);</code> data 是第一个元素的位置， data+n 是最后一个元素的下一个位置， cmp_int 是比较函数。</p>
+<a id="more"></a>
+<h3 id="基本类型排序-int、float64-和-string"><a href="#基本类型排序-int、float64-和-string" class="headerlink" title="基本类型排序(int、float64 和 string)"></a><strong>基本类型排序(int、float64 和 string)</strong></h3><h4 id="1、升序排序"><a href="#1、升序排序" class="headerlink" title="1、升序排序"></a><strong>1、升序排序</strong></h4><p>对于 int 、 float64 和 string 数组或是分片的排序， go 分别提供了 sort.Ints() 、 sort.Float64s() 和 sort.Strings() 函数， 默认都是从小到大排序。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"sort"</span></span><br><span class="line">)</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    intList := [] <span class="keyword">int</span> &#123;<span class="number">2</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">9</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">0</span>&#125;</span><br><span class="line">    float8List := [] <span class="keyword">float64</span> &#123;<span class="number">4.2</span>, <span class="number">5.9</span>, <span class="number">12.3</span>, <span class="number">10.0</span>, <span class="number">50.4</span>, <span class="number">99.9</span>, <span class="number">31.4</span>, <span class="number">27.81828</span>, <span class="number">3.14</span>&#125;</span><br><span class="line">    stringList := [] <span class="keyword">string</span> &#123;<span class="string">"a"</span>, <span class="string">"c"</span>, <span class="string">"b"</span>, <span class="string">"d"</span>, <span class="string">"f"</span>, <span class="string">"i"</span>, <span class="string">"z"</span>, <span class="string">"x"</span>, <span class="string">"w"</span>, <span class="string">"y"</span>&#125;</span><br><span class="line">   </span><br><span class="line">    sort.Ints(intList)</span><br><span class="line">    sort.Float64s(float8List)</span><br><span class="line">    sort.Strings(stringList)</span><br><span class="line">   </span><br><span class="line">    fmt.Printf(<span class="string">"%v\n%v\n%v\n"</span>, intList, float8List, stringList)</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2、降序排序"><a href="#2、降序排序" class="headerlink" title="2、降序排序"></a><strong>2、降序排序</strong></h4><p>int 、 float64 和 string 都有默认的升序排序函数， 现在问题是如果降序如何 ？ 有其他语言编程经验的人都知道，只需要交换 cmp 的比较法则就可以了， go 的实现是类似的，然而又有所不同。 go 中对某个 Type 的对象 obj 排序， 可以使用 sort.Sort(obj) 即可，就是需要对 Type 类型绑定三个方法 ： <strong><code>Len()</code></strong> 求长度、<strong><code>Less(i,j)</code></strong>  比较第 i 和 第 j 个元素大小的函数、 <strong><code>Swap(i,j)</code></strong> 交换第 i 和第 j 个元素的函数。sort 包下的三个类型 <code>IntSlice</code> 、 <code>Float64Slice</code> 、 <code>StringSlice</code> 分别实现了这三个方法， 对应排序的是 [] int 、 [] float64 和 [] string 。如果期望逆序排序， 只需要将对应的 Less 函数简单修改一下即可。</p>
+<p>go 的 sort 包可以使用 sort.Reverse(slice) 来调换 slice.Interface.Less ，也就是比较函数，所以， int 、 float64 和 string 的逆序排序函数可以这么写：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"sort"</span></span><br><span class="line">)</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    intList := [] <span class="keyword">int</span> &#123;<span class="number">2</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">9</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">0</span>&#125;</span><br><span class="line">    float8List := [] <span class="keyword">float64</span> &#123;<span class="number">4.2</span>, <span class="number">5.9</span>, <span class="number">12.3</span>, <span class="number">10.0</span>, <span class="number">50.4</span>, <span class="number">99.9</span>, <span class="number">31.4</span>, <span class="number">27.81828</span>, <span class="number">3.14</span>&#125;</span><br><span class="line">    stringList := [] <span class="keyword">string</span> &#123;<span class="string">"a"</span>, <span class="string">"c"</span>, <span class="string">"b"</span>, <span class="string">"d"</span>, <span class="string">"f"</span>, <span class="string">"i"</span>, <span class="string">"z"</span>, <span class="string">"x"</span>, <span class="string">"w"</span>, <span class="string">"y"</span>&#125;</span><br><span class="line">   </span><br><span class="line">    sort.Sort(sort.Reverse(sort.IntSlice(intList)))</span><br><span class="line">    sort.Sort(sort.Reverse(sort.Float64Slice(float8List)))</span><br><span class="line">    sort.Sort(sort.Reverse(sort.StringSlice(stringList)))</span><br><span class="line">   </span><br><span class="line">    fmt.Printf(<span class="string">"%v\n%v\n%v\n"</span>, intList, float8List, stringList)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3、深入理解排序"><a href="#3、深入理解排序" class="headerlink" title="3、深入理解排序"></a><strong>3、深入理解排序</strong></h4><p>sort 包中有一个 sort.Interface 接口，该接口有三个方法 Len() 、 Less(i,j) 和 Swap(i,j) 。 通用排序函数 sort.Sort 可以排序任何实现了 sort.Inferface 接口的对象(变量)。对于 [] int 、[] float64 和 [] string 除了使用特殊指定的函数外，还可以使用改装过的类型 IntSclice 、 Float64Slice 和 StringSlice ， 然后直接调用它们对应的 Sort() 方法；因为这三种类型也实现了 sort.Interface 接口， 所以可以通过 sort.Reverse 来转换这三种类型的 Interface.Less 方法来实现逆向排序， 这就是前面最后一个排序的使用。</p>
+<p>下面使用了一个自定义(用户定义)的 Reverse 结构体， 而不是 sort.Reverse 函数， 来实现逆向排序。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"sort"</span></span><br><span class="line">)</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 自定义的 Reverse 类型</span></span><br><span class="line"><span class="keyword">type</span> Reverse <span class="keyword">struct</span> &#123;</span><br><span class="line">    sort.Interface    <span class="comment">// 这样，Reverse可以接纳任何实现了sort.Interface的对象</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// Reverse 只是将其中的 Inferface.Less 的顺序对调了一下</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r Reverse)</span> <span class="title">Less</span><span class="params">(i, j <span class="keyword">int</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> r.Interface.Less(j, i)</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    ints := []<span class="keyword">int</span>&#123;<span class="number">5</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">4</span>&#125;</span><br><span class="line"> </span><br><span class="line">    sort.Ints(ints)                                     <span class="comment">// 特殊排序函数，升序</span></span><br><span class="line">    fmt.Println(<span class="string">"after sort by Ints:\t"</span>, ints)</span><br><span class="line"> </span><br><span class="line">    doubles := []<span class="keyword">float64</span>&#123;<span class="number">2.3</span>, <span class="number">3.2</span>, <span class="number">6.7</span>, <span class="number">10.9</span>, <span class="number">5.4</span>, <span class="number">1.8</span>&#125;</span><br><span class="line"> </span><br><span class="line">    sort.Float64s(doubles)</span><br><span class="line">    fmt.Println(<span class="string">"after sort by Float64s:\t"</span>, doubles)   <span class="comment">// [1.8 2.3 3.2 5.4 6.7 10.9]</span></span><br><span class="line"> </span><br><span class="line">    strings := []<span class="keyword">string</span>&#123;<span class="string">"hello"</span>, <span class="string">"good"</span>, <span class="string">"students"</span>, <span class="string">"morning"</span>, <span class="string">"people"</span>, <span class="string">"world"</span>&#125;</span><br><span class="line">    sort.Strings(strings)</span><br><span class="line">    fmt.Println(<span class="string">"after sort by Strings:\t"</span>, strings)    <span class="comment">// [good hello mornig people students world]</span></span><br><span class="line"> </span><br><span class="line">    ipos := sort.SearchInts(ints, <span class="number">-1</span>)    <span class="comment">// int 搜索</span></span><br><span class="line">    fmt.Printf(<span class="string">"pos of 5 is %d th\n"</span>, ipos)</span><br><span class="line"> </span><br><span class="line">    dpos := sort.SearchFloat64s(doubles, <span class="number">20.1</span>)    <span class="comment">// float64 搜索</span></span><br><span class="line">    fmt.Printf(<span class="string">"pos of 5.0 is %d th\n"</span>, dpos)</span><br><span class="line"> </span><br><span class="line">    fmt.Printf(<span class="string">"doubles is asc ? %v\n"</span>, sort.Float64sAreSorted(doubles))</span><br><span class="line"> </span><br><span class="line">    doubles = []<span class="keyword">float64</span>&#123;<span class="number">3.5</span>, <span class="number">4.2</span>, <span class="number">8.9</span>, <span class="number">100.98</span>, <span class="number">20.14</span>, <span class="number">79.32</span>&#125;</span><br><span class="line">    <span class="comment">// sort.Sort(sort.Float64Slice(doubles))    // float64 排序方法 2</span></span><br><span class="line">    <span class="comment">// fmt.Println("after sort by Sort:\t", doubles)    // [3.5 4.2 8.9 20.14 79.32 100.98]</span></span><br><span class="line">    (sort.Float64Slice(doubles)).Sort()         <span class="comment">// float64 排序方法 3</span></span><br><span class="line">    fmt.Println(<span class="string">"after sort by Sort:\t"</span>, doubles)       <span class="comment">// [3.5 4.2 8.9 20.14 79.32 100.98]</span></span><br><span class="line"> </span><br><span class="line">    sort.Sort(Reverse&#123;sort.Float64Slice(doubles)&#125;)    <span class="comment">// float64 逆序排序</span></span><br><span class="line">    fmt.Println(<span class="string">"after sort by Reversed Sort:\t"</span>, doubles)      <span class="comment">// [100.98 79.32 20.14 8.9 4.2 3.5]</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>sort.Ints / sort.Float64s / sort.Strings 分别来对整型/浮点型/字符串型<strong><code>slice</code></strong>进行排序。然后是有个测试是否有序的函数。还有分别对应的 search 函数，不过，发现搜索函数只能定位到如果存在的话的位置，不存在的话，位置是不对的。</p>
+<p>关于一般的数组排序，程序中显示了，有 3 种方法！目前提供的三种类型 int，float64 和 string 呈现对称的，也就是你有的，对应的我也有。关于翻转排序或是逆向排序，就是用个<strong>翻转结构体</strong>，重写 <code>Less()</code> 函数即可。上面的 Reverse 是个通用的结构体。</p>
+<p>上面说了那么多， 只是对基本类型进行排序， 该到说说 struct 结构体类型的排序的时候了， 实际中这个用得到的会更多。</p>
+<h3 id="结构体类型的排序"><a href="#结构体类型的排序" class="headerlink" title="结构体类型的排序"></a><strong>结构体类型的排序</strong></h3><p>结构体类型的排序是通过使用 <code>sort.Sort(slice)</code> 实现的， 只要 slice 实现了 sort.Interface 的三个方法就可以。 虽然这么说，但是排序的方法却有那么好几种。首先一种就是模拟排序 [] int 构造对应的 IntSlice 类型，然后对 IntSlice 类型实现 Interface 的三个方法。</p>
+<h4 id="1、模拟-IntSlice-排序"><a href="#1、模拟-IntSlice-排序" class="headerlink" title="1、模拟 IntSlice 排序"></a><strong>1、模拟 IntSlice 排序</strong></h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"sort"</span></span><br><span class="line">)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</span><br><span class="line">    Name <span class="keyword">string</span></span><br><span class="line">    Age  <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 按照 Person.Age 从大到小排序</span></span><br><span class="line"><span class="keyword">type</span> PersonSlice [] Person</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(a PersonSlice)</span> <span class="title">Len</span><span class="params">()</span> <span class="title">int</span></span> &#123;    	 <span class="comment">// 重写 Len() 方法</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">len</span>(a)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(a PersonSlice)</span> <span class="title">Swap</span><span class="params">(i, j <span class="keyword">int</span>)</span></span>&#123;     <span class="comment">// 重写 Swap() 方法</span></span><br><span class="line">    a[i], a[j] = a[j], a[i]</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(a PersonSlice)</span> <span class="title">Less</span><span class="params">(i, j <span class="keyword">int</span>)</span> <span class="title">bool</span></span> &#123;    <span class="comment">// 重写 Less() 方法， 从大到小排序</span></span><br><span class="line">    <span class="keyword">return</span> a[j].Age &lt; a[i].Age</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    people := [] Person&#123;</span><br><span class="line">        &#123;<span class="string">"zhang san"</span>, <span class="number">12</span>&#125;,</span><br><span class="line">        &#123;<span class="string">"li si"</span>, <span class="number">30</span>&#125;,</span><br><span class="line">        &#123;<span class="string">"wang wu"</span>, <span class="number">52</span>&#125;,</span><br><span class="line">        &#123;<span class="string">"zhao liu"</span>, <span class="number">26</span>&#125;,</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    fmt.Println(people)</span><br><span class="line"> </span><br><span class="line">    sort.Sort(PersonSlice(people))    <span class="comment">// 按照 Age 的逆序排序</span></span><br><span class="line">    fmt.Println(people)</span><br><span class="line"> </span><br><span class="line">    sort.Sort(sort.Reverse(PersonSlice(people)))    <span class="comment">// 按照 Age 的升序排序</span></span><br><span class="line">    fmt.Println(people)</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这完全是一种模拟的方式，所以如果懂了 IntSlice 自然就理解这里了，反过来，理解了这里那么 IntSlice 那里也就懂了。</p>
+<p>这种方法的缺点是：根据 Age 排序需要重新定义 PersonSlice 方法，绑定 Len 、 Less 和 Swap 方法， 如果需要根据 Name 排序， 又需要重新写三个函数； 如果结构体有 4 个字段，有四种类型的排序，那么就要写 3 × 4 = 12 个方法， 即使有一些完全是多余的， O__O”… 仔细思量一下，根据不同的标准 Age 或是 Name， 真正不同的体现在 Less 方法上，所以可以将 Less 抽象出来， 每种排序的 Less 让其变成动态的，比如下面一种方法。</p>
+<h4 id="2、封装成-Wrapper"><a href="#2、封装成-Wrapper" class="headerlink" title="2、封装成 Wrapper"></a><strong>2、封装成 Wrapper</strong></h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"sort"</span></span><br><span class="line">)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</span><br><span class="line">    Name <span class="keyword">string</span></span><br><span class="line">    Age  <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">type</span> PersonWrapper <span class="keyword">struct</span> &#123;					<span class="comment">//注意此处</span></span><br><span class="line">    people [] Person</span><br><span class="line">    by <span class="function"><span class="keyword">func</span><span class="params">(p, q * Person)</span> <span class="title">bool</span></span></span><br><span class="line"><span class="function">&#125;</span></span><br><span class="line"><span class="function"> </span></span><br><span class="line"><span class="function"><span class="title">func</span> <span class="params">(pw PersonWrapper)</span> <span class="title">Len</span><span class="params">()</span> <span class="title">int</span></span> &#123;    		<span class="comment">// 重写 Len() 方法</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">len</span>(pw.people)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(pw PersonWrapper)</span> <span class="title">Swap</span><span class="params">(i, j <span class="keyword">int</span>)</span></span>&#123;     <span class="comment">// 重写 Swap() 方法</span></span><br><span class="line">    pw.people[i], pw.people[j] = pw.people[j], pw.people[i]</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(pw PersonWrapper)</span> <span class="title">Less</span><span class="params">(i, j <span class="keyword">int</span>)</span> <span class="title">bool</span></span> &#123;    <span class="comment">// 重写 Less() 方法</span></span><br><span class="line">    <span class="keyword">return</span> pw.by(&amp;pw.people[i], &amp;pw.people[j])</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    people := [] Person&#123;</span><br><span class="line">        &#123;<span class="string">"zhang san"</span>, <span class="number">12</span>&#125;,</span><br><span class="line">        &#123;<span class="string">"li si"</span>, <span class="number">30</span>&#125;,</span><br><span class="line">        &#123;<span class="string">"wang wu"</span>, <span class="number">52</span>&#125;,</span><br><span class="line">        &#123;<span class="string">"zhao liu"</span>, <span class="number">26</span>&#125;,</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    fmt.Println(people)</span><br><span class="line"> </span><br><span class="line">    sort.Sort(PersonWrapper&#123;people, <span class="function"><span class="keyword">func</span> <span class="params">(p, q *Person)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">        <span class="keyword">return</span> q.Age &lt; p.Age    <span class="comment">// Age 递减排序</span></span><br><span class="line">    &#125;&#125;)</span><br><span class="line"> </span><br><span class="line">    fmt.Println(people)</span><br><span class="line">    sort.Sort(PersonWrapper&#123;people, <span class="function"><span class="keyword">func</span> <span class="params">(p, q *Person)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">        <span class="keyword">return</span> p.Name &lt; q.Name    <span class="comment">// Name 递增排序</span></span><br><span class="line">    &#125;&#125;)</span><br><span class="line"> </span><br><span class="line">    fmt.Println(people)</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种方法将 [] Person 和比较的准则 cmp 封装在了一起，形成了 PersonWrapper 函数，然后在其上绑定 Len 、 Less 和 Swap 方法。 实际上 sort.Sort(pw) 排序的是 pw 中的 people， 这就是前面说的， <strong>go 的排序未必就是针对的一个数组或是 slice， 而可以是一个对象中的数组或是 slice</strong> 。</p>
+<h4 id="3、进一步封装"><a href="#3、进一步封装" class="headerlink" title="3、进一步封装"></a><strong>3、进一步封装</strong></h4><p>感觉方法 2 已经很不错了， 唯一一个缺点是，在 main 中使用的时候暴露了 sort.Sort 的使用，还有就是 PersonWrapper 的构造。 为了让 main 中使用起来更为方便， me 们可以再简单的封装一下， 构造一个 SortPerson 方法， 如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"sort"</span></span><br><span class="line">)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</span><br><span class="line">    Name <span class="keyword">string</span></span><br><span class="line">    Age  <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">type</span> PersonWrapper <span class="keyword">struct</span> &#123;</span><br><span class="line">    people [] Person</span><br><span class="line">    by <span class="function"><span class="keyword">func</span><span class="params">(p, q * Person)</span> <span class="title">bool</span></span></span><br><span class="line"><span class="function">&#125;</span></span><br><span class="line"><span class="function"> </span></span><br><span class="line"><span class="function"><span class="title">type</span> <span class="title">SortBy</span> <span class="title">func</span><span class="params">(p, q *Person)</span> <span class="title">bool</span></span></span><br><span class="line"><span class="function"> </span></span><br><span class="line"><span class="function"><span class="title">func</span> <span class="params">(pw PersonWrapper)</span> <span class="title">Len</span><span class="params">()</span> <span class="title">int</span></span> &#123;    		<span class="comment">// 重写 Len() 方法</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">len</span>(pw.people)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(pw PersonWrapper)</span> <span class="title">Swap</span><span class="params">(i, j <span class="keyword">int</span>)</span></span>&#123;         <span class="comment">// 重写 Swap() 方法</span></span><br><span class="line">    pw.people[i], pw.people[j] = pw.people[j], pw.people[i]</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(pw PersonWrapper)</span> <span class="title">Less</span><span class="params">(i, j <span class="keyword">int</span>)</span> <span class="title">bool</span></span> &#123;    <span class="comment">// 重写 Less() 方法</span></span><br><span class="line">    <span class="keyword">return</span> pw.by(&amp;pw.people[i], &amp;pw.people[j])</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 封装成 SortPerson 方法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">SortPerson</span><span class="params">(people [] Person, by SortBy)</span></span>&#123;</span><br><span class="line">    sort.Sort(PersonWrapper&#123;people, by&#125;)</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    people := [] Person&#123;</span><br><span class="line">        &#123;<span class="string">"zhang san"</span>, <span class="number">12</span>&#125;,</span><br><span class="line">        &#123;<span class="string">"li si"</span>, <span class="number">30</span>&#125;,</span><br><span class="line">        &#123;<span class="string">"wang wu"</span>, <span class="number">52</span>&#125;,</span><br><span class="line">        &#123;<span class="string">"zhao liu"</span>, <span class="number">26</span>&#125;,</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    fmt.Println(people)</span><br><span class="line"> </span><br><span class="line">    sort.Sort(PersonWrapper&#123;people, <span class="function"><span class="keyword">func</span> <span class="params">(p, q *Person)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">        <span class="keyword">return</span> q.Age &lt; p.Age    <span class="comment">// Age 递减排序</span></span><br><span class="line">    &#125;&#125;)</span><br><span class="line"> </span><br><span class="line">    fmt.Println(people)</span><br><span class="line"> </span><br><span class="line">    SortPerson(people, <span class="function"><span class="keyword">func</span> <span class="params">(p, q *Person)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">        <span class="keyword">return</span> p.Name &lt; q.Name    <span class="comment">// Name 递增排序</span></span><br><span class="line">    &#125;)</span><br><span class="line"> </span><br><span class="line">    fmt.Println(people)</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在方法 2 的基础上构造了 SortPerson 函数，使用的时候传过去一个 [] Person 和一个 cmp 函数。</p>
+<h4 id="4、另一种思路"><a href="#4、另一种思路" class="headerlink" title="4、另一种思路"></a><strong>4、另一种思路</strong></h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"sort"</span></span><br><span class="line">)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</span><br><span class="line">    Name        <span class="keyword">string</span></span><br><span class="line">    Weight      <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">type</span> PersonSlice []Person</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s PersonSlice)</span> <span class="title">Len</span><span class="params">()</span> <span class="title">int</span></span>  &#123; <span class="keyword">return</span> <span class="built_in">len</span>(s) &#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s PersonSlice)</span> <span class="title">Swap</span><span class="params">(i, j <span class="keyword">int</span>)</span></span>     &#123; s[i], s[j] = s[j], s[i] &#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">type</span> ByName <span class="keyword">struct</span>&#123; PersonSlice &#125;    <span class="comment">// 将 PersonSlice 包装起来到 ByName 中</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s ByName)</span> <span class="title">Less</span><span class="params">(i, j <span class="keyword">int</span>)</span> <span class="title">bool</span></span>     &#123; <span class="keyword">return</span> s.PersonSlice[i].Name &lt; s.PersonSlice[j].Name &#125;    <span class="comment">// 将 Less 绑定到 ByName 上</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">type</span> ByWeight <span class="keyword">struct</span>&#123; PersonSlice &#125;    <span class="comment">// 将 PersonSlice 包装起来到 ByWeight 中</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s ByWeight)</span> <span class="title">Less</span><span class="params">(i, j <span class="keyword">int</span>)</span> <span class="title">bool</span></span>   &#123; <span class="keyword">return</span> s.PersonSlice[i].Weight &lt; s.PersonSlice[j].Weight &#125;    <span class="comment">// 将 Less 绑定到 ByWeight 上</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    s := []Person&#123;</span><br><span class="line">        &#123;<span class="string">"apple"</span>, <span class="number">12</span>&#125;,</span><br><span class="line">        &#123;<span class="string">"pear"</span>, <span class="number">20</span>&#125;,</span><br><span class="line">        &#123;<span class="string">"banana"</span>, <span class="number">50</span>&#125;,</span><br><span class="line">        &#123;<span class="string">"orange"</span>, <span class="number">87</span>&#125;,</span><br><span class="line">        &#123;<span class="string">"hello"</span>, <span class="number">34</span>&#125;,</span><br><span class="line">        &#123;<span class="string">"world"</span>, <span class="number">43</span>&#125;,</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    sort.Sort(ByWeight&#123;s&#125;)</span><br><span class="line">    fmt.Println(<span class="string">"People by weight:"</span>)</span><br><span class="line">    printPeople(s)</span><br><span class="line"> </span><br><span class="line">    sort.Sort(ByName&#123;s&#125;)</span><br><span class="line">    fmt.Println(<span class="string">"\nPeople by name:"</span>)</span><br><span class="line">    printPeople(s)</span><br><span class="line"> </span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">printPeople</span><span class="params">(s []Person)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> _, o := <span class="keyword">range</span> s &#123;</span><br><span class="line">        fmt.Printf(<span class="string">"%-8s (%v)\n"</span>, o.Name, o.Weight)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对结构体的排序， 暂时就到这里。 第一种排序对只根据一个字段的比较合适， 另外三个是针对可能根据多个字段排序的。方法 4 我认为每次都要多构造一个 ByXXX ， 颇为不便， 这样多麻烦，不如方法 2 和方法 3 来的方便，直接传进去一个 cmp。 方法2、 3 没有太大的差别， 3 只是简单封装了一下而已， 对于使用者来说， 可能会更方便一些，而且也会更少的出错。</p>
+<h4 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a><strong>参考资料：</strong></h4><p>1、<a href="http://ilovers.sinaapp.com/node/38" target="_blank" rel="noopener">go语言的排序和搜索</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="../../../../js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Mr.Seven</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2016/09/07/【Go语言】基本类型排序和 slice 排序/" target="_blank" title="【Go语言】基本类型排序和 slice 排序">https://itimetraveler.github.io/2016/09/07/【Go语言】基本类型排序和 slice 排序/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Go语言/">Go语言</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../08/【Java】设计模式：深入理解单例模式/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          【Java】设计模式：深入理解单例模式
+        
+      </div>
+    </a>
+  
+  
+    <a href="../【Android 】TextView 局部文字变色/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">【Android 】TextView 局部文字变色</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本类型排序-int、float64-和-string"><span class="nav-number">2.</span> <span class="nav-text">基本类型排序(int、float64 和 string)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、升序排序"><span class="nav-number">2.1.</span> <span class="nav-text">1、升序排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、降序排序"><span class="nav-number">2.2.</span> <span class="nav-text">2、降序排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、深入理解排序"><span class="nav-number">2.3.</span> <span class="nav-text">3、深入理解排序</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结构体类型的排序"><span class="nav-number">3.</span> <span class="nav-text">结构体类型的排序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、模拟-IntSlice-排序"><span class="nav-number">3.1.</span> <span class="nav-text">1、模拟 IntSlice 排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、封装成-Wrapper"><span class="nav-number">3.2.</span> <span class="nav-text">2、封装成 Wrapper</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、进一步封装"><span class="nav-number">3.3.</span> <span class="nav-text">3、进一步封装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、另一种思路"><span class="nav-number">3.4.</span> <span class="nav-text">4、另一种思路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考资料："><span class="nav-number">3.5.</span> <span class="nav-text">参考资料：</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2019 iTimeTraveler All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="../../../../categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="../../../../tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="../../../../funnysite" class="mobile-nav-link">酷站</a>
+  
+    <a href="../../../../collection" class="mobile-nav-link">收藏</a>
+  
+    <a href="../../../../about" class="mobile-nav-link">About</a>
+  
+    <a href="../../../../mybooks" class="mobile-nav-link">🎁</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.css">
+  <script src="../../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="../../../../js/scripts.js"></script>
+
+
+
+
+  <script src="../../../../js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            iTimeTraveler
+          </div>
+          <div class="panel-body">
+            Copyright © 2019 Mr.Seven All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>
