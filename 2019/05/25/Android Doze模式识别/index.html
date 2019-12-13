@@ -178,7 +178,7 @@
 <div class="article-gallery">
   <div class="article-gallery-photos">
     
-      <a class="article-gallery-img fancybox" href="../../../../gallery/android_common/doze.png" rel="gallery_ck3o8amh8003hhcs6u1r5819p">
+      <a class="article-gallery-img fancybox" href="../../../../gallery/android_common/doze.png" rel="gallery_ck445is6n0029kis66v4vvg27">
         <img src="../../../../gallery/android_common/doze.png" itemprop="image">
       </a>
     
@@ -256,7 +256,7 @@
 <li>运行应用并使其保持活动状态</li>
 <li>关闭设备屏幕。（应用保持活动状态。）</li>
 <li><p>通过运行以下命令强制系统在Doze低电耗模式之间循环切换：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> adb shell dumpsys battery unplug</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> adb shell dumpsys deviceidle step</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果没有生效，可以尝试以下命令</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> adb shell dumpsys deviceidle force-idle</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> adb shell dumpsys battery unplug</span><br><span class="line"><span class="meta">$</span> adb shell dumpsys deviceidle step</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 如果没有生效，可以尝试以下命令</span><br><span class="line"><span class="meta">$</span> adb shell dumpsys deviceidle force-idle</span><br></pre></td></tr></table></figure>
 <p>您可能需要多次运行第二个命令。不断地重复，直到设备变为空闲状态。</p>
 </li>
 <li>在重新激活设备后观察应用的行为。确保应用在设备退出Doze低电耗模式时正常恢复。</li>
@@ -274,7 +274,7 @@
 <li>将设备连接到开发计算机并安装应用</li>
 <li>运行应用并使其保持活动状态</li>
 <li><p>通过运行以下命令强制应用进入应用待机模式：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> adb shell dumpsys battery unplug</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> adb shell am <span class="built_in">set</span>-inactive &lt;packageName&gt; <span class="literal">true</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> adb shell dumpsys battery unplug</span><br><span class="line"><span class="meta">$</span> adb shell am set-inactive &lt;packageName&gt; true</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>使用以下命令模拟唤醒应用：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ adb shell am <span class="built_in">set</span>-inactive &lt;packageName&gt; <span class="literal">false</span></span><br><span class="line">$ adb shell am get-inactive &lt;packageName&gt;</span><br></pre></td></tr></table></figure>
